@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import classNames from 'classnames';
+import { thistle } from 'color-name';
 
 class FieldCard extends React.Component {
 
@@ -16,14 +17,26 @@ class FieldCard extends React.Component {
 
         console.log(this.state.fieldTitle)
 
-        let btnClass = classNames({
+        let value = this.props.fieldValue;
+
+        if (value.length > 15) {
+            value = value.slice(0, 20);
+            value = value + "..."
+        }
+
+        let btnClass;
+
+        btnClass = classNames({
             'field_container1': this.state.isGreen,
-            'field_container2': !this.state.isGreen
+            'field_container2': !this.state.isGreen,
+            'field_container1': this.props.fieldValue !== "",
+            'field_container2': this.props.fieldValue === ""
+
         });
         return (
             <div className={btnClass} onClick={this.changeColor.bind(this)}>
                 <div className="fieldTitle">{this.props.fieldTitle}</div>
-                <div className="fieldVal">{this.props.fieldValue}</div>
+                <div className={"fieldVal"} >{value}</div>
             </div>)
     };
 }
