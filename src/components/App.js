@@ -1,5 +1,4 @@
 import React from 'react';
-import * as d3 from 'd3';
 //import data from '../TEST_DATA.csv';
 import CardList from './CardList';
 import FileIn from './FileIn';
@@ -13,9 +12,6 @@ const parser = (fieldName, length) => {
     return (arr);
 }
 
-
-
-
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -26,22 +22,13 @@ class App extends React.Component {
 
 
     fileCallback = (datafromFile) => {
-        //this.setState({ data: datafromFile[0] })
-        console.log(datafromFile.data)
         let currentComponent = this;
-        //d3.csv(datafromFile).then(function (data) {
         currentComponent.setState({
             fieldNames:
                 parser(datafromFile.meta.fields, datafromFile.meta.fields.length),
             fieldValues:
                 datafromFile.data[0]
         })
-
-        console.log("LOOK LOOK" + this.state.fieldValues)
-        //}).catch(function (err) {
-        //throw err;
-        //});
-
     }
 
     handleFiles = files => {

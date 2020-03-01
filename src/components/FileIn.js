@@ -1,12 +1,15 @@
 import React from 'react';
 import Papa from 'papaparse';
+import './App.css';
+import classNames from 'classnames';
 
 class FileIn extends React.Component {
 
     constructor() {
         super();
         this.state = {
-            csvfile: undefined
+            csvfile: undefined,
+            loaded: false
         };
         this.updateData = this.updateData.bind(this);
     }
@@ -25,19 +28,25 @@ class FileIn extends React.Component {
             complete: this.updateData,
             header: true
         });
+        this.setState({ loaded: true })
 
     };
 
     updateData(result) {
         console.log(result)
         var data = result;
-
         this.props.callbackFromParent(data);
     }
 
     render() {
+
+        let readerClass = classNames({
+            'fileReader': this.state.loaded === false,
+            'fileReader1': this.state.loaded === true
+        });
+
         return (
-            <div className="App">
+            <div className={readerClass}>
                 <h2>Import CSV File!</h2>
                 <input
                     className="csv-input"

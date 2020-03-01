@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 class FieldCard extends React.Component {
 
-    state = { fieldTitle: "", sesarValue: "", fieldValue: "", isGreen: false }
+    state = { isGreen: false, hasContent: false }
 
     changeColor = (e) => {
         e.preventDefault();
@@ -13,6 +13,8 @@ class FieldCard extends React.Component {
     }
 
     render() {
+
+        console.log(this.state.fieldTitle)
 
         let btnClass = classNames({
             'field_container1': this.state.isGreen,
