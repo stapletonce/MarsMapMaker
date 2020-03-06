@@ -1,6 +1,11 @@
 import React from 'react';
 import FieldCard from './FieldCard';
+import { connect } from 'react-redux';
 import './App.css';
+
+
+
+
 const CardList = (props) => {
     const fields = props.fields.map((field) => {
         return <FieldCard fieldTitle={field} fieldValue={props.fieldVal[field]} />
@@ -15,4 +20,4 @@ const CardList = (props) => {
 }
 
 
-export default CardList
+export default connect(null)(CardList);

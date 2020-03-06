@@ -1,7 +1,8 @@
 import React from 'react';
 import './App.css';
 import classNames from 'classnames';
-import { thistle } from 'color-name';
+import { connect } from 'react-redux';
+import { selectedField } from '../actions'
 
 class FieldCard extends React.Component {
 
@@ -29,8 +30,8 @@ class FieldCard extends React.Component {
         btnClass = classNames({
             'field_container1': this.state.isGreen,
             'field_container2': !this.state.isGreen,
-            'field_container1': this.props.fieldValue !== "",
-            'field_container2': this.props.fieldValue === ""
+            'field_container3': this.props.fieldValue !== "",
+            'field_container4': this.props.fieldValue === ""
 
         });
         return (
@@ -41,4 +42,4 @@ class FieldCard extends React.Component {
     };
 }
 
-export default FieldCard;
+export default connect(null)(FieldCard);
