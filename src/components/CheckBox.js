@@ -6,6 +6,7 @@ export default class CheckboxExample extends Component {
     state = { checked: this.props.isChecked }
     toggle = () => this.setState((prevState) => ({ checked: !prevState.checked }))
 
+
     render() {
         return (
             <div className="innerCheckbox">

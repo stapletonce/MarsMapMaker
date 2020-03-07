@@ -3,6 +3,7 @@ import './App.css';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox'
+import DropDown from './DropDown'
 import { selectedField } from '../actions'
 
 class FieldCard extends React.Component {
@@ -12,7 +13,6 @@ class FieldCard extends React.Component {
 
     changeColor = (e) => {
         e.preventDefault();
-        console.log(this.state.isGreen)
         this.setState({ isGreen: !this.state.isGreen })
         this.render()
     }
@@ -22,8 +22,8 @@ class FieldCard extends React.Component {
 
         let value = this.props.fieldValue;
 
-        if (value.length > 15) {
-            value = value.slice(0, 20);
+        if (value.length > 35) {
+            value = value.slice(0, 35);
             value = value + "..."
         }
 
@@ -36,14 +36,14 @@ class FieldCard extends React.Component {
 
         });
 
-        console.log(btnClass);
 
         return (
 
             <div className={btnClass}>
+                <div className="checkBox" onClick={this.changeColor.bind(this)}> <CheckboxExample isChecked={this.state.isGreen} /> </div>
                 <div className="fieldTitle">{this.props.fieldTitle}</div>
                 <div className="fieldVal" >{value}</div>
-                <div className="checkBox" onClick={this.changeColor.bind(this)}> <CheckboxExample isChecked={this.state.isGreen} /> </div>
+                <div className="dropDown"> <DropDown /> </div>
             </div>)
     };
 }
