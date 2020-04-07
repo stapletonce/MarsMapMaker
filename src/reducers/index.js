@@ -1,11 +1,19 @@
 import { combineReducers } from 'redux';
 
-const fieldSelection = (selectedField = null, action) => {
-    if (action.type === 'MAPPED_FIELD') {
-        return action
+
+
+function fieldSelection(state = {}, action) {
+    switch (action.type) {
+        case "MAPPED_VALUE":
+            return {
+                ...state,
+                random: action.payload
+            }
+        default: // need this for default case
+            return state
     }
 }
 
 export default combineReducers({
-    replaceMe: () => 'hi there'
+    fieldNames: fieldSelection
 })

@@ -1,7 +1,7 @@
-export const selectedField = (sesarField) => {
+export const selectedField = (fields) => {
 
     return {
         type: 'MAPPED_VALUE',
-        payload: sesarField
+        payload: fields
     }
 }

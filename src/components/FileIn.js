@@ -2,6 +2,7 @@ import React from 'react';
 import Papa from 'papaparse';
 import './App.css';
 import classNames from 'classnames';
+import { csvFormat } from 'd3';
 
 class FileIn extends React.Component {
 
@@ -24,6 +25,8 @@ class FileIn extends React.Component {
 
     importCSV = () => {
         const { csvfile } = this.state;
+
+
         Papa.parse(csvfile, {
             complete: this.updateData,
             header: true
@@ -35,6 +38,7 @@ class FileIn extends React.Component {
     updateData(result) {
         console.log(result)
         var data = result;
+        console.log(data)
         this.props.callbackFromParent(data);
     }
 
@@ -51,6 +55,7 @@ class FileIn extends React.Component {
                 <input
                     className="csv-input"
                     type="file"
+                    accept=".csv"
                     ref={input => {
                         this.filesInput = input;
                     }}

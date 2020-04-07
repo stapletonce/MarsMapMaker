@@ -19,8 +19,6 @@ class App extends React.Component {
         this.state = { fieldNames: [], size: 0, fieldValues: [], data: [] }; // state object, contains properties relevant to component
     }
 
-
-
     fileCallback = (datafromFile) => {
         let currentComponent = this;
         currentComponent.setState({
