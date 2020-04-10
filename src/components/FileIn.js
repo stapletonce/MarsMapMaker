@@ -2,7 +2,6 @@ import React from 'react';
 import Papa from 'papaparse';
 import './App.css';
 import classNames from 'classnames';
-import { csvFormat } from 'd3';
 
 class FileIn extends React.Component {
 
@@ -64,7 +63,7 @@ class FileIn extends React.Component {
                     onChange={this.handleChange}
                 />
                 <p />
-                <button onClick={this.importCSV}> Upload now!</button>
+                <button onClick={this.importCSV}> Import now!</button>
 
             </div>
         );
