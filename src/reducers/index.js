@@ -7,7 +7,8 @@ function fieldSelection(state = {}, action) {
         case "MAPPED_VALUE":
             return {
                 ...state,
-                random: action.payload
+                title: action.payload.sesarTitle,
+                value: action.payload.fieldValue
             }
         default: // need this for default case
             return state

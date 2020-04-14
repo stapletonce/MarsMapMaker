@@ -2,11 +2,10 @@ import React from 'react';
 import FieldCard from './FieldCard';
 import { connect } from 'react-redux';
 import './App.css';
-
+import './Toolbar';
+import Toolbar from './Toolbar';
 
 const CardList = (props) => {
-
-
 
     let typeField = (f) => {
         let numbers = /^[0-9,/.]*$/;
@@ -23,14 +22,16 @@ const CardList = (props) => {
 
         return (
             <FieldCard fieldTitle={field} fieldType={typeField(props.fieldVal[field])} fieldValue={props.fieldVal[field]} hasContent={props.fieldVal[field] !== ""} />
-
         );
     });
 
     return (
+
         <div>
             <div className="ui-card">{fields}</div>
         </div>
+
+
     );
 }
 

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox'
 import DropDown from './DropDown'
 import { selectedField } from '../actions'
-import rtl from '../../node_modules/jss-rtl'
+import FontAwesome from '../../node_modules/react-fontawesome';
 
 class FieldCard extends React.Component {
 
@@ -264,13 +264,17 @@ class FieldCard extends React.Component {
     render() {
 
 
-        let value = this.props.fieldValue;
 
+        const lengthCheckedValue = () => {
+            let value = this.props.fieldValue;
 
-        if (value.length > 35) {
-            value = value.slice(0, 35);
-            value = value + "..."
+            if (value.length > 35) {
+                value = value.slice(0, 35);
+                value = value + "..."
+            }
+            return value
         }
+
 
         let btnClass;
 
@@ -283,26 +287,37 @@ class FieldCard extends React.Component {
 
         const filterDrop = () => {
             if (this.state.isGreen === true)
-                return <div className="dropDown"><DropDown title="Select Field" fieldType={this.props.fieldType} list={this.state.sesarOptions} /> </div>
+                return <div className="dropDown"><DropDown title={this.props.fieldTitle} value={this.props.fieldValue} fieldType={this.props.fieldType} list={this.state.sesarOptions} /> </div>
             else
-                return <div className="dropDownNoData">no_data</div>
+                return <div className="dropDownNoData">---</div>
         }
 
 
+
+        const lengthCheckedMapValue = () => {
+            let value = this.props.fieldValue;
+
+            if (value.length > 35) {
+                value = value.slice(0, 35);
+                value = value + "..."
+            }
+            return value
+
+        }
 
         return (
             <div class="ui label">
                 <div className={btnClass}>
                     <object className="fieldWidget">
                         <div className="checkBox" onClick={this.changeColor.bind(this)}> <CheckboxExample isChecked={this.state.isGreen} /> </div>
-                        <body dir="rtl" className="fieldTitle">{this.props.fieldTitle}</body>
-                        <div className="fieldVal" >{"|            " + value}</div>
+                        <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                        <i class="fa fa-grip-lines-vertical"></i>
+                        <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                     </object>
                     <object className="dropDownWidget" align="right">
+                        <div className="mappedValue">{lengthCheckedMapValue()}</div>
                         {filterDrop()}
-                        <div className="mappedValue" dir="ltr">FIELDCONTENT</div>
                     </object>
-
 
                 </div>
             </div>)

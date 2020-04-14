@@ -6,18 +6,13 @@
     
 }
 
-body {
-    padding: 0px;
-    margin: 0px;
-}
 
 .fieldTitle {
     max-width: 50px;
-    padding: 0px;
-    margin: 0px;
     display: inline-block;
     font-size: 18px;
     background-color: inherit;
+    padding-left: 250px;
     padding-top: 15px;
     padding-bottom: 15px;
 }
@@ -48,6 +43,7 @@ body {
     padding-bottom: 100px;
 }
 
+
 .fileReader1 {
     display: none;
     position: fixed;
@@ -56,19 +52,17 @@ body {
     padding-bottom: 100px;
 }
 
-.fieldWidget {
-    padding-right: 0px;
-}
 
 .dropDown {
-    font-size: 8px;
+    font-size: 11px;
     display: inline-block;
     width: 200px;
     padding-right: 50px;
 }
 
+
 .dropDownNoData {
-    font-size: 8px;
+    font-size: 11px;
     display: inline-block;
     width: 200px;
     padding-right: 50px;
@@ -76,19 +70,21 @@ body {
     text-align: center;
 }
 
+
 .dropDownWidget {
-    padding-top: 5px;
     display: inline-block;
-    padding-right: 40px;
-    padeing-left: 0px;
+    padding-right: 55px;
+    padding-left: 0px;
+    padding-top: 7px;
     
 }
 
 
 .mappedValue {
-    display: inline-block;
-    padding-right: 30px;
-    padding-left: 80px;
+    display: inline;
+    padding-right: 10px;
+    color: rgb(99,99,102);
+    font-size: 18px;
 
 }
 
@@ -107,6 +103,8 @@ body {
     display: inline-block;
     height: 100%;
     padding-top: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
     padding-left: 10px;
 }
 

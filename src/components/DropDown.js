@@ -1,7 +1,7 @@
 import React from 'react'
 import 'semantic-ui-react';
 import { connect } from 'react-redux';
-import FontAwesome from '../../node_modules/react-fontawesome';
+import { selectedField } from '../actions'
 
 
 
@@ -10,23 +10,31 @@ class DropDown extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            listOpen: false,
-            headerTitle: this.props.title
+            list: this.props.list,
+            currentChosen: null,
+            headerTitle: this.props.title,
+            value: "select"
         }
+    }
+
+    onClick = () => {
+        console.log("click worked!")
     }
 
 
     render() {
 
+
+
         let filter = (f) => {
             if (f.type === this.props.fieldType)
                 return <option value="item">{f.title}</option>;
-
         }
+
 
         return (
 
-            <select class="ui search dropdown">
+            <select class="ui search dropdown" onChange={this.onClick}>
                 {this.props.list.map((field) => (
                     filter(field)
                 ))}
