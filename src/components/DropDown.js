@@ -1,45 +1,37 @@
-import React from 'react'
-import 'semantic-ui-react';
-import { connect } from 'react-redux';
-import { selectedField } from '../actions'
-
-
-
+import React from "react";
+import "semantic-ui-react";
+import { connect } from "react-redux";
+import { selectedField } from "../actions";
 class DropDown extends React.Component {
-
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             list: this.props.list,
             currentChosen: null,
             headerTitle: this.props.title,
-            value: "select"
-        }
+            value: "select",
+            selectedValue: "",
+        };
     }
-
-    onClick = () => {
-        console.log("click worked!")
+    //e is the event being passed in from select
+    handleChange(e) {
+        console.log(e.target.value);
     }
-
-
+    // dont need this method anymore
+    /*onClick = (index) => {
+      console.log(index);
+    };*/
     render() {
-
-
-
         let filter = (f) => {
             if (f.type === this.props.fieldType)
-                return <option value="item">{f.title}</option>;
-        }
-
-
+                //value = f.title needed to track the option being selected
+                return <option value={f.title}>{f.title}</option>;
+        };
         return (
-
-            <select class="ui search dropdown" onChange={this.onClick}>
-                {this.props.list.map((field) => (
-                    filter(field)
-                ))}
+            //added onChange
+            <select class="ui search dropdown" onChange={this.handleChange}>
+                {this.props.list.map((field) => filter(field))}
             </select>
-
             // <div class="ui compact menu">
             //     <div class="ui simple dropdown item">
             //         Dropdown
@@ -51,10 +43,7 @@ class DropDown extends React.Component {
             //         </div>
             //     </div>
             // </div>
-
-        )
+        );
     }
 }
-
-
-export default connect(null)(DropDown)
+export default connect(null)(DropDown);
