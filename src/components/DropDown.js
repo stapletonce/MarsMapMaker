@@ -13,10 +13,22 @@ class DropDown extends React.Component {
             selectedValue: "",
         };
     }
+
     //e is the event being passed in from select
-    handleChange(e) {
-        console.log(e.target.value);
+    handleChange() {
+        console.log(this.state.selectedValue)
     }
+
+    updateValue = e => {
+        const newValue = e.target.value
+        console.log(e.target.value)
+        this.setState({
+            selectedValue: newValue
+        })
+        this.handleChange()
+    }
+
+
     // dont need this method anymore
     /*onClick = (index) => {
       console.log(index);
@@ -29,9 +41,10 @@ class DropDown extends React.Component {
         };
         return (
             //added onChange
-            <select class="ui search dropdown" onChange={this.handleChange}>
+            <select class="ui search dropdown" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
+
             // <div class="ui compact menu">
             //     <div class="ui simple dropdown item">
             //         Dropdown
