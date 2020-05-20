@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox'
 import DropDown from './DropDown'
 import { selectedField } from '../actions'
-import FontAwesome from '../../node_modules/react-fontawesome';
 
 class FieldCard extends React.Component {
 
@@ -305,11 +304,15 @@ class FieldCard extends React.Component {
 
         }
 
-        return (
+        
+
+        if (this.props.hiding === true && this.state.isGreen === false)
+            return null
+        else if (this.props.hiding)
+           return (
             <div class="ui label">
                 <div className={btnClass}>
                     <object className="fieldWidget">
-                        <div className="checkBox" onClick={this.changeColor.bind(this)}> <CheckboxExample isChecked={this.state.isGreen} /> </div>
                         <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                         <i class="fa fa-grip-lines-vertical"></i>
                         <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
@@ -318,9 +321,27 @@ class FieldCard extends React.Component {
                         <div className="mappedValue">{lengthCheckedMapValue()}</div>
                         {filterDrop()}
                     </object>
-
                 </div>
-            </div>)
+            </div>
+           )
+        else 
+            return (
+                <div class="ui label">
+                    <div className={btnClass}>
+                        <object className="fieldWidget">
+                            <div className="checkBox" onClick={this.changeColor.bind(this)}> <CheckboxExample isChecked={this.state.isGreen} /> </div>
+                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                            <i class="fa fa-grip-lines-vertical"></i>
+                            <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
+                        </object>
+                        <object className="dropDownWidget" align="right">
+                            <div className="mappedValue">{lengthCheckedMapValue()}</div>
+                            {filterDrop()}
+                        </object>
+
+                    </div>
+                </div>
+            )
     };
 }
 const mapStateToProps = (state) => {
