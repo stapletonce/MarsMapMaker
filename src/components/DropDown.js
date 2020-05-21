@@ -1,7 +1,7 @@
 import React from "react";
 import "semantic-ui-react";
 import { connect } from "react-redux";
-import { selectedField } from "../actions";
+
 class DropDown extends React.Component {
     constructor(props) {
         super(props);

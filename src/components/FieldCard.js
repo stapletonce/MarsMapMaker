@@ -2,9 +2,9 @@ import React from 'react';
 import './App.css';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
-import CheckboxExample from './CheckBox'
+import CheckboxExample from './CheckBox';
 import DropDown from './DropDown'
-import { selectedField } from '../actions'
+
 
 class FieldCard extends React.Component {
 
@@ -347,4 +347,4 @@ class FieldCard extends React.Component {
 const mapStateToProps = (state) => {
 }
 
-export default connect(mapStateToProps, { selectedField })(FieldCard);
+export default connect(mapStateToProps)(FieldCard);
