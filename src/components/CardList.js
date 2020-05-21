@@ -3,6 +3,7 @@ import FieldCard from './FieldCard';
 import { connect } from 'react-redux';
 import './App.css';
 import './Toolbar';
+import {firstState} from '../actions/';
 import DateFormat from './DateFormat';
 import ReactModal from 'react-modal';
 
@@ -22,6 +23,8 @@ const CardList = (props) => {
         return final
     }
 
+    const objArray = []
+
     // maps through fields and creates unique field card entry for each
     //hiding: value to hide entry or not
     //fieldTitle: column attribute of an entry
@@ -30,16 +33,35 @@ const CardList = (props) => {
     //hasContent: for initial filtering of checked cards
 
     const fields = props.fields.map((field) => {
+        //create an object and add it to store
+        const storedValue = {
+            sesarTitle: "",
+            value: props.fieldVal[field],
+            id: field,
+            isDate: false,
+            isMeasurement: false
+        }
+        //console.log( "this is a meme" + storedValue.value)
+            objArray.push(storedValue)
+            //props.intialMap(storedValue)
+
 
         return (
             <FieldCard hiding={hide} fieldTitle={field} fieldType={typeField(props.fieldVal[field])} fieldValue={props.fieldVal[field]} hasContent={props.fieldVal[field] !== ""} />
         );
     });
-
+    
     //funciton to pass to modal windown
     const closeModal = () => {
         setShowModal(false);
     };
+
+    const checkStore = () => {
+        console.log("hey there ")
+        console.log(objArray)
+        console.log(props.ent)
+
+        }
 
     return (
 
@@ -48,10 +70,10 @@ const CardList = (props) => {
 
             <div class="three ui buttons">
                 <button class= "ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
-                <button class= "ui basic button" onClick={() => setShowModal(true)}> Format Date </button>
-                <button class= "ui basic button"> Help </button>
+                <button class= "ui basic button" onClick={ checkStore}> Format Date </button>
+                <button class= "ui basic button" onClick={() => props.firstState(objArray)}> Help </button>
             </div>
-            <div className="ui-card">{fields}</div>
+            <div className="ui-card" >{fields}</div>
         </div>
 
 
@@ -59,7 +81,15 @@ const CardList = (props) => {
 }
 
 const mapStateToProps = (state) => {
-}
+    return {
+        ent: state.entries
+    };
+};
 
+//const mapDispatchToProps = dispatch => {
+ //   return {
+  //      intialMap: () => dispatch({type: 'MAPPED_VALUE'})
+  //  };
+//};
 
-export default connect(mapStateToProps)(CardList);
+export default connect(mapStateToProps, { firstState })(CardList);

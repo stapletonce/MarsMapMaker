@@ -14,23 +14,26 @@ import { combineReducers } from 'redux';
 //  an instantiation of the object with the localTitle as the key
 //  a reselection or remapping of a sesar value to a local title to a different value
 //  a reselection or remapping of a sesar value to the same value (might already be handled)
-function fieldSelection(state = {entries : []}, action) {
+const reducer = (state = {entries : []}, action) => {
     
-    
+    //give inital filtering of values!!!!!!!!!!!!!!
+    //avoid infinite rendering in cardlist!!!!!!!!!!
+
     switch (action.type) {
         case "MAPPED_VALUE":
 
-            const index = this.state.entries.findIndex(((entry) => action.payload.fieldTitle === entry.fieldTitle))
+            //const index = this.state.entries.findIndex(((entry) => action.payload.fieldTitle === entry.fieldTitle))
+            //console.log(index)
+            //if (index !== -1)
+              //  return {
+                //    ...state,
+                  //  entries: [
+                    //    ...state.entries.slice(0, index), action.payload, ...state.entries.slice(index + 1)
+                    //]
+                //};
 
-            if (index !== -1)
-                return {
-                    ...state,
-                    entries: [
-                        ...state.entries.slice(0, index), action.payload, ...state.entries.slice(index + 1)
-                    ]
-                };
-
-            else
+            //else
+                //console.log(index)
                 return {...state, entries: state.entries.concat(action.payload)}
                 
         default: // need this for default case
@@ -38,6 +41,4 @@ function fieldSelection(state = {entries : []}, action) {
     }
 }
 
-export default combineReducers({
-    fieldNames: fieldSelection
-})
+export default reducer;

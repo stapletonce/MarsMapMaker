@@ -1,10 +1,6 @@
-export const selectedField = (list, field) => {
-
+export const firstState = initalArray => {
     return {
         type: 'MAPPED_VALUE',
-        payload: {
-            sesarTitle: list.title,
-            sesarValue: field.value
-        }
-    }
-}
+        payload: initalArray
+    };
+};
