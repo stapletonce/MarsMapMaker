@@ -4,3 +4,10 @@ export const firstState = initalArray => {
         payload: initalArray
     };
 };
+
+export const dropdownUpdate = dropObj => {
+    return {
+        type: 'DROPDOWN_UPDATE',
+        payload: dropObj
+    }
+}

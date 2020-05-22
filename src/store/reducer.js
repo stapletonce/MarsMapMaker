@@ -14,31 +14,40 @@ import { combineReducers } from 'redux';
 //  an instantiation of the object with the localTitle as the key
 //  a reselection or remapping of a sesar value to a local title to a different value
 //  a reselection or remapping of a sesar value to the same value (might already be handled)
-const reducer = (state = {entries : []}, action) => {
-    
-    //give inital filtering of values!!!!!!!!!!!!!!
-    //avoid infinite rendering in cardlist!!!!!!!!!!
+const reducer = (state = { entries: [] }, action) => {
 
-    switch (action.type) {
-        case "MAPPED_VALUE":
+  //give inital filtering of values!!!!!!!!!!!!!!
+  //avoid infinite rendering in cardlist!!!!!!!!!!
 
-            //const index = this.state.entries.findIndex(((entry) => action.payload.fieldTitle === entry.fieldTitle))
-            //console.log(index)
-            //if (index !== -1)
-              //  return {
-                //    ...state,
-                  //  entries: [
-                    //    ...state.entries.slice(0, index), action.payload, ...state.entries.slice(index + 1)
-                    //]
-                //};
+  switch (action.type) {
+    case "MAPPED_VALUE":
 
-            //else
-                //console.log(index)
-                return {...state, entries: state.entries.concat(action.payload)}
-                
-        default: // need this for default case
-            return state
-    }
+      console.log("it re-rendered!")
+      return { ...state, entries: state.entries.concat(action.payload) }
+
+
+    case "DROPDOWN_UPDATE":
+      let index = action.payload.id
+      return {
+        ...state,
+        entries: [
+          ...state.entries.slice(0, index),
+          {
+            sesarTitle: action.payload.sesarSelected,
+            value: action.payload.value,
+            header: action.payload.header,
+            // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
+            isDate: false,
+            isMeasurement: false
+          },
+          ...state.entries.slice(index + 1)
+        ]
+      }
+
+    default: // need this for default case
+      return state
+
+  }
 }
 
 export default reducer;
