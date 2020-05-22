@@ -25,7 +25,7 @@ const reducer = (state = { entries: [] }, action) => {
       console.log("it re-rendered!")
       return { ...state, entries: state.entries.concat(action.payload) }
 
-// this is weird
+// this is weird wowee
     case "DROPDOWN_UPDATE":
       let index = action.payload.id
       return {
