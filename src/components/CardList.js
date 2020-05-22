@@ -1,13 +1,19 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import FieldCard from './FieldCard';
 import { connect } from 'react-redux';
 import './App.css';
 import './Toolbar';
-import {firstState} from '../actions/';
+import { firstState } from '../actions/';
 import DateFormat from './DateFormat';
 import ReactModal from 'react-modal';
 
+// there is a particular relationship between checked value and available option in dropdown
+// consider formatting specs for outside of 1 to 1 version, comment fields
+// add another array in store for values that adds values that can only be used once, iterate array before updating store with new dropdown clicks
+
 const CardList = (props) => {
+
+
 
     const [hide, setHide] = useState(false);
     const [showModal, setShowModal] = useState(false)
@@ -24,6 +30,7 @@ const CardList = (props) => {
     }
 
     const objArray = []
+    let newKey = -1
 
     // maps through fields and creates unique field card entry for each
     //hiding: value to hide entry or not
@@ -33,6 +40,7 @@ const CardList = (props) => {
     //hasContent: for initial filtering of checked cards
 
     const fields = props.fields.map((field) => {
+
         //create an object and add it to store
         const storedValue = {
             sesarTitle: "",
@@ -42,36 +50,41 @@ const CardList = (props) => {
             isMeasurement: false
         }
         //console.log( "this is a meme" + storedValue.value)
-            objArray.push(storedValue)
-            //props.intialMap(storedValue)
+        objArray.push(storedValue)
+        newKey += 1
 
 
         return (
-            <FieldCard hiding={hide} fieldTitle={field} fieldType={typeField(props.fieldVal[field])} fieldValue={props.fieldVal[field]} hasContent={props.fieldVal[field] !== ""} />
+            <FieldCard hiding={hide} fieldTitle={field} id={newKey} fieldType={typeField(props.fieldVal[field])} fieldValue={props.fieldVal[field]} hasContent={props.fieldVal[field] !== ""} />
+
         );
+
+
     });
-    
+
+    useEffect(() => {
+        props.firstState(objArray)
+    }, []);
+
     //funciton to pass to modal windown
     const closeModal = () => {
         setShowModal(false);
     };
 
     const checkStore = () => {
-        console.log("hey there ")
-        console.log(objArray)
         console.log(props.ent)
 
-        }
+    }
 
     return (
 
         <div>
-            <DateFormat onClose={closeModal} appear={showModal}/>
+            <DateFormat onClose={closeModal} appear={showModal} />
 
             <div class="three ui buttons">
-                <button class= "ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
-                <button class= "ui basic button" onClick={ checkStore}> Format Date </button>
-                <button class= "ui basic button" onClick={() => props.firstState(objArray)}> Help </button>
+                <button class="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
+                <button class="ui basic button" onClick={checkStore}> Format Date </button>
+                <button class="ui basic button" onClick={checkStore}> Help </button>
             </div>
             <div className="ui-card" >{fields}</div>
         </div>
@@ -87,9 +100,9 @@ const mapStateToProps = (state) => {
 };
 
 //const mapDispatchToProps = dispatch => {
- //   return {
-  //      intialMap: () => dispatch({type: 'MAPPED_VALUE'})
-  //  };
+//   return {
+//      intialMap: () => dispatch({type: 'MAPPED_VALUE'})
+//  };
 //};
 
 export default connect(mapStateToProps, { firstState })(CardList);

@@ -1,6 +1,7 @@
 import React from "react";
 import "semantic-ui-react";
 import { connect } from "react-redux";
+import { dropdownUpdate } from "../actions/"
 
 class DropDown extends React.Component {
     constructor(props) {
@@ -16,16 +17,20 @@ class DropDown extends React.Component {
 
     //e is the event being passed in from select
     handleChange() {
-        console.log(this.state.selectedValue)
     }
 
     updateValue = e => {
         const newValue = e.target.value
-        console.log(e.target.value)
-        this.setState({
-            selectedValue: newValue
-        })
-        this.handleChange()
+        const obj = {
+            id: this.props.id,
+            sesarSelected: newValue,
+            value: this.props.value,
+            header: this.props.title
+        }
+
+        this.props.dropdownUpdate(obj)
+
+
     }
 
 
@@ -35,7 +40,7 @@ class DropDown extends React.Component {
     };*/
     render() {
         let filter = (f) => {
-            if (f.type === this.props.fieldType)
+            if (f.type === this.props.fieldType || f.type === "both")
                 //value = f.title needed to track the option being selected
                 return <option value={f.title}>{f.title}</option>;
         };
@@ -59,4 +64,12 @@ class DropDown extends React.Component {
         );
     }
 }
-export default connect(null)(DropDown);
+
+const mapStateToProps = (state) => {
+    return {
+        ent: state.entries
+    };
+};
+
+
+export default connect(mapStateToProps, { dropdownUpdate })(DropDown);

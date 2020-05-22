@@ -10,14 +10,15 @@ class FieldCard extends React.Component {
 
     state = {
         type: this.props.fieldType,
+        key: this.props.key,
         isGreen: this.props.hasContent,
         sesarOptions: [
             {
                 selected: false,
                 id: 0,
-                title: "no_data",
+                title: "",
                 key: "field",
-                type: "all",
+                type: "both",
                 message: "Name of institution",
                 format: "one2one"
             },
@@ -286,7 +287,7 @@ class FieldCard extends React.Component {
 
         const filterDrop = () => {
             if (this.state.isGreen === true)
-                return <div className="dropDown"><DropDown title={this.props.fieldTitle} value={this.props.fieldValue} fieldType={this.props.fieldType} list={this.state.sesarOptions} /> </div>
+                return <div className="dropDown"><DropDown title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} list={this.state.sesarOptions} /> </div>
             else
                 return <div className="dropDownNoData">---</div>
         }
@@ -304,27 +305,27 @@ class FieldCard extends React.Component {
 
         }
 
-        
+
 
         if (this.props.hiding === true && this.state.isGreen === false)
             return null
         else if (this.props.hiding)
-           return (
-            <div class="ui label">
-                <div className={btnClass}>
-                    <object className="fieldWidget">
-                        <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                        <i class="fa fa-grip-lines-vertical"></i>
-                        <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
-                    </object>
-                    <object className="dropDownWidget" align="right">
-                        <div className="mappedValue">{lengthCheckedMapValue()}</div>
-                        {filterDrop()}
-                    </object>
+            return (
+                <div class="ui label">
+                    <div className={btnClass}>
+                        <object className="fieldWidget">
+                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                            <i class="fa fa-grip-lines-vertical"></i>
+                            <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
+                        </object>
+                        <object className="dropDownWidget" align="right">
+                            <div className="mappedValue">{lengthCheckedMapValue()}</div>
+                            {filterDrop()}
+                        </object>
+                    </div>
                 </div>
-            </div>
-           )
-        else 
+            )
+        else
             return (
                 <div class="ui label">
                     <div className={btnClass}>
