@@ -1,3 +1,4 @@
+// initializes the redux store with the objArray from 'fields' in Cardlist.js
 export const firstState = initalArray => {
     return {
         type: 'MAPPED_VALUE',
@@ -5,6 +6,7 @@ export const firstState = initalArray => {
     };
 };
 
+// updates entries[id] in the redux store based on the option clicked
 export const dropdownUpdate = dropObj => {
     return {
         type: 'DROPDOWN_UPDATE',

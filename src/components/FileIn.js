@@ -14,17 +14,16 @@ class FileIn extends React.Component {
         this.updateData = this.updateData.bind(this);
     }
 
+    // helper method for selected CSV to read information from the file
     handleChange = event => {
         this.setState({
             csvfile: event.target.files[0]
         });
-
     };
 
-
+    // onclick helper function to parse the CSV with PapaParse 
     importCSV = () => {
         const { csvfile } = this.state;
-
 
         Papa.parse(csvfile, {
             complete: this.updateData,
@@ -34,15 +33,15 @@ class FileIn extends React.Component {
 
     };
 
+    // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
-        console.log(result)
         var data = result;
-        console.log(data)
         this.props.callbackFromParent(data);
     }
 
     render() {
 
+        // CSS flipflop for loaded or non-loaded file
         let readerClass = classNames({
             'fileReader': this.state.loaded === false,
             'fileReader1': this.state.loaded === true

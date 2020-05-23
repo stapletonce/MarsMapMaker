@@ -1,7 +1,3 @@
-import { combineReducers } from 'redux';
-//import update from 'immutability-helper';
-// might need to use this^ running into issues installing
-
 //the store will consist of an array of objects with each having the following information attached
 //string: sesarTitle
 //string: value
@@ -10,26 +6,25 @@ import { combineReducers } from 'redux';
 //boolean: isMeasurement (default false)
 // **POSSIBLE** (currently thinking if necessary) boolean: isChecked
 
-//general process
+// general process
 //  an instantiation of the object with the localTitle as the key
 //  a reselection or remapping of a sesar value to a local title to a different value
 //  a reselection or remapping of a sesar value to the same value (might already be handled)
 const reducer = (state = { entries: [] }, action) => {
 
-  //give inital filtering of values!!!!!!!!!!!!!!
-  //avoid infinite rendering in cardlist!!!!!!!!!!
-
   switch (action.type) {
-    case "MAPPED_VALUE":
 
-      console.log("it re-rendered!")
+    // MAPPED_VALUE should happen one time, it initializes the redux store array
+    case "MAPPED_VALUE":
       return { ...state, entries: state.entries.concat(action.payload) }
 
-// this is weird wowee
+    // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
     case "DROPDOWN_UPDATE":
       let index = action.payload.id
       return {
         ...state,
+
+        // replaces entries: with every object from original state, replaces specified entries[id] with new object
         entries: [
           ...state.entries.slice(0, index),
           {
@@ -44,9 +39,8 @@ const reducer = (state = { entries: [] }, action) => {
         ]
       }
 
-    default: // need this for default case
+    default:
       return state
-
   }
 }
 
