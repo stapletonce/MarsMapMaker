@@ -254,17 +254,24 @@ class FieldCard extends React.Component {
         ]
     }
 
-
-    changeColor = (e) => {
-        e.preventDefault();
+    // onClick of the checkmark, change the color of the bar between green and white
+    changeColor = () => {
         this.setState({ isGreen: !this.state.isGreen })
         this.render()
     }
 
+
     render() {
 
+        let btnClass;
 
+        // switch between CSS classes to switch between green and white
+        btnClass = classNames({
+            'field_container1': this.state.isGreen,
+            'field_container2': !this.state.isGreen
+        });
 
+        // helper function to limit length of 'fieldValue' displayed in the UI
         const lengthCheckedValue = () => {
             let value = this.props.fieldValue;
 
@@ -275,16 +282,7 @@ class FieldCard extends React.Component {
             return value
         }
 
-
-        let btnClass;
-
-        btnClass = classNames({
-            'field_container1': this.state.isGreen,
-            'field_container2': !this.state.isGreen
-
-
-        });
-
+        // helper function to display a dropdown IFF it is also green / checked!
         const filterDrop = () => {
             if (this.state.isGreen === true)
                 return <div className="dropDown"><DropDown title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} list={this.state.sesarOptions} /> </div>
@@ -292,21 +290,8 @@ class FieldCard extends React.Component {
                 return <div className="dropDownNoData">---</div>
         }
 
-
-
-        const lengthCheckedMapValue = () => {
-            let value = this.props.fieldValue;
-
-            if (value.length > 35) {
-                value = value.slice(0, 35);
-                value = value + "..."
-            }
-            return value
-
-        }
-
-
-
+        // display all fieldCards with or without data when toggle is turned 'off'
+        // display only checked fieldCards with toggle is switched 'on' 
         if (this.props.hiding === true && this.state.isGreen === false)
             return null
         else if (this.props.hiding)
@@ -319,7 +304,7 @@ class FieldCard extends React.Component {
                             <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{lengthCheckedMapValue()}</div>
+                            <div className="mappedValue">{lengthCheckedValue()}</div>
                             {filterDrop()}
                         </object>
                     </div>
@@ -330,22 +315,21 @@ class FieldCard extends React.Component {
                 <div class="ui label">
                     <div className={btnClass}>
                         <object className="fieldWidget">
-                            <div className="checkBox" onClick={this.changeColor.bind(this)}> <CheckboxExample isChecked={this.state.isGreen} /> </div>
+                            <div className="checkBox" onClick={this.changeColor.bind(this)}>
+                                <CheckboxExample isChecked={this.state.isGreen} />
+                            </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                             <i class="fa fa-grip-lines-vertical"></i>
                             <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{lengthCheckedMapValue()}</div>
+                            <div className="mappedValue">{lengthCheckedValue()}</div>
                             {filterDrop()}
                         </object>
-
                     </div>
                 </div>
             )
     };
 }
-const mapStateToProps = (state) => {
-}
 
-export default connect(mapStateToProps)(FieldCard);
+export default connect(null)(FieldCard);
