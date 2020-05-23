@@ -6,6 +6,10 @@
     
 }
 
+.greyListItem {
+    color: rgb(99,99,102)
+}
+
 
 .fieldTitle {
     max-width: 50px;
