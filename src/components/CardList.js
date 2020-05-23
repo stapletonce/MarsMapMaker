@@ -98,7 +98,7 @@ const CardList = (props) => {
 
             <div class="three ui buttons">
                 <button class="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
-                <button class="ui basic button" onClick={checkStore}> Format Date </button>
+                <button class="ui basic button" onClick={() => setShowModal(true)}> Format Date </button>
                 <button class="ui basic button" onClick={checkStore}> Help </button>
             </div>
             <div className="ui-card" >{fields}</div>
