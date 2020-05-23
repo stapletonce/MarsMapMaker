@@ -14,6 +14,7 @@ class DropDown extends React.Component {
             headerTitle: this.props.title,
             value: "select",
             selectedValue: "",
+            sesarOneToOne: ["original_archive", "current archive", "platform_name"]
         };
     }
 
@@ -30,6 +31,7 @@ class DropDown extends React.Component {
         this.props.dropdownUpdate(obj)
     }
 
+
     render() {
 
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
@@ -37,12 +39,14 @@ class DropDown extends React.Component {
 
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
             if (f.type === this.props.fieldType || f.type === "both") {
-                if (this.props.useOnce.indexOf("current archive") === this.props.id)
+                if ((this.props.useOnce.indexOf("current archive") === this.props.id))
                     return <option value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes("current archive") && f.title !== "current archive")
                     return <option value={f.title}>{f.title}</option>;
                 else if (!this.props.useOnce.includes("current archive"))
                     return <option value={f.title}>{f.title}</option>;
+
+
             }
         };
 
