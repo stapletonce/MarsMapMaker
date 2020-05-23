@@ -32,18 +32,21 @@ class DropDown extends React.Component {
     }
 
 
+
     render() {
 
+        // this array should include the hardcoded sesar titles that are to be one to one (DISCUSS WITH BOWRING WHICH THESE ARE)
+        const sesarOne2One = ["original_archive", "platform_name", "current archive"]
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
 
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
             if (f.type === this.props.fieldType || f.type === "both") {
-                if ((this.props.useOnce.indexOf("current archive") === this.props.id))
+                if (!this.props.useOnce.includes(f.title))
                     return <option value={f.title}>{f.title}</option>;
-                else if (this.props.useOnce.includes("current archive") && f.title !== "current archive")
+                else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option value={f.title}>{f.title}</option>;
-                else if (!this.props.useOnce.includes("current archive"))
+                else if (this.props.useOnce.indexOf(f.title) === this.props.id)
                     return <option value={f.title}>{f.title}</option>;
 
 
