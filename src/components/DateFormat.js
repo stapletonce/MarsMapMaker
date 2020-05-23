@@ -10,10 +10,12 @@ class DateFormat extends React.Component {
     dateFormatOption = [
         {title: "DD/MM/YYYY", value:"substring", type: "date"},
         {title: "MM/DD/YYYY", value:"substring", type: "date"},
+        {title: "YYYY/DD/MM", value:"substring", type: "date"},
+        {title: "YYYY/MM/DD", value:"substring", type: "date"},
         {title: "MMDDYYYY", value:"substring", type: "date"},
         {title: "DDMMYYYY", value:"substring", type: "date"},
         {title: "YYYYDDMM", value:"substring", type: "date"},
-        {title: "YYYYMMDD", value:"substring", type: "date"}
+        {title: "YYYYMMDD", value:"substring", type: "date"},
     ]
 render()
     {   return (
