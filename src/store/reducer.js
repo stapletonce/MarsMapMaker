@@ -10,16 +10,20 @@
 //  an instantiation of the object with the localTitle as the key
 //  a reselection or remapping of a sesar value to a local title to a different value
 //  a reselection or remapping of a sesar value to the same value (might already be handled)
-const reducer = (state = { entries: [] }, action) => {
+const reducer = (state = { entries: [], useOnce: [] }, action) => {
 
   switch (action.type) {
-
     // MAPPED_VALUE should happen one time, it initializes the redux store array
     case "MAPPED_VALUE":
-      return { ...state, entries: state.entries.concat(action.payload) }
+      return {
+        ...state,
+        entries: state.entries.concat(action.payload.objArr),
+        useOnce: state.useOnce.concat(action.payload.useOnce)
+      }
 
     // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
     case "DROPDOWN_UPDATE":
+      console.log(state.useOnce)
       let index = action.payload.id
       return {
         ...state,
@@ -36,12 +40,21 @@ const reducer = (state = { entries: [] }, action) => {
             isMeasurement: false
           },
           ...state.entries.slice(index + 1)
+        ],
+
+        useOnce: [
+          ...state.useOnce.slice(0, index),
+          action.payload.sesarSelected,
+          ...state.useOnce.slice(index + 1)
         ]
+
       }
 
     default:
       return state
+
   }
+
 }
 
 export default reducer;

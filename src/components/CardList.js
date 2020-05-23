@@ -15,6 +15,7 @@ const CardList = (props) => {
 
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
     const objArray = []
+    const useOnce = []
     let newKey = -1
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
@@ -55,6 +56,7 @@ const CardList = (props) => {
 
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
+        useOnce.push("")
         newKey += 1
 
         // create the FieldCard that you see in the UI
@@ -70,9 +72,14 @@ const CardList = (props) => {
         );
     });
 
+    let initObj = {
+        objArr: objArray,
+        useOnce: useOnce
+    }
+
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
-        props.firstState(objArray)
+        props.firstState(initObj)
     }, []);
 
     //funciton to pass to modal windown
