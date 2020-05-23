@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FieldCard from './FieldCard';
+import DropDown from './DropDown';
 import { connect } from 'react-redux';
 import './App.css';
 
@@ -76,6 +77,16 @@ const CardList = (props) => {
         objArr: objArray,
         useOnce: useOnce
     }
+    const dateFormatOption = [
+        {title: "DD/MM/YYYY", value:"substring", type: "date"},
+        {title: "MM/DD/YYYY", value:"substring", type: "date"},
+        {title: "YYYY/DD/MM", value:"substring", type: "date"},
+        {title: "YYYY/MM/DD", value:"substring", type: "date"},
+        {title: "MMDDYYYY", value:"substring", type: "date"},
+        {title: "DDMMYYYY", value:"substring", type: "date"},
+        {title: "YYYYDDMM", value:"substring", type: "date"},
+        {title: "YYYYMMDD", value:"substring", type: "date"},
+    ]
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
@@ -94,12 +105,15 @@ const CardList = (props) => {
 
     return (
         <div>
-            <DateFormat onClose={closeModal} appear={showModal} />
-
-            <div class="three ui buttons">
-                <button class="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
-                <button class="ui basic button" onClick={() => setShowModal(true)}> Format Date </button>
-                <button class="ui basic button" onClick={checkStore}> Help </button>
+            <div>
+                <div>
+                    
+                    <DropDown title={dateFormatOption} value={dateFormatOption} fieldType={"date"} list={dateFormatOption} />
+                </div>
+                <div class="two ui buttons">
+                    <button class="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
+                    <button class="ui basic button" onClick={checkStore}> Help </button>
+                </div>
             </div>
             <div className="ui-card" >{fields}</div>
         </div>
