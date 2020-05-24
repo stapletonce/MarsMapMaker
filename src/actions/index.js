@@ -12,4 +12,13 @@ export const dropdownUpdate = dropObj => {
         type: 'DROPDOWN_UPDATE',
         payload: dropObj
     }
-}
+};
+
+// adds the date format selected to the redux store
+
+export const formatDate = chosenObj => {
+    return {
+        type: 'CHOOSE_FORMAT',
+        payload: chosenObj
+    }
+};

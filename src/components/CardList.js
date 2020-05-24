@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import FieldCard from './FieldCard';
-import DropDown from './DropDown';
+import DateDropdown from './DateDropdown';
 import { connect } from 'react-redux';
 import './App.css';
 
@@ -18,6 +18,17 @@ const CardList = (props) => {
     const objArray = []
     const useOnce = []
     let newKey = -1
+    const dateFormatOption = [
+        { title: "Choose Date Format" },
+        { title: "DD/MM/YYYY", value: "substring", type: "date" },
+        { title: "MM/DD/YYYY", value: "substring", type: "date" },
+        { title: "YYYY/DD/MM", value: "substring", type: "date" },
+        { title: "YYYY/MM/DD", value: "substring", type: "date" },
+        { title: "MMDDYYYY", value: "substring", type: "date" },
+        { title: "DDMMYYYY", value: "substring", type: "date" },
+        { title: "YYYYDDMM", value: "substring", type: "date" },
+        { title: "YYYYMMDD", value: "substring", type: "date" },
+    ]
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
@@ -77,16 +88,6 @@ const CardList = (props) => {
         objArr: objArray,
         useOnce: useOnce
     }
-    const dateFormatOption = [
-        {title: "DD/MM/YYYY", value:"substring", type: "date"},
-        {title: "MM/DD/YYYY", value:"substring", type: "date"},
-        {title: "YYYY/DD/MM", value:"substring", type: "date"},
-        {title: "YYYY/MM/DD", value:"substring", type: "date"},
-        {title: "MMDDYYYY", value:"substring", type: "date"},
-        {title: "DDMMYYYY", value:"substring", type: "date"},
-        {title: "YYYYDDMM", value:"substring", type: "date"},
-        {title: "YYYYMMDD", value:"substring", type: "date"},
-    ]
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
@@ -101,28 +102,29 @@ const CardList = (props) => {
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
         console.log(props.ent)
+        console.log(props.dateFormat)
     }
 
     return (
         <div>
-            <div>
-                <div>
-                    
-                    <DropDown title={dateFormatOption} value={dateFormatOption} fieldType={"date"} list={dateFormatOption} />
+            <div class="label">
+                <div class="dropDown">
+                    <DateDropdown list={dateFormatOption} />
                 </div>
                 <div class="two ui buttons">
                     <button class="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
                     <button class="ui basic button" onClick={checkStore}> Help </button>
                 </div>
+                <div className="ui-card" >{fields}</div>
             </div>
-            <div className="ui-card" >{fields}</div>
         </div>
     );
 }
 
 const mapStateToProps = (state) => {
     return {
-        ent: state.entries
+        ent: state.entries,
+        dateFormat: state.chosenDateFormat
     };
 };
 
