@@ -18,6 +18,47 @@ class DropDown extends React.Component {
         };
     }
 
+    formatDate = (value, format) => {
+        let finalArray = ["", "", ""]
+
+        if (format === null) {
+            console.log("PLEASE SELECT A FORMAT!!!")
+            return
+        }
+        let dateSplit = value.split(/[-/]/)
+        let formatSplit = format.split(/[-/ ]/)
+        if (parseInt(dateSplit[2]) > 30) {
+            dateSplit[2] = "19" + dateSplit[2]
+        }
+        else
+            dateSplit[2] = "20" + dateSplit[2]
+
+        if (formatSplit[0] === "DD") {
+            finalArray[2] = dateSplit[0]
+            finalArray[1] = dateSplit[1]
+            finalArray[0] = dateSplit[2]
+        }
+        else if (formatSplit[0] === "MM") {
+            finalArray[1] = dateSplit[0]
+            finalArray[2] = dateSplit[1]
+            finalArray[0] = dateSplit[2]
+        }
+        else if (formatSplit[2] === "MM") {
+            finalArray[1] = dateSplit[2]
+            finalArray[0] = dateSplit[0]
+            finalArray[2] = dateSplit[1]
+        }
+        else if (formatSplit[2] === "DD") {
+            finalArray[2] = dateSplit[2]
+            finalArray[0] = dateSplit[0]
+            finalArray[1] = dateSplit[1]
+        }
+
+        let returnString = finalArray[0] + "-" + finalArray[1] + "-" + finalArray[2]
+
+        console.log(returnString)
+    }
+
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
     // updates specific object in the redux store
     updateValue = e => {
@@ -29,6 +70,10 @@ class DropDown extends React.Component {
             header: this.props.title
         }
         this.props.dropdownUpdate(obj)
+        //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
+        if (newValue === "collection_end_date" || newValue === "collection_start_date") {
+            this.formatDate(this.props.value, this.props.dateFormat)
+        }
     }
 
 
@@ -65,7 +110,8 @@ class DropDown extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
-        useOnce: state.useOnce
+        useOnce: state.useOnce,
+        dateFormat: state.chosenDateFormat
     };
 };
 
