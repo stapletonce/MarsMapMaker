@@ -20,10 +20,10 @@ const CardList = (props) => {
     let newKey = -1
     const dateFormatOption = [
         { title: "Choose Date Format" },
-        { title: "DD/MM/YYYY", value: "substring", type: "date" },
-        { title: "MM/DD/YYYY", value: "substring", type: "date" },
-        { title: "YYYY/DD/MM", value: "substring", type: "date" },
-        { title: "YYYY/MM/DD", value: "substring", type: "date" },
+        { title: "DD/MM/YYYY or DD-MM-YYYY", value: "substring", type: "date" },
+        { title: "MM/DD/YYYY or MM-DD-YYYY", value: "substring", type: "date" },
+        { title: "YYYY/DD/MM or YYYY-DD-MM", value: "substring", type: "date" },
+        { title: "YYYY/MM/DD or YYYY-MM-DD", value: "substring", type: "date" },
         { title: "MMDDYYYY", value: "substring", type: "date" },
         { title: "DDMMYYYY", value: "substring", type: "date" },
         { title: "YYYYDDMM", value: "substring", type: "date" },
