@@ -22,3 +22,10 @@ export const formatDate = chosenObj => {
         payload: chosenObj
     }
 };
+
+export const one2one = obj => {
+    return {
+        type: 'ADD_ONE_2_ONE',
+        payload: obj
+    }
+}

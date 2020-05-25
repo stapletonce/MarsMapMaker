@@ -110,6 +110,7 @@ const CardList = (props) => {
     const checkStore = () => {
         console.log(props.ent)
         console.log(props.dateFormat)
+        console.log(props.one2one)
     }
 
     return (

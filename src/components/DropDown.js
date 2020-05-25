@@ -10,16 +10,26 @@ class DropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            century: null,
             list: this.props.list,
             currentChosen: null,
             headerTitle: this.props.title,
             value: "select",
             selectedValue: "",
-            sesarOneToOne: ["original_archive", "current archive", "platform_name"]
+            sesarOneToOne: this.props.one2one
         };
     }
 
     logicHelper = (fS, fA, dS) => {
+
+        if (fS.includes("YYYY")) {
+            for (let i = 0; i < 3; i++) {
+                if (fS[i] === "YYYY" && dS[i].length !== 4) {
+                    console.log("You have selected a format that doesn't match the data provided from the file... please try another format (YYYY format for YY)")
+                    return null
+                }
+            }
+        }
 
         for (let j = 0; j < 3; j++) {
             if (dS[j].includes("/") || dS[j].includes("-")) {
@@ -79,6 +89,7 @@ class DropDown extends React.Component {
         return returnString
     }
 
+
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
@@ -94,12 +105,25 @@ class DropDown extends React.Component {
             let dateSplit = value.split(/[-/]/)
             let formatSplit = format.split(/[-/ ]/)
 
-            if (dateSplit[2].length === 2) {
+            if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
+
                 if (parseInt(dateSplit[2]) > 30) {
                     dateSplit[2] = "19" + dateSplit[2]
                 }
                 else
                     dateSplit[2] = "20" + dateSplit[2]
+
+                update = this.logicHelper(formatSplit, finalArray, dateSplit)
+
+            }
+
+            if (dateSplit[0].length === 2 && formatSplit[0] === "YY") {
+
+                if (parseInt(dateSplit[0]) > 30) {
+                    dateSplit[0] = "19" + dateSplit[0]
+                }
+                else
+                    dateSplit[0] = "20" + dateSplit[0]
 
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 
@@ -234,9 +258,7 @@ class DropDown extends React.Component {
 
 
     render() {
-
-        // this array should include the hardcoded sesar titles that are to be one to one (DISCUSS WITH BOWRING WHICH THESE ARE)
-        const sesarOne2One = ["original_archive", "platform_name", "current archive"]
+        const sesarOne2One = this.state.sesarOneToOne
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
 
@@ -267,7 +289,8 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
-        hasChosen: state.hasChosenDateFormat
+        hasChosen: state.hasChosenDateFormat,
+        num: state.numOfOneToOne
     };
 };
 
