@@ -23,7 +23,6 @@ const reducer = (state = { entries: [], useOnce: [], chosenDateFormat: null }, a
 
     // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
     case "DROPDOWN_UPDATE":
-      console.log(state.useOnce)
       let index = action.payload.id
       return {
         ...state,
