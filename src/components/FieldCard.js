@@ -3,7 +3,7 @@ import './App.css';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
-import DropDown from './DropDown'
+import DropDown from './DropDown';
 
 
 class FieldCard extends React.Component {
@@ -20,7 +20,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "both",
                 message: "Name of institution",
-                format: "one2one"
+                format: "none"
             },
             {
                 selected: false,
@@ -307,6 +307,7 @@ class FieldCard extends React.Component {
             }
 
         ]
+
     }
 
     // onClick of the checkmark, change the color of the bar between green and white
@@ -337,12 +338,24 @@ class FieldCard extends React.Component {
             return value
         }
 
+        const getOne2One = () => {
+            let arr = []
+            for (let i = 0; i < this.state.sesarOptions.length; i++) {
+                if (this.state.sesarOptions[i].format === "one2one")
+                    arr.push(this.state.sesarOptions[i].title)
+            }
+            return arr
+
+        }
+
+
         // helper function to display a dropdown IFF it is also green / checked!
         const filterDrop = () => {
             if (this.state.isGreen === true)
-                return <div className="dropDown"><DropDown title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} list={this.state.sesarOptions} /> </div>
+                return <div className="dropDown"><DropDown title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} one2one={getOne2One()} list={this.state.sesarOptions} /> </div>
             else
                 return <div className="dropDownNoData">---</div>
+
         }
 
         // display all fieldCards with or without data when toggle is turned 'off'
@@ -387,4 +400,13 @@ class FieldCard extends React.Component {
     };
 }
 
-export default connect(null)(FieldCard);
+const mapStateToProps = (state) => {
+    return {
+        ent: state.entries,
+        useOnce: state.useOnce,
+        dateFormat: state.chosenDateFormat,
+        hasChosen: state.hasChosenDateFormat
+    };
+};
+
+export default connect(mapStateToProps)(FieldCard);
