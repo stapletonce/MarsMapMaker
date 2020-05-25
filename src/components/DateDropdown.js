@@ -26,8 +26,6 @@ class DateDropdown extends React.Component {
 
 
     render() {
-
-        console.log(this.props.list)
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
             return <option value={f.title}>{f.title}</option>;

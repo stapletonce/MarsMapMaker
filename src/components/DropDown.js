@@ -42,11 +42,12 @@ class DropDown extends React.Component {
 
         let returnString = fA[0] + "-" + fA[1] + "-" + fA[2]
 
-        console.log(returnString)
+        return returnString
     }
 
-    formatDate = (value, format) => {
+    formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
+        let update;
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -66,12 +67,21 @@ class DropDown extends React.Component {
                 else
                     dateSplit[2] = "20" + dateSplit[2]
 
-                this.logicHelper(formatSplit, finalArray, dateSplit)
+                update = this.logicHelper(formatSplit, finalArray, dateSplit)
             }
             // if DD-MM-YYYY is selected instead of just DD-MM-YY
             else {
-                this.logicHelper(formatSplit, finalArray, dateSplit)
+                update = this.logicHelper(formatSplit, finalArray, dateSplit)
             }
+
+            const obj = {
+                id: this.props.id,
+                sesarSelected: title,
+                value: update,
+                header: this.props.title
+            }
+            this.props.dropdownUpdate(obj)
+
             return
         }
         // if format chosen comes in the form of yyyymmdd etc...
@@ -79,8 +89,6 @@ class DropDown extends React.Component {
         let formatSplit = format.split('')
         let newDateSplit = ["", "", ""]
         let newFormatSplit = ["", "", ""]
-        console.log(dateSplit)
-        console.log(formatSplit)
 
         if ((formatSplit[0] === "M" && formatSplit[1] === "M") || (formatSplit[0] === "M" && formatSplit[1] === "M")) {
             newDateSplit[0] = dateSplit[0] + dateSplit[1]
@@ -99,7 +107,16 @@ class DropDown extends React.Component {
             newFormatSplit[2] = formatSplit[6] + formatSplit[7]
         }
 
-        this.logicHelper(newFormatSplit, finalArray, newDateSplit)
+        update = this.logicHelper(newFormatSplit, finalArray, newDateSplit)
+
+        const obj = {
+            id: this.props.id,
+            sesarSelected: title,
+            value: update,
+            header: this.props.title
+        }
+        this.props.dropdownUpdate(obj)
+
         return
 
         // next step is to store this sesar format date into the redux store for the correct field upon choosing one of the date options
@@ -111,17 +128,22 @@ class DropDown extends React.Component {
     // updates specific object in the redux store
     updateValue = e => {
         const newValue = e.target.value
+
+        if (newValue === "collection_end_date" || newValue === "collection_start_date") {
+            this.formatDate(this.props.value, this.props.dateFormat, newValue)
+            return
+        }
+
         const obj = {
             id: this.props.id,
             sesarSelected: newValue,
             value: this.props.value,
             header: this.props.title
         }
+
         this.props.dropdownUpdate(obj)
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
-        if (newValue === "collection_end_date" || newValue === "collection_start_date") {
-            this.formatDate(this.props.value, this.props.dateFormat)
-        }
+
     }
 
 
