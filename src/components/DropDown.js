@@ -243,11 +243,11 @@ class DropDown extends React.Component {
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
             if (f.type === this.props.fieldType || f.type === "both") {
                 if (!this.props.useOnce.includes(f.title))
-                    return <option value={f.title}>{f.title}</option>;
+                    return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
-                    return <option value={f.title}>{f.title}</option>;
+                    return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.indexOf(f.title) === this.props.id)
-                    return <option value={f.title}>{f.title}</option>;
+                    return <option key={f.title} value={f.title}>{f.title}</option>;
 
 
             }
@@ -255,7 +255,7 @@ class DropDown extends React.Component {
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         return (
-            <select class="ui search dropdown" onChange={this.updateValue}>
+            <select className="ui search dropdown" prompt="Please select option" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );
