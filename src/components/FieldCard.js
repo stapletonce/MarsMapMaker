@@ -16,7 +16,7 @@ class FieldCard extends React.Component {
             {
                 selected: false,
                 id: 0,
-                title: "-",
+                title: "",
                 key: "field",
                 type: "both",
                 message: "Name of institution",
