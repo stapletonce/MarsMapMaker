@@ -208,12 +208,12 @@ class DropDown extends React.Component {
                 return
             }
 
-            //else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
-            //console.log(this.props.dateFormat)
-            //console.log(this.props.value)
-            //console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
-            //return
-            //}
+            else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") && !this.props.value.includes("-"))) {
+                console.log(this.props.dateFormat)
+                console.log(this.props.value)
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
+                return
+            }
 
             this.formatDate(this.props.value, this.props.dateFormat, newValue)
             return
