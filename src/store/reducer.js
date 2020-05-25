@@ -10,7 +10,7 @@
 //  an instantiation of the object with the localTitle as the key
 //  a reselection or remapping of a sesar value to a local title to a different value
 //  a reselection or remapping of a sesar value to the same value (might already be handled)
-const reducer = (state = { entries: [], useOnce: [], chosenDateFormat: null }, action) => {
+const reducer = (state = { entries: [], useOnce: [], chosenDateFormat: null, hasChosenDateFormat: false, hasChosenDropdownOption: false }, action) => {
 
   switch (action.type) {
     // MAPPED_VALUE should happen one time, it initializes the redux store array
@@ -26,6 +26,7 @@ const reducer = (state = { entries: [], useOnce: [], chosenDateFormat: null }, a
       let index = action.payload.id
       return {
         ...state,
+        hasChosenDropdownOption: true,
 
         // replaces entries: with every object from original state, replaces specified entries[id] with new object
         entries: [
@@ -47,12 +48,16 @@ const reducer = (state = { entries: [], useOnce: [], chosenDateFormat: null }, a
           ...state.useOnce.slice(index + 1)
         ]
 
+
+
       }
 
     case "CHOOSE_FORMAT":
       return {
         ...state,
+        hasChosenDateFormat: true,
         chosenDateFormat: action.payload.dateFormat
+
       }
 
     default:

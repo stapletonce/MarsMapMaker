@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { dropdownUpdate } from "../actions/"
 
 
+
 class DropDown extends React.Component {
 
     constructor(props) {
@@ -19,6 +20,39 @@ class DropDown extends React.Component {
     }
 
     logicHelper = (fS, fA, dS) => {
+
+        for (let j = 0; j < 3; j++) {
+            if (dS[j].includes("/") || dS[j].includes("-")) {
+                dS[j] = dS[j].toLowerCase().replace(/[/-]/g, '');
+
+                for (let i = 0; i < 3; i++) {
+                    if (fS[i].length !== dS[i].length) {
+                        console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Length error)")
+                        return null
+                    }
+                }
+            }
+        }
+
+        if (fS.includes("/") && !dS.includes("/")) {
+            console.log("Delimiter error")
+            return null
+        }
+
+        else if (fS[0] === "MM" && dS[0] > 12) {
+            console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+            return null
+        }
+
+        else if (fS[1] === "MM" && dS[1] > 12) {
+            console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+            return null
+        }
+        else if (fS[2] === "MM" && dS[2] > 12) {
+            console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+            return null
+        }
+
         if (fS[0] === "DD") {
             fA[2] = dS[0]
             fA[1] = dS[1]
@@ -68,11 +102,18 @@ class DropDown extends React.Component {
                     dateSplit[2] = "20" + dateSplit[2]
 
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
+
             }
             // if DD-MM-YYYY is selected instead of just DD-MM-YY
             else {
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
+
             }
+
+            if (update === null) {
+                return
+            }
+
 
             const obj = {
                 id: this.props.id,
@@ -84,6 +125,7 @@ class DropDown extends React.Component {
 
             return
         }
+
         // if format chosen comes in the form of yyyymmdd etc...
         let dateSplit = value.split('')
         let formatSplit = format.split('')
@@ -107,7 +149,27 @@ class DropDown extends React.Component {
             newFormatSplit[2] = formatSplit[6] + formatSplit[7]
         }
 
+        for (let i = 0; i < 3; i++) {
+            if (newFormatSplit[i].includes("D") && newFormatSplit[i].includes("M")) {
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+                return
+            }
+            else if (newFormatSplit[i].includes("D") && newFormatSplit[i].includes("Y")) {
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+                return
+            }
+            else if (newFormatSplit[i].includes("M") && newFormatSplit[i].includes("Y")) {
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+                return
+            }
+
+        }
+
         update = this.logicHelper(newFormatSplit, finalArray, newDateSplit)
+
+        if (update === null) {
+            return
+        }
 
         const obj = {
             id: this.props.id,
@@ -128,8 +190,31 @@ class DropDown extends React.Component {
     // updates specific object in the redux store
     updateValue = e => {
         const newValue = e.target.value
+        let breakOrFormat;
 
-        if (newValue === "collection_end_date" || newValue === "collection_start_date") {
+
+        if (this.props.dateFormat != null)
+            breakOrFormat = this.props.dateFormat.split(" ")
+
+        if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
+            console.log("Please choose a date format!!!")
+            return
+        }
+
+        else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && this.props.hasChosen) {
+
+            if ((breakOrFormat.includes("/") || breakOrFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
+                return
+            }
+
+            //else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
+            //console.log(this.props.dateFormat)
+            //console.log(this.props.value)
+            //console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
+            //return
+            //}
+
             this.formatDate(this.props.value, this.props.dateFormat, newValue)
             return
         }
@@ -181,7 +266,8 @@ const mapStateToProps = (state) => {
     return {
         ent: state.entries,
         useOnce: state.useOnce,
-        dateFormat: state.chosenDateFormat
+        dateFormat: state.chosenDateFormat,
+        hasChosen: state.hasChosenDateFormat
     };
 };
 

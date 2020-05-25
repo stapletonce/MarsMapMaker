@@ -17,6 +17,12 @@ class DateDropdown extends React.Component {
     // updates specific object in the redux store
     updateValue = e => {
         const newValue = e.target.value
+
+        if (this.props.hasDate && this.props.hasChosenDropdown) {
+            console.log("Please refresh page")
+            return
+        }
+
         const obj = {
             dateFormat: newValue
         }
@@ -43,7 +49,9 @@ class DateDropdown extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
-        useOnce: state.useOnce
+        useOnce: state.useOnce,
+        hasDate: state.hasChosenDateFormat,
+        hasChosenDropdown: state.hasChosenDropdownOption
     };
 };
 
