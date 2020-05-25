@@ -351,11 +351,11 @@ class FieldCard extends React.Component {
             return null
         else if (this.props.hiding)
             return (
-                <div class="ui label">
+                <div className="ui label">
                     <div className={btnClass}>
                         <object className="fieldWidget">
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <i class="fa fa-grip-lines-vertical"></i>
+                            <i className="fa fa-grip-lines-vertical"></i>
                             <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
@@ -367,14 +367,14 @@ class FieldCard extends React.Component {
             )
         else
             return (
-                <div class="ui label">
+                <div className="ui label">
                     <div className={btnClass}>
                         <object className="fieldWidget">
                             <div className="checkBox" onClick={this.changeColor.bind(this)}>
                                 <CheckboxExample isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <i class="fa fa-grip-lines-vertical"></i>
+                            <i className="fa fa-grip-lines-vertical"></i>
                             <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="dropDownWidget" align="right">

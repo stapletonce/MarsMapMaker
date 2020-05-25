@@ -32,14 +32,18 @@ class DateDropdown extends React.Component {
 
 
     render() {
+
+        let num = -1
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
-            return <option value={f.title}>{f.title}</option>;
+            num += 1
+            return <option key={num} value={f.title}>{f.title}</option>;
+
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         return (
-            <select class="ui search dropdown" onChange={this.updateValue}>
+            <select className="ui search dropdown" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );

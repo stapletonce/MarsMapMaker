@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import './App.css';
 
 import { firstState } from '../actions/';
-import DateFormat from './DateFormat';
 // import ReactModal from 'react-modal';
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -36,7 +35,8 @@ const CardList = (props) => {
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
-    const [showModal, setShowModal] = useState(false)
+    //const [setShowModal] = useState(false)
+    //showModal ^
 
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
@@ -78,6 +78,7 @@ const CardList = (props) => {
         // create the FieldCard that you see in the UI
         return (
             <FieldCard
+                key={newKey}
                 hiding={hide}
                 fieldTitle={field}
                 id={newKey}
@@ -94,14 +95,16 @@ const CardList = (props) => {
     }
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
+
+
     useEffect(() => {
         props.firstState(initObj)
     }, []);
 
     //funciton to pass to modal windown
-    const closeModal = () => {
-        setShowModal(false);
-    };
+    //const closeModal = () => {
+    //setShowModal(false);
+    //};
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
@@ -111,13 +114,13 @@ const CardList = (props) => {
 
     return (
         <div>
-            <div class="label">
-                <div class="dropDown">
+            <div className="label">
+                <div className="dropDown">
                     <DateDropdown list={dateFormatOption} />
                 </div>
-                <div class="two ui buttons">
-                    <button class="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
-                    <button class="ui basic button" onClick={checkStore}> Help </button>
+                <div className="two ui buttons">
+                    <button className="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
+                    <button className="ui basic button" onClick={checkStore}> Help </button>
                 </div>
                 <div className="ui-card" >{fields}</div>
             </div>
