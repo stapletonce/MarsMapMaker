@@ -255,8 +255,6 @@ class DropDown extends React.Component {
 
     }
 
-
-
     render() {
         const sesarOne2One = this.state.sesarOneToOne
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 

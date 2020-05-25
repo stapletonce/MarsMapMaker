@@ -58,12 +58,34 @@
 
 
 .dropDown {
-    font-size: 11px;
+    font-size: 15px;
     display: inline-block;
     width: 200px;
     padding-right: 50px;
 }
 
+.dropDown1 {
+    font-size: 15px;
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+    margin: 10px;
+    border-style: solid;
+    border-color: rgb(224,225,226);
+    border-width: 1px;
+    border-radius: 5px;
+
+}
+
+.dropDown2 {
+    font-size: 15px;
+    display: inline-block;
+    width: 200px;
+    padding: 10px;
+    margin: 10px;
+    float: right;
+
+}
 
 .dropDownNoData {
     font-size: 11px;

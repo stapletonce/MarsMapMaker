@@ -43,7 +43,7 @@ const CardList = (props) => {
     let typeField = (f) => {
 
         let type;
-        let numbers = /^[0-9,/.]*$/;
+        let numbers = /^[0-9,/.-]*$/;
 
         if (numbers.test(f) === true)
             type = "numbers";
@@ -116,10 +116,13 @@ const CardList = (props) => {
     return (
         <div>
             <div className="label">
-                <div className="dropDown">
-                    <DateDropdown list={dateFormatOption} />
+                <div className="dropDown1">
+                    <p>Formatting required***</p>
+                    <DateDropdown className="requireOption" list={dateFormatOption} />
+                    <DateDropdown className="requireOption" list={dateFormatOption} />
+                    <DateDropdown className="requireOption" list={dateFormatOption} />
                 </div>
-                <div className="two ui buttons">
+                <div className="dropDown2" >
                     <button className="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
                     <button className="ui basic button" onClick={checkStore}> Help </button>
                 </div>
