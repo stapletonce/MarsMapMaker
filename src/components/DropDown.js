@@ -18,45 +18,93 @@ class DropDown extends React.Component {
         };
     }
 
+    logicHelper = (fS, fA, dS) => {
+        if (fS[0] === "DD") {
+            fA[2] = dS[0]
+            fA[1] = dS[1]
+            fA[0] = dS[2]
+        }
+        else if (fS[0] === "MM") {
+            fA[1] = dS[0]
+            fA[2] = dS[1]
+            fA[0] = dS[2]
+        }
+        else if (fS[2] === "MM") {
+            fA[1] = dS[2]
+            fA[0] = dS[0]
+            fA[2] = dS[1]
+        }
+        else if (fS[2] === "DD") {
+            fA[2] = dS[2]
+            fA[0] = dS[0]
+            fA[1] = dS[1]
+        }
+
+        let returnString = fA[0] + "-" + fA[1] + "-" + fA[2]
+
+        console.log(returnString)
+    }
+
     formatDate = (value, format) => {
         let finalArray = ["", "", ""]
 
+        // makes sure a format has been chosen!
         if (format === null) {
             console.log("PLEASE SELECT A FORMAT!!!")
             return
         }
-        let dateSplit = value.split(/[-/]/)
-        let formatSplit = format.split(/[-/ ]/)
-        if (parseInt(dateSplit[2]) > 30) {
-            dateSplit[2] = "19" + dateSplit[2]
-        }
-        else
-            dateSplit[2] = "20" + dateSplit[2]
 
-        if (formatSplit[0] === "DD") {
-            finalArray[2] = dateSplit[0]
-            finalArray[1] = dateSplit[1]
-            finalArray[0] = dateSplit[2]
+        // if format chosen contains delimiters
+        if (format.includes("/") || format.includes("-")) {
+            let dateSplit = value.split(/[-/]/)
+            let formatSplit = format.split(/[-/ ]/)
+
+            if (dateSplit[2].length === 2) {
+                if (parseInt(dateSplit[2]) > 30) {
+                    dateSplit[2] = "19" + dateSplit[2]
+                }
+                else
+                    dateSplit[2] = "20" + dateSplit[2]
+
+                this.logicHelper(formatSplit, finalArray, dateSplit)
+            }
+            // if DD-MM-YYYY is selected instead of just DD-MM-YY
+            else {
+                this.logicHelper(formatSplit, finalArray, dateSplit)
+            }
+            return
         }
-        else if (formatSplit[0] === "MM") {
-            finalArray[1] = dateSplit[0]
-            finalArray[2] = dateSplit[1]
-            finalArray[0] = dateSplit[2]
+        // if format chosen comes in the form of yyyymmdd etc...
+        let dateSplit = value.split('')
+        let formatSplit = format.split('')
+        let newDateSplit = ["", "", ""]
+        let newFormatSplit = ["", "", ""]
+        console.log(dateSplit)
+        console.log(formatSplit)
+
+        if ((formatSplit[0] === "M" && formatSplit[1] === "M") || (formatSplit[0] === "M" && formatSplit[1] === "M")) {
+            newDateSplit[0] = dateSplit[0] + dateSplit[1]
+            newFormatSplit[0] = formatSplit[0] + formatSplit[1]
+            newDateSplit[1] = dateSplit[2] + dateSplit[3]
+            newFormatSplit[1] = formatSplit[2] + formatSplit[3]
+            newDateSplit[2] = dateSplit[4] + dateSplit[5] + formatSplit[6] + formatSplit[7]
+            newFormatSplit[2] = formatSplit[4] + formatSplit[5] + formatSplit[6] + formatSplit[7]
         }
-        else if (formatSplit[2] === "MM") {
-            finalArray[1] = dateSplit[2]
-            finalArray[0] = dateSplit[0]
-            finalArray[2] = dateSplit[1]
-        }
-        else if (formatSplit[2] === "DD") {
-            finalArray[2] = dateSplit[2]
-            finalArray[0] = dateSplit[0]
-            finalArray[1] = dateSplit[1]
+        else {
+            newDateSplit[0] = dateSplit[0] + dateSplit[1] + dateSplit[2] + dateSplit[3]
+            newFormatSplit[0] = formatSplit[0] + formatSplit[1] + formatSplit[2] + formatSplit[3]
+            newDateSplit[1] = dateSplit[4] + dateSplit[5]
+            newFormatSplit[1] = formatSplit[4] + formatSplit[5]
+            newDateSplit[2] = dateSplit[6] + dateSplit[7]
+            newFormatSplit[2] = formatSplit[6] + formatSplit[7]
         }
 
-        let returnString = finalArray[0] + "-" + finalArray[1] + "-" + finalArray[2]
+        this.logicHelper(newFormatSplit, finalArray, newDateSplit)
+        return
 
-        console.log(returnString)
+        // next step is to store this sesar format date into the redux store for the correct field upon choosing one of the date options
+        // also, there should be some robust error handling that checks the value to make sure it even qualifies as a date
+        // also to think further on that, check if the users value matches their format selection, if not send an error
     }
 
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
