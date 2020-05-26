@@ -1,5 +1,6 @@
 .alignLeft{
-    display: inline-block;
+    
+    position: relative;
     padding-right: 55px;
     padding-left: 0px;
     padding-top: 7px;
