@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
-
+import FormatDropdown from './FormatDropdown';
 
 class FieldCard extends React.Component {
 
@@ -374,6 +374,8 @@ class FieldCard extends React.Component {
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">{lengthCheckedValue()}</div>
                             {filterDrop()}
+                            {(this.props.fieldType === "numbers") ?
+                            <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <object> </object>}
                         </object>
                     </div>
                 </div>
@@ -393,7 +395,12 @@ class FieldCard extends React.Component {
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">{lengthCheckedValue()}</div>
                             {filterDrop()}
+                            {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
+                            <object className="alignLeft">
+                            <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <object className="alignleft"> </object>}
+                            
                         </object>
+                        
                     </div>
                 </div>
             )
