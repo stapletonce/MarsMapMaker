@@ -21,11 +21,13 @@ class DropDown extends React.Component {
         };
     }
 
+
     logicHelper = (fS, fA, dS) => {
 
         if (fS.includes("YYYY")) {
             for (let i = 0; i < 3; i++) {
                 if (fS[i] === "YYYY" && dS[i].length !== 4) {
+
                     console.log("You have selected a format that doesn't match the data provided from the file... please try another format (YYYY format for YY)")
                     return null
                 }
@@ -38,6 +40,7 @@ class DropDown extends React.Component {
 
                 for (let i = 0; i < 3; i++) {
                     if (fS[i].length !== dS[i].length) {
+
                         console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Length error)")
                         return null
                     }
@@ -46,20 +49,24 @@ class DropDown extends React.Component {
         }
 
         if (fS.includes("/") && !dS.includes("/")) {
+
             console.log("Delimiter error")
             return null
         }
 
         else if (fS[0] === "MM" && dS[0] > 12) {
+
             console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
             return null
         }
 
         else if (fS[1] === "MM" && dS[1] > 12) {
+
             console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
             return null
         }
         else if (fS[2] === "MM" && dS[2] > 12) {
+
             console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
             return null
         }
@@ -97,6 +104,7 @@ class DropDown extends React.Component {
 
         // makes sure a format has been chosen!
         if (format === null) {
+
             console.log("PLEASE SELECT A FORMAT!!!")
             return
         }
@@ -108,6 +116,7 @@ class DropDown extends React.Component {
 
 
             if (!this.props.hasChosenCentury) {
+
                 console.log("You have not selected a century!")
                 return
             }
@@ -115,7 +124,7 @@ class DropDown extends React.Component {
 
 
             else if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
-                console.log(this.props.century)
+
                 if (this.props.century === "2000") {
                     dateSplit[2] = "20" + dateSplit[2]
                 }
@@ -184,14 +193,17 @@ class DropDown extends React.Component {
 
         for (let i = 0; i < 3; i++) {
             if (newFormatSplit[i].includes("D") && newFormatSplit[i].includes("M")) {
+
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
                 return
             }
             else if (newFormatSplit[i].includes("D") && newFormatSplit[i].includes("Y")) {
+
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
                 return
             }
             else if (newFormatSplit[i].includes("M") && newFormatSplit[i].includes("Y")) {
+
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
                 return
             }
@@ -231,6 +243,7 @@ class DropDown extends React.Component {
             breakOrFormat = this.props.dateFormat.split(" ")
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
+
             console.log("Please choose a date format!!!")
             return
         }
@@ -238,6 +251,7 @@ class DropDown extends React.Component {
         else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && this.props.hasChosen) {
 
             if ((breakOrFormat.includes("/") || breakOrFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
+
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
                 return
             }

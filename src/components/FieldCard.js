@@ -10,6 +10,7 @@ import { removeContent } from '../actions';
 class FieldCard extends React.Component {
 
     state = {
+        resetDropDown: false,
         type: this.props.fieldType,
         key: this.props.key,
         isGreen: this.props.hasContent,
@@ -309,6 +310,7 @@ class FieldCard extends React.Component {
 
         ]
 
+
     }
 
     // onClick of the checkmark, change the color of the bar between green and white
@@ -324,6 +326,10 @@ class FieldCard extends React.Component {
         this.render()
     }
 
+    fileCallback = (currentComponent) => {
+        console.log("it happened!")
+        currentComponent.setState({ resetDropDown: !this.state.resetDropDown })
+    }
 
     render() {
 
@@ -357,14 +363,17 @@ class FieldCard extends React.Component {
         }
 
 
+
         // helper function to display a dropdown IFF it is also green / checked!
         const filterDrop = () => {
             if (this.state.isGreen === true)
-                return <div className="dropDown"><DropDown title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} one2one={getOne2One()} list={this.state.sesarOptions} /> </div>
+                return <div className="dropDown"><DropDown callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} one2one={getOne2One()} list={this.state.sesarOptions} /> </div>
             else
                 return <div className="dropDownNoData">---</div>
 
         }
+
+
 
         // display all fieldCards with or without data when toggle is turned 'off'
         // display only checked fieldCards with toggle is switched 'on' 

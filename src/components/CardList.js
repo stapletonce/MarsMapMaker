@@ -113,6 +113,7 @@ const CardList = (props) => {
         console.log(props.ent)
     }
 
+
     return (
         <div>
             <div className="label">
