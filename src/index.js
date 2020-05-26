@@ -5,7 +5,6 @@ import { createStore } from 'redux';
 import App from './components/App';
 import reducer from './store/reducer';
 
-console.log("hello world")
 
 
 ReactDOM.render(
