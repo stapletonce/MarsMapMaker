@@ -29,3 +29,10 @@ export const one2one = obj => {
         payload: obj
     }
 }
+
+export const century = obj => {
+    return {
+        type: 'CENTURY',
+        payload: obj
+    }
+}
