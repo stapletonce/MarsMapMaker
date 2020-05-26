@@ -392,7 +392,7 @@ class FieldCard extends React.Component {
                             <div className="mappedValue">{lengthCheckedValue()}</div>
                             {filterDrop()}
                             {(this.props.fieldType === "numbers") ?
-                                <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <object> </object>}
+                                <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <div className="padRight"> </div>}
                         </object>
                     </div>
                 </div>
@@ -417,7 +417,7 @@ class FieldCard extends React.Component {
                             {filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <object className="alignleft"> </object>}
+                                    <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
 
                         </object>
 
