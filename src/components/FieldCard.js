@@ -375,7 +375,6 @@ class FieldCard extends React.Component {
                     <div className={btnClass}>
                         <object className="fieldWidget">
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <i className="fa fa-grip-lines-vertical"></i>
                             <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
@@ -394,7 +393,6 @@ class FieldCard extends React.Component {
                                 <CheckboxExample isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <i className="fa fa-grip-lines-vertical"></i>
                             <div className="fieldVal" >{"|        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
