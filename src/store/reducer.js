@@ -79,6 +79,25 @@ const reducer = (state = { entries: [], useOnce: [], centuryChosen: false, sesar
         century: action.payload.chosenCentury
       }
 
+    case "REMOVE_SELECTION":
+      let i = action.payload.id
+
+      return {
+        ...state,
+        entries: [
+          ...state.entries.slice(0, i),
+          {
+            sesarTitle: "",
+            value: action.payload.value,
+            header: action.payload.header,
+            // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
+            isDate: false,
+            isMeasurement: false
+          },
+          ...state.entries.slice(i + 1)
+        ]
+      }
+
     default:
       return state
 

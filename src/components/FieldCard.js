@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
+import { removeContent } from '../actions';
 
 
 class FieldCard extends React.Component {
@@ -312,6 +313,12 @@ class FieldCard extends React.Component {
 
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
+        const obj = {
+            value: this.props.fieldValue,
+            header: this.props.fieldTitle,
+            id: this.props.id
+        }
+        this.props.removeContent(obj)
         this.setState({ isGreen: !this.state.isGreen })
         this.render()
     }
@@ -409,4 +416,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(FieldCard);
+export default connect(mapStateToProps, { removeContent })(FieldCard);
