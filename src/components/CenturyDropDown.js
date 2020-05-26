@@ -1,15 +1,16 @@
 import React from "react";
 import "semantic-ui-react";
 import { connect } from "react-redux";
-import { formatDate } from "../actions/"
+
+import { century } from "../actions/"
 
 
-class DateDropdown extends React.Component {
+class CenturyDropDown extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            currentChosen: null
+            cent: ["", "1900", "2000"]
         };
     }
 
@@ -18,15 +19,12 @@ class DateDropdown extends React.Component {
     updateValue = e => {
         const newValue = e.target.value
 
-        if (this.props.hasDate && this.props.hasChosenDropdown) {
-            console.log("Please refresh page")
-            return
+        const obj = {
+            chosenCentury: newValue
         }
 
-        const obj = {
-            dateFormat: newValue
-        }
-        this.props.formatDate(obj)
+        this.props.century(obj)
+
     }
 
 
@@ -38,15 +36,15 @@ class DateDropdown extends React.Component {
         let filter = (f) => {
             num += 1
             if (num === 0)
-                return <option key={num} value="Select Date Format" disabled selected hidden>Select Date Format</option>;
+                return <option key={num} value="Select Dating Century" disabled selected hidden>Select Century </option>;
             else
-                return <option key={num} value={f.title}>{f.title}</option>;
+                return <option key={num} value={f}>{f}</option>;
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         return (
             <select className="ui search dropdown" onChange={this.updateValue}>
-                {this.props.list.map((field) => filter(field))}
+                {this.state.cent.map((field) => filter(field))}
             </select>
         );
     }
@@ -57,9 +55,11 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         useOnce: state.useOnce,
         hasDate: state.hasChosenDateFormat,
-        hasChosenDropdown: state.hasChosenDropdownOption
+        hasChosenDropdown: state.hasChosenDropdownOption,
+        hasChosenCentury: state.centuryChosen,
+        century: state.century
     };
 };
 
 
-export default connect(mapStateToProps, { formatDate })(DateDropdown);
+export default connect(mapStateToProps, { century })(CenturyDropDown);

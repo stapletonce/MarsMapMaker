@@ -105,25 +105,33 @@ class DropDown extends React.Component {
             let dateSplit = value.split(/[-/]/)
             let formatSplit = format.split(/[-/ ]/)
 
-            if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
 
-                if (parseInt(dateSplit[2]) > 30) {
-                    dateSplit[2] = "19" + dateSplit[2]
+            if (!this.props.hasChosenCentury) {
+                console.log("You have not selected a century!")
+                return
+            }
+
+
+
+            else if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
+                console.log(this.props.century)
+                if (this.props.century === "2000") {
+                    dateSplit[2] = "20" + dateSplit[2]
                 }
                 else
-                    dateSplit[2] = "20" + dateSplit[2]
+                    dateSplit[2] = "19" + dateSplit[2]
 
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 
             }
 
-            if (dateSplit[0].length === 2 && formatSplit[0] === "YY") {
-
-                if (parseInt(dateSplit[0]) > 30) {
-                    dateSplit[0] = "19" + dateSplit[0]
+            else if (dateSplit[0].length === 2 && formatSplit[0] === "YY") {
+                console.log(this.props.century)
+                if (this.props.century === "2000") {
+                    dateSplit[0] = "20" + dateSplit[0]
                 }
                 else
-                    dateSplit[0] = "20" + dateSplit[0]
+                    dateSplit[0] = "19" + dateSplit[0]
 
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 
@@ -233,8 +241,7 @@ class DropDown extends React.Component {
             }
 
             else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") && !this.props.value.includes("-"))) {
-                console.log(this.props.dateFormat)
-                console.log(this.props.value)
+
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
                 return
             }
@@ -257,8 +264,12 @@ class DropDown extends React.Component {
 
     render() {
         const sesarOne2One = this.state.sesarOneToOne
+        let num = -1
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
+            num += 1
+            if (num === 0)
+                return <option key={f.title} value="Sesar Selection" disabled selected hidden>Sesar Selection</option>;
 
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
             if (f.type === this.props.fieldType || f.type === "both") {
@@ -288,7 +299,9 @@ const mapStateToProps = (state) => {
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
-        num: state.numOfOneToOne
+        num: state.numOfOneToOne,
+        hasChosenCentury: state.centuryChosen,
+        century: state.century
     };
 };
 

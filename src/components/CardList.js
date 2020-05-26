@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FieldCard from './FieldCard';
 import DateDropdown from './DateDropdown';
+import CenturyDropDown from './CenturyDropDown'
 import { connect } from 'react-redux';
 import './App.css';
 
@@ -18,7 +19,7 @@ const CardList = (props) => {
     const useOnce = []
     let newKey = -1
     const dateFormatOption = [
-        { title: "" },
+        { title: "Select Date Format" },
         { title: "DD/MM/YY or DD-MM-YY", value: "substring", type: "date" },
         { title: "MM/DD/YY or MM-DD-YY", value: "substring", type: "date" },
         { title: "YY/DD/MM or YY-DD-MM", value: "substring", type: "date" },
@@ -119,7 +120,7 @@ const CardList = (props) => {
                 <div className="dropDown1">
                     <p>Formatting required***</p>
                     <DateDropdown className="requireOption" list={dateFormatOption} />
-                    <DateDropdown className="requireOption" list={dateFormatOption} />
+                    <CenturyDropDown className="requireOption" />
                     <DateDropdown className="requireOption" list={dateFormatOption} />
                 </div>
                 <div className="dropDown2" >
