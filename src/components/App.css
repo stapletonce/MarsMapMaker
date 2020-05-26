@@ -1,3 +1,10 @@
+.alignLeft{
+    display: inline-block;
+    padding-right: 55px;
+    padding-left: 0px;
+    padding-top: 7px;
+}
+
 .fieldVal {
     color: rgb(99,99,102);
     display: inline-block;
