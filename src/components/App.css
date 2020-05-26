@@ -3,8 +3,10 @@
     display: inline-block;
     padding-left: 5px;
     font-size: 18px;
+    width: 30%;
     
 }
+
 
 .greyListItem {
     color: rgb(99,99,102)
@@ -57,22 +59,18 @@
 }
 
 .arrow{
-    font-size: 2em;
+    font-size: 3em;
 }
 
 .fa{
-        font-size: 20em;
-        width: 10%;
-        margin: 0px auto;
-        text-align:center;
-        display:inline-block;
+    position: relative;
+    z-index: 15;
+    top: 50%;
 }
-.fa-long-arrow-right{
-        font-size: 20em;
-        width: 10%;
-        margin: 0px auto;
-        text-align:center;
-        display: inline-block;
+.fa-angle-double-right{
+    position: relative;
+    z-index: 15;
+    top: 50%;
 }
 
 

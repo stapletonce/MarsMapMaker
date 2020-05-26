@@ -378,9 +378,6 @@ class FieldCard extends React.Component {
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                             <div className="fieldVal" >{":        " + lengthCheckedValue()}</div>
                         </object>
-                        <object>
-                            <i className="fa fa-trash"></i>
-                        </object>
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">{lengthCheckedValue()}</div>
                             {filterDrop()}
@@ -400,7 +397,7 @@ class FieldCard extends React.Component {
                             <div className="fieldVal" >{":        " + lengthCheckedValue()}</div>
                         </object>
                         <object className="arrow">
-                            <i className="fa fa-long-arrow-right"></i>
+                            <i class="fa fa-angle-double-right"></i>
                         </object>
 
                         <object className="dropDownWidget" align="right">
