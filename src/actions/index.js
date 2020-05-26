@@ -36,3 +36,10 @@ export const century = obj => {
         payload: obj
     }
 }
+
+export const removeContent = obj => {
+    return {
+        type: "REMOVE_SELECTION",
+        payload: obj
+    }
+}

@@ -11,8 +11,10 @@
     display: inline-block;
     padding-left: 5px;
     font-size: 18px;
+    width: 30%;
     
 }
+
 
 .greyListItem {
     color: rgb(99,99,102)
@@ -20,11 +22,11 @@
 
 
 .fieldTitle {
-    max-width: 50px;
+    max-width: 0px;
     display: inline-block;
     font-size: 18px;
     background-color: inherit;
-    padding-left: 250px;
+    padding-left: 225px;
     padding-top: 15px;
     padding-bottom: 15px;
 }
@@ -62,6 +64,21 @@
     top: 5%;
     left: 40%;
     padding-bottom: 100px;
+}
+
+.arrow{
+    font-size: 3em;
+}
+
+.fa{
+    position: relative;
+    z-index: 15;
+    top: 50%;
+}
+.fa-angle-double-right{
+    position: relative;
+    z-index: 15;
+    top: 50%;
 }
 
 

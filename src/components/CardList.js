@@ -65,6 +65,7 @@ const CardList = (props) => {
         //create an object and add it to store
         const storedValue = {
             sesarTitle: "",
+            oldValue: props.fieldVal[field],
             value: props.fieldVal[field],
             id: field,
             isDate: false,
@@ -110,9 +111,8 @@ const CardList = (props) => {
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
         console.log(props.ent)
-        console.log(props.dateFormat)
-        console.log(props.one2one)
     }
+
 
     return (
         <div>
