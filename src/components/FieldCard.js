@@ -314,6 +314,7 @@ class FieldCard extends React.Component {
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
         const obj = {
+            oldValue: this.props.fieldValue,
             value: this.props.fieldValue,
             header: this.props.fieldTitle,
             id: this.props.id

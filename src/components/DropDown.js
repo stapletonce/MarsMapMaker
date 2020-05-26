@@ -85,7 +85,7 @@ class DropDown extends React.Component {
             fA[1] = dS[1]
         }
 
-        let returnString = fA[0] + "-" + fA[1] + "-" + fA[2]
+        let returnString = fA[0] + "-" + fA[1] + "-" + fA[2] + " 00:00:00"
 
         return returnString
     }
@@ -127,7 +127,6 @@ class DropDown extends React.Component {
             }
 
             else if (dateSplit[0].length === 2 && formatSplit[0] === "YY") {
-                console.log(this.props.century)
                 if (this.props.century === "2000") {
                     dateSplit[0] = "20" + dateSplit[0]
                 }
@@ -151,6 +150,7 @@ class DropDown extends React.Component {
             const obj = {
                 id: this.props.id,
                 sesarSelected: title,
+                oldValue: this.props.value,
                 value: update,
                 header: this.props.title
             }
@@ -207,6 +207,7 @@ class DropDown extends React.Component {
         const obj = {
             id: this.props.id,
             sesarSelected: title,
+            oldValue: this.props.value,
             value: update,
             header: this.props.title
         }

@@ -37,6 +37,7 @@ const reducer = (state = { entries: [], useOnce: [], centuryChosen: false, sesar
           ...state.entries.slice(0, index),
           {
             sesarTitle: action.payload.sesarSelected,
+            oldValue: action.payload.oldValue,
             value: action.payload.value,
             header: action.payload.header,
             // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
@@ -88,6 +89,7 @@ const reducer = (state = { entries: [], useOnce: [], centuryChosen: false, sesar
           ...state.entries.slice(0, i),
           {
             sesarTitle: "",
+            oldValue: action.payload.oldValue,
             value: action.payload.value,
             header: action.payload.header,
             // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
