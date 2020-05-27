@@ -7,6 +7,7 @@
     
 }
 
+
 .padRight {
     padding-right: 98px; 
     display: inline-block;
@@ -66,6 +67,10 @@
     font-size: 3em;
 }
 
+.arrowInfo{
+    font-size: 18px;
+}
+
 .fa{
     position: relative;
     z-index: 15;
@@ -80,6 +85,13 @@
 
 .dropDown {
     font-size: 15px;
+    display: inline-block;
+    width: 200px;
+    padding-right: 50px;
+}
+
+.dropDownInfo {
+    font-size: 18px;
     display: inline-block;
     width: 200px;
     padding-right: 50px;
@@ -129,7 +141,8 @@
 
 
 .mappedValue {
-    display: inline;
+    padding-top: .5em;
+    display: inline-block;
     padding-right: 10px;
     color: rgb(99,99,102);
     font-size: 18px;
@@ -147,6 +160,28 @@
     display: inline-block;
 }
 
+.uiInfo {
+    background-color: rgb(224,225,226);
+    padding: 0px;
+    width: 100%;
+    display: inline-block;
+    border-top: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 5px;
+
+}
+.labelInfo {
+    background-color: rgb(224,225,226);
+    width: 100%;
+    margin: 0px;
+    display: inline-block;
+    border-top: solid;
+    border-color: black;
+    border-width: 1px;
+    border-radius: 5px;
+}
+
 .checkBox {
     display: inline-block;
     height: 100%;
@@ -154,6 +189,16 @@
     padding-bottom: 0px;
     margin: 0px;
     padding-left: 10px;
+}
+
+.checkBoxInfo {
+    display: inline-block;
+    height: 100%;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+    padding-left: 10px;
+    font-size: 18px;
 }
 
 .checkBox > .innerCheckbox {
