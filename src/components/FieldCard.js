@@ -381,7 +381,7 @@ class FieldCard extends React.Component {
 
         setTimeout(() => {
             this.setState({ isGreen: true });
-        }, 100);
+        }, 10);
     };
 
 
@@ -429,7 +429,6 @@ class FieldCard extends React.Component {
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
                                     <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
-
                         </object>
 
                     </div>

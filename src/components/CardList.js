@@ -127,6 +127,32 @@ const CardList = (props) => {
                     <button className="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
                     <button className="ui basic button" onClick={checkStore}> Help </button>
                 </div>
+
+
+                <div className="uiInfo labelInfo">
+                    <div>
+                        <object className="fieldWidget">
+                            <div className="checkBoxInfo">
+                                Use
+                            </div>
+                            <div dir="rtl" className="fieldTitle">:Header</div>
+                            <div className="fieldVal" > Content</div>
+                        </object>
+                        <object className="arrowInfo">
+                            Maps To
+                        </object>
+
+                        <object className="dropDownWidget" align="right">
+                            <div className="mappedValue">Mapped Content</div>
+                            <div className="dropDownInfo"><b>[</b>Mapped Header<b>]</b></div>
+                            {(true) ?
+                                <object className="mappedValue">
+                                    Type </object> : <div className="padRight"> Type </div>}
+                        </object>
+
+                    </div>
+                </div>
+
                 <div className="ui-card" >{fields}</div>
             </div>
         </div>
