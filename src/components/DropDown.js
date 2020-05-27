@@ -165,7 +165,7 @@ class DropDown extends React.Component {
             }
             this.props.dropdownUpdate(obj)
 
-            return
+            return update
         }
 
         // if format chosen comes in the form of yyyymmdd etc...
@@ -212,7 +212,7 @@ class DropDown extends React.Component {
 
         update = this.logicHelper(newFormatSplit, finalArray, newDateSplit)
 
-        if (update === null) {
+        if (update === null || update === undefined) {
             return
         }
 
@@ -225,7 +225,9 @@ class DropDown extends React.Component {
         }
         this.props.dropdownUpdate(obj)
 
-        return
+
+
+        return update
 
         // next step is to store this sesar format date into the redux store for the correct field upon choosing one of the date options
         // also, there should be some robust error handling that checks the value to make sure it even qualifies as a date
@@ -262,7 +264,10 @@ class DropDown extends React.Component {
                 return
             }
 
-            this.formatDate(this.props.value, this.props.dateFormat, newValue)
+            let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
+
+            if (update !== undefined)
+                this.props.callback(update)
             return
         }
 
@@ -274,6 +279,9 @@ class DropDown extends React.Component {
         }
 
         this.props.dropdownUpdate(obj)
+
+        if (this.props.value !== undefined)
+            this.props.callback(this.props.value)
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
 
     }

@@ -12,6 +12,7 @@ class FieldCard extends React.Component {
 
     state = {
         resetDropDown: false,
+        updatedValue: this.props.fieldValue,
         type: this.props.fieldType,
         key: this.props.key,
         isGreen: this.props.hasContent,
@@ -327,9 +328,10 @@ class FieldCard extends React.Component {
         this.render()
     }
 
-    fileCallback = (currentComponent) => {
-        console.log("it happened!")
-        currentComponent.setState({ resetDropDown: !this.state.resetDropDown })
+    fileCallback = (data) => {
+        let currentComponent = this
+        currentComponent.setState({ updatedValue: data })
+
     }
 
     render() {
@@ -343,8 +345,8 @@ class FieldCard extends React.Component {
         });
 
         // helper function to limit length of 'fieldValue' displayed in the UI
-        const lengthCheckedValue = () => {
-            let value = this.props.fieldValue;
+        const lengthCheckedValue = (fieldVal) => {
+            let value = fieldVal;
 
             if (value.length > 35) {
                 value = value.slice(0, 35);
@@ -386,10 +388,10 @@ class FieldCard extends React.Component {
                     <div className={btnClass}>
                         <object className="fieldWidget">
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + lengthCheckedValue()}</div>
+                            <div className="fieldVal" >{":        " + lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{lengthCheckedValue()}</div>
+                            <div className="mappedValue">{lengthCheckedValue(this.state.updatedValue)}</div>
                             {filterDrop()}
                             {(this.props.fieldType === "numbers") ?
                                 <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <div className="padRight"> </div>}
@@ -406,14 +408,14 @@ class FieldCard extends React.Component {
                                 <CheckboxExample isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + lengthCheckedValue()}</div>
+                            <div className="fieldVal" >{":        " + lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="arrow">
                             <i class="fa fa-angle-double-right"></i>
                         </object>
 
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{lengthCheckedValue()}</div>
+                            <div className="mappedValue">{lengthCheckedValue(this.state.updatedValue)}</div>
                             {filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
