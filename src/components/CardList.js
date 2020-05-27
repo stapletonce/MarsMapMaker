@@ -111,7 +111,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.ent)
+        console.log(props.multi)
     }
 
 
@@ -165,6 +165,7 @@ const CardList = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        multi: state.multiValues,
         ent: state.entries,
         dateFormat: state.chosenDateFormat
     };

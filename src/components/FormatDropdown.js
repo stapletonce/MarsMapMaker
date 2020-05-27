@@ -14,7 +14,8 @@ class FormatDropdown extends React.Component{
     render(){
 
         return (
-            <select  placeholder="choose value"  onChange={this.updateValue}>
+            <select  onChange={this.updateValue}>
+                <option value={"choose data format"} disabled selected hidden>format type</option>
                 <option value={"string"}> string </option>
                 <option value={"date"}> date </option>
                 <option value={"measurement"}> measurement</option>                

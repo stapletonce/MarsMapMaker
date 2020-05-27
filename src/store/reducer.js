@@ -14,6 +14,13 @@ const reducer =
   (state = 
     { entries: [], 
       useOnce: [],
+      multiValues: [
+        { id: "sample_comment",
+          concatValues: []},
+        { id: "description",
+          concatValues: []},
+        { id: "field_name",
+          concatValues: []}],
       centuryChosen: false, 
       sesarOne2One: [], 
       numOfOneToOne: 0, 
@@ -90,6 +97,17 @@ const reducer =
         century: action.payload.chosenCentury
       }
 
+    case "MULTIVALUE_ADD":
+      let indd = action.payload.index  
+    
+        return { ...state, 
+          multiValues : [...state.multiValues.slice(0, indd),{
+            id: action.payload.ident,
+            concatValues: [...state.multiValues[indd].concatValues.concat(action.payload)]},
+          ...state.multiValues.slice(indd + 1) 
+          ]
+         
+        }
     case "REMOVE_SELECTION":
       let i = action.payload.id
 
