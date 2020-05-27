@@ -26,7 +26,7 @@ export const formatDate = chosenObj => {
 export const multiValueCreate = keyPairObj => {
     return {
         type: "MULTIVALUE_ADD",
-        payload: keyPairObj
+        payload: keyPairObj,
     }
 }
 
