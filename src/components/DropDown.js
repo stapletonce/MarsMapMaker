@@ -27,7 +27,8 @@ class DropDown extends React.Component {
         if (fS.includes("YYYY")) {
             for (let i = 0; i < 3; i++) {
                 if (fS[i] === "YYYY" && dS[i].length !== 4) {
-
+                    this.props.refresh()
+                    alert("YYYY instead of YY error")
                     console.log("You have selected a format that doesn't match the data provided from the file... please try another format (YYYY format for YY)")
                     return null
                 }
@@ -40,7 +41,8 @@ class DropDown extends React.Component {
 
                 for (let i = 0; i < 3; i++) {
                     if (fS[i].length !== dS[i].length) {
-
+                        this.props.refresh()
+                        alert("Length error")
                         console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Length error)")
                         return null
                     }
@@ -51,6 +53,7 @@ class DropDown extends React.Component {
         if (fS.includes("/") && !dS.includes("/")) {
 
             console.log("Delimiter error")
+            this.props.refresh()
             alert("Delimiter error")
             return null
         }
@@ -58,17 +61,20 @@ class DropDown extends React.Component {
         else if (fS[0] === "MM" && dS[0] > 12) {
 
             console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
+            this.props.refresh()
             alert("You have selected a format that doesnt match the data provided from the file... please try another format (Date error)")
             return null
         }
 
         else if (fS[1] === "MM" && dS[1] > 12) {
             alert("Date error")
+            this.props.refresh()
             console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
             return null
         }
         else if (fS[2] === "MM" && dS[2] > 12) {
             alert("Date error")
+            this.props.refresh()
             console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
             return null
         }
@@ -107,12 +113,14 @@ class DropDown extends React.Component {
         // makes sure a format has been chosen!
         if (format === null) {
             alert("PLEASE SELECT A FORMAT!!!")
+            this.props.refresh()
             console.log("PLEASE SELECT A FORMAT!!!")
             return
         }
 
         if (value.length !== 8 && value.length !== 10) {
             alert("You have not selected a date, try again...")
+            this.props.refresh()
             console.log("You have not selected a date, try again...")
             return
         }
@@ -124,6 +132,7 @@ class DropDown extends React.Component {
 
 
             if (!this.props.hasChosenCentury) {
+                this.props.refresh()
                 alert("You have not selected a century!")
                 console.log("You have not selected a century!")
                 return
@@ -201,16 +210,19 @@ class DropDown extends React.Component {
 
         for (let i = 0; i < 3; i++) {
             if (newFormatSplit[i].includes("D") && newFormatSplit[i].includes("M")) {
+                this.props.refresh()
                 alert("Date error")
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
                 return
             }
             else if (newFormatSplit[i].includes("D") && newFormatSplit[i].includes("Y")) {
+                this.props.refresh()
                 alert("Date error")
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
                 return
             }
             else if (newFormatSplit[i].includes("M") && newFormatSplit[i].includes("Y")) {
+                this.props.refresh()
                 alert("Date error")
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Date error)")
                 return
@@ -253,6 +265,7 @@ class DropDown extends React.Component {
             breakOrFormat = this.props.dateFormat.split(" ")
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
+            this.props.refresh()
             alert("You have not selected a date format...")
             console.log("Please choose a date format!!!")
             return
@@ -261,12 +274,14 @@ class DropDown extends React.Component {
         else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && this.props.hasChosen) {
 
             if ((breakOrFormat.includes("/") || breakOrFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
+                this.props.refresh()
                 alert("Delimiter error")
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
                 return
             }
 
             else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") && !this.props.value.includes("-"))) {
+                this.props.refresh()
                 alert("Delimiter error")
                 console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
                 return

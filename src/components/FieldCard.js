@@ -315,6 +315,46 @@ class FieldCard extends React.Component {
 
     }
 
+
+    // switch between CSS classes to switch between green and white
+    btnClass = classNames({
+        'field_container1': this.state.isGreen,
+        'field_container2': !this.state.isGreen
+    });
+
+    // helper function to limit length of 'fieldValue' displayed in the UI
+    lengthCheckedValue = (fieldVal) => {
+        let value = fieldVal;
+
+        if (value.length > 35) {
+            value = value.slice(0, 35);
+            value = value + "..."
+        }
+        return value
+    }
+
+    getOne2One = () => {
+        let arr = []
+        for (let i = 0; i < this.state.sesarOptions.length; i++) {
+            if (this.state.sesarOptions[i].format === "one2one")
+                arr.push(this.state.sesarOptions[i].title)
+        }
+        return arr
+
+    }
+
+
+
+    // helper function to display a dropdown IFF it is also green / checked!
+    filterDrop = () => {
+        if (this.state.isGreen === true)
+            return <div className="dropDown"><DropDown refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
+        else
+            return <div className="dropDownNoData">---</div>
+
+    }
+
+
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
         const obj = {
@@ -334,65 +374,34 @@ class FieldCard extends React.Component {
 
     }
 
+    refreshFieldCard = () => {
+        setTimeout(() => {
+            this.setState({ isGreen: false });
+        }, 0);  // ------------------------------> timeout 0
+
+        setTimeout(() => {
+            this.setState({ isGreen: true });
+        }, 100);
+    };
+
+
+
+
     render() {
 
-        let btnClass;
-
-        // switch between CSS classes to switch between green and white
-        btnClass = classNames({
-            'field_container1': this.state.isGreen,
-            'field_container2': !this.state.isGreen
-        });
-
-        // helper function to limit length of 'fieldValue' displayed in the UI
-        const lengthCheckedValue = (fieldVal) => {
-            let value = fieldVal;
-
-            if (value.length > 35) {
-                value = value.slice(0, 35);
-                value = value + "..."
-            }
-            return value
-        }
-
-        const getOne2One = () => {
-            let arr = []
-            for (let i = 0; i < this.state.sesarOptions.length; i++) {
-                if (this.state.sesarOptions[i].format === "one2one")
-                    arr.push(this.state.sesarOptions[i].title)
-            }
-            return arr
-
-        }
-
-
-
-        // helper function to display a dropdown IFF it is also green / checked!
-        const filterDrop = () => {
-            if (this.state.isGreen === true)
-                return <div className="dropDown"><DropDown callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} one2one={getOne2One()} list={this.state.sesarOptions} /> </div>
-            else
-                return <div className="dropDownNoData">---</div>
-
-        }
-
-
-
-        // display all fieldCards with or without data when toggle is turned 'off'
-        // display only checked fieldCards with toggle is switched 'on' 
         if (this.props.hiding === true && this.state.isGreen === false)
             return null
         else if (this.props.hiding)
             return (
                 <div className="ui label">
-                    <div className={btnClass}>
+                    <div className={this.btnClass}>
                         <object className="fieldWidget">
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + lengthCheckedValue(this.props.fieldValue)}</div>
+                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{lengthCheckedValue(this.state.updatedValue)}</div>
-                            {filterDrop()}
+                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            {this.filterDrop()}
                             {(this.props.fieldType === "numbers") ?
                                 <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <div className="padRight"> </div>}
                         </object>
@@ -402,21 +411,21 @@ class FieldCard extends React.Component {
         else
             return (
                 <div className="ui label">
-                    <div className={btnClass}>
+                    <div className={this.btnClass}>
                         <object className="fieldWidget">
                             <div className="checkBox" onClick={this.changeColor.bind(this)}>
                                 <CheckboxExample isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + lengthCheckedValue(this.props.fieldValue)}</div>
+                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="arrow">
                             <i class="fa fa-angle-double-right"></i>
                         </object>
 
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{lengthCheckedValue(this.state.updatedValue)}</div>
-                            {filterDrop()}
+                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            {this.filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
                                     <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
@@ -426,6 +435,7 @@ class FieldCard extends React.Component {
                     </div>
                 </div>
             )
+
     };
 }
 
