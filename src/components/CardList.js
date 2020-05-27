@@ -115,9 +115,6 @@ const CardList = (props) => {
         console.log(props.ent)
     }
 
-    const previewHelper = (arr) => {
-
-    }
 
     const previewPopUp = () => {
         let finalArr = []
