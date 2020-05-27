@@ -194,7 +194,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "text",
                 message: "Any free 'text' comment about the sample",
-                format: "one2one"
+                format: "multivalue"
             },
             {
                 selected: false,
@@ -207,10 +207,10 @@ class FieldCard extends React.Component {
             {
                 selected: false,
                 id: 22,
-                title: "sample description",
+                title: "description",
                 type: "text",
                 key: "field",
-                format: "one2one"
+                format: "multivalue"
             },
             {
                 selected: false,
@@ -307,7 +307,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "text",
                 message: "Keyed List / Order Pair of Values (Ex: [FACILITY CODE: MARS])",
-                format: "one2one"
+                format: "multivalue"
             }
 
         ]

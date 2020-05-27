@@ -23,6 +23,13 @@ export const formatDate = chosenObj => {
     }
 };
 
+export const multiValueCreate = keyPairObj => {
+    return {
+        type: "MULTIVALUE_ADD",
+        payload: keyPairObj,
+    }
+}
+
 export const one2one = obj => {
     return {
         type: 'ADD_ONE_2_ONE',
