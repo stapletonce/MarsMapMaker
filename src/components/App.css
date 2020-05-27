@@ -7,6 +7,16 @@
     
 }
 
+.marsIcon {
+    text-align: center; 
+    display: inline-block;
+}
+
+.mars {
+    height: 160px;
+    width: 160px;
+}
+
 
 .padRight {
     padding-right: 98px; 
