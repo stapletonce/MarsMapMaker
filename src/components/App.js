@@ -3,6 +3,8 @@ import React from 'react';
 import CardList from './CardList';
 import FileIn from './FileIn';
 
+console.log("hello")
+
 // helper function to set up 'fieldNames' array for the App State
 const parser = (fieldName, length) => {
     let arr = [];
