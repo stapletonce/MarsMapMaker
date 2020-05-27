@@ -367,9 +367,6 @@ class DropDown extends React.Component {
 const mapStateToProps = (state) => {
     return {
         multi: state.multiValues,
-        sampleComment: state.sampleComment,
-        description: state.description,
-        field_type: state.fieldType,
         ent: state.entries,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
