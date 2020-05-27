@@ -1,7 +1,7 @@
 import React from "react";
 import "semantic-ui-react";
 import { connect } from "react-redux";
-import { dropdownUpdate } from "../actions/"
+import { dropdownUpdate, multiValueCreate } from "../actions/"
 
 
 
@@ -267,6 +267,19 @@ class DropDown extends React.Component {
     updateValue = e => {
         const newValue = e.target.value
         let breakOrFormat;
+        
+        let index;
+        //a mapping to a multivalue array starts, identifies which multivalue entry to add to
+        if( (index = this.props.multi.map((curr) => {return curr.id}).indexOf(e.target.value)) !== -1) {
+            const keyObj = {
+                ident: this.props.multi[index].id,
+                index: index,
+                keyString: this.props.title + ":" + this.props.value
+                }
+            this.props.multiValueCreate(keyObj)
+            //console.log(keyObj)
+            //console.log("wow this worked"+ this.props.multi[index].id)
+        }
 
 
         if (this.props.dateFormat != null)
@@ -353,6 +366,10 @@ class DropDown extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        multi: state.multiValues,
+        sampleComment: state.sampleComment,
+        description: state.description,
+        field_type: state.fieldType,
         ent: state.entries,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
@@ -364,4 +381,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, { dropdownUpdate })(DropDown);
+export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate })(DropDown);

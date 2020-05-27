@@ -207,7 +207,7 @@ class FieldCard extends React.Component {
             {
                 selected: false,
                 id: 22,
-                title: "sample description",
+                title: "description",
                 type: "text",
                 key: "field",
                 format: "multivalue"
