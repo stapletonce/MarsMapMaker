@@ -4,6 +4,7 @@ import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown'
 import { connect } from 'react-redux';
 import './App.css';
+import mars from "../icons/planet.png"
 
 import { firstState } from '../actions/';
 // import ReactModal from 'react-modal';
@@ -122,6 +123,9 @@ const CardList = (props) => {
                     <DateDropdown className="requireOption" list={dateFormatOption} />
                     <CenturyDropDown className="requireOption" />
                     <DateDropdown className="requireOption" list={dateFormatOption} />
+                </div>
+                <div align="center" className="marsIcon">
+                    <img className="mars" src={mars} alt="marsIcon"></img>
                 </div>
                 <div className="dropDown2" >
                     <button className="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
