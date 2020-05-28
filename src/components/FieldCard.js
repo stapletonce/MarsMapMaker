@@ -381,7 +381,8 @@ class FieldCard extends React.Component {
 
         setTimeout(() => {
             this.setState({ isGreen: true });
-        }, 500);
+        }, 10);
+        console.log(this.state.isGreen)
     };
 
 
