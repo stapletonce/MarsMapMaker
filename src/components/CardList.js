@@ -75,6 +75,7 @@ const CardList = (props) => {
             isMeasurement: false
         }
 
+
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
@@ -122,7 +123,7 @@ const CardList = (props) => {
         console.log(props.multi)
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value + "\n"))
+                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value))
 
             }
         }
@@ -131,7 +132,7 @@ const CardList = (props) => {
             alert("There is nothing to map, please make a selection below!")
             return
         }
-        alert(finalArr)
+        alert(finalArr.join("\n"))
 
     }
 
@@ -180,7 +181,7 @@ const CardList = (props) => {
                             <div className="mappedValue">Mapped Content</div>
                             <div className="dropDownInfo"><b>[</b>Mapped Header<b>]</b></div>
                             {(true) ?
-                                <object className="mappedValue">
+                                <object className="mappedValue" style={{ paddingRight: "70px" }}>
                                     Type </object> : <div className="padRight"> Type </div>}
                         </object>
 

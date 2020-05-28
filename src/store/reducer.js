@@ -33,7 +33,8 @@ const reducer =
       numOfOneToOne: 0,
       chosenDateFormat: null,
       hasChosenDateFormat: false,
-      hasChosenDropdownOption: false
+      hasChosenDropdownOption: false,
+      hasTwoYs: false
     },
     action) => {
 
@@ -86,7 +87,8 @@ const reducer =
         return {
           ...state,
           hasChosenDateFormat: true,
-          chosenDateFormat: action.payload.dateFormat
+          chosenDateFormat: action.payload.dateFormat,
+          hasTwoYs: action.payload.hasTwoYs
 
         }
 

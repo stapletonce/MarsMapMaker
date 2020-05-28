@@ -355,8 +355,11 @@ class FieldCard extends React.Component {
     }
 
 
+
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
+        console.log(this.btnClass)
+        console.log(this.state.isGreen)
         const obj = {
             oldValue: this.props.fieldValue,
             value: this.props.fieldValue,
@@ -376,12 +379,13 @@ class FieldCard extends React.Component {
 
     refreshFieldCard = () => {
         setTimeout(() => {
-            this.setState({ isGreen: false });
+            this.setState({ isGreen: !this.state.isGreen });
         }, 0);  // ------------------------------> timeout 0
 
         setTimeout(() => {
-            this.setState({ isGreen: true });
-        }, 500);
+            this.setState({ isGreen: !this.state.isGreen });
+        }, 10);
+
     };
 
 
@@ -409,31 +413,58 @@ class FieldCard extends React.Component {
                 </div>
             )
         else
-            return (
-                <div className="ui label">
-                    <div className={this.btnClass}>
-                        <object className="fieldWidget">
-                            <div className="checkBox" onClick={this.changeColor.bind(this)}>
-                                <CheckboxExample isChecked={this.state.isGreen} />
-                            </div>
-                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
-                        </object>
-                        <object className="arrow">
-                            <i class="fa fa-angle-double-right"></i>
-                        </object>
+            if (this.state.isGreen) {
+                return (
+                    <div className="ui label">
+                        <div className="field_container1" >
+                            <object className="fieldWidget">
+                                <div className="checkBox" onClick={this.changeColor}>
+                                    <CheckboxExample isChecked={this.state.isGreen} />
+                                </div>
+                                <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                                <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                            </object>
+                            <object className="arrow">
+                                <i class="fa fa-angle-double-right"></i>
+                            </object>
 
-                        <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                            {this.filterDrop()}
-                            {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
-                                <object className="alignLeft">
-                                    <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
-                        </object>
+                            <object className="dropDownWidget" align="right">
+                                <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                                {this.filterDrop()}
+                                {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
+                                    <object className="alignLeft">
+                                        <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                            </object>
 
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
+            else {
+                return (
+                    <div className="ui label">
+                        <div className="field_container2">
+                            <object className="fieldWidget">
+                                <div className="checkBox" onClick={this.changeColor}>
+                                    <CheckboxExample isChecked={this.state.isGreen} />
+                                </div>
+                                <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                                <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                            </object>
+
+                            <object className="dropDownWidget" align="right">
+                                <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                                {this.filterDrop()}
+                                {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
+                                    <object className="alignLeft">
+                                        <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                            </object>
+
+                        </div>
+                    </div>
+                )
+            }
+
 
     };
 }

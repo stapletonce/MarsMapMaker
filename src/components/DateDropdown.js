@@ -17,14 +17,19 @@ class DateDropdown extends React.Component {
     // updates specific object in the redux store
     updateValue = e => {
         const newValue = e.target.value
+        let it = false
 
         if (this.props.hasDate && this.props.hasChosenDropdown) {
+            alert("Changing the date format halfway through can cause issues, please refresh page!")
             console.log("Please refresh page")
             return
         }
+        if (newValue.includes("YY") && !newValue.includes("YYYY"))
+            it = true
 
         const obj = {
-            dateFormat: newValue
+            dateFormat: newValue,
+            hasTwoYs: it
         }
         this.props.formatDate(obj)
     }
@@ -44,11 +49,22 @@ class DateDropdown extends React.Component {
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
-        return (
-            <select className="ui search dropdown" onChange={this.updateValue}>
-                {this.props.list.map((field) => filter(field))}
-            </select>
-        );
+        if (this.props.hasChosenDateFormat && this.props.hasChosenDropdown) {
+            return (
+                <select disabled className="ui search dropdown" onChange={this.updateValue}>
+                    {this.props.list.map((field) => filter(field))}
+                </select>
+            );
+        }
+
+        else {
+            return (
+                <select className="ui search dropdown" onChange={this.updateValue}>
+                    {this.props.list.map((field) => filter(field))}
+                </select>
+            );
+        }
+
     }
 }
 
@@ -57,7 +73,10 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         useOnce: state.useOnce,
         hasDate: state.hasChosenDateFormat,
-        hasChosenDropdown: state.hasChosenDropdownOption
+        hasChosenDropdown: state.hasChosenDropdownOption,
+        hasChosenDateFormat: state.hasChosenDateFormat,
+        hasTwoYs: state.hasTwoYs,
+        hasChosenCentury: state.centuryChosen
     };
 };
 
