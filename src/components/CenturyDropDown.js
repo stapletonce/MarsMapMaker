@@ -42,11 +42,23 @@ class CenturyDropDown extends React.Component {
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
-        return (
-            <select className="ui search dropdown" onChange={this.updateValue}>
-                {this.state.cent.map((field) => filter(field))}
-            </select>
-        );
+        console.log(this.props.hasTwoYs)
+        console.log(this.props.hasChosenCentury)
+        if (this.props.hasTwoYs && this.props.hasChosenCentury && this.props.hasChosenDropdown) {
+            return (
+                <select disabled className="ui search dropdown" onChange={this.updateValue}>
+                    {this.state.cent.map((field) => filter(field))}
+                </select>
+            )
+        }
+        else {
+            return (
+                <select className="ui search dropdown" onChange={this.updateValue}>
+                    {this.state.cent.map((field) => filter(field))}
+                </select>
+            );
+        }
+
     }
 }
 
@@ -57,7 +69,8 @@ const mapStateToProps = (state) => {
         hasDate: state.hasChosenDateFormat,
         hasChosenDropdown: state.hasChosenDropdownOption,
         hasChosenCentury: state.centuryChosen,
-        century: state.century
+        century: state.century,
+        hasTwoYs: state.hasTwoYs
     };
 };
 
