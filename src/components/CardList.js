@@ -8,6 +8,7 @@ import mars from "../icons/planet.png"
 import preview from "../icons/preview.png"
 
 import { firstState } from '../actions/';
+import { axisRight } from 'd3';
 // import ReactModal from 'react-modal';
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -138,13 +139,14 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div style={{ width: "25%" }} className="dropDown1">
+                    <div className="dropDown1">
                         <p>Formatting required***</p>
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                         <CenturyDropDown className="requireOption" />
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                     </div>
-                    <div style={{ width: "50%", paddingTop: "1%" }} align="center" className="marsIcon">
+
+                    <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
                         <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>
                         <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
                     </div>
