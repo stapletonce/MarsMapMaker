@@ -119,6 +119,7 @@ const CardList = (props) => {
 
     const previewPopUp = () => {
         let finalArr = []
+        console.log(props.multi)
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
                 finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value + "\n"))
@@ -196,7 +197,8 @@ const mapStateToProps = (state) => {
     return {
         multi: state.multiValues,
         ent: state.entries,
-        dateFormat: state.chosenDateFormat
+        dateFormat: state.chosenDateFormat,
+        multiValues: state.multiValues
     };
 };
 
