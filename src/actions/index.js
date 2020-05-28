@@ -50,3 +50,10 @@ export const removeContent = obj => {
         payload: obj
     }
 }
+
+export const multiValueCreateFinish = obj => {
+    return {
+        type: "MULTIVALUE_ADD_FINISH",
+        payload: obj
+    }
+}

@@ -1,7 +1,7 @@
 import React from "react";
 import "semantic-ui-react";
 import { connect } from "react-redux";
-import { dropdownUpdate, multiValueCreate } from "../actions/"
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish } from "../actions/"
 
 
 
@@ -255,11 +255,53 @@ class DropDown extends React.Component {
 
 
 
+
         return update
+
+
+
+
 
         // next step is to store this sesar format date into the redux store for the correct field upon choosing one of the date options
         // also, there should be some robust error handling that checks the value to make sure it even qualifies as a date
         // also to think further on that, check if the users value matches their format selection, if not send an error
+    }
+
+    // josh's section
+    updateMulti = () => {
+
+        for (let i = 0; i < this.props.ent.length; i++) {
+
+            if (this.props.ent[i].sesarTitle === "sample_comment") {
+                const obj = {
+                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+                    ident: "sample_comment",
+                    index: 0
+                }
+                console.log(obj)
+                this.props.multiValueCreateFinish(obj)
+            }
+            else if (this.props.ent[i].sesarTitle === "description") {
+                const obj = {
+                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+                    ident: "description",
+                    index: 1
+                }
+                console.log(obj)
+                this.props.multiValueCreateFinish(obj)
+
+            }
+            else if (this.props.ent[i].sesarTitle === "field_name") {
+                console.log("hello")
+                const obj = {
+                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+                    ident: "field_name",
+                    index: 2
+                }
+                console.log(obj)
+                this.props.multiValueCreateFinish(obj)
+            }
+        }
     }
 
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
@@ -267,19 +309,16 @@ class DropDown extends React.Component {
     updateValue = e => {
         const newValue = e.target.value
         let breakOrFormat;
-        
+
+        const objThing = {
+            keyString: "hey",
+            ident: "description",
+            index: 1
+        }
+        this.props.multiValueCreate(objThing)
         let index;
         //a mapping to a multivalue array starts, identifies which multivalue entry to add to
-        if( (index = this.props.multi.map((curr) => {return curr.id}).indexOf(e.target.value)) !== -1) {
-            const keyObj = {
-                ident: this.props.multi[index].id,
-                index: index,
-                keyString: this.props.title + ":" + this.props.value
-                }
-            this.props.multiValueCreate(keyObj)
-            //console.log(keyObj)
-            //console.log("wow this worked"+ this.props.multi[index].id)
-        }
+
 
 
         if (this.props.dateFormat != null)
@@ -313,8 +352,10 @@ class DropDown extends React.Component {
 
             let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
 
-            if (update !== undefined)
+            if (update !== undefined) {
                 this.props.callback(update)
+                console.log(this.props.multiValues)
+            }
             return
         }
 
@@ -325,11 +366,17 @@ class DropDown extends React.Component {
             header: this.props.title
         }
 
-        this.props.dropdownUpdate(obj)
 
-        if (this.props.value !== undefined)
+
+        this.props.dropdownUpdate(obj)
+        this.updateMulti()
+
+        if (this.props.value !== undefined) {
             this.props.callback(this.props.value)
+
+        }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
+
 
     }
 
@@ -373,9 +420,10 @@ const mapStateToProps = (state) => {
         hasChosen: state.hasChosenDateFormat,
         num: state.numOfOneToOne,
         hasChosenCentury: state.centuryChosen,
-        century: state.century
+        century: state.century,
+        multiValues: state.multiValues
     };
 };
 
 
-export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate })(DropDown);
+export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish })(DropDown);
