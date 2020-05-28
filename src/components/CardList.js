@@ -181,7 +181,7 @@ const CardList = (props) => {
                             <div className="mappedValue">Mapped Content</div>
                             <div className="dropDownInfo"><b>[</b>Mapped Header<b>]</b></div>
                             {(true) ?
-                                <object className="mappedValue">
+                                <object className="mappedValue" style={{ paddingRight: "70px" }}>
                                     Type </object> : <div className="padRight"> Type </div>}
                         </object>
 

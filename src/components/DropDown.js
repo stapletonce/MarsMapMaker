@@ -302,6 +302,7 @@ class DropDown extends React.Component {
                 this.props.multiValueCreateFinish(obj)
             }
         }
+        console.log(this.props.multiValues)
     }
 
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
@@ -316,7 +317,6 @@ class DropDown extends React.Component {
             index: 1
         }
         this.props.multiValueCreate(objThing)
-        let index;
         //a mapping to a multivalue array starts, identifies which multivalue entry to add to
 
 

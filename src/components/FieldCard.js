@@ -451,9 +451,6 @@ class FieldCard extends React.Component {
                                 <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                                 <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                             </object>
-                            <object className="arrow">
-                                <i class="fa fa-angle-double-right"></i>
-                            </object>
 
                             <object className="dropDownWidget" align="right">
                                 <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
