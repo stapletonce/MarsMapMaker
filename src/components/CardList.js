@@ -75,6 +75,7 @@ const CardList = (props) => {
             isMeasurement: false
         }
 
+
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
