@@ -5,8 +5,10 @@ import CenturyDropDown from './CenturyDropDown'
 import { connect } from 'react-redux';
 import './App.css';
 import mars from "../icons/planet.png"
+import preview from "../icons/preview.png"
 
 import { firstState } from '../actions/';
+import { axisRight } from 'd3';
 // import ReactModal from 'react-modal';
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -115,22 +117,49 @@ const CardList = (props) => {
     }
 
 
+    const previewPopUp = () => {
+        let finalArr = []
+        for (let i = 0; i < props.ent.length; i++) {
+            if (props.ent[i].sesarTitle !== "") {
+                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value + "\n"))
+
+            }
+        }
+
+        if (finalArr.length === 0) {
+            alert("There is nothing to map, please make a selection below!")
+            return
+        }
+        alert(finalArr)
+
+    }
+
+
     return (
         <div>
             <div className="label">
-                <div className="dropDown1">
-                    <p>Formatting required***</p>
-                    <DateDropdown className="requireOption" list={dateFormatOption} />
-                    <CenturyDropDown className="requireOption" />
-                    <DateDropdown className="requireOption" list={dateFormatOption} />
+                <div className="label">
+                    <div className="dropDown1">
+                        <p>Formatting required***</p>
+                        <DateDropdown className="requireOption" list={dateFormatOption} />
+                        <CenturyDropDown className="requireOption" />
+                        <DateDropdown className="requireOption" list={dateFormatOption} />
+                    </div>
+
+                    <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
+                        <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>
+                        <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
+                    </div>
+
+                    <div style={{ paddingTop: "3em" }} className="dropDown2" >
+                        <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
+                        <button className="ui basic button" onClick={previewPopUp}> Preview Map </button>
+                        <button className="ui basic button" onClick={checkStore}> Help </button>
+                    </div>
+
+
                 </div>
-                <div align="center" className="marsIcon">
-                    <img className="mars" src={mars} alt="marsIcon"></img>
-                </div>
-                <div className="dropDown2" >
-                    <button className="ui toggle button" onClick={() => setHide(!hide)}> Toggle </button>
-                    <button className="ui basic button" onClick={checkStore}> Help </button>
-                </div>
+
 
 
                 <div className="uiInfo labelInfo">

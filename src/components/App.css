@@ -10,13 +10,32 @@
 .marsIcon {
     text-align: center; 
     display: inline-block;
+    padding: 0%;
+    margin: 0%;
+
 }
 
 .mars {
     height: 160px;
     width: 160px;
+    padding: 0%;
+    margin: 0%;
 }
 
+.mars:hover {
+    cursor: pointer;
+}
+
+.preview {
+    height: 60px;
+    width:60px;
+    padding: 0%;
+    margin: 0%;
+}
+
+.preview:hover {
+    cursor: pointer;
+}
 
 .padRight {
     padding-right: 98px; 
