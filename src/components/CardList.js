@@ -122,7 +122,7 @@ const CardList = (props) => {
         console.log(props.multi)
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value + "\n"))
+                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value))
 
             }
         }
@@ -131,7 +131,7 @@ const CardList = (props) => {
             alert("There is nothing to map, please make a selection below!")
             return
         }
-        alert(finalArr)
+        alert(finalArr.join("\n"))
 
     }
 
