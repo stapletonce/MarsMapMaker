@@ -163,6 +163,27 @@ const reducer =
           ]
         }
 
+      case "IS_DATE":
+
+        let dex = action.payload.index
+        console.log("got here")
+        return {
+          ...state,
+          entries: [
+            state.entries.slice(0, dex),
+            {
+              sesarTitle: "",
+              oldValue: action.payload.oldValue,
+              value: action.payload.value,
+              header: action.payload.header,
+              // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
+              isDate: true,
+              isMeasurement: false
+            },
+            state.entries.slice(dex + 1)
+          ]
+        }
+
       default:
         return state
 

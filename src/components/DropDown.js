@@ -332,6 +332,14 @@ class DropDown extends React.Component {
             return
         }
 
+        // else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.ent[this.props.id].isDate) {
+
+        //     alert("If you mean to use this field as a date, select date in the dropdown to the far right!")
+        //     this.props.refresh()
+        //     console.log("Please choose a date format!!!")
+        //     return
+        // }
+
         else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && this.props.hasChosen) {
 
             if ((breakOrFormat.includes("/") || breakOrFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
@@ -389,8 +397,10 @@ class DropDown extends React.Component {
             if (num === 0)
                 return <option key={f.title} value="Sesar Selection" disabled selected hidden>Sesar Selection</option>;
 
+            if (f.format === this.props.fieldType)
+                return <option key={f.title} value={f.title}>{f.title}</option>;
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
-            if (f.type === this.props.fieldType || f.type === "both") {
+            else if (f.type === this.props.fieldType || f.type === "both") {
                 if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))

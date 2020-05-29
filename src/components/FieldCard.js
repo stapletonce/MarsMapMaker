@@ -5,13 +5,15 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
 import FormatDropdown from './FormatDropdown';
-import { removeContent } from '../actions';
+import { removeContent, isDate } from '../actions';
 
 
 class FieldCard extends React.Component {
 
     state = {
         resetDropDown: false,
+        isDate: false,
+        isMeasurement: false,
         updatedValue: this.props.fieldValue,
         type: this.props.fieldType,
         key: this.props.key,
@@ -348,7 +350,7 @@ class FieldCard extends React.Component {
     // helper function to display a dropdown IFF it is also green / checked!
     filterDrop = () => {
         if (this.state.isGreen === true)
-            return <div className="dropDown"><DropDown refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.props.fieldType} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
+            return <div className="dropDown"><DropDown refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
             return <div className="dropDownNoData">---</div>
 
@@ -358,8 +360,6 @@ class FieldCard extends React.Component {
 
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
-        console.log(this.btnClass)
-        console.log(this.state.isGreen)
         const obj = {
             oldValue: this.props.fieldValue,
             value: this.props.fieldValue,
@@ -457,7 +457,7 @@ class FieldCard extends React.Component {
                                 {this.filterDrop()}
                                 {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                     <object className="alignLeft">
-                                        <FormatDropdown title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                        <FormatDropdown id={this.props.id} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
                             </object>
 
                         </div>
@@ -478,4 +478,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { removeContent })(FieldCard);
+export default connect(mapStateToProps, { removeContent, isDate })(FieldCard);

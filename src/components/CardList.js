@@ -114,7 +114,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.multi)
+        console.log(props.ent)
     }
 
 

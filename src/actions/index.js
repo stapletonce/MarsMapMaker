@@ -57,3 +57,10 @@ export const multiValueCreateFinish = obj => {
         payload: obj
     }
 }
+
+export const isDate = obj => {
+    return {
+        type: "IS_DATE",
+        payload: obj
+    }
+}
