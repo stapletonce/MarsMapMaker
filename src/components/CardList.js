@@ -20,6 +20,7 @@ const CardList = (props) => {
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
     const objArray = []
     const useOnce = []
+    const sDM = []
     let newKey = -1
     const dateFormatOption = [
         { title: "Select Date Format" },
@@ -75,10 +76,15 @@ const CardList = (props) => {
             isMeasurement: false
         }
 
+        const dateType = {
+            dateTypeChosen: false
+        }
+
 
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
+        sDM.push(dateType)
         newKey += 1
 
         // create the FieldCard that you see in the UI
@@ -95,9 +101,10 @@ const CardList = (props) => {
         );
     });
 
-    let initObj = {
+    const initObj = {
         objArr: objArray,
-        useOnce: useOnce
+        useOnce: useOnce,
+        sDM: sDM
     }
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
@@ -114,6 +121,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
+        console.log(props.sizeArray)
         console.log(props.ent)
     }
 
@@ -199,7 +207,9 @@ const mapStateToProps = (state) => {
         multi: state.multiValues,
         ent: state.entries,
         dateFormat: state.chosenDateFormat,
-        multiValues: state.multiValues
+        multiValues: state.multiValues.CardList,
+        stringDateMeasure: state.stringDateMeasure,
+        sizeArray: state.sizeArray
     };
 };
 

@@ -1,3 +1,5 @@
+
+import update from 'react-addons-update';
 //the store will consist of an array of objects with each having the following information attached
 //string: sesarTitle
 //string: value
@@ -10,9 +12,30 @@
 //  an instantiation of the object with the localTitle as the key
 //  a reselection or remapping of a sesar value to a local title to a different value
 //  a reselection or remapping of a sesar value to the same value (might already be handled)
+
+
 const reducer =
   (state =
     {
+      sizeArrayCounter: 0,
+      sizeArray: [
+        // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
+        // In the case of a single measurement for size, on the last object is used [x, x, 2]
+        {
+          pairHeader: "",
+          pairValue: ""
+        },
+        {
+          pairHeader: "",
+          pairValue: ""
+        },
+        {
+          pairHeader: "",
+          pairValue: ""
+        }
+      ],
+      // stringDateMeasure was used for stringDateMeasure dropdown, but depreciated 
+      stringDateMeasure: [],
       entries: [],
       useOnce: [],
       multiValues: [
@@ -44,7 +67,8 @@ const reducer =
         return {
           ...state,
           entries: state.entries.concat(action.payload.objArr),
-          useOnce: state.useOnce.concat(action.payload.useOnce)
+          useOnce: state.useOnce.concat(action.payload.useOnce),
+          stringDateMeasure: state.stringDateMeasure.concat(action.payload.sDM)
         }
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
@@ -62,6 +86,7 @@ const reducer =
           entries: [
             ...state.entries.slice(0, index),
             {
+              id: action.payload.id,
               sesarTitle: action.payload.sesarSelected,
               oldValue: action.payload.oldValue,
               value: action.payload.value,
@@ -151,6 +176,7 @@ const reducer =
           entries: [
             ...state.entries.slice(0, i),
             {
+              id: action.payload.id,
               sesarTitle: "",
               oldValue: action.payload.oldValue,
               value: action.payload.value,
@@ -163,26 +189,16 @@ const reducer =
           ]
         }
 
-      case "IS_DATE":
-
-        let dex = action.payload.index
-        console.log("got here")
-        return {
-          ...state,
-          entries: [
-            state.entries.slice(0, dex),
-            {
-              sesarTitle: "",
-              oldValue: action.payload.oldValue,
-              value: action.payload.value,
-              header: action.payload.header,
-              // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
-              isDate: true,
-              isMeasurement: false
-            },
-            state.entries.slice(dex + 1)
-          ]
-        }
+      case "ADD_TO_SIZE_ARRAY":
+        return update(state,
+          {
+            sizeArray: {
+              [action.payload.index]: {
+                pairHeader: { $set: action.payload.header },
+                pairValue: { $set: action.payload.value }
+              }
+            }
+          });
 
       default:
         return state

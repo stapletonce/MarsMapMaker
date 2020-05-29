@@ -64,3 +64,10 @@ export const isDate = obj => {
         payload: obj
     }
 }
+
+export const addToSizeArray = obj => {
+    return {
+        type: "ADD_TO_SIZE_ARRAY",
+        payload: obj
+    }
+}
