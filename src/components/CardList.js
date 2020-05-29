@@ -131,7 +131,7 @@ const CardList = (props) => {
         console.log(props.multi)
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value))
+                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
 
             }
         }
