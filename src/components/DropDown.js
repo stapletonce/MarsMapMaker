@@ -1,7 +1,7 @@
 import React from "react";
 import "semantic-ui-react";
 import { connect } from "react-redux";
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish } from "../actions/"
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray } from "../actions/"
 
 
 
@@ -305,6 +305,23 @@ class DropDown extends React.Component {
         console.log(this.props.multiValues)
     }
 
+    // function for detecting if choosing another selection is valid (IN REGARDS TO SIZE AND MEASUREMENT)
+
+    sizeArrayUpdate = () => {
+
+        //
+
+        // if id of current selection this.props.ent[id].sesarTitle === "size" && sizeArray[0] & sizeArray[1] have content then send an alert message 
+
+
+
+
+
+
+    }
+
+
+
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
     // updates specific object in the redux store
     updateValue = e => {
@@ -318,6 +335,25 @@ class DropDown extends React.Component {
         //}
         //this.props.multiValueCreate(objThing)
         //a mapping to a multivalue array starts, identifies which multivalue entry to add to
+
+        if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
+            let obj = {
+                id: 0
+            }
+            this.props.clearSizeArray(obj)
+        }
+        else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
+            let obj = {
+                id: 1
+            }
+            this.props.clearSizeArray(obj)
+        }
+        else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
+            let obj = {
+                id: 2
+            }
+            this.props.clearSizeArray(obj)
+        }
 
 
 
@@ -453,4 +489,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish })(DropDown);
+export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);

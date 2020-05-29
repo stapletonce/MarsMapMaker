@@ -17,7 +17,6 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
-      sizeArrayCounter: 0,
       sizeArray: [
         // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
         // In the case of a single measurement for size, on the last object is used [x, x, 2]
@@ -196,6 +195,19 @@ const reducer =
               [action.payload.index]: {
                 pairHeader: { $set: action.payload.header },
                 pairValue: { $set: action.payload.value }
+              }
+            }
+          });
+
+
+
+      case "REMOVE_ITEM_SIZE_ARRAY":
+        return update(state,
+          {
+            sizeArray: {
+              [action.payload.id]: {
+                pairHeader: { $set: "" },
+                pairValue: { $set: "" }
               }
             }
           });
