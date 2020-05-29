@@ -426,7 +426,7 @@ class FieldCard extends React.Component {
                             <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
                             {(this.state.updatedValue === "size") ?
-                                <FormatDropdown id={this.props.id} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <div className="padRight"> </div>}
+                                <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <div className="padRight"> </div>}
                         </object>
                     </div>
                 </div>
@@ -451,7 +451,7 @@ class FieldCard extends React.Component {
                             {this.filterDrop()}
                             {(this.state.sesarChosen === "size" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
                         </object>
 
                     </div>
@@ -475,7 +475,7 @@ class FieldCard extends React.Component {
                             {this.filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
                         </object>
 
                     </div>

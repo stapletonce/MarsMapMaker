@@ -71,3 +71,10 @@ export const addToSizeArray = obj => {
         payload: obj
     }
 }
+
+export const clearSizeArray = obj => {
+    return {
+        type: "REMOVE_ITEM_SIZE_ARRAY",
+        payload: obj
+    }
+}
