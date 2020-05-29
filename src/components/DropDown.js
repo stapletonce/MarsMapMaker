@@ -311,18 +311,20 @@ class DropDown extends React.Component {
         const newValue = e.target.value
         let breakOrFormat;
 
-        const objThing = {
-            keyString: "hey",
-            ident: "description",
-            index: 1
-        }
-        this.props.multiValueCreate(objThing)
+        //const objThing = {
+        //keyString: "hey",
+        //ident: "description",
+        //index: 1
+        //}
+        //this.props.multiValueCreate(objThing)
         //a mapping to a multivalue array starts, identifies which multivalue entry to add to
 
 
 
         if (this.props.dateFormat != null)
             breakOrFormat = this.props.dateFormat.split(" ")
+
+        this.props.sizeCallback(newValue)
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
 
@@ -369,7 +371,7 @@ class DropDown extends React.Component {
 
 
         this.props.dropdownUpdate(obj)
-        this.updateMulti()
+        //this.updateMulti()
 
         if (this.props.value !== undefined) {
             this.props.callback(this.props.value)
@@ -377,6 +379,16 @@ class DropDown extends React.Component {
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
 
+
+    }
+
+    sizeArrayLoop = (fTitle) => {
+        let count = 0;
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].sesarTitle === "size")
+                count += 1
+        }
+        return count
 
     }
 
@@ -389,8 +401,22 @@ class DropDown extends React.Component {
             if (num === 0)
                 return <option key={f.title} value="Sesar Selection" disabled selected hidden>Sesar Selection</option>;
 
+            //if (f.format === this.props.fieldType)
+            //return <option key={f.title} value={f.title}>{f.title}</option>;
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
             if (f.type === this.props.fieldType || f.type === "both") {
+                if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
+                    if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
+                        return
+                }
+                else if (this.sizeArrayLoop() === 2 && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "")) {
+                    if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
+                        return
+                }
+                //if (f.title === "size" && this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
+                //return
+                //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
+                //return
                 if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
@@ -421,7 +447,8 @@ const mapStateToProps = (state) => {
         num: state.numOfOneToOne,
         hasChosenCentury: state.centuryChosen,
         century: state.century,
-        multiValues: state.multiValues
+        multiValues: state.multiValues,
+        sizeArray: state.sizeArray
     };
 };
 
