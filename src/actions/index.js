@@ -57,3 +57,24 @@ export const multiValueCreateFinish = obj => {
         payload: obj
     }
 }
+
+export const isDate = obj => {
+    return {
+        type: "IS_DATE",
+        payload: obj
+    }
+}
+
+export const addToSizeArray = obj => {
+    return {
+        type: "ADD_TO_SIZE_ARRAY",
+        payload: obj
+    }
+}
+
+export const clearSizeArray = obj => {
+    return {
+        type: "REMOVE_ITEM_SIZE_ARRAY",
+        payload: obj
+    }
+}

@@ -5,10 +5,8 @@ import CenturyDropDown from './CenturyDropDown'
 import { connect } from 'react-redux';
 import './App.css';
 import mars from "../icons/planet.png"
-import preview from "../icons/preview.png"
 
 import { firstState } from '../actions/';
-import { axisRight } from 'd3';
 // import ReactModal from 'react-modal';
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -18,8 +16,12 @@ import { axisRight } from 'd3';
 const CardList = (props) => {
 
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
+
+
+
     const objArray = []
     const useOnce = []
+    const sDM = []
     let newKey = -1
     const dateFormatOption = [
         { title: "Select Date Format" },
@@ -75,10 +77,15 @@ const CardList = (props) => {
             isMeasurement: false
         }
 
+        const dateType = {
+            dateTypeChosen: false
+        }
+
 
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
+        sDM.push(dateType)
         newKey += 1
 
         // create the FieldCard that you see in the UI
@@ -95,9 +102,10 @@ const CardList = (props) => {
         );
     });
 
-    let initObj = {
+    const initObj = {
         objArr: objArray,
-        useOnce: useOnce
+        useOnce: useOnce,
+        sDM: sDM
     }
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
@@ -114,25 +122,57 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.multi)
+        console.log(props.sizeArray)
+        console.log(props.ent)
     }
 
 
     const previewPopUp = () => {
+        let fieldNameArr = []
+        let descriptionArr = []
+        let sampleCommentArr = []
+        let finalMultiValue = ["Multivalue Mappings", "", "", ""]
+
         let finalArr = []
-        console.log(props.multi)
+        let sizeSelection = ["", ""]
+        finalArr.push("-----MAP PREVIEW-----")
+        sizeSelection[0] = "-----SIZE SELECTION PREVIEW-----"
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].value))
-
+                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
+            }
+            if (props.ent[i].sesarTitle === "field_name") {
+                fieldNameArr.push(props.ent[i].header + ":" + props.ent[i].value)
+            }
+            else if (props.ent[i].sesarTitle === "description") {
+                descriptionArr.push(props.ent[i].header + ":" + props.ent[i].value)
+            }
+            else if (props.ent[i].sesarTitle === "sample_comment") {
+                sampleCommentArr.push(props.ent[i].header + ":" + props.ent[i].value)
             }
         }
+        finalMultiValue[1] = "FIELD_NAME: " + fieldNameArr.join(";")
+        finalMultiValue[2] = "DESCRIPTION: " + descriptionArr.join(";")
+        finalMultiValue[3] = "SAMPLE_COMMENT: " + sampleCommentArr.join(";")
+        alert(finalMultiValue.join("\n"))
 
-        if (finalArr.length === 0) {
-            alert("There is nothing to map, please make a selection below!")
+        if (finalArr.length === 1) {
+            alert("No values have been selected for mapping...")
+        }
+        else
+            alert(finalArr.join("\n"))
+
+        if (props.sizeArray[2].pairHeader !== "")
+            sizeSelection[1] = "[" + props.sizeArray[2].pairHeader + "]"
+        else if (props.sizeArray[2].pairHeader === "" && (props.sizeArray[0].pairHeader === "" || props.sizeArray[1].pairHeader === "")) {
+            alert("No size selection has been made...")
             return
         }
-        alert(finalArr.join("\n"))
+        else
+            sizeSelection[1] = "[" + props.sizeArray[0].pairHeader + ", " + props.sizeArray[1].pairHeader + "]"
+        alert(sizeSelection.join("\n"))
+
+
 
     }
 
@@ -199,7 +239,9 @@ const mapStateToProps = (state) => {
         multi: state.multiValues,
         ent: state.entries,
         dateFormat: state.chosenDateFormat,
-        multiValues: state.multiValues
+        multiValues: state.multiValues.CardList,
+        stringDateMeasure: state.stringDateMeasure,
+        sizeArray: state.sizeArray
     };
 };
 
