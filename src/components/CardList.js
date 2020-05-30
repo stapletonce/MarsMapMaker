@@ -16,6 +16,9 @@ import { firstState } from '../actions/';
 const CardList = (props) => {
 
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
+
+
+
     const objArray = []
     const useOnce = []
     const sDM = []
@@ -125,6 +128,11 @@ const CardList = (props) => {
 
 
     const previewPopUp = () => {
+        let fieldNameArr = []
+        let descriptionArr = []
+        let sampleCommentArr = []
+        let finalMultiValue = ["Multivalue Mappings", "", "", ""]
+
         let finalArr = []
         let sizeSelection = ["", ""]
         finalArr.push("-----MAP PREVIEW-----")
@@ -132,9 +140,21 @@ const CardList = (props) => {
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
                 finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
-
+            }
+            if (props.ent[i].sesarTitle === "field_name") {
+                fieldNameArr.push(props.ent[i].header + ":" + props.ent[i].value)
+            }
+            else if (props.ent[i].sesarTitle === "description") {
+                descriptionArr.push(props.ent[i].header + ":" + props.ent[i].value)
+            }
+            else if (props.ent[i].sesarTitle === "sample_comment") {
+                sampleCommentArr.push(props.ent[i].header + ":" + props.ent[i].value)
             }
         }
+        finalMultiValue[1] = "FIELD_NAME: " + fieldNameArr.join(";")
+        finalMultiValue[2] = "DESCRIPTION: " + descriptionArr.join(";")
+        finalMultiValue[3] = "SAMPLE_COMMENT: " + sampleCommentArr.join(";")
+        alert(finalMultiValue.join("\n"))
 
         if (finalArr.length === 1) {
             alert("No values have been selected for mapping...")
@@ -144,13 +164,15 @@ const CardList = (props) => {
 
         if (props.sizeArray[2].pairHeader !== "")
             sizeSelection[1] = "[" + props.sizeArray[2].pairHeader + "]"
-        else if (props.sizeArray[2].pairHeader === "") {
+        else if (props.sizeArray[2].pairHeader === "" && (props.sizeArray[0].pairHeader === "" || props.sizeArray[1].pairHeader === "")) {
             alert("No size selection has been made...")
             return
         }
         else
             sizeSelection[1] = "[" + props.sizeArray[0].pairHeader + ", " + props.sizeArray[1].pairHeader + "]"
         alert(sizeSelection.join("\n"))
+
+
 
     }
 

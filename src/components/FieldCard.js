@@ -329,8 +329,8 @@ class FieldCard extends React.Component {
     lengthCheckedValue = (fieldVal) => {
         let value = fieldVal;
 
-        if (value.length > 35) {
-            value = value.slice(0, 35);
+        if (value.length > 25) {
+            value = value.slice(0, 20);
             value = value + "..."
         }
         return value
@@ -375,10 +375,14 @@ class FieldCard extends React.Component {
         this.render()
     }
 
-    fileCallback = (data) => {
-
+    fileCallback = (data, title) => {
         let currentComponent = this
-        currentComponent.setState({ updatedValue: data })
+        if (title === "field_name" || title === "description" || title === "sample_comment") {
+            currentComponent.setState({ updatedValue: this.props.fieldTitle + ":" + data })
+        }
+        else {
+            currentComponent.setState({ updatedValue: data })
+        }
 
     }
 
@@ -389,7 +393,9 @@ class FieldCard extends React.Component {
             currentComponent.setState({ sesarChosen: data })
             return
         }
-        currentComponent.setState({ sesarChosen: "meeper" })
+        else {
+            currentComponent.setState({ sesarChosen: "meeper" })
+        }
 
     }
 
