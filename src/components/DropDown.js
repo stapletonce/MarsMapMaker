@@ -3,9 +3,6 @@ import "semantic-ui-react";
 import { connect } from "react-redux";
 import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray } from "../actions/"
 
-
-
-
 class DropDown extends React.Component {
 
     constructor(props) {
@@ -453,7 +450,6 @@ class DropDown extends React.Component {
                 else if (this.props.useOnce.indexOf(f.title) === this.props.id)
                     return <option key={f.title} value={f.title}>{f.title}</option>;
 
-
             }
         };
 
@@ -480,6 +476,7 @@ const mapStateToProps = (state) => {
         sizeArray: state.sizeArray
     };
 };
+
 
 
 export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);
