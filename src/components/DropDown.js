@@ -328,13 +328,7 @@ class DropDown extends React.Component {
         const newValue = e.target.value
         let breakOrFormat;
 
-        //const objThing = {
-        //keyString: "hey",
-        //ident: "description",
-        //index: 1
-        //}
-        //this.props.multiValueCreate(objThing)
-        //a mapping to a multivalue array starts, identifies which multivalue entry to add to
+
 
         if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
             let obj = {
@@ -410,8 +404,7 @@ class DropDown extends React.Component {
         //this.updateMulti()
 
         if (this.props.value !== undefined) {
-            this.props.callback(this.props.value)
-
+            this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
 
