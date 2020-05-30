@@ -5,10 +5,8 @@ import CenturyDropDown from './CenturyDropDown'
 import { connect } from 'react-redux';
 import './App.css';
 import mars from "../icons/planet.png"
-import preview from "../icons/preview.png"
 
 import { firstState } from '../actions/';
-import { axisRight } from 'd3';
 // import ReactModal from 'react-modal';
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -128,7 +126,9 @@ const CardList = (props) => {
 
     const previewPopUp = () => {
         let finalArr = []
-        console.log(props.multi)
+        let sizeSelection = ["", ""]
+        finalArr.push("-----MAP PREVIEW-----")
+        sizeSelection[0] = "-----SIZE SELECTION PREVIEW-----"
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
                 finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
@@ -136,11 +136,21 @@ const CardList = (props) => {
             }
         }
 
-        if (finalArr.length === 0) {
-            alert("There is nothing to map, please make a selection below!")
+        if (finalArr.length === 1) {
+            alert("No values have been selected for mapping...")
+        }
+        else
+            alert(finalArr.join("\n"))
+
+        if (props.sizeArray[2].pairHeader !== "")
+            sizeSelection[1] = "[" + props.sizeArray[2].pairHeader + "]"
+        else if (props.sizeArray[2].pairHeader === "") {
+            alert("No size selection has been made...")
             return
         }
-        alert(finalArr.join("\n"))
+        else
+            sizeSelection[1] = "[" + props.sizeArray[0].pairHeader + ", " + props.sizeArray[1].pairHeader + "]"
+        alert(sizeSelection.join("\n"))
 
     }
 
