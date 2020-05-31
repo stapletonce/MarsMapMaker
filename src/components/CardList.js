@@ -123,25 +123,14 @@ const CardList = (props) => {
         }
     }
 
-    // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the array
+    // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the join(";") array index 
     const appendTitleToFront = (multiValueArr, options) => {
         for (let i = 0; i < 3; i++) {
-            multiValueArr[i].unshift(options[i].toUpperCase() + ":  ")
+            if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
+                multiValueArr[i] = options[i] + " => " + multiValueArr[i]
         }
     }
 
-    // Helper function to remove the first ";" from the alert message for formatting purposes
-    const removeFirstOccurence = (string) => {
-        for (let i = 0; i < string.length; i++) {
-            if (string[i] === ";") {
-                console.log(string)
-                string = string.slice(0, i - 1) + string.slice(i + 1, string.length)
-                console.log(string)
-                break
-            }
-        }
-        return string
-    }
 
     ////////// Shows (Map Preview / Size Selection Preview / Multi-Value Selections )
     const previewPopUp = () => {
@@ -149,7 +138,7 @@ const CardList = (props) => {
         ////////////////
         // POP-UP LOCAL VARIABLES
         let options = ["field_name", "description", "sample_comment"]
-        let multiValueArr = [[], [], [], []]
+        let multiValueArr = [[], [], []]
         let mapPreviewArr = []
         let sizeSelection = ["", ""]
         mapPreviewArr.push("-----MAP PREVIEW-----")
@@ -163,11 +152,14 @@ const CardList = (props) => {
             }
             multiValueArrHelper(options, i, multiValueArr)
         }
-        appendTitleToFront(multiValueArr, options)
         for (let i = 0; i < 3; i++) {
             multiValueArr[i] = multiValueArr[i].join(";")
         }
-        alert(removeFirstOccurence(multiValueArr.join("\n")))
+
+        appendTitleToFront(multiValueArr, options)
+
+        multiValueArr.unshift("-----MultiValue Selections-----")
+        alert((multiValueArr.join("\n")))
 
         /////////////////////////////////
         ////////// Display Map Preview
