@@ -450,12 +450,13 @@ class DropDown extends React.Component {
                 else if (this.props.useOnce.indexOf(f.title) === this.props.id)
                     return <option key={f.title} value={f.title}>{f.title}</option>;
 
+
             }
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         return (
-            <select className="ui search dropdown" prompt="Please select option" onChange={this.updateValue}>
+            <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );

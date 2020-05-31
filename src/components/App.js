@@ -1,5 +1,4 @@
 import React from 'react';
-//import data from '../TEST_DATA.csv';
 import CardList from './CardList';
 import FileIn from './FileIn';
 
@@ -36,7 +35,6 @@ class App extends React.Component {
 
     // React says we have to define render!! You have to display JSX!
     render() {
-        //conditio
         return (
             <div>
                 <FileIn
@@ -45,8 +43,8 @@ class App extends React.Component {
                 {this.state.continue ?
                     <CardList
                         fields={this.state.fieldNames}
-                        fieldVal={this.state.fieldValues}
-                    /> : null}
+                        fieldVal={this.state.fieldValues} />
+                    : null}
             </div>
         )
     };
