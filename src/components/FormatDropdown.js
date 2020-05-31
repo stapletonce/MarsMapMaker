@@ -19,9 +19,20 @@ class FormatDropdown extends React.Component {
     updateValue = e => {
         let value = e.target.value
         let dex = -1
+        let sizeArray = this.props.sizeArray
+
         if (value === "first") {
             dex = 0
-            if (this.props.title === this.props.sizeArray[1].pairHeader && this.props.mapValue === this.props.sizeArray[1].pairValue) {
+
+            if ((this.props.sizeArray[2].pairHeader !== "" && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "") && this.props.sizeArray[2].currentID !== this.props.id) ||
+                ((sizeArray[0].currentID !== -1 || sizeArray[0].currentID !== this.props.id) && (sizeArray[0].pairHeader !== ""))
+            ) {
+                console.log("0")
+                alert("You've already selected another size option as a single measurement! You can either have a pair, or a single measurement")
+                this.props.refresh()
+                return
+            }
+            else if (this.props.title === this.props.sizeArray[1].pairHeader && this.props.mapValue === this.props.sizeArray[1].pairValue) {
 
                 let obj = { id: 1 }
                 this.props.clearSizeArray(obj)
@@ -31,16 +42,19 @@ class FormatDropdown extends React.Component {
                 let obj = { id: 2 }
                 this.props.clearSizeArray(obj)
             }
-            else if (this.props.sizeArray[2].pairHeader !== "" && (this.props.sizeArray[1].pairHeader !== "" || this.props.sizeArray[0] !== "")) {
-                console.log("0")
+
+        }
+        else if (value === "second") {
+            dex = 1
+            if ((this.props.sizeArray[2].pairHeader !== "" && (this.props.sizeArray[1].pairHeader !== "" && this.props.sizeArray[0] !== "") && this.props.sizeArray[2].currentID !== this.props.id) ||
+                ((sizeArray[1].currentID !== -1 || sizeArray[1].currentID !== this.props.id) && (sizeArray[1].pairHeader !== ""))
+            ) {
+                console.log("1")
                 alert("You've already selected another size option as a single measurement! You can either have a pair, or a single measurement")
                 this.props.refresh()
                 return
             }
-        }
-        else if (value === "second") {
-            dex = 1
-            if (this.props.title === this.props.sizeArray[0].pairHeader && this.props.mapValue === this.props.sizeArray[0].pairValue) {
+            else if (this.props.title === this.props.sizeArray[0].pairHeader && this.props.mapValue === this.props.sizeArray[0].pairValue) {
 
                 let obj = { id: 0 }
                 this.props.clearSizeArray(obj)
@@ -51,12 +65,7 @@ class FormatDropdown extends React.Component {
                 this.props.clearSizeArray(obj)
             }
             // if the fieldcard header/value === pairHeader/pairValue in sizeArray, then clearSizeArray (original choice)
-            if (this.props.sizeArray[2].pairHeader !== "" && (this.props.sizeArray[1].pairHeader !== "" && this.props.sizeArray[0] !== "")) {
-                console.log("1")
-                alert("You've already selected another size option as a single measurement! You can either have a pair, or a single measurement")
-                this.props.refresh()
-                return
-            }
+
             else {
                 if (this.props.title === this.props.sizeArray[1].pairHeader && this.props.mapValue === this.props.sizeArray[1].pairValue) {
 
@@ -67,6 +76,23 @@ class FormatDropdown extends React.Component {
         }
         else {
             dex = 2
+            if ((sizeArray[0].pairHeader !== "" && sizeArray[0].currentID !== this.props.id) || (sizeArray[1].pairHeader !== "" && sizeArray[1].currentID !== this.props.id)) {
+                alert("You have already selected a pair, you cannot also use a single measurement!")
+                this.props.refresh();
+                return
+            }
+
+            if (sizeArray[2].pairHeader !== "" && sizeArray[2].currentID !== this.props.id) {
+                alert("You have already selected a pair, you cannot also use a single measurement!")
+                this.props.refresh();
+                return
+            }
+
+            if (((sizeArray[2].currentID !== this.props.id && sizeArray[2].currentID !== -1) && (sizeArray[0].pairHeader !== "" || sizeArray[1].pairHeader !== ""))) {
+                alert("You have already selected a pair, you cannot also use a single measurement!")
+                this.props.refresh();
+                return
+            }
             if (this.props.sizeArray[0].pairHeader !== "") {
                 let obj = { id: 0 }
                 this.props.clearSizeArray(obj)
@@ -82,7 +108,8 @@ class FormatDropdown extends React.Component {
         const obj = {
             header: this.props.title,
             value: this.props.mapValue,
-            index: dex
+            index: dex,
+            cardID: this.props.id
         }
 
         this.props.addToSizeArray(obj)
@@ -101,8 +128,10 @@ class FormatDropdown extends React.Component {
 
     render() {
         if (
-            ((this.sizeArrayLoop() === 2 && this.props.ent[this.props.id].sesarTitle === "size" && this.props.sizeArray[1].pairHeader !== "") &&
-                (this.sizeArrayLoop() === 2 && this.props.ent[this.props.id].sesarTitle === "size" && this.props.sizeArray[0].pairHeader !== ""))
+            (((this.sizeArrayLoop() === 2 && this.props.ent[this.props.id].sesarTitle === "size" && this.props.sizeArray[1].pairHeader !== "") &&
+                (this.sizeArrayLoop() === 2 && this.props.ent[this.props.id].sesarTitle === "size" && this.props.sizeArray[0].pairHeader !== "")) ||
+                (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "")
+            )
         ) {
             return (
                 <select disabled onChange={this.updateValue}>

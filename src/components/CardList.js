@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import FieldCard from './FieldCard';
+import { connect } from 'react-redux';
+
+// Components
 import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
-import { connect } from 'react-redux';
+import FieldCard from './FieldCard';
+
+// CSS & Style
+import mars from '../icons/planet.png';
 import './App.css';
 
+// Action Creators
 import { firstState } from '../actions/';
-import mars from '../icons/planet.png';
+///////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 // there is a particular relationship between checked value and available option in dropdown
 // consider formatting specs for outside of 1 to 1 version, comment fields
@@ -249,11 +256,7 @@ const CardList = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        multi: state.multiValues,
         ent: state.entries,
-        dateFormat: state.chosenDateFormat,
-        multiValues: state.multiValues.CardList,
-        stringDateMeasure: state.stringDateMeasure,
         sizeArray: state.sizeArray
     };
 };
