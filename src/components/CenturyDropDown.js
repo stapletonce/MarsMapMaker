@@ -10,7 +10,7 @@ class CenturyDropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cent: ["", "1900", "2000"]
+            cent: ["", "1800", "1900", "2000"]
         };
     }
 
