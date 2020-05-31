@@ -144,11 +144,7 @@ class DropDown extends React.Component {
 
             else if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
 
-                if (this.props.century === "2000") {
-                    dateSplit[2] = "20" + dateSplit[2]
-                }
-                else
-                    dateSplit[2] = "19" + dateSplit[2]
+                dateSplit[2] = this.props.century.slice(0, 2) + dateSplit[2]
 
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 

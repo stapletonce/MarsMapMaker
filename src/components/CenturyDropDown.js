@@ -1,8 +1,13 @@
 import React from "react";
-import "semantic-ui-react";
 import { connect } from "react-redux";
 
+// CSS & Styling
+import "semantic-ui-react";
+
+// Action Creators
 import { century } from "../actions/"
+///////////////////////////////////////////
+///////////////////////////////////////////////////
 
 
 class CenturyDropDown extends React.Component {
@@ -10,7 +15,7 @@ class CenturyDropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cent: ["", "1900", "2000"]
+            cent: ["", "1800", "1900", "2000"]
         };
     }
 
@@ -27,8 +32,6 @@ class CenturyDropDown extends React.Component {
 
     }
 
-
-
     render() {
 
         let num = -1
@@ -42,15 +45,9 @@ class CenturyDropDown extends React.Component {
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
-        if (!this.props.hasTwoYs) {
-            return (
-                <select disabled className="ui search dropdown" onChange={this.updateValue}>
-                    {this.state.cent.map((field) => filter(field))}
-                </select>
-            )
-        }
-
-        else if (this.props.hasTwoYs && this.props.hasChosenCentury && this.props.hasChosenDropdown) {
+        if ((!this.props.hasTwoYs) ||
+            (this.props.hasTwoYs && this.props.hasChosenCentury && this.props.hasChosenDropdown)
+        ) {
             return (
                 <select disabled className="ui search dropdown" onChange={this.updateValue}>
                     {this.state.cent.map((field) => filter(field))}
@@ -70,12 +67,8 @@ class CenturyDropDown extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        ent: state.entries,
-        useOnce: state.useOnce,
-        hasDate: state.hasChosenDateFormat,
         hasChosenDropdown: state.hasChosenDropdownOption,
         hasChosenCentury: state.centuryChosen,
-        century: state.century,
         hasTwoYs: state.hasTwoYs
     };
 };

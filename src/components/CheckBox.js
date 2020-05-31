@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+
+// CSS & Styling
 import { Checkbox } from 'semantic-ui-react';
 import './App.css';
+///////////////////////////////////////////
+////////////////////////////////////////////////
 
 export default class CheckboxExample extends Component {
     state = { checked: this.props.isChecked }
