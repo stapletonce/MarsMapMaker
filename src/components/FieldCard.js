@@ -418,25 +418,45 @@ class FieldCard extends React.Component {
 
     render() {
 
-        if (this.props.hiding === true && this.state.isGreen === false)
+        //these renders return different fieldcards based on the hiding toggle value
+
+        //removes the unchecked field card
+        if (this.props.hiding && this.state.isGreen === false)
             return null
-        else if (this.props.hiding)
-            return (
-                <div className="ui label">
-                    <div className={this.btnClass}>
-                        <object className="fieldWidget">
-                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
-                        </object>
-                        <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                            {this.filterDrop()}
-                            {(this.state.updatedValue === "size") ?
-                                <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> : <div className="padRight"> </div>}
-                        </object>
-                    </div>
-                </div>
-            )
+        
+        // a depreciated render case for field cards 
+        // else if (this.props.hiding)
+        //     return (
+        //         <div className="ui label">
+        //             <div className={this.btnClass}>
+                        
+        //                 <object className="fieldWidget">
+        //                     <div className="checkBox" onClick={this.changeColor}>
+        //                         <CheckboxExample isChecked={this.state.isGreen} />
+        //                     </div>
+        //                     <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+        //                     <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+        //                 </object>
+                        
+        //                 <object className="arrow">
+        //                     <i class="fa fa-angle-double-right"></i>
+        //                 </object>
+
+        //                 <object className="dropDownWidget" align="right">
+                            
+        //                     <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            
+        //                     {this.filterDrop()}
+                            
+        //                     {(this.state.sesarChosen === "size") ?
+        //                         <object className="alignLeft">
+        //                         <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+        //                 </object>
+        //             </div>
+        //         </div>
+        //     )
+        
+        //returns the green styled field card
         else if (this.state.isGreen) {
             return (
                 <div className="ui label">
@@ -455,7 +475,7 @@ class FieldCard extends React.Component {
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
-                            {(this.state.sesarChosen === "size" && this.state.isGreen === true) ?
+                            {(this.state.sesarChosen === "size") ?
                                 <object className="alignLeft">
                                     <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
                         </object>
@@ -464,6 +484,8 @@ class FieldCard extends React.Component {
                 </div>
             )
         }
+
+        // returns the white styled field card
         else {
             return (
                 <div className="ui label">
