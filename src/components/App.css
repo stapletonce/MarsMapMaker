@@ -103,9 +103,12 @@
 
 .dropDown {
     font-size: 15px;
+    min-height: auto !important;
+    height: 1em;
     display: inline-block;
     width: 200px;
     padding-right: 50px;
+    padding-bottom: 20px;
 }
 
 .dropDownInfo {
@@ -238,3 +241,4 @@
     border-style: solid;
     border-width: .5px;
 }
+

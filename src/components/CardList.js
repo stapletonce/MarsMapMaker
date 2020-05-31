@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import FieldCard from './FieldCard';
 import DateDropdown from './DateDropdown';
-import CenturyDropDown from './CenturyDropDown'
+import CenturyDropDown from './CenturyDropDown';
 import { connect } from 'react-redux';
 import './App.css';
-import mars from "../icons/planet.png"
 
 import { firstState } from '../actions/';
-// import ReactModal from 'react-modal';
+import mars from '../icons/planet.png';
 
 // there is a particular relationship between checked value and available option in dropdown
 // consider formatting specs for outside of 1 to 1 version, comment fields
@@ -17,11 +16,8 @@ const CardList = (props) => {
 
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
 
-
-
     const objArray = []
     const useOnce = []
-    const sDM = []
     let newKey = -1
     const dateFormatOption = [
         { title: "Select Date Format" },
@@ -77,15 +73,9 @@ const CardList = (props) => {
             isMeasurement: false
         }
 
-        const dateType = {
-            dateTypeChosen: false
-        }
-
-
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
-        sDM.push(dateType)
         newKey += 1
 
         // create the FieldCard that you see in the UI
@@ -102,16 +92,12 @@ const CardList = (props) => {
         );
     });
 
-    const initObj = {
-        objArr: objArray,
-        useOnce: useOnce,
-        sDM: sDM
-    }
-
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
-
-
     useEffect(() => {
+        const initObj = {
+            objArr: objArray,
+            useOnce: useOnce
+        }
         props.firstState(initObj)
     }, []);
 
@@ -126,42 +112,74 @@ const CardList = (props) => {
         console.log(props.ent)
     }
 
+    // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
+    const multiValueArrHelper = (options, index, multiArr) => {
 
+        for (let j = 0; j < 3; j++) {
+            if (options.indexOf(props.ent[index].sesarTitle) !== -1) {
+                multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ":" + props.ent[index].value)
+                break
+            }
+        }
+    }
+
+    // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the array
+    const appendTitleToFront = (multiValueArr, options) => {
+        for (let i = 0; i < 3; i++) {
+            multiValueArr[i].unshift(options[i].toUpperCase() + ":  ")
+        }
+    }
+
+    // Helper function to remove the first ";" from the alert message for formatting purposes
+    const removeFirstOccurence = (string) => {
+        for (let i = 0; i < string.length; i++) {
+            if (string[i] === ";") {
+                console.log(string)
+                string = string.slice(0, i - 1) + string.slice(i + 1, string.length)
+                console.log(string)
+                break
+            }
+        }
+        return string
+    }
+
+    ////////// Shows (Map Preview / Size Selection Preview / Multi-Value Selections )
     const previewPopUp = () => {
-        let fieldNameArr = []
-        let descriptionArr = []
-        let sampleCommentArr = []
-        let finalMultiValue = ["Multivalue Mappings", "", "", ""]
 
-        let finalArr = []
+        ////////////////
+        // POP-UP LOCAL VARIABLES
+        let options = ["field_name", "description", "sample_comment"]
+        let multiValueArr = [[], [], [], []]
+        let mapPreviewArr = []
         let sizeSelection = ["", ""]
-        finalArr.push("-----MAP PREVIEW-----")
+        mapPreviewArr.push("-----MAP PREVIEW-----")
         sizeSelection[0] = "-----SIZE SELECTION PREVIEW-----"
+
+        /////////////////////////////////////////////////////////
+        /////////// Display Preview of Multi-Value Selections
         for (let i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                finalArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
+                mapPreviewArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
             }
-            if (props.ent[i].sesarTitle === "field_name") {
-                fieldNameArr.push(props.ent[i].header + ":" + props.ent[i].value)
-            }
-            else if (props.ent[i].sesarTitle === "description") {
-                descriptionArr.push(props.ent[i].header + ":" + props.ent[i].value)
-            }
-            else if (props.ent[i].sesarTitle === "sample_comment") {
-                sampleCommentArr.push(props.ent[i].header + ":" + props.ent[i].value)
-            }
+            multiValueArrHelper(options, i, multiValueArr)
         }
-        finalMultiValue[1] = "FIELD_NAME: " + fieldNameArr.join(";")
-        finalMultiValue[2] = "DESCRIPTION: " + descriptionArr.join(";")
-        finalMultiValue[3] = "SAMPLE_COMMENT: " + sampleCommentArr.join(";")
-        alert(finalMultiValue.join("\n"))
+        appendTitleToFront(multiValueArr, options)
+        for (let i = 0; i < 3; i++) {
+            multiValueArr[i] = multiValueArr[i].join(";")
+        }
+        alert(removeFirstOccurence(multiValueArr.join("\n")))
 
-        if (finalArr.length === 1) {
+        /////////////////////////////////
+        ////////// Display Map Preview
+        if (mapPreviewArr.length === 1) {
             alert("No values have been selected for mapping...")
         }
-        else
-            alert(finalArr.join("\n"))
+        else {
+            alert(mapPreviewArr.join("\n"))
+        }
 
+        //////////////////////////////////////
+        // Display Size Selection Preview
         if (props.sizeArray[2].pairHeader !== "")
             sizeSelection[1] = "[" + props.sizeArray[2].pairHeader + "]"
         else if (props.sizeArray[2].pairHeader === "" && (props.sizeArray[0].pairHeader === "" || props.sizeArray[1].pairHeader === "")) {
@@ -171,13 +189,17 @@ const CardList = (props) => {
         else
             sizeSelection[1] = "[" + props.sizeArray[0].pairHeader + ", " + props.sizeArray[1].pairHeader + "]"
         alert(sizeSelection.join("\n"))
-
-
-
     }
 
 
     return (
+
+        /////////////////////////
+        // TOOLBAR /////////////
+        ///////////////////////
+        // Field Cards ///////
+        /////////////////////
+
         <div>
             <div className="label">
                 <div className="label">
@@ -201,7 +223,6 @@ const CardList = (props) => {
 
 
                 </div>
-
 
 
                 <div className="uiInfo labelInfo">
