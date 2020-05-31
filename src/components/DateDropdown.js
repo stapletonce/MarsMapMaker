@@ -1,7 +1,13 @@
 import React from "react";
-import "semantic-ui-react";
 import { connect } from "react-redux";
+
+// CSS & Styling
+import "semantic-ui-react";
+
+// Action Creators
 import { formatDate } from "../actions/"
+//////////////////////////////////////////
+///////////////////////////////////////////////
 
 
 class DateDropdown extends React.Component {
@@ -19,11 +25,7 @@ class DateDropdown extends React.Component {
         const newValue = e.target.value
         let it = false
 
-        if (this.props.hasDate && this.props.hasChosenDropdown) {
-            alert("Changing the date format halfway through can cause issues, please refresh page!")
-            console.log("Please refresh page")
-            return
-        }
+        // Vets the dropdown selection of have 2 or 4 whys for the purposes of using/not using the century dropdown
         if (newValue.includes("YY") && !newValue.includes("YYYY"))
             it = true
 
@@ -49,6 +51,7 @@ class DateDropdown extends React.Component {
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
+        // IFF You have selected a date formate and SUCCESSFULLY selected sesar option, disable date dropdown
         if (this.props.hasChosenDateFormat && this.props.hasChosenDropdown) {
             return (
                 <select disabled className="ui search dropdown" onChange={this.updateValue}>
@@ -70,13 +73,9 @@ class DateDropdown extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        ent: state.entries,
-        useOnce: state.useOnce,
-        hasDate: state.hasChosenDateFormat,
         hasChosenDropdown: state.hasChosenDropdownOption,
         hasChosenDateFormat: state.hasChosenDateFormat,
-        hasTwoYs: state.hasTwoYs,
-        hasChosenCentury: state.centuryChosen
+        hasTwoYs: state.hasTwoYs
     };
 };
 

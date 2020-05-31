@@ -22,15 +22,18 @@ const reducer =
         // In the case of a single measurement for size, on the last object is used [x, x, 2]
         {
           pairHeader: "",
-          pairValue: ""
+          pairValue: "",
+          currentID: -1
         },
         {
           pairHeader: "",
-          pairValue: ""
+          pairValue: "",
+          currentID: -1
         },
         {
           pairHeader: "",
-          pairValue: ""
+          pairValue: "",
+          currentID: -1
         }
       ],
       // stringDateMeasure was used for stringDateMeasure dropdown, but depreciated 
@@ -194,7 +197,8 @@ const reducer =
             sizeArray: {
               [action.payload.index]: {
                 pairHeader: { $set: action.payload.header },
-                pairValue: { $set: action.payload.value }
+                pairValue: { $set: action.payload.value },
+                currentID: { $set: action.payload.cardID }
               }
             }
           });
@@ -207,7 +211,8 @@ const reducer =
             sizeArray: {
               [action.payload.id]: {
                 pairHeader: { $set: "" },
-                pairValue: { $set: "" }
+                pairValue: { $set: "" },
+                currentID: { $set: -1 }
               }
             }
           });

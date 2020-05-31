@@ -3,9 +3,6 @@ import "semantic-ui-react";
 import { connect } from "react-redux";
 import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray } from "../actions/"
 
-
-
-
 class DropDown extends React.Component {
 
     constructor(props) {
@@ -147,11 +144,7 @@ class DropDown extends React.Component {
 
             else if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
 
-                if (this.props.century === "2000") {
-                    dateSplit[2] = "20" + dateSplit[2]
-                }
-                else
-                    dateSplit[2] = "19" + dateSplit[2]
+                dateSplit[2] = this.props.century.slice(0, 2) + dateSplit[2]
 
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 
@@ -459,7 +452,7 @@ class DropDown extends React.Component {
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         return (
-            <select className="ui search dropdown" prompt="Please select option" onChange={this.updateValue}>
+            <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );
@@ -480,6 +473,7 @@ const mapStateToProps = (state) => {
         sizeArray: state.sizeArray
     };
 };
+
 
 
 export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);
