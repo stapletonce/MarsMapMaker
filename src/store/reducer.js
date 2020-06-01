@@ -135,7 +135,6 @@ const reducer =
         }
 
       case "MULTIVALUE_ADD":
-        let indd = action.payload.index
 
         return {
           ...state,
