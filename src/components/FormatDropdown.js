@@ -59,7 +59,7 @@ class FormatDropdown extends React.Component {
                 let obj = { id: 0 }
                 this.props.clearSizeArray(obj)
             }
-            if (this.props.title === this.props.sizeArray[2].pairHeader && this.props.mapValue === this.props.sizeArray[2].pairValue) {
+            else if (this.props.title === this.props.sizeArray[2].pairHeader && this.props.mapValue === this.props.sizeArray[2].pairValue) {
 
                 let obj = { id: 2 }
                 this.props.clearSizeArray(obj)
@@ -76,19 +76,12 @@ class FormatDropdown extends React.Component {
         }
         else {
             dex = 2
-            if ((sizeArray[0].pairHeader !== "" && sizeArray[0].currentID !== this.props.id) || (sizeArray[1].pairHeader !== "" && sizeArray[1].currentID !== this.props.id)) {
-                alert("You have already selected a pair, you cannot also use a single measurement!")
-                this.props.refresh();
-                return
-            }
 
-            if (sizeArray[2].pairHeader !== "" && sizeArray[2].currentID !== this.props.id) {
-                alert("You have already selected a pair, you cannot also use a single measurement!")
-                this.props.refresh();
-                return
-            }
 
-            if (((sizeArray[2].currentID !== this.props.id && sizeArray[2].currentID !== -1) && (sizeArray[0].pairHeader !== "" || sizeArray[1].pairHeader !== ""))) {
+            if (((sizeArray[2].currentID !== this.props.id && sizeArray[2].currentID !== -1) && (sizeArray[0].pairHeader !== "" || sizeArray[1].pairHeader !== "")) ||
+                (sizeArray[2].pairHeader !== "" && sizeArray[2].currentID !== this.props.id) ||
+                (sizeArray[0].pairHeader !== "" && sizeArray[0].currentID !== this.props.id) || (sizeArray[1].pairHeader !== "" && sizeArray[1].currentID !== this.props.id)
+            ) {
                 alert("You have already selected a pair, you cannot also use a single measurement!")
                 this.props.refresh();
                 return
