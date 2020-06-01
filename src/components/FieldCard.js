@@ -408,12 +408,7 @@ class FieldCard extends React.Component {
         setTimeout(() => {
             this.setState({ isGreen: !this.state.isGreen });
         }, 10);
-
-
-
     };
-
-
 
 
     render() {
@@ -423,13 +418,13 @@ class FieldCard extends React.Component {
         //removes the unchecked field card
         if (this.props.hiding && this.state.isGreen === false)
             return null
-        
+
         // a depreciated render case for field cards 
         // else if (this.props.hiding)
         //     return (
         //         <div className="ui label">
         //             <div className={this.btnClass}>
-                        
+
         //                 <object className="fieldWidget">
         //                     <div className="checkBox" onClick={this.changeColor}>
         //                         <CheckboxExample isChecked={this.state.isGreen} />
@@ -437,17 +432,17 @@ class FieldCard extends React.Component {
         //                     <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
         //                     <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
         //                 </object>
-                        
+
         //                 <object className="arrow">
         //                     <i class="fa fa-angle-double-right"></i>
         //                 </object>
 
         //                 <object className="dropDownWidget" align="right">
-                            
+
         //                     <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                            
+
         //                     {this.filterDrop()}
-                            
+
         //                     {(this.state.sesarChosen === "size") ?
         //                         <object className="alignLeft">
         //                         <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
@@ -455,7 +450,7 @@ class FieldCard extends React.Component {
         //             </div>
         //         </div>
         //     )
-        
+
         //returns the green styled field card
         else if (this.state.isGreen) {
             return (

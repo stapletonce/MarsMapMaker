@@ -1,8 +1,10 @@
 import React from "react";
-import "semantic-ui-react";
-
 import { connect } from "react-redux";
 
+// CSS & Styling
+import "semantic-ui-react";
+
+// Action Creators
 import { addToSizeArray, clearSizeArray } from "../actions/"
 
 class FormatDropdown extends React.Component {
@@ -21,13 +23,13 @@ class FormatDropdown extends React.Component {
         let dex = -1
         let sizeArray = this.props.sizeArray
 
+        // If "First in Pair" is selected
         if (value === "first") {
             dex = 0
 
             if ((this.props.sizeArray[2].pairHeader !== "" && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "") && this.props.sizeArray[2].currentID !== this.props.id) ||
                 ((sizeArray[0].currentID !== -1 || sizeArray[0].currentID !== this.props.id) && (sizeArray[0].pairHeader !== ""))
             ) {
-                console.log("0")
                 alert("You've already selected another size option as a single measurement! You can either have a pair, or a single measurement")
                 this.props.refresh()
                 return
@@ -44,6 +46,7 @@ class FormatDropdown extends React.Component {
             }
 
         }
+        // If "Second in Pair" is selected
         else if (value === "second") {
             dex = 1
             if ((this.props.sizeArray[2].pairHeader !== "" && (this.props.sizeArray[1].pairHeader !== "" && this.props.sizeArray[0] !== "") && this.props.sizeArray[2].currentID !== this.props.id) ||
@@ -59,36 +62,24 @@ class FormatDropdown extends React.Component {
                 let obj = { id: 0 }
                 this.props.clearSizeArray(obj)
             }
-            if (this.props.title === this.props.sizeArray[2].pairHeader && this.props.mapValue === this.props.sizeArray[2].pairValue) {
+            else if ((this.props.title === this.props.sizeArray[2].pairHeader && this.props.mapValue === this.props.sizeArray[2].pairValue) ||
+                (this.props.title === this.props.sizeArray[1].pairHeader && this.props.mapValue === this.props.sizeArray[1].pairValue)) {
 
                 let obj = { id: 2 }
                 this.props.clearSizeArray(obj)
             }
             // if the fieldcard header/value === pairHeader/pairValue in sizeArray, then clearSizeArray (original choice)
 
-            else {
-                if (this.props.title === this.props.sizeArray[1].pairHeader && this.props.mapValue === this.props.sizeArray[1].pairValue) {
-
-                    let obj = { id: 2 }
-                    this.props.clearSizeArray(obj)
-                }
-            }
         }
+
+        // If "Measurment" is selected 
         else {
             dex = 2
-            if ((sizeArray[0].pairHeader !== "" && sizeArray[0].currentID !== this.props.id) || (sizeArray[1].pairHeader !== "" && sizeArray[1].currentID !== this.props.id)) {
-                alert("You have already selected a pair, you cannot also use a single measurement!")
-                this.props.refresh();
-                return
-            }
 
-            if (sizeArray[2].pairHeader !== "" && sizeArray[2].currentID !== this.props.id) {
-                alert("You have already selected a pair, you cannot also use a single measurement!")
-                this.props.refresh();
-                return
-            }
-
-            if (((sizeArray[2].currentID !== this.props.id && sizeArray[2].currentID !== -1) && (sizeArray[0].pairHeader !== "" || sizeArray[1].pairHeader !== ""))) {
+            if (((sizeArray[2].currentID !== this.props.id && sizeArray[2].currentID !== -1) && (sizeArray[0].pairHeader !== "" || sizeArray[1].pairHeader !== "")) ||
+                (sizeArray[2].pairHeader !== "" && sizeArray[2].currentID !== this.props.id) ||
+                (sizeArray[0].pairHeader !== "" && sizeArray[0].currentID !== this.props.id) || (sizeArray[1].pairHeader !== "" && sizeArray[1].currentID !== this.props.id)
+            ) {
                 alert("You have already selected a pair, you cannot also use a single measurement!")
                 this.props.refresh();
                 return
@@ -103,8 +94,6 @@ class FormatDropdown extends React.Component {
             }
         }
 
-
-
         const obj = {
             header: this.props.title,
             value: this.props.mapValue,
@@ -114,17 +103,7 @@ class FormatDropdown extends React.Component {
 
         this.props.addToSizeArray(obj)
 
-
-
-
-
-
-
     }
-
-
-    // Measurement is the possible option for a size selection that doesn't have a milimeter for example...
-    // Doesn't have the precision split!
 
     render() {
         if (

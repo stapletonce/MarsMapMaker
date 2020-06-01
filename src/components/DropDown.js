@@ -1,6 +1,10 @@
 import React from "react";
-import "semantic-ui-react";
 import { connect } from "react-redux";
+
+//CSS & Styling
+import "semantic-ui-react";
+
+//Action Creators
 import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray } from "../actions/"
 
 class DropDown extends React.Component {
@@ -8,10 +12,7 @@ class DropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            century: null,
             list: this.props.list,
-            currentChosen: null,
-            headerTitle: this.props.title,
             value: "select",
             selectedValue: "",
             sesarOneToOne: this.props.one2one
@@ -298,20 +299,6 @@ class DropDown extends React.Component {
         console.log(this.props.multiValues)
     }
 
-    // function for detecting if choosing another selection is valid (IN REGARDS TO SIZE AND MEASUREMENT)
-
-    sizeArrayUpdate = () => {
-
-        //
-
-        // if id of current selection this.props.ent[id].sesarTitle === "size" && sizeArray[0] & sizeArray[1] have content then send an alert message 
-
-
-
-
-
-
-    }
 
 
 
@@ -404,7 +391,7 @@ class DropDown extends React.Component {
 
     }
 
-    sizeArrayLoop = (fTitle) => {
+    sizeArrayLoop = () => {
         let count = 0;
         for (let i = 0; i < this.props.ent.length; i++) {
             if (this.props.ent[i].sesarTitle === "size")
