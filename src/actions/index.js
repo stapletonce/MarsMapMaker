@@ -78,3 +78,10 @@ export const clearSizeArray = obj => {
         payload: obj
     }
 }
+
+export const addSingleMeasure = obj => {
+    return {
+        type: "ADD_SINGLE_MEASURE",
+        payload: obj
+    }
+}

@@ -17,6 +17,9 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
+      hasInit: false,
+      singleMeasureArr: [],
+      sizeOuterArray: [],
       sizeArray: [
         // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
         // In the case of a single measurement for size, on the last object is used [x, x, 2]
@@ -70,7 +73,9 @@ const reducer =
           ...state,
           entries: state.entries.concat(action.payload.objArr),
           useOnce: state.useOnce.concat(action.payload.useOnce),
-          stringDateMeasure: state.stringDateMeasure.concat(action.payload.sDM)
+          sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
+          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr),
+          hasInit: true
         }
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
@@ -193,14 +198,24 @@ const reducer =
       case "ADD_TO_SIZE_ARRAY":
         return update(state,
           {
-            sizeArray: {
-              [action.payload.index]: {
-                pairHeader: { $set: action.payload.header },
-                pairValue: { $set: action.payload.value },
-                currentID: { $set: action.payload.cardID }
+            sizeOuterArray: {
+              [action.payload.cardID]: {
+                [action.payload.index]: {
+                  pairHeader: { $set: action.payload.header },
+                  pairValue: { $set: action.payload.value },
+                  currentID: { $set: action.payload.cardID }
+                },
+                [action.payload.index + 1]: {
+                  pairHeader: { $set: action.payload.nextHeader },
+                  pairValue: { $set: action.payload.nextValue },
+                  currentID: { $set: action.payload.nextID }
+                }
+
               }
             }
           });
+
+      // add changing second entries to have payload.index + 1 contents
 
 
 
@@ -215,6 +230,21 @@ const reducer =
               }
             }
           });
+
+
+      case "ADD_SINGLE_MEASURE":
+        return update(state,
+          {
+            singleMeasureArr: {
+              [action.payload.cardID]: {
+                pairHeader: { $set: action.payload.header },
+                pairValue: { $set: action.payload.value },
+                currentID: { $set: action.payload.cardID }
+              }
+            }
+          }
+        )
+
 
       default:
         return state

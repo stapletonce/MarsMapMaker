@@ -25,7 +25,29 @@ const CardList = (props) => {
 
     const objArray = []
     const useOnce = []
+    const outerArr = []
+    const singleMeasure = []
     let newKey = -1
+    const singleMeasureObj = {
+        pairHeader: "",
+        pairValue: "",
+        currentID: -1
+    }
+
+    const sizeArray = [
+        // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
+        // In the case of a single measurement for size, on the last object is used [x, x, 2]
+        {
+            pairHeader: "",
+            pairValue: "",
+            currentID: -1
+        },
+        {
+            pairHeader: "",
+            pairValue: "",
+            currentID: -1
+        }
+    ]
     const dateFormatOption = [
         { title: "Select Date Format" },
         { title: "DD/MM/YY or DD-MM-YY", value: "substring", type: "date" },
@@ -75,7 +97,8 @@ const CardList = (props) => {
             sesarTitle: "",
             oldValue: props.fieldVal[field],
             value: props.fieldVal[field],
-            id: field,
+            // this used to be id 
+            header: field,
             isDate: false,
             isMeasurement: false
         }
@@ -83,6 +106,8 @@ const CardList = (props) => {
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
+        outerArr.push(sizeArray)
+        singleMeasure.push(singleMeasureObj)
         newKey += 1
 
         // create the FieldCard that you see in the UI
@@ -101,9 +126,12 @@ const CardList = (props) => {
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
+
         const initObj = {
             objArr: objArray,
-            useOnce: useOnce
+            useOnce: useOnce,
+            sizeOuter: outerArr,
+            singleMeasureArr: singleMeasure
         }
         props.firstState(initObj)
     }, []);
@@ -115,8 +143,8 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.sizeArray)
-        console.log(props.ent)
+        console.log(props.sizeOuter)
+        console.log(props.singleMeasure)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -257,7 +285,9 @@ const CardList = (props) => {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
-        sizeArray: state.sizeArray
+        sizeArray: state.sizeArray,
+        sizeOuter: state.sizeOuterArray,
+        singleMeasure: state.singleMeasureArr
     };
 };
 

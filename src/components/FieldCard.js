@@ -470,9 +470,9 @@ class FieldCard extends React.Component {
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
-                            {(this.state.sesarChosen === "size") ?
+                            {(this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -498,7 +498,7 @@ class FieldCard extends React.Component {
                             {this.filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -515,7 +515,9 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
-        hasChosen: state.hasChosenDateFormat
+        hasChosen: state.hasChosenDateFormat,
+        pairArr: state.sizeOuterArray,
+        hasInit: state.hasInit
     };
 };
 

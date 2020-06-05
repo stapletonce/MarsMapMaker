@@ -406,6 +406,8 @@ class DropDown extends React.Component {
         let num = -1
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
+
+
             num += 1
             if (num === 0)
                 return <option key={f.title} value="Sesar Selection" disabled selected hidden>Sesar Selection</option>;
@@ -438,11 +440,23 @@ class DropDown extends React.Component {
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
-        return (
-            <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
-                {this.props.list.map((field) => filter(field))}
-            </select>
-        );
+
+        if (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "") {
+            return (
+
+                <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                    <option key={"size"} value={"size"}>size</option>
+                </select>
+            );
+        } else {
+            return (
+
+                <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                    {this.props.list.map((field) => filter(field))}
+                </select>
+            );
+        }
+
     }
 }
 
@@ -457,7 +471,9 @@ const mapStateToProps = (state) => {
         hasChosenCentury: state.centuryChosen,
         century: state.century,
         multiValues: state.multiValues,
-        sizeArray: state.sizeArray
+        sizeArray: state.sizeArray,
+        hasInit: state.hasInit,
+        pairArr: state.sizeOuterArray
     };
 };
 
