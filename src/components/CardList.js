@@ -91,16 +91,18 @@ const CardList = (props) => {
     // hasContent: for initial filtering of checked cards
 
     const fields = props.fields.map((field) => {
-
+        newKey += 1
         //create an object and add it to store
         const storedValue = {
+            id: newKey,
             sesarTitle: "",
             oldValue: props.fieldVal[field],
             value: props.fieldVal[field],
             // this used to be id 
             header: field,
             isDate: false,
-            isMeasurement: false
+            isMeasurement: false,
+            isGreen: props.fieldVal[field] !== ""
         }
 
         // after object is created, append it to the object array & add one to the ID
@@ -108,7 +110,7 @@ const CardList = (props) => {
         useOnce.push("")
         outerArr.push(sizeArray)
         singleMeasure.push(singleMeasureObj)
-        newKey += 1
+
 
         // create the FieldCard that you see in the UI
         return (
@@ -145,6 +147,7 @@ const CardList = (props) => {
     const checkStore = () => {
         console.log(props.sizeOuter)
         console.log(props.singleMeasure)
+        console.log(props.ent)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -175,14 +178,16 @@ const CardList = (props) => {
         let options = ["field_name", "description", "sample_comment"]
         let multiValueArr = [[], [], []]
         let mapPreviewArr = []
-        let sizeSelection = ["", ""]
+        let sizeSelection = ["", "", "", ""]
         mapPreviewArr.push("-----MAP PREVIEW-----")
-        sizeSelection[0] = "-----SIZE SELECTION PREVIEW-----"
+        sizeSelection[0] = "-----SIZE SELECTION PAIRS-----"
+        sizeSelection[2] = "-----SIZE SELECTION SINGLES-----"
+
 
         /////////////////////////////////////////////////////////
         /////////// Display Preview of Multi-Value Selections
         for (let i = 0; i < props.ent.length; i++) {
-            if (props.ent[i].sesarTitle !== "") {
+            if (props.ent[i].sesarTitle !== "" && props.ent[i].sesarTitle !== "size") {
                 mapPreviewArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
             }
             multiValueArrHelper(options, i, multiValueArr)
@@ -190,6 +195,7 @@ const CardList = (props) => {
         for (let i = 0; i < 3; i++) {
             multiValueArr[i] = multiValueArr[i].join(";")
         }
+
 
         appendTitleToFront(multiValueArr, options)
 
@@ -207,14 +213,22 @@ const CardList = (props) => {
 
         //////////////////////////////////////
         // Display Size Selection Preview
-        if (props.sizeArray[2].pairHeader !== "")
-            sizeSelection[1] = "[" + props.sizeArray[2].pairHeader + "]"
-        else if (props.sizeArray[2].pairHeader === "" && (props.sizeArray[0].pairHeader === "" || props.sizeArray[1].pairHeader === "")) {
-            alert("No size selection has been made...")
-            return
+        for (let i = 0; i < props.ent.length; i++) {
+            if (props.outerArr[i][0].pairHeader !== "") {
+                if (sizeSelection[1] !== "")
+                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+                else
+                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+            }
         }
-        else
-            sizeSelection[1] = "[" + props.sizeArray[0].pairHeader + ", " + props.sizeArray[1].pairHeader + "]"
+        for (let i = 0; i < props.ent.length; i++) {
+            if (props.singleMeasure[i].pairHeader !== "") {
+                if (sizeSelection[3] !== "")
+                    sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
+                else
+                    sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
+            }
+        }
         alert(sizeSelection.join("\n"))
     }
 
@@ -287,7 +301,8 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         sizeArray: state.sizeArray,
         sizeOuter: state.sizeOuterArray,
-        singleMeasure: state.singleMeasureArr
+        singleMeasure: state.singleMeasureArr,
+        outerArr: state.sizeOuterArray
     };
 };
 
