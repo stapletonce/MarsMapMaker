@@ -17,6 +17,9 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
+      hasInit: false,
+      singleMeasureArr: [],
+      sizeOuterArray: [],
       sizeArray: [
         // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
         // In the case of a single measurement for size, on the last object is used [x, x, 2]
@@ -70,7 +73,9 @@ const reducer =
           ...state,
           entries: state.entries.concat(action.payload.objArr),
           useOnce: state.useOnce.concat(action.payload.useOnce),
-          stringDateMeasure: state.stringDateMeasure.concat(action.payload.sDM)
+          sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
+          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr),
+          hasInit: true
         }
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
@@ -95,7 +100,8 @@ const reducer =
               header: action.payload.header,
               // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
               isDate: false,
-              isMeasurement: false
+              isMeasurement: false,
+              isGreen: true
             },
             ...state.entries.slice(index + 1)
           ],
@@ -184,7 +190,8 @@ const reducer =
               header: action.payload.header,
               // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
               isDate: false,
-              isMeasurement: false
+              isMeasurement: false,
+              isGreen: action.payload.isGreen
             },
             ...state.entries.slice(i + 1)
           ]
@@ -193,21 +200,51 @@ const reducer =
       case "ADD_TO_SIZE_ARRAY":
         return update(state,
           {
-            sizeArray: {
-              [action.payload.index]: {
-                pairHeader: { $set: action.payload.header },
-                pairValue: { $set: action.payload.value },
-                currentID: { $set: action.payload.cardID }
+            sizeOuterArray: {
+              [action.payload.cardID]: {
+                [action.payload.index]: {
+                  pairHeader: { $set: action.payload.header },
+                  pairValue: { $set: action.payload.value },
+                  currentID: { $set: action.payload.cardID }
+                },
+                [action.payload.index + 1]: {
+                  pairHeader: { $set: action.payload.nextHeader },
+                  pairValue: { $set: action.payload.nextValue },
+                  currentID: { $set: action.payload.nextID }
+                }
+
               }
             }
           });
+
+      // add changing second entries to have payload.index + 1 contents
 
 
 
       case "REMOVE_ITEM_SIZE_ARRAY":
         return update(state,
           {
-            sizeArray: {
+            sizeOuterArray: {
+              [action.payload.cardID]: {
+                [action.payload.index]: {
+                  pairHeader: { $set: "" },
+                  pairValue: { $set: "" },
+                  currentID: { $set: -1 }
+                },
+                [action.payload.index + 1]: {
+                  pairHeader: { $set: "" },
+                  pairValue: { $set: "" },
+                  currentID: { $set: -1 }
+                }
+
+              }
+            }
+          });
+
+      case "CLEAR_SINGLE_MEASURE":
+        return update(state,
+          {
+            singleMeasureArr: {
               [action.payload.id]: {
                 pairHeader: { $set: "" },
                 pairValue: { $set: "" },
@@ -215,6 +252,39 @@ const reducer =
               }
             }
           });
+
+      case "ADD_SINGLE_MEASURE":
+        return update(state,
+          {
+            singleMeasureArr: {
+              [action.payload.cardID]: {
+                pairHeader: { $set: action.payload.header },
+                pairValue: { $set: action.payload.value },
+                currentID: { $set: action.payload.cardID }
+              }
+            }
+          }
+        )
+
+      case "SET_SECOND":
+        return update(state,
+          {
+            entries: {
+              [action.payload.cardID]: {
+                id: { $set: action.payload.id },
+                sesarTitle: { $set: "size" },
+                oldValue: { $set: action.payload.oldValue },
+                value: { $set: action.payload.value },
+                header: { $set: action.payload.header },
+                // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
+                isDate: { $set: false },
+                isMeasurement: { $set: false },
+                isGreen: { $set: action.payload.isGreen }
+              }
+            }
+          }
+        )
+
 
       default:
         return state

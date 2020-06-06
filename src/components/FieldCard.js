@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
 import FormatDropdown from './FormatDropdown';
-import { removeContent } from '../actions';
+import { removeContent, clearSizeArray } from '../actions';
 
 
 class FieldCard extends React.Component {
@@ -361,11 +361,13 @@ class FieldCard extends React.Component {
 
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
+
         const obj = {
             oldValue: this.props.fieldValue,
             value: this.props.fieldValue,
             header: this.props.fieldTitle,
-            id: this.props.id
+            id: this.props.id,
+            isGreen: !this.state.isGreen
         }
         this.props.removeContent(obj)
         this.setState({ isGreen: !this.state.isGreen })
@@ -419,37 +421,33 @@ class FieldCard extends React.Component {
         if (this.props.hiding && this.state.isGreen === false)
             return null
 
-        // a depreciated render case for field cards 
-        // else if (this.props.hiding)
-        //     return (
-        //         <div className="ui label">
-        //             <div className={this.btnClass}>
+        else if ((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) {
+            return (
+                <div className="ui label">
+                    <div className="field_container1" >
+                        <object className="fieldWidgetNoCheckbox">
+                            <div className="checkBox">
+                                <div>----</div>
+                            </div>
+                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                        </object>
+                        <object className="arrow">
+                            <i class="fa fa-angle-double-right"></i>
+                        </object>
 
-        //                 <object className="fieldWidget">
-        //                     <div className="checkBox" onClick={this.changeColor}>
-        //                         <CheckboxExample isChecked={this.state.isGreen} />
-        //                     </div>
-        //                     <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-        //                     <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
-        //                 </object>
+                        <object className="dropDownWidget" align="right">
+                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            {this.filterDrop()}
+                            {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
+                                <object className="alignLeft">
+                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
+                        </object>
 
-        //                 <object className="arrow">
-        //                     <i class="fa fa-angle-double-right"></i>
-        //                 </object>
-
-        //                 <object className="dropDownWidget" align="right">
-
-        //                     <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-
-        //                     {this.filterDrop()}
-
-        //                     {(this.state.sesarChosen === "size") ?
-        //                         <object className="alignLeft">
-        //                         <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
-        //                 </object>
-        //             </div>
-        //         </div>
-        //     )
+                    </div>
+                </div>
+            )
+        }
 
         //returns the green styled field card
         else if (this.state.isGreen) {
@@ -470,9 +468,9 @@ class FieldCard extends React.Component {
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
-                            {(this.state.sesarChosen === "size") ?
+                            {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -498,7 +496,7 @@ class FieldCard extends React.Component {
                             {this.filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -515,8 +513,10 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
-        hasChosen: state.hasChosenDateFormat
+        hasChosen: state.hasChosenDateFormat,
+        pairArr: state.sizeOuterArray,
+        hasInit: state.hasInit
     };
 };
 
-export default connect(mapStateToProps, { removeContent })(FieldCard);
+export default connect(mapStateToProps, { removeContent, clearSizeArray })(FieldCard);
