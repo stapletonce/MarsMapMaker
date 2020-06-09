@@ -362,6 +362,23 @@ class FieldCard extends React.Component {
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
 
+        if (this.props.pairArr[this.props.id][0].pairHeader !== "") {
+            const sizeObj = {
+                cardID: this.props.id,
+                index: 0
+            }
+            this.props.clearSizeArray(sizeObj)
+            const obj = {
+                oldValue: this.props.fieldValue,
+                value: this.props.fieldValue,
+                header: this.props.fieldTitle,
+                id: this.props.id + 1,
+                isGreen: this.state.isGreen
+            }
+            this.props.removeContent(obj)
+
+        }
+
         const obj = {
             oldValue: this.props.fieldValue,
             value: this.props.fieldValue,

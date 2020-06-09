@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import "semantic-ui-react";
 
 //Action Creators
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray } from "../actions/"
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent } from "../actions/"
 
 class DropDown extends React.Component {
 
@@ -308,7 +308,21 @@ class DropDown extends React.Component {
         const newValue = e.target.value
         let breakOrFormat;
 
-
+        if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
+            const sizeObj = {
+                cardID: this.props.id,
+                index: 0
+            }
+            this.props.clearSizeArray(sizeObj)
+            const obj = {
+                oldValue: this.props.fieldValue,
+                value: this.props.fieldValue,
+                header: this.props.fieldTitle,
+                id: this.props.id + 1,
+                isGreen: this.state.isGreen
+            }
+            this.props.removeContent(obj)
+        }
 
         if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
             let obj = {
@@ -479,4 +493,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);
