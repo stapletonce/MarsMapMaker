@@ -8,7 +8,10 @@ import './App.css';
 
 export default class CheckboxExample extends Component {
     state = { checked: this.props.isChecked }
-    toggle = () => this.setState((prevState) => ({ checked: !prevState.checked }))
+    toggle = () => {
+        this.props.greenCallback()
+        this.setState({ checked: !this.props.isChecked })
+    }
 
 
     render() {
