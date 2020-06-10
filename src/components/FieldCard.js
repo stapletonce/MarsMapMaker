@@ -360,7 +360,24 @@ class FieldCard extends React.Component {
 
 
     // onClick of the checkmark, change the color of the bar between green and white
-    changeColor = () => {
+
+    fileCallback = (data, title) => {
+        let currentComponent = this
+        if (title === "field_name" || title === "description" || title === "sample_comment") {
+            currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+        }
+        else if (title === "first") {
+            currentComponent.setState({ updateValue: data })
+        }
+        else {
+            currentComponent.setState({ updatedValue: data })
+        }
+
+    }
+
+    greenToggle = () => {
+        let currentComponent = this
+        currentComponent.setState({ isGreen: !this.state.isGreen })
         this.setState({ updatedValue: this.props.fieldValue })
 
         if (this.props.pairArr[this.props.id][0].pairHeader !== "") {
@@ -393,20 +410,6 @@ class FieldCard extends React.Component {
             this.refreshFieldCard()
         }
         this.render()
-    }
-
-    fileCallback = (data, title) => {
-        let currentComponent = this
-        if (title === "field_name" || title === "description" || title === "sample_comment") {
-            currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
-        }
-        else if (title === "first") {
-            currentComponent.setState({ updateValue: data })
-        }
-        else {
-            currentComponent.setState({ updatedValue: data })
-        }
-
     }
 
     getSizeCallback = (data) => {
@@ -501,8 +504,8 @@ class FieldCard extends React.Component {
                 <div className="ui label">
                     <div className="field_container1" >
                         <object className="fieldWidget">
-                            <div className="checkBox" onClick={this.changeColor}>
-                                <CheckboxExample isChecked={this.state.isGreen} />
+                            <div className="checkBox">
+                                <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                             <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
@@ -533,8 +536,8 @@ class FieldCard extends React.Component {
                 <div className="ui label">
                     <div className="field_container2">
                         <object className="fieldWidget">
-                            <div className="checkBox" onClick={this.changeColor}>
-                                <CheckboxExample isChecked={this.state.isGreen} />
+                            <div className="checkBox">
+                                <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                             <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
