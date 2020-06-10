@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
 import FormatDropdown from './FormatDropdown';
-import { removeContent } from '../actions';
+import { removeContent, clearSizeArray } from '../actions';
 
 
 class FieldCard extends React.Component {
@@ -360,12 +360,49 @@ class FieldCard extends React.Component {
 
 
     // onClick of the checkmark, change the color of the bar between green and white
-    changeColor = () => {
+
+    fileCallback = (data, title) => {
+        let currentComponent = this
+        if (title === "field_name" || title === "description" || title === "sample_comment") {
+            currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+        }
+        else if (title === "first") {
+            currentComponent.setState({ updateValue: data })
+        }
+        else {
+            currentComponent.setState({ updatedValue: data })
+        }
+
+    }
+
+    greenToggle = () => {
+        let currentComponent = this
+        currentComponent.setState({ isGreen: !this.state.isGreen })
+        this.setState({ updatedValue: this.props.fieldValue })
+
+        if (this.props.pairArr[this.props.id][0].pairHeader !== "") {
+            const sizeObj = {
+                cardID: this.props.id,
+                index: 0
+            }
+            this.props.clearSizeArray(sizeObj)
+            const obj = {
+                oldValue: this.props.ent[this.props.id + 1].oldValue,
+                value: this.props.ent[this.props.id + 1].value,
+                header: this.props.ent[this.props.id + 1].header,
+                id: this.props.id + 1,
+                isGreen: this.state.isGreen
+            }
+            this.props.removeContent(obj)
+
+        }
+
         const obj = {
             oldValue: this.props.fieldValue,
             value: this.props.fieldValue,
             header: this.props.fieldTitle,
-            id: this.props.id
+            id: this.props.id,
+            isGreen: !this.state.isGreen
         }
         this.props.removeContent(obj)
         this.setState({ isGreen: !this.state.isGreen })
@@ -373,17 +410,6 @@ class FieldCard extends React.Component {
             this.refreshFieldCard()
         }
         this.render()
-    }
-
-    fileCallback = (data, title) => {
-        let currentComponent = this
-        if (title === "field_name" || title === "description" || title === "sample_comment") {
-            currentComponent.setState({ updatedValue: this.props.fieldTitle + ":" + data })
-        }
-        else {
-            currentComponent.setState({ updatedValue: data })
-        }
-
     }
 
     getSizeCallback = (data) => {
@@ -399,6 +425,27 @@ class FieldCard extends React.Component {
 
     }
 
+    fieldMetricFunction = (firstInPair, secondInPair) => {
+        let finalProduct = parseInt(firstInPair);
+        console.log("First: " + finalProduct)
+
+        if (secondInPair !== "") {
+            let second = parseInt(secondInPair)
+            finalProduct = finalProduct + second / 10
+            console.log("Second: " + second)
+        }
+        else {
+            finalProduct = String(finalProduct) + ".0 cm"
+            return finalProduct
+        }
+
+        finalProduct = String(finalProduct) + " cm"
+
+        console.log("Final: " + finalProduct)
+
+        return finalProduct
+    }
+
     refreshFieldCard = () => {
         setTimeout(() => {
             this.setState({ isGreen: !this.state.isGreen });
@@ -408,12 +455,7 @@ class FieldCard extends React.Component {
         setTimeout(() => {
             this.setState({ isGreen: !this.state.isGreen });
         }, 10);
-
-
-
     };
-
-
 
 
     render() {
@@ -423,47 +465,14 @@ class FieldCard extends React.Component {
         //removes the unchecked field card
         if (this.props.hiding && this.state.isGreen === false)
             return null
-        
-        // a depreciated render case for field cards 
-        // else if (this.props.hiding)
-        //     return (
-        //         <div className="ui label">
-        //             <div className={this.btnClass}>
-                        
-        //                 <object className="fieldWidget">
-        //                     <div className="checkBox" onClick={this.changeColor}>
-        //                         <CheckboxExample isChecked={this.state.isGreen} />
-        //                     </div>
-        //                     <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-        //                     <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
-        //                 </object>
-                        
-        //                 <object className="arrow">
-        //                     <i class="fa fa-angle-double-right"></i>
-        //                 </object>
 
-        //                 <object className="dropDownWidget" align="right">
-                            
-        //                     <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                            
-        //                     {this.filterDrop()}
-                            
-        //                     {(this.state.sesarChosen === "size") ?
-        //                         <object className="alignLeft">
-        //                         <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
-        //                 </object>
-        //             </div>
-        //         </div>
-        //     )
-        
-        //returns the green styled field card
-        else if (this.state.isGreen) {
+        else if ((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) {
             return (
                 <div className="ui label">
                     <div className="field_container1" >
-                        <object className="fieldWidget">
-                            <div className="checkBox" onClick={this.changeColor}>
-                                <CheckboxExample isChecked={this.state.isGreen} />
+                        <object className="fieldWidgetNoCheckbox">
+                            <div className="checkBox">
+                                <div>----</div>
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                             <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
@@ -473,11 +482,47 @@ class FieldCard extends React.Component {
                         </object>
 
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            {((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) ?
+                                <div className="mappedValue">{this.fieldMetricFunction(this.props.ent[this.props.id - 1].value, this.props.ent[this.props.id].value)}</div>
+                                : <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            }
+
                             {this.filterDrop()}
-                            {(this.state.sesarChosen === "size") ?
+                            {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
+                        </object>
+
+                    </div>
+                </div>
+            )
+        }
+
+        //returns the green styled field card
+        else if (this.state.isGreen) {
+            return (
+                <div className="ui label">
+                    <div className="field_container1" >
+                        <object className="fieldWidget">
+                            <div className="checkBox">
+                                <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
+                            </div>
+                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                        </object>
+                        <object className="arrow">
+                            <i class="fa fa-angle-double-right"></i>
+                        </object>
+
+                        <object className="dropDownWidget" align="right">
+                            {((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) ?
+                                <div className="mappedValue">{this.fieldMetricFunction(this.props.ent[this.props.id - 1].value, this.props.ent[this.props.id].value)}</div>
+                                : <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            }
+                            {this.filterDrop()}
+                            {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
+                                <object className="alignLeft">
+                                    <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -491,8 +536,8 @@ class FieldCard extends React.Component {
                 <div className="ui label">
                     <div className="field_container2">
                         <object className="fieldWidget">
-                            <div className="checkBox" onClick={this.changeColor}>
-                                <CheckboxExample isChecked={this.state.isGreen} />
+                            <div className="checkBox">
+                                <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                             </div>
                             <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
                             <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
@@ -503,7 +548,7 @@ class FieldCard extends React.Component {
                             {this.filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"> </div>}
+                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -520,8 +565,10 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
-        hasChosen: state.hasChosenDateFormat
+        hasChosen: state.hasChosenDateFormat,
+        pairArr: state.sizeOuterArray,
+        hasInit: state.hasInit
     };
 };
 
-export default connect(mapStateToProps, { removeContent })(FieldCard);
+export default connect(mapStateToProps, { removeContent, clearSizeArray })(FieldCard);

@@ -78,3 +78,24 @@ export const clearSizeArray = obj => {
         payload: obj
     }
 }
+
+export const clearSingleMeasureArray = obj => {
+    return {
+        type: "CLEAR_SINGLE_MEASURE",
+        payload: obj
+    }
+}
+
+export const addSingleMeasure = obj => {
+    return {
+        type: "ADD_SINGLE_MEASURE",
+        payload: obj
+    }
+}
+
+export const setSecondToSize = obj => {
+    return {
+        type: "SET_SECOND",
+        payload: obj
+    }
+}

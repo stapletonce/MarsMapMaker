@@ -1,17 +1,18 @@
 import React from "react";
-import "semantic-ui-react";
 import { connect } from "react-redux";
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray } from "../actions/"
+
+//CSS & Styling
+import "semantic-ui-react";
+
+//Action Creators
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent } from "../actions/"
 
 class DropDown extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            century: null,
             list: this.props.list,
-            currentChosen: null,
-            headerTitle: this.props.title,
             value: "select",
             selectedValue: "",
             sesarOneToOne: this.props.one2one
@@ -298,20 +299,6 @@ class DropDown extends React.Component {
         console.log(this.props.multiValues)
     }
 
-    // function for detecting if choosing another selection is valid (IN REGARDS TO SIZE AND MEASUREMENT)
-
-    sizeArrayUpdate = () => {
-
-        //
-
-        // if id of current selection this.props.ent[id].sesarTitle === "size" && sizeArray[0] & sizeArray[1] have content then send an alert message 
-
-
-
-
-
-
-    }
 
 
 
@@ -321,7 +308,21 @@ class DropDown extends React.Component {
         const newValue = e.target.value
         let breakOrFormat;
 
-
+        if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
+            const sizeObj = {
+                cardID: this.props.id,
+                index: 0
+            }
+            this.props.clearSizeArray(sizeObj)
+            const obj = {
+                oldValue: this.props.fieldValue,
+                value: this.props.fieldValue,
+                header: this.props.fieldTitle,
+                id: this.props.id + 1,
+                isGreen: this.state.isGreen
+            }
+            this.props.removeContent(obj)
+        }
 
         if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
             let obj = {
@@ -404,7 +405,7 @@ class DropDown extends React.Component {
 
     }
 
-    sizeArrayLoop = (fTitle) => {
+    sizeArrayLoop = () => {
         let count = 0;
         for (let i = 0; i < this.props.ent.length; i++) {
             if (this.props.ent[i].sesarTitle === "size")
@@ -419,6 +420,8 @@ class DropDown extends React.Component {
         let num = -1
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
+
+
             num += 1
             if (num === 0)
                 return <option key={f.title} value="Sesar Selection" disabled selected hidden>Sesar Selection</option>;
@@ -451,11 +454,23 @@ class DropDown extends React.Component {
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
-        return (
-            <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
-                {this.props.list.map((field) => filter(field))}
-            </select>
-        );
+
+        if (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "") {
+            return (
+
+                <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                    <option key={"size"} value={"size"}>size</option>
+                </select>
+            );
+        } else {
+            return (
+
+                <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                    {this.props.list.map((field) => filter(field))}
+                </select>
+            );
+        }
+
     }
 }
 
@@ -470,10 +485,12 @@ const mapStateToProps = (state) => {
         hasChosenCentury: state.centuryChosen,
         century: state.century,
         multiValues: state.multiValues,
-        sizeArray: state.sizeArray
+        sizeArray: state.sizeArray,
+        hasInit: state.hasInit,
+        pairArr: state.sizeOuterArray
     };
 };
 
 
 
-export default connect(mapStateToProps, { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);

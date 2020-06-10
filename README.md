@@ -1,3 +1,36 @@
+Mars Map Maker
+-----------------------------------------------------------------------------------------------
+Hello and welcome to Mars Map Maker. This is an app that is being created to work in tandem with MARS from CIRDLES to allow
+entitites to properly register their rock samples with SESAR (System for Earth Sample Registration) to aquire their IGSN 
+(International Geo Sample Number). It's general purpose is to allow the user to submit an example file that contains a portion 
+of their own data and it's metadata and to interact with the user to output a javascript mapping file that allows a mapping 
+between their metadata and SESAR's metadata. If you would like to demo Mars Map Maker in its current development to see its 
+progress or to contribute follow the steps listed below.
+
+How to Demo Mars Map Maker
+-----------------------------------------------------------------------------------------------
+1) clone this repository 
+2) install npm (make sure to click the checkbox during the process that says automatically install the necessary tools....)
+3) navigate to the cloned folder in your terminal/powershell (if using windows)
+4) type "npm install" and allow for the installation to complete
+5) type "npm start" and wait for the window to pop up in your browser
+  (it defaults to port 3000, but if used will attempt to use 3001 and so on....)
+
+
+
+
+
+
+
+
+
+
+
+
+
+Create React App info
+----------------------------------------------------------------------------------------------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

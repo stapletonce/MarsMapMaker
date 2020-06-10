@@ -25,7 +25,29 @@ const CardList = (props) => {
 
     const objArray = []
     const useOnce = []
+    const outerArr = []
+    const singleMeasure = []
     let newKey = -1
+    const singleMeasureObj = {
+        pairHeader: "",
+        pairValue: "",
+        currentID: -1
+    }
+
+    const sizeArray = [
+        // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
+        // In the case of a single measurement for size, on the last object is used [x, x, 2]
+        {
+            pairHeader: "",
+            pairValue: "",
+            currentID: -1
+        },
+        {
+            pairHeader: "",
+            pairValue: "",
+            currentID: -1
+        }
+    ]
     const dateFormatOption = [
         { title: "Select Date Format" },
         { title: "DD/MM/YY or DD-MM-YY", value: "substring", type: "date" },
@@ -69,21 +91,26 @@ const CardList = (props) => {
     // hasContent: for initial filtering of checked cards
 
     const fields = props.fields.map((field) => {
-
+        newKey += 1
         //create an object and add it to store
         const storedValue = {
+            id: newKey,
             sesarTitle: "",
             oldValue: props.fieldVal[field],
             value: props.fieldVal[field],
-            id: field,
+            // this used to be id 
+            header: field,
             isDate: false,
-            isMeasurement: false
+            isMeasurement: false,
+            isGreen: props.fieldVal[field] !== ""
         }
 
         // after object is created, append it to the object array & add one to the ID
         objArray.push(storedValue)
         useOnce.push("")
-        newKey += 1
+        outerArr.push(sizeArray)
+        singleMeasure.push(singleMeasureObj)
+
 
         // create the FieldCard that you see in the UI
         return (
@@ -101,9 +128,12 @@ const CardList = (props) => {
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
+
         const initObj = {
             objArr: objArray,
-            useOnce: useOnce
+            useOnce: useOnce,
+            sizeOuter: outerArr,
+            singleMeasureArr: singleMeasure
         }
         props.firstState(initObj)
     }, []);
@@ -115,7 +145,8 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.sizeArray)
+        console.log(props.sizeOuter)
+        console.log(props.singleMeasure)
         console.log(props.ent)
     }
 
@@ -124,7 +155,7 @@ const CardList = (props) => {
 
         for (let j = 0; j < 3; j++) {
             if (options.indexOf(props.ent[index].sesarTitle) !== -1) {
-                multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ":" + props.ent[index].value)
+                multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
                 break
             }
         }
@@ -147,14 +178,16 @@ const CardList = (props) => {
         let options = ["field_name", "description", "sample_comment"]
         let multiValueArr = [[], [], []]
         let mapPreviewArr = []
-        let sizeSelection = ["", ""]
+        let sizeSelection = ["", "", "", ""]
         mapPreviewArr.push("-----MAP PREVIEW-----")
-        sizeSelection[0] = "-----SIZE SELECTION PREVIEW-----"
+        sizeSelection[0] = "-----SIZE SELECTION PAIRS-----"
+        sizeSelection[2] = "-----SIZE SELECTION SINGLES-----"
+
 
         /////////////////////////////////////////////////////////
         /////////// Display Preview of Multi-Value Selections
         for (let i = 0; i < props.ent.length; i++) {
-            if (props.ent[i].sesarTitle !== "") {
+            if (props.ent[i].sesarTitle !== "" && props.ent[i].sesarTitle !== "size") {
                 mapPreviewArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
             }
             multiValueArrHelper(options, i, multiValueArr)
@@ -162,6 +195,7 @@ const CardList = (props) => {
         for (let i = 0; i < 3; i++) {
             multiValueArr[i] = multiValueArr[i].join(";")
         }
+
 
         appendTitleToFront(multiValueArr, options)
 
@@ -179,14 +213,22 @@ const CardList = (props) => {
 
         //////////////////////////////////////
         // Display Size Selection Preview
-        if (props.sizeArray[2].pairHeader !== "")
-            sizeSelection[1] = "[" + props.sizeArray[2].pairHeader + "]"
-        else if (props.sizeArray[2].pairHeader === "" && (props.sizeArray[0].pairHeader === "" || props.sizeArray[1].pairHeader === "")) {
-            alert("No size selection has been made...")
-            return
+        for (let i = 0; i < props.ent.length; i++) {
+            if (props.outerArr[i][0].pairHeader !== "") {
+                if (sizeSelection[1] !== "")
+                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+                else
+                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+            }
         }
-        else
-            sizeSelection[1] = "[" + props.sizeArray[0].pairHeader + ", " + props.sizeArray[1].pairHeader + "]"
+        for (let i = 0; i < props.ent.length; i++) {
+            if (props.singleMeasure[i].pairHeader !== "") {
+                if (sizeSelection[3] !== "")
+                    sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
+                else
+                    sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
+            }
+        }
         alert(sizeSelection.join("\n"))
     }
 
@@ -257,7 +299,10 @@ const CardList = (props) => {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
-        sizeArray: state.sizeArray
+        sizeArray: state.sizeArray,
+        sizeOuter: state.sizeOuterArray,
+        singleMeasure: state.singleMeasureArr,
+        outerArr: state.sizeOuterArray
     };
 };
 
