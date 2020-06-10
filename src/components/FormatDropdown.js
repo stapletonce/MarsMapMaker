@@ -18,6 +18,27 @@ class FormatDropdown extends React.Component {
         return count
     }
 
+    metricFunction = (firstInPair, secondInPair) => {
+
+        // alert box for anything that isn't an integer of cm or mm
+
+
+        let finalProduct = parseInt(firstInPair);
+
+        if (secondInPair !== "") {
+            let second = parseInt(secondInPair)
+            finalProduct = finalProduct + second / 10
+        }
+        else {
+            finalProduct = String(finalProduct) + ".0 cm"
+            return finalProduct
+        }
+
+        finalProduct = String(finalProduct) + " cm"
+
+        return finalProduct
+    }
+
     updateValue = e => {
         let value = e.target.value
         let dex = -1
@@ -85,6 +106,7 @@ class FormatDropdown extends React.Component {
                 this.props.refresh()
                 return
             }
+
             const obj = {
                 id: this.props.id
             }
@@ -139,6 +161,9 @@ class FormatDropdown extends React.Component {
             }
             this.props.addToSizeArray(objSizeArr)
             this.props.setSecondToSize(objEntArr)
+
+            this.props.callback(this.metricFunction(this.props.ent[this.props.id].value, this.props.ent[this.props.id + 1].value))
+
         } else {
             const obj = {
                 header: this.props.title,
