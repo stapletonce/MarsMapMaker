@@ -361,6 +361,7 @@ class FieldCard extends React.Component {
 
     // onClick of the checkmark, change the color of the bar between green and white
     changeColor = () => {
+        this.setState({ updatedValue: this.props.fieldValue })
 
         if (this.props.pairArr[this.props.id][0].pairHeader !== "") {
             const sizeObj = {
@@ -369,9 +370,9 @@ class FieldCard extends React.Component {
             }
             this.props.clearSizeArray(sizeObj)
             const obj = {
-                oldValue: this.props.fieldValue,
-                value: this.props.fieldValue,
-                header: this.props.fieldTitle,
+                oldValue: this.props.ent[this.props.id + 1].oldValue,
+                value: this.props.ent[this.props.id + 1].value,
+                header: this.props.ent[this.props.id + 1].header,
                 id: this.props.id + 1,
                 isGreen: this.state.isGreen
             }
@@ -397,7 +398,10 @@ class FieldCard extends React.Component {
     fileCallback = (data, title) => {
         let currentComponent = this
         if (title === "field_name" || title === "description" || title === "sample_comment") {
-            currentComponent.setState({ updatedValue: this.props.fieldTitle + ":" + data })
+            currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+        }
+        else if (title === "first") {
+            currentComponent.setState({ updateValue: data })
         }
         else {
             currentComponent.setState({ updatedValue: data })
@@ -416,6 +420,27 @@ class FieldCard extends React.Component {
             currentComponent.setState({ sesarChosen: "meeper" })
         }
 
+    }
+
+    fieldMetricFunction = (firstInPair, secondInPair) => {
+        let finalProduct = parseInt(firstInPair);
+        console.log("First: " + finalProduct)
+
+        if (secondInPair !== "") {
+            let second = parseInt(secondInPair)
+            finalProduct = finalProduct + second / 10
+            console.log("Second: " + second)
+        }
+        else {
+            finalProduct = String(finalProduct) + ".0 cm"
+            return finalProduct
+        }
+
+        finalProduct = String(finalProduct) + " cm"
+
+        console.log("Final: " + finalProduct)
+
+        return finalProduct
     }
 
     refreshFieldCard = () => {
@@ -454,11 +479,15 @@ class FieldCard extends React.Component {
                         </object>
 
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            {((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) ?
+                                <div className="mappedValue">{this.fieldMetricFunction(this.props.ent[this.props.id - 1].value, this.props.ent[this.props.id].value)}</div>
+                                : <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            }
+
                             {this.filterDrop()}
                             {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
+                                    <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
@@ -483,11 +512,14 @@ class FieldCard extends React.Component {
                         </object>
 
                         <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            {((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) ?
+                                <div className="mappedValue">{this.fieldMetricFunction(this.props.ent[this.props.id - 1].value, this.props.ent[this.props.id].value)}</div>
+                                : <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            }
                             {this.filterDrop()}
                             {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
                                 <object className="alignLeft">
-                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
+                                    <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
                     </div>
