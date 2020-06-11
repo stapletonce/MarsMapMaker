@@ -41,7 +41,7 @@ class FieldCard extends React.Component {
             {
                 selected: false,
                 id: 2,
-                title: "current archive",
+                title: "current_archive",
                 key: "field",
                 type: "text",
                 format: "one2one"

@@ -212,8 +212,8 @@ class FormatDropdown extends React.Component {
             return (
                 <select onChange={this.updateValue}>
                     <option value={"choose data format"} disabled selected hidden>format type</option>
-                    <option value={"first"}>1st in Pair </option>
-                    <option value={"measurement"}>Measurement</option>
+                    <option value={"first"}>1st in pair </option>
+                    <option value={"measurement"}>single field</option>
                 </select>
             );
         }
