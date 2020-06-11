@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
 // Components
+import MapOutput from './MapOutput';
 import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
@@ -145,7 +146,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.sizeOuter)
+        console.log(props.multi)
         console.log(props.singleMeasure)
         console.log(props.ent)
     }
@@ -250,11 +251,12 @@ const CardList = (props) => {
                         <CenturyDropDown className="requireOption" />
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                     </div>
-
-                    <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
+                        {/*replace this div with new component*/}
+                    {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
                         <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>
                         <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
-                    </div>
+                    </div> */}
+                    <MapOutput/>
 
                     <div style={{ paddingTop: "3em" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
@@ -302,7 +304,8 @@ const mapStateToProps = (state) => {
         sizeArray: state.sizeArray,
         sizeOuter: state.sizeOuterArray,
         singleMeasure: state.singleMeasureArr,
-        outerArr: state.sizeOuterArray
+        outerArr: state.sizeOuterArray,
+        multi: state.multiValues
     };
 };
 
