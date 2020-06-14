@@ -99,3 +99,10 @@ export const setSecondToSize = obj => {
         payload: obj
     }
 }
+
+export const setSubstringDateFormat = obj => {
+    return {
+        type: "SET_SUB",
+        payload: obj
+    }
+}
