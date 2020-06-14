@@ -88,7 +88,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "numbers",
                 message: "Date when the sample was collected. The format is YYYY-MM-DDTHH:MM:SSZ",
-                format: "dateFormat"
+                format: "one2one"
             },
             {
                 selected: false,
@@ -97,7 +97,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "numbers",
                 message: "Date when the sample collection was finished",
-                format: "dateFormat"
+                format: "one2one"
             },
             {
                 selected: false,

@@ -146,8 +146,8 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.multi)
-        console.log(props.singleMeasure)
+        console.log(props.setDa)
+        console.log(props.cent)
         console.log(props.ent)
     }
 
@@ -305,7 +305,9 @@ const mapStateToProps = (state) => {
         sizeOuter: state.sizeOuterArray,
         singleMeasure: state.singleMeasureArr,
         outerArr: state.sizeOuterArray,
-        multi: state.multiValues
+        multi: state.multiValues,
+        setDa: state.substringDateFormat,
+        cent: state.century
     };
 };
 

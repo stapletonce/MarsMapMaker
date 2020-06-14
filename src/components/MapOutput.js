@@ -8,8 +8,87 @@ import mars from '../icons/planet.png';
 class MapOutput extends React.Component {
     constructor(props) {
         super(props);
+       
 
     }
+
+    //this takes in the chosen date format and creates the text that corresponds to how the user wants the entry to be manipulated
+    createDateFormatString = (chosenFormat) => {
+        let y = ""
+        let d = ""
+        let m = ""
+        let prefix = ""
+        switch (chosenFormat) {
+            case "YYYYMMDD":
+                y = "0,4"
+                d = "6,2"
+                m = "4,2"
+                break
+            case "YYYYDDMM":
+                y = "0,4"
+                d = "4,2"
+                m = "6,2"
+                break
+            case "DDMMYYYY":
+                y = "4,4"
+                d = "0,2"
+                m = "2,2"
+                break
+            case "MMDDYYYY":
+                y = "4,4"
+                d = "2,2"
+                m = "0,2"
+                break
+            case "YYYY/MM/DD":
+                y = "0,4"
+                d = "8,2"
+                m = "5,2"
+                break
+            case "YYYY/DD/MM":
+                y = "0,4"
+                d = "5,2"
+                m = "8,2"
+                break
+            case "MM/DD/YYYY":
+                y = "6,4"
+                d = "3,2"
+                m = "0,2"
+                break;
+            case "DD/MM/YYYY":
+                y = "6,4"
+                d = "0,2"
+                m = "3,2"
+                break;
+            case "YY/MM/DD":
+                prefix = this.props.centuryChosen.substr(0,2)
+                y = "0,2"
+                d = "6,2"
+                m = "3,2"
+                break;
+            case "MM/DD/YY":
+                prefix = this.props.centuryChosen.substr(0,2)
+                y = "6,2"
+                d = "3,2"
+                m = "0,2"
+                break;
+            case "YY/DD/MM":
+                prefix = this.props.centuryChosen.substr(0,2)
+                y = "0,2"
+                d = "3,2"
+                m = "6,2"
+                break;
+            case "DD/MM/YY":
+                prefix = this.props.centuryChosen.substr(0,2)
+                y = "6,2"
+                d = "0,2"
+                m = "3,2"
+                break;
+        }
+
+        let letDateString = "const scrippsDate = (scrippsValue) => {\n  const y  =  \"" + prefix + "\" + " + "scrippsValue.substr(" + y + ")\n  const d = scrippsValue.substr(" + d + ")\n  const m = scrippsValue.substr(" + m + ")\n  return y + '-' + m + '-' + d + 'T00:00:00Z'\n}\n"
+        return letDateString
+    }
+
     //this method loops through the array entries in the store multiple times to append to the string based on corresponding SesarTitles selected that
     createMapString() {
         let letMapString = "let map = {\n"
@@ -120,17 +199,23 @@ class MapOutput extends React.Component {
             }
         }
 
-            let appendingString = singlesAppendingString + multiAppendingString + "}\n"
+        let appendingString = singlesAppendingString + multiAppendingString + "}\n"
 
         letMapString = letMapString.concat(appendingString)
         
         return letMapString
     }
 
+    finalAppend = () => {
+        let fileString = "//Start::::\n"
+        alert(this.props.dateFormat)
+        return fileString + this.createDateFormatString(this.props.dateFormat) + this.createMapString()
+    }
 
 
     createMapFile = () => {
-        const fileOutput = new Blob([ this.createMapString() ] ,{type: "text/javascript;charset=utf-8"})
+        
+        const fileOutput = new Blob([ this.finalAppend() ] ,{type: "text/javascript;charset=utf-8"})
         saveAs(fileOutput, "test.js")
     }
 
@@ -149,7 +234,9 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         multiValue: state.multiValues,
         pairMeasurement: state.sizeOuterArray,
-        singleMeasure: state.singleMeasureArr
+        singleMeasure: state.singleMeasureArr,
+        dateFormat: state.substringDateFormat,
+        centuryChosen: state.century
     };
 };
     

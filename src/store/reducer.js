@@ -57,12 +57,14 @@ const reducer =
           concatValues: []
         }],
       centuryChosen: false,
+      century: "",
       sesarOne2One: [],
       numOfOneToOne: 0,
       chosenDateFormat: null,
       hasChosenDateFormat: false,
       hasChosenDropdownOption: false,
-      hasTwoYs: false
+      hasTwoYs: false,
+      substringDateFormat: "start"
     },
     action) => {
 
@@ -284,6 +286,12 @@ const reducer =
             }
           }
         )
+
+        case "SET_SUB":
+          return update(state,
+            {
+              substringDateFormat: {$set: action.payload.substringDateFormat}})
+            
 
 
       default:

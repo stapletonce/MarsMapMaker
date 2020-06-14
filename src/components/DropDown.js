@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import "semantic-ui-react";
 
 //Action Creators
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent } from "../actions/"
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat } from "../actions/"
 
 class DropDown extends React.Component {
 
@@ -21,7 +21,6 @@ class DropDown extends React.Component {
 
 
     logicHelper = (fS, fA, dS) => {
-
         if (fS.includes("YYYY")) {
             for (let i = 0; i < 3; i++) {
                 if (fS[i] === "YYYY" && dS[i].length !== 4) {
@@ -111,6 +110,7 @@ class DropDown extends React.Component {
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
+        let dateFormatID = ""
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -129,11 +129,25 @@ class DropDown extends React.Component {
 
         // if format chosen contains delimiters
         if (format.includes("/") || format.includes("-")) {
+            
+            //substring to identify dateFunction to its unique format in cases of dates structured with delimiters in differing lengths
+            if (format[2] === "/") {
+                const dateObj = { substringDateFormat: format.substring(0,8)}
+                
+                this.props.setSubstringDateFormat(dateObj)
+            }
+            else {
+                const dateObj = { substringDateFormat: format.substring(0,10)}
+                
+                this.props.setSubstringDateFormat(dateObj)
+            }
+
             let dateSplit = value.split(/[-/]/)
             let formatSplit = format.split(/[-/ ]/)
-
-
-            if (!this.props.hasChosenCentury) {
+            console.log("Date Split is here: " + dateSplit)
+            console.log("Format Split is here: " + formatSplit)
+            console.log(" Format: "+ format)
+            if (!this.props.hasChosenCentury && (format[2] !== 'Y' && format[3] !== 'Y')) {
 
                 alert("You have not selected a century!")
                 this.props.refresh()
@@ -141,7 +155,7 @@ class DropDown extends React.Component {
                 return
             }
 
-
+            
 
             else if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
 
@@ -163,6 +177,7 @@ class DropDown extends React.Component {
             }
             // if DD-MM-YYYY is selected instead of just DD-MM-YY
             else {
+                console.log("Hey my datesplit is working with YYYY")
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 
             }
@@ -185,6 +200,12 @@ class DropDown extends React.Component {
         }
 
         // if format chosen comes in the form of yyyymmdd etc...
+        if (format.length === 8) {
+            const dateObj = { substringDateFormat: format.substring(0,8)}
+                
+            this.props.setSubstringDateFormat(dateObj)
+        }
+        
         let dateSplit = value.split('')
         let formatSplit = format.split('')
         let newDateSplit = ["", "", ""]
@@ -233,7 +254,6 @@ class DropDown extends React.Component {
         }
 
         update = this.logicHelper(newFormatSplit, finalArray, newDateSplit)
-
         if (update === null || update === undefined) {
             return
         }
@@ -493,4 +513,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat })(DropDown);
