@@ -146,9 +146,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.setDa)
-        console.log(props.cent)
-        console.log(props.ent)
+        console.log(props.outerArr)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
