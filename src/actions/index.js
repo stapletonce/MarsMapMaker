@@ -106,3 +106,10 @@ export const setSubstringDateFormat = obj => {
         payload: obj
     }
 }
+
+export const changeInit = obj => {
+    return {
+        type: "CHANGE_INIT",
+        payload: obj
+    }
+}
