@@ -83,10 +83,39 @@ class MapOutput extends React.Component {
                 d = "0,2"
                 m = "3,2"
                 break;
+            default:
         }
 
-        let letDateString = "const scrippsDate = (scrippsValue) => {\n  const y  =  \"" + prefix + "\" + " + "scrippsValue.substr(" + y + ")\n  const d = scrippsValue.substr(" + d + ")\n  const m = scrippsValue.substr(" + m + ")\n  return y + '-' + m + '-' + d + 'T00:00:00Z'\n}\n"
+        let letDateString = "const scrippsDate = (scrippsValue) => {\n  const y  =  \"" + prefix + "\" + " + "scrippsValue.substr(" + y + ")\n  const d = scrippsValue.substr(" + d + ")\n  const m = scrippsValue.substr(" + m + ")\n  return y + '-' + m + '-' + d + 'T00:00:00Z'\n}\n\n"
         return letDateString
+    }
+
+    createSizeConversionString(precisionChosen) {
+        //must find which field contains the presicion field and what unit it is in
+        //default to MM which is 10
+        let secondInPair = []
+        let unit = { size: "mm",
+                    divisor: "10"}
+
+        //populates precision fields chosen
+        for (let i = 0; i < this.props.sizeArr.length; i++) {
+            if (this.props.sizeArr[i][1].pairHeader !== "")
+                secondInPair = secondInPair.concat( "\"" + this.props.sizeArr[i][1].pairHeader + "\"")
+        }            
+        alert("you have chosen" + secondInPair)
+        let stringVersion = secondInPair.join(",")
+        let sizeString = `const size = (scrippsValue, scrippsKey) => {
+  let chosenPrecision =[" + stringVersion + "]  
+  return chosenPrecision.includes(scrippsKey) ? scrippsValue/" + unit.divisor + " : scrippsValue\n}\n\n`
+
+        return sizeString
+    }
+
+    createMulitValueJoins() {
+        const keyValueString = "const keyValueString = (scrippsValue, scrippsKey) => {\n  return scrippsKey + ' : ' + scrippsValue\n}\n\n"
+        const delimit = "const delimit = (valueArray) => {\n  return valueArray.join(';')\n}\n\n"
+
+        return keyValueString + delimit
     }
 
     //this method loops through the array entries in the store multiple times to append to the string based on corresponding SesarTitles selected that
@@ -129,11 +158,11 @@ class MapOutput extends React.Component {
             this.props.ent[i].sesarTitle !== "size"){
   
                 if (i !== singleLastIndexOfContent || i + 1 >= this.props.ent.length)
-                    singlesAppendingString += "     " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header + ",\n"
+                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header + ",\n"
                 else if (i === lastIndexOfContent && field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0)
-                    singlesAppendingString += "     " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header
+                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header
                 else if (i === singleLastIndexOfContent)
-                    singlesAppendingString += "     " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header + ",\n"
+                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header + ",\n"
             }
             
         }
@@ -158,7 +187,7 @@ class MapOutput extends React.Component {
         }
         if (sample_found > -1){
             
-            multiAppendingString += "     sample_comment: ["
+            multiAppendingString += "  sample_comment: ["
             for (let z = 0; z < this.props.ent.length; z++){
                 if (this.props.ent[z].sesarTitle === "sample_comment"){
                     if (z === sample_found && (size_found < 0 || description_found < 0))
@@ -173,7 +202,7 @@ class MapOutput extends React.Component {
 
         if (description_found > -1){
             
-            multiAppendingString += "     description: ["
+            multiAppendingString += "  description: ["
             for (let z = 0; z < this.props.ent.length; z++){
                 if (this.props.ent[z].sesarTitle === "description"){
                     if (z === description_found && (size_found < 0))
@@ -188,7 +217,7 @@ class MapOutput extends React.Component {
 
         if (size_found > -1){
             
-            multiAppendingString += "     size: ["
+            multiAppendingString += "  size: ["
             for (let z = 0; z < this.props.ent.length; z++){
                 if (this.props.ent[z].sesarTitle === "size"){
                     if (z === size_found)
@@ -199,17 +228,39 @@ class MapOutput extends React.Component {
             }
         }
 
-        let appendingString = singlesAppendingString + multiAppendingString + "}\n"
+        let appendingString = singlesAppendingString + multiAppendingString + "}\n\n"
 
         letMapString = letMapString.concat(appendingString)
         
         return letMapString
     }
 
+    createLogicAndCombination() {
+        const logic = `let logic = {
+  collection_start_date: scrippsDate,  
+  collection_end_date: scrippsDate,
+  field_name: keyValueString, 
+  description: keyValueString,
+  sample_comment: keyValueString,
+  size: size
+  \}\n\n`
+
+        const combination = `let combinations = {
+  field_name: delimit,
+  description: delimit,
+  sample_comment: delimit,
+  size: summate
+\}\n\n`
+
+        const endOfFile = "return {map, logic, combinations}\n"
+        
+        return logic + combination + endOfFile
+    }
+
     finalAppend = () => {
         let fileString = "//Start::::\n"
-        alert(this.props.dateFormat)
-        return fileString + this.createDateFormatString(this.props.dateFormat) + this.createMapString()
+        
+        return fileString + this.createSizeConversionString("mm") + this.createMulitValueJoins() + this.createDateFormatString(this.props.dateFormat) + this.createMapString() + this.createLogicAndCombination()
     }
 
 
@@ -232,6 +283,7 @@ class MapOutput extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
+        sizeArr: state.sizeOuterArray,
         multiValue: state.multiValues,
         pairMeasurement: state.sizeOuterArray,
         singleMeasure: state.singleMeasureArr,
