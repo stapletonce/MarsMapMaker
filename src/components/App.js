@@ -2,6 +2,10 @@ import React from 'react';
 import CardList from './CardList';
 import FileIn from './FileIn';
 
+import { connect } from 'react-redux';
+
+import { changeInit } from '../actions';
+
 // helper function to set up 'fieldNames' array for the App State
 const parser = (fieldName, length) => {
     let arr = [];
@@ -20,17 +24,33 @@ class App extends React.Component {
 
     // callback function that retrieves data from file, passed through FileIn.js
     // sets state of the the fieldNames, and fieldValues arrays used throughout program
-    fileCallback = (datafromFile) => {
+    fileCallback = (datafromFile, totalSize) => {
 
         let currentComponent = this;
+        let newNames = this.state.fieldNames.slice()
+
+
+        newNames = newNames.concat(Object.keys(datafromFile.data[0]))
+
+        let newValues = this.state.fieldValues
+        newValues = newValues.concat(Object.values(datafromFile.data[0]))
+
 
         currentComponent.setState({
             fieldNames:
-                parser(datafromFile.meta.fields, datafromFile.meta.fields.length),
+                newNames,
             fieldValues:
-                datafromFile.data[0],
+                newValues,
             continue: true
         });
+
+        if (this.state.fieldNames.length === totalSize) {
+            const obj = {
+                bool: true
+            }
+            this.props.hasInit(obj)
+        }
+
     }
 
     // React says we have to define render!! You have to display JSX!
@@ -50,4 +70,15 @@ class App extends React.Component {
     };
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        ent: state.entries,
+        useOnce: state.useOnce,
+        dateFormat: state.chosenDateFormat,
+        hasChosen: state.hasChosenDateFormat,
+        pairArr: state.sizeOuterArray,
+        hasInit: state.hasInit
+    };
+};
+
+export default connect(mapStateToProps, { changeInit })(App);
