@@ -83,6 +83,7 @@ class MapOutput extends React.Component {
                 d = "0,2"
                 m = "3,2"
                 break;
+            default:
         }
 
         let letDateString = "const scrippsDate = (scrippsValue) => {\n  const y  =  \"" + prefix + "\" + " + "scrippsValue.substr(" + y + ")\n  const d = scrippsValue.substr(" + d + ")\n  const m = scrippsValue.substr(" + m + ")\n  return y + '-' + m + '-' + d + 'T00:00:00Z'\n}\n\n"
