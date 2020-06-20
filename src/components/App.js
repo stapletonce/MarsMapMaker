@@ -1,19 +1,14 @@
 import React from 'react';
+import mars from '../icons/mars.png'
 import CardList from './CardList';
 import FileIn from './FileIn';
+import classNames from 'classnames';
 
 import { connect } from 'react-redux';
-
 import { changeInit } from '../actions';
 
 // helper function to set up 'fieldNames' array for the App State
-const parser = (fieldName, length) => {
-    let arr = [];
-    for (let i = 0; i < length; i++) {
-        arr[i] = fieldName[i];
-    }
-    return (arr);
-}
+
 
 class App extends React.Component {
     constructor(props) {
@@ -90,10 +85,19 @@ class App extends React.Component {
 
     }
 
+
+
     // React says we have to define render!! You have to display JSX!
     render() {
+        let readerClass = classNames({
+            'marsPhoto': this.state.continue === false,
+            'marsPhoto1': this.state.continue === true
+        });
+
         return (
             <div>
+                <img className={readerClass} src={mars} alt="marsphoto"></img>
+
                 <FileIn
                     callbackFromParent={this.fileCallback}
                 />
