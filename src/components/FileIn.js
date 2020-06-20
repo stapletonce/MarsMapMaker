@@ -3,6 +3,7 @@ import Papa from 'papaparse';
 import './App.css';
 import classNames from 'classnames';
 
+
 class FileIn extends React.Component {
 
     constructor() {
@@ -100,7 +101,6 @@ class FileIn extends React.Component {
         });
 
         return (
-
             <div className={readerClass}>
                 <h2>Import CSV File!</h2>
 
