@@ -42,7 +42,6 @@ class FormatDropdown extends React.Component {
     updateValue = e => {
         let value = e.target.value
         let dex = -1
-        let sizeArray = this.props.sizeArray
 
         // If "First in Pair" is selected
         if (value === "first") {
