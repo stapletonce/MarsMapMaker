@@ -5,7 +5,7 @@ import FileIn from './FileIn';
 import classNames from 'classnames';
 
 import { connect } from 'react-redux';
-import { changeInit } from '../actions';
+import { changeInit } from '../actions/';
 
 // helper function to set up 'fieldNames' array for the App State
 
@@ -80,7 +80,7 @@ class App extends React.Component {
             const obj = {
                 bool: true
             }
-            this.props.hasInit(obj)
+            this.props.changeInit(obj)
         }
 
     }

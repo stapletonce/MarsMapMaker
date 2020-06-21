@@ -76,12 +76,13 @@ const reducer =
           entries: state.entries.concat(action.payload.objArr),
           useOnce: state.useOnce.concat(action.payload.useOnce),
           sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
-          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr),
+          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
 
         }
 
       case "CHANGE_INIT":
         return {
+          ...state,
           hasInit: action.payload.bool
         }
 

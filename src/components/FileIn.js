@@ -87,7 +87,7 @@ class FileIn extends React.Component {
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         var data = result;
-        this.props.callbackFromParent(data, this.state.totalFileSize)
+        this.props.callbackFromParent(data, Object.keys(data.data[0]).length)
     }
 
     render() {
