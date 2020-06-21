@@ -52,8 +52,6 @@ class FileIn extends React.Component {
     // onclick helper function to parse the CSV with PapaParse 
     importCSV = () => {
 
-        const { csvfile } = this.state;
-
         if (this.state.files === undefined) {
             this.refreshFileIn()
             alert("You have not selected a file!")
