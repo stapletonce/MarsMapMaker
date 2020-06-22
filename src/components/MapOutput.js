@@ -104,9 +104,7 @@ class MapOutput extends React.Component {
         }            
         alert("you have chosen" + secondInPair)
         let stringVersion = secondInPair.join(",")
-        let sizeString = `const size = (scrippsValue, scrippsKey) => {
-  let chosenPrecision =[" + stringVersion + "]  
-  return chosenPrecision.includes(scrippsKey) ? scrippsValue/" + unit.divisor + " : scrippsValue\n}\n\n`
+        let sizeString = "const size = (scrippsValue, scrippsKey) => {\n  let chosenPrecision =[" + stringVersion + "]\n  return chosenPrecision.includes(scrippsKey) ? scrippsValue/" + unit.divisor + " : scrippsValue\n}\n\n"
 
         return sizeString
     }
