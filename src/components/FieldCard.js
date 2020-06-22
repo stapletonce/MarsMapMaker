@@ -414,7 +414,6 @@ class FieldCard extends React.Component {
 
     getSizeCallback = (data) => {
         let currentComponent = this
-        console.log(data)
         if (data === "size") {
             currentComponent.setState({ sesarChosen: data })
             return
@@ -427,12 +426,10 @@ class FieldCard extends React.Component {
 
     fieldMetricFunction = (firstInPair, secondInPair) => {
         let finalProduct = parseInt(firstInPair);
-        console.log("First: " + finalProduct)
 
         if (secondInPair !== "") {
             let second = parseInt(secondInPair)
             finalProduct = finalProduct + second / 10
-            console.log("Second: " + second)
         }
         else {
             finalProduct = String(finalProduct) + ".0 cm"
@@ -440,8 +437,6 @@ class FieldCard extends React.Component {
         }
 
         finalProduct = String(finalProduct) + " cm"
-
-        console.log("Final: " + finalProduct)
 
         return finalProduct
     }
@@ -478,7 +473,7 @@ class FieldCard extends React.Component {
                             <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="arrow">
-                            <i class="fa fa-angle-double-right"></i>
+                            <i className="fa fa-angle-double-right"></i>
                         </object>
 
                         <object className="dropDownWidget" align="right">
@@ -511,7 +506,7 @@ class FieldCard extends React.Component {
                             <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="arrow">
-                            <i class="fa fa-angle-double-right"></i>
+                            <i className="fa fa-angle-double-right"></i>
                         </object>
 
                         <object className="dropDownWidget" align="right">

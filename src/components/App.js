@@ -39,9 +39,6 @@ class App extends React.Component {
         let names = nameArr;
         let values = valueArr;
         let duplicateArr = this.findDuplicates(nameArr, valueArr)
-        console.log(duplicateArr)
-        console.log(nameArr)
-        console.log(valueArr)
         for (let i = nameArr.length - 1; i >= 0; i--) {
             if (duplicateArr.includes(nameArr[i])) {
                 duplicateArr.splice(duplicateArr.indexOf(nameArr[i]), 1)
