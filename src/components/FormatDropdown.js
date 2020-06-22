@@ -200,7 +200,6 @@ class FormatDropdown extends React.Component {
                     <option value={"choose data format"} disabled hidden>format type</option>
                     <option value={"first"} disabled >1st in Pair </option>
                     <option value={"second"} disabled selected>  2nd in Pair</option>
-                    <option value={"measurement"} disabled >Measurement</option>
                 </select>
             );
 
@@ -211,7 +210,7 @@ class FormatDropdown extends React.Component {
             return (
                 <select onChange={this.updateValue}>
                     <option value={"choose data format"} disabled selected hidden>format type</option>
-                    <option value={"first"}>1st in pair </option>
+                    <option value={"first"}>1st in Pair </option>
                     <option value={"measurement"}>single field</option>
                 </select>
             );

@@ -83,7 +83,7 @@ const reducer =
       case "CHANGE_INIT":
         return {
           ...state,
-          hasInit: action.payload.bool
+          hasInit: true
         }
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
