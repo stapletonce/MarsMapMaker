@@ -110,7 +110,6 @@ class DropDown extends React.Component {
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
-        let dateFormatID = ""
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -129,16 +128,16 @@ class DropDown extends React.Component {
 
         // if format chosen contains delimiters
         if (format.includes("/") || format.includes("-")) {
-            
+
             //substring to identify dateFunction to its unique format in cases of dates structured with delimiters in differing lengths
             if (format[2] === "/") {
-                const dateObj = { substringDateFormat: format.substring(0,8)}
-                
+                const dateObj = { substringDateFormat: format.substring(0, 8) }
+
                 this.props.setSubstringDateFormat(dateObj)
             }
             else {
-                const dateObj = { substringDateFormat: format.substring(0,10)}
-                
+                const dateObj = { substringDateFormat: format.substring(0, 10) }
+
                 this.props.setSubstringDateFormat(dateObj)
             }
 
@@ -146,7 +145,7 @@ class DropDown extends React.Component {
             let formatSplit = format.split(/[-/ ]/)
             console.log("Date Split is here: " + dateSplit)
             console.log("Format Split is here: " + formatSplit)
-            console.log(" Format: "+ format)
+            console.log(" Format: " + format)
             if (!this.props.hasChosenCentury && (format[2] !== 'Y' && format[3] !== 'Y')) {
 
                 alert("You have not selected a century!")
@@ -155,7 +154,7 @@ class DropDown extends React.Component {
                 return
             }
 
-            
+
 
             else if (dateSplit[2].length === 2 && formatSplit[2] === "YY") {
 
@@ -201,11 +200,11 @@ class DropDown extends React.Component {
 
         // if format chosen comes in the form of yyyymmdd etc...
         if (format.length === 8) {
-            const dateObj = { substringDateFormat: format.substring(0,8)}
-                
+            const dateObj = { substringDateFormat: format.substring(0, 8) }
+
             this.props.setSubstringDateFormat(dateObj)
         }
-        
+
         let dateSplit = value.split('')
         let formatSplit = format.split('')
         let newDateSplit = ["", "", ""]
@@ -444,7 +443,7 @@ class DropDown extends React.Component {
 
             num += 1
             if (num === 0)
-                return <option key={f.title} value="Sesar Selection" disabled selected hidden>Sesar Selection</option>;
+                return <option key={f.title} value="Sesar Selection" disabled hidden>Sesar Selection</option>;
 
             //if (f.format === this.props.fieldType)
             //return <option key={f.title} value={f.title}>{f.title}</option>;
@@ -478,14 +477,14 @@ class DropDown extends React.Component {
         if (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "") {
             return (
 
-                <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                     <option key={"size"} value={"size"}>size</option>
                 </select>
             );
         } else {
             return (
 
-                <select className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );

@@ -8,7 +8,6 @@ import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
 // CSS & Style
-import mars from '../icons/planet.png';
 import './App.css';
 
 // Action Creators
