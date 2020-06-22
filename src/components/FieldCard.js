@@ -350,6 +350,7 @@ class FieldCard extends React.Component {
 
     // helper function to display a dropdown IFF it is also green / checked!
     filterDrop = () => {
+        console.log(this.props.fieldTitle + ": " + this.props.hasInit + ": " + this.props.id + ": " + this.props.pairArr[this.props.id])
         if (this.state.isGreen === true)
             return <div className="dropDown"><DropDown sizeCallback={this.getSizeCallback} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
@@ -484,7 +485,7 @@ class FieldCard extends React.Component {
 
                             {this.filterDrop()}
                             {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
-                                <object className="alignLeft" style={{ paddingRight: "4.5%" }}>
+                                <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
                                     <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
@@ -516,7 +517,7 @@ class FieldCard extends React.Component {
                             }
                             {this.filterDrop()}
                             {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
-                                <object className="alignLeft" style={{ paddingRight: "4.5%" }}>
+                                <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
                                     <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 
@@ -542,7 +543,7 @@ class FieldCard extends React.Component {
                             <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
                             {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
-                                <object className="alignLeft" style={{ paddingRight: "4.5%" }}>
+                                <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
                                     <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
                         </object>
 

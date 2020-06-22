@@ -58,10 +58,10 @@ class App extends React.Component {
         let newNames = this.state.fieldNames.slice()
 
 
-        newNames = newNames.concat(Object.keys(datafromFile.data[0]))
+        newNames = newNames.concat(datafromFile[0])
 
         let newValues = this.state.fieldValues
-        newValues = newValues.concat(Object.values(datafromFile.data[0]))
+        newValues = newValues.concat(datafromFile[1])
 
         let processedValues = this.removeDuplicates(newNames, newValues)
 
@@ -72,7 +72,7 @@ class App extends React.Component {
                 processedValues[1],
             continue: true
         });
-
+        console.log(this.state.fieldNames)
         if (this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length === totalSize - this.findDuplicates(newNames, newValues).length) {
             const obj = {
                 bool: true
