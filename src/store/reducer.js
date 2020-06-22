@@ -76,8 +76,14 @@ const reducer =
           entries: state.entries.concat(action.payload.objArr),
           useOnce: state.useOnce.concat(action.payload.useOnce),
           sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
-          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr),
-          hasInit: true
+          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
+
+        }
+
+      case "CHANGE_INIT":
+        return {
+          ...state,
+          hasInit: action.payload.bool
         }
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
@@ -287,11 +293,12 @@ const reducer =
           }
         )
 
-        case "SET_SUB":
-          return update(state,
-            {
-              substringDateFormat: {$set: action.payload.substringDateFormat}})
-            
+      case "SET_SUB":
+        return update(state,
+          {
+            substringDateFormat: { $set: action.payload.substringDateFormat }
+          })
+
 
 
       default:

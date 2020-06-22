@@ -8,7 +8,6 @@ import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
 // CSS & Style
-import mars from '../icons/planet.png';
 import './App.css';
 
 // Action Creators
@@ -97,13 +96,13 @@ const CardList = (props) => {
         const storedValue = {
             id: newKey,
             sesarTitle: "",
-            oldValue: props.fieldVal[field],
-            value: props.fieldVal[field],
+            oldValue: props.fieldVal[newKey],
+            value: props.fieldVal[newKey],
             // this used to be id 
             header: field,
             isDate: false,
             isMeasurement: false,
-            isGreen: props.fieldVal[field] !== ""
+            isGreen: props.fieldVal[newKey] !== ""
         }
 
         // after object is created, append it to the object array & add one to the ID
@@ -113,6 +112,8 @@ const CardList = (props) => {
         singleMeasure.push(singleMeasureObj)
 
 
+
+
         // create the FieldCard that you see in the UI
         return (
             <FieldCard
@@ -120,9 +121,9 @@ const CardList = (props) => {
                 hiding={hide}
                 fieldTitle={field}
                 id={newKey}
-                fieldType={typeField(props.fieldVal[field])}
-                fieldValue={props.fieldVal[field]}
-                hasContent={props.fieldVal[field] !== ""}
+                fieldType={typeField(props.fieldVal[newKey])}
+                fieldValue={props.fieldVal[newKey]}
+                hasContent={props.fieldVal[newKey] !== ""}
             />
         );
     });
@@ -146,6 +147,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
+        console.log(props.ent)
         console.log(props.outerArr)
     }
 
@@ -249,12 +251,12 @@ const CardList = (props) => {
                         <CenturyDropDown className="requireOption" />
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                     </div>
-                        {/*replace this div with new component*/}
+                    {/*replace this div with new component*/}
                     {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
                         <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>
                         <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
                     </div> */}
-                    <MapOutput/>
+                    <MapOutput />
 
                     <div style={{ paddingTop: "3em" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
@@ -305,7 +307,8 @@ const mapStateToProps = (state) => {
         outerArr: state.sizeOuterArray,
         multi: state.multiValues,
         setDa: state.substringDateFormat,
-        cent: state.century
+        cent: state.century,
+        hasInit: state.hasInit
     };
 };
 

@@ -45,7 +45,7 @@ class DateDropdown extends React.Component {
         let filter = (f) => {
             num += 1
             if (num === 0)
-                return <option key={num} value="Select Date Format" disabled selected hidden>Select Date Format</option>;
+                return <option key={num} value="Select Date Format" disabled hidden>Select Date Format</option>;
             else
                 return <option key={num} value={f.title}>{f.title}</option>;
         };
@@ -54,7 +54,7 @@ class DateDropdown extends React.Component {
         // IFF You have selected a date formate and SUCCESSFULLY selected sesar option, disable date dropdown
         if ((this.props.hasChosenDateFormat && this.props.hasChosenDropdown)) {
             return (
-                <select disabled className="ui search dropdown" onChange={this.updateValue}>
+                <select defaultValue={'Select Date Format'} disabled className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );
