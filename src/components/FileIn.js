@@ -9,6 +9,10 @@ class FileIn extends React.Component {
     constructor() {
         super();
         this.state = {
+            fieldNames: [],
+            fieldValues: [],
+            num: -1,
+            readyToInit: false,
             totalFileSize: 0,
             files: undefined,
             csvfile: undefined,
@@ -22,18 +26,17 @@ class FileIn extends React.Component {
 
     // helper method for selected CSV to read information from the file
     handleChange = event => {
+
         this.setState({ files: event.target.files })
         if (event.target.files[1] === undefined) {
             this.setState({
-                csvfile: event.target.files[0],
-                totalFileSize: event.target.files[0].length
+                csvfile: event.target.files[0]
             });
         }
         else {
             this.setState({
                 csvfile: event.target.files[0],
-                csvfile2: event.target.files[1],
-                totalFileSize: event.target.files[0].length + event.target.files[1].length
+                csvfile2: event.target.files[1]
             });
 
         }
@@ -87,7 +90,27 @@ class FileIn extends React.Component {
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         var data = result;
-        this.props.callbackFromParent(data, Object.keys(data.data[0]).length)
+        this.setState({
+            totalFileSize: this.state.totalFileSize + Object.keys(data.data[0]).length,
+            fieldNames: this.state.fieldNames.concat(Object.keys(data.data[0])),
+            fieldValues: this.state.fieldValues.concat(Object.values(data.data[0]))
+        })
+
+        let arr = [this.state.fieldNames, this.state.fieldValues]
+        if (this.state.csvfile2 !== undefined) {
+            this.setState({ num: this.state.num + 1 })
+            if (this.state.num === 1) {
+                this.props.callbackFromParent(arr, this.state.totalFileSize)
+            }
+
+        }
+        else {
+            this.props.callbackFromParent(arr, this.state.totalFileSize)
+        }
+
+
+
+
     }
 
     render() {
