@@ -249,7 +249,6 @@ const CardList = (props) => {
                         <p>Formatting required***</p>
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                         <CenturyDropDown className="requireOption" />
-                        <DateDropdown className="requireOption" list={dateFormatOption} />
                     </div>
                     {/*replace this div with new component*/}
                     {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
