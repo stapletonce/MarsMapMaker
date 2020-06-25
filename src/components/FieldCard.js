@@ -428,7 +428,7 @@ class FieldCard extends React.Component {
     fieldMetricFunction = (firstInPair, secondInPair) => {
         let finalProduct = parseInt(firstInPair);
 
-        if (secondInPair !== "") {
+        if (secondInPair !== "0") {
             let second = parseInt(secondInPair)
             finalProduct = finalProduct + second / 10
         }

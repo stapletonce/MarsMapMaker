@@ -139,7 +139,14 @@ class FormatDropdown extends React.Component {
             this.props.clearSizeArray(obj)
 
         }
+        
+        //covers possible case of turning empty string into 0 for precision unit
+        let zeroSub = this.props.ent[this.props.id + 1].value
+        
         if (value === "first") {
+            if (zeroSub === "")
+                zeroSub = "0"
+
             const objSizeArr = {
                 header: this.props.title,
                 value: this.props.mapValue,
@@ -147,7 +154,7 @@ class FormatDropdown extends React.Component {
                 cardID: this.props.id,
 
                 nextHeader: this.props.ent[this.props.id + 1].header,
-                nextValue: this.props.ent[this.props.id + 1].value,
+                nextValue: zeroSub,
                 nextID: this.props.id + 1
             }
             const objEntArr = {
@@ -155,7 +162,7 @@ class FormatDropdown extends React.Component {
                 id: this.props.id + 1,
                 oldValue: this.props.ent[this.props.id + 1].oldValue,
                 header: this.props.ent[this.props.id + 1].header,
-                value: this.props.ent[this.props.id + 1].value,
+                value: zeroSub,
                 isGreen: this.props.ent[this.props.id + 1].isGreen
             }
             this.props.addToSizeArray(objSizeArr)
