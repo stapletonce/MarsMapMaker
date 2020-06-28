@@ -17,6 +17,7 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
+      isOpen: false,
       hasInit: false,
       singleMeasureArr: [],
       sizeOuterArray: [],
@@ -299,7 +300,11 @@ const reducer =
             substringDateFormat: { $set: action.payload.substringDateFormat }
           })
 
-
+      case "IS_OPEN":
+        return update(state,
+          {
+            isOpen: { $set: action.payload.bool }
+          })
 
       default:
         return state

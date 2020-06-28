@@ -6,12 +6,13 @@ import MapOutput from './MapOutput';
 import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
+import Dialog from './Dialog';
 
 // CSS & Style
 import './App.css';
 
 // Action Creators
-import { firstState } from '../actions/';
+import { firstState, isOpen } from '../actions/';
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
@@ -149,6 +150,7 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
+        console.log("IS OPEN: " + props.hasBeenOpened)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -166,7 +168,7 @@ const CardList = (props) => {
     const appendTitleToFront = (multiValueArr, options) => {
         for (let i = 0; i < 3; i++) {
             if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
-                multiValueArr[i] = options[i] + " => " + multiValueArr[i]
+                multiValueArr[i] = options[i] + "==> " + multiValueArr[i]
         }
     }
 
@@ -180,9 +182,9 @@ const CardList = (props) => {
         let multiValueArr = [[], [], []]
         let mapPreviewArr = []
         let sizeSelection = ["", "", "", ""]
-        mapPreviewArr.push("-----MAP PREVIEW-----")
-        sizeSelection[0] = "-----SIZE SELECTION PAIRS-----"
-        sizeSelection[2] = "-----SIZE SELECTION SINGLES-----"
+        let fieldIndex = -1;
+        let descripIndex = -1;
+        let sampleIndex = -1;
 
 
         /////////////////////////////////////////////////////////
@@ -200,26 +202,20 @@ const CardList = (props) => {
 
         appendTitleToFront(multiValueArr, options)
 
-        multiValueArr.unshift("-----MultiValue Selections-----")
-        alert((multiValueArr.join("\n")))
+
 
         /////////////////////////////////
         ////////// Display Map Preview
-        if (mapPreviewArr.length === 1) {
-            alert("No values have been selected for mapping...")
-        }
-        else {
-            alert(mapPreviewArr.join("\n"))
-        }
+
 
         //////////////////////////////////////
         // Display Size Selection Preview
         for (let i = 0; i < props.ent.length; i++) {
             if (props.outerArr[i][0].pairHeader !== "") {
                 if (sizeSelection[1] !== "")
-                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
                 else
-                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
             }
         }
         for (let i = 0; i < props.ent.length; i++) {
@@ -230,8 +226,53 @@ const CardList = (props) => {
                     sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
             }
         }
-        alert(sizeSelection.join("\n"))
+
+        let finalSizeSelection = sizeSelection.join("\n")
+        let finalMap = mapPreviewArr
+        console.log(multiValueArr)
+        let finalMultiValue = (multiValueArr.join("\n"))
+
+        for (let i = 0; i < finalMap.length; i++) {
+            if (finalMap[i].includes(options[0])) {
+                finalMap[i] = multiValueArr[0]
+                if (fieldIndex === -1) {
+                    fieldIndex = i
+                }
+            }
+            else if (finalMap[i].includes(options[1])) {
+                finalMap[i] = multiValueArr[1]
+                if (descripIndex === -1) {
+                    descripIndex = i
+                }
+            }
+            else if (finalMap[i].includes(options[2])) {
+                finalMap[i] = multiValueArr[2]
+                if (sampleIndex === -1) {
+                    sampleIndex = i
+                }
+            }
+        }
+        let arr = []
+        for (let i = 0; i < finalMap.length; i++) {
+            if (!(arr.includes(finalMap[i]))) {
+                if (!(finalMap[i].includes(options[0]) && i !== fieldIndex))
+                    arr.push(finalMap[i])
+                else if (!(finalMap[i].includes(options[1]) && i !== descripIndex))
+                    arr.push(finalMap[i])
+                else if (!(finalMap[i].includes(options[2]) && i !== sampleIndex))
+                    arr.push(finalMap[i])
+            }
+
+        }
+        console.log(arr)
+
+
+        let finalArray = [finalSizeSelection, arr, finalMultiValue]
+
+        return finalArray
+
     }
+
 
 
     return (
@@ -259,7 +300,7 @@ const CardList = (props) => {
 
                     <div style={{ paddingTop: "3em" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
-                        <button className="ui basic button" onClick={previewPopUp}> Preview Map </button>
+                        <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
@@ -307,8 +348,9 @@ const mapStateToProps = (state) => {
         multi: state.multiValues,
         setDa: state.substringDateFormat,
         cent: state.century,
-        hasInit: state.hasInit
+        hasInit: state.hasInit,
+        hasBeenOpened: state.isOpen
     };
 };
 
-export default connect(mapStateToProps, { firstState })(CardList);
+export default connect(mapStateToProps, { firstState, isOpen })(CardList);
