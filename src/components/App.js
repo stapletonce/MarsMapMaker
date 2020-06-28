@@ -3,6 +3,7 @@ import mars from '../icons/mars.png'
 import CardList from './CardList';
 import FileIn from './FileIn';
 import classNames from 'classnames';
+import Dialog from './Dialog'
 
 import { connect } from 'react-redux';
 import { changeInit } from '../actions/';
@@ -14,7 +15,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         // THIS IS THE ONLY TIME WE DO DIRECT ASSIGNMENT TO STATE
-        this.state = { fieldNames: [], size: 0, fieldValues: [], data: [], continue: false }; // state object, contains properties relevant to component
+        this.state = { mapPreview: null, isOpened: props.hasBeenOpened, fieldNames: [], size: 0, fieldValues: [], data: [], continue: false }; // state object, contains properties relevant to component
     }
 
     findDuplicates = (names, values) => {
@@ -81,6 +82,12 @@ class App extends React.Component {
         }
 
     }
+    isOpenCallback = (data) => {
+        let currentComponent = this
+
+        currentComponent.setState({ isOpened: true, mapPreview: data[1].join("\n") })
+        console.log(data)
+    }
 
 
 
@@ -98,8 +105,16 @@ class App extends React.Component {
                 <FileIn
                     callbackFromParent={this.fileCallback}
                 />
+
+                {this.state.isOpened ? <Dialog isOpen={this.state.isOpened} onClose={(e) => this.setState({ isOpened: false })}>
+                    {this.state.mapPreview.split("\n").map((i) => {
+                        return <div>{i}</div>;
+                    })}
+                </Dialog> : null}
+
                 {this.state.continue ?
                     <CardList
+                        callback={this.isOpenCallback}
                         fields={this.state.fieldNames}
                         fieldVal={this.state.fieldValues} />
                     : null}
@@ -115,7 +130,8 @@ const mapStateToProps = (state) => {
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
         pairArr: state.sizeOuterArray,
-        hasInit: state.hasInit
+        hasInit: state.hasInit,
+        hasBeenOpened: state.isOpen
     };
 };
 

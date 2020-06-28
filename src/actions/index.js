@@ -113,3 +113,10 @@ export const changeInit = obj => {
         payload: obj
     }
 }
+
+export const isOpen = obj => {
+    return {
+        type: "IS_OPEN",
+        payload: obj
+    }
+}
