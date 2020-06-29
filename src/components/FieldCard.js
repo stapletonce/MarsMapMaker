@@ -155,13 +155,6 @@ class FieldCard extends React.Component {
                 type: "numbers",
                 format: "two2oneMeasurement"
             },
-            {
-                selected: false,
-                id: 16,
-                title: "size_unit CM IS COMMON",
-                type: "numbers",
-                format: "one2one"
-            },
 
             {
                 selected: false,
@@ -222,23 +215,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "numbers",
                 message: "Age of a sample as described by the stratigraphic era",
-                format: "one2one"
-            },
-            {
-                selected: false,
-                id: 24,
-                title: "age (min)MA",
-                key: "field",
-                type: "numbers",
-                format: "one2one"
-            },
-            {
-                selected: false,
-                id: 25,
-                title: "age (max)MA",
-                key: "field",
-                type: "numbers",
-                format: "one2one"
+                format: "multivalue"
             },
             {
                 selected: false,
@@ -343,7 +320,6 @@ class FieldCard extends React.Component {
                 arr.push(this.state.sesarOptions[i].title)
         }
         return arr
-
     }
 
 
@@ -364,8 +340,11 @@ class FieldCard extends React.Component {
 
     fileCallback = (data, title) => {
         let currentComponent = this
-        if (title === "field_name" || title === "description" || title === "sample_comment") {
-            currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+        if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age") {
+            if (data !== "")
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+            else
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": NO_DATA" })
         }
         else if (title === "first") {
             currentComponent.setState({ updateValue: data })
