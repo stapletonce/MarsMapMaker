@@ -153,6 +153,7 @@ const CardList = (props) => {
         console.log(props.ent)
         console.log(props.outerArr)
         console.log("IS OPEN: " + props.hasBeenOpened)
+        console.log("TOGGLE VALUES: " + Object.keys(props.toggleVals[0])[0])
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -249,7 +250,6 @@ const CardList = (props) => {
 
         let finalSizeSelection = sizeSelection.join("\n")
         let finalMap = mapPreviewArr
-        console.log(multiValueArr)
         let finalMultiValue = (multiValueArr.join("\n"))
 
         for (let i = 0; i < finalMap.length; i++) {

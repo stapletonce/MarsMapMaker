@@ -326,7 +326,6 @@ class FieldCard extends React.Component {
 
     // helper function to display a dropdown IFF it is also green / checked!
     filterDrop = () => {
-        console.log(this.props.fieldTitle + ": " + this.props.hasInit + ": " + this.props.id + ": " + this.props.pairArr[this.props.id])
         if (this.state.isGreen === true)
             return <div className="dropDown"><DropDown sizeCallback={this.getSizeCallback} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else

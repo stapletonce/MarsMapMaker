@@ -44,17 +44,11 @@ class Dialog extends Component {
         }
         if (this.props.isOpen === true) {
 
-            console.log("GETTING TO IF")
             return (
                 < div >
                     {dialog}
                 </div >
             );
-        }
-        else {
-            return (
-                console.log("GETTING TO ELSE")
-            )
         }
 
     }

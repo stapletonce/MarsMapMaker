@@ -9,6 +9,7 @@ class FileIn extends React.Component {
     constructor() {
         super();
         this.state = {
+            toggleValues: [],
             fieldNames: [],
             fieldValues: [],
             num: -1,
@@ -26,7 +27,6 @@ class FileIn extends React.Component {
 
     // helper method for selected CSV to read information from the file
     handleChange = event => {
-
         this.setState({ files: event.target.files })
         if (event.target.files[1] === undefined) {
             this.setState({
@@ -90,7 +90,12 @@ class FileIn extends React.Component {
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         var data = result;
+        let toggleArr = this.state.toggleValues;
+
+        toggleArr = toggleArr.concat(data.data)
+
         this.setState({
+            toggleValues: toggleArr,
             totalFileSize: this.state.totalFileSize + Object.keys(data.data[0]).length,
             fieldNames: this.state.fieldNames.concat(Object.keys(data.data[0])),
             fieldValues: this.state.fieldValues.concat(Object.values(data.data[0]))
@@ -100,12 +105,12 @@ class FileIn extends React.Component {
         if (this.state.csvfile2 !== undefined) {
             this.setState({ num: this.state.num + 1 })
             if (this.state.num === 1) {
-                this.props.callbackFromParent(arr, this.state.totalFileSize)
+                this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
             }
 
         }
         else {
-            this.props.callbackFromParent(arr, this.state.totalFileSize)
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
         }
 
 
