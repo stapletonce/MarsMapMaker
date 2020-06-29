@@ -155,6 +155,20 @@
 
 }
 
+.arrowDiv{
+    display: inline-block;
+    padding-bottom: 0px;
+}
+
+.arrowIcon { 
+    display: inline-block;
+    width: 70px;
+    padding-left: 25px;
+}
+
+.arrowIcon:hover {
+    cursor: pointer;
+}
 
 .dropDown2 {
     font-size: 15px;

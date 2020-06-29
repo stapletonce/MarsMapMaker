@@ -6,7 +6,9 @@ import MapOutput from './MapOutput';
 import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
-import Dialog from './Dialog';
+
+
+import arrow from '../icons/loop.png';
 
 // CSS & Style
 import './App.css';
@@ -314,10 +316,14 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="dropDown1">
+                    <div className="dropDown1" >
                         <p>Formatting required***</p>
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                         <CenturyDropDown className="requireOption" />
+                    </div>
+                    <div className="arrowDiv">
+                        <img className="arrowIcon" src={arrow} alt="arrowIcon" onClick={() => { console.log(props.toggleArr) }}></img>
+                        <p>Toggle Content</p>
                     </div>
                     {/*replace this div with new component*/}
                     {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
@@ -342,8 +348,12 @@ const CardList = (props) => {
                             <div className="checkBoxInfo">
                                 Use
                             </div>
+
                             <div dir="rtl" className="fieldTitle">:Header</div>
-                            <div className="fieldVal" > Content</div>
+                            <div className="fieldVal"> Content</div>
+
+
+
                         </object>
                         <object className="arrowInfo">
                             Maps To
@@ -377,7 +387,8 @@ const mapStateToProps = (state) => {
         setDa: state.substringDateFormat,
         cent: state.century,
         hasInit: state.hasInit,
-        hasBeenOpened: state.isOpen
+        hasBeenOpened: state.isOpen,
+        toggleArr: state.toggleArr
     };
 };
 
