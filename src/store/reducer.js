@@ -17,6 +17,7 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
+      toggleArr: [],
       isOpen: false,
       hasInit: false,
       singleMeasureArr: [],
@@ -306,6 +307,11 @@ const reducer =
             isOpen: { $set: action.payload.bool }
           })
 
+      case "INIT_TOGGLE":
+        return update(state,
+          {
+            toggleArr: { $set: action.payload.arr }
+          })
       default:
         return state
 

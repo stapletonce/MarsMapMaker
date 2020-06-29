@@ -120,3 +120,10 @@ export const isOpen = obj => {
         payload: obj
     }
 }
+
+export const initToggle = obj => {
+    return {
+        type: "INIT_TOGGLE",
+        payload: obj
+    }
+}

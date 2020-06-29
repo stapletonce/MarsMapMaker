@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import Dialog from './Dialog'
 
 import { connect } from 'react-redux';
-import { changeInit } from '../actions/';
+import { changeInit, initToggle } from '../actions/';
 
 // helper function to set up 'fieldNames' array for the App State
 
@@ -15,7 +15,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         // THIS IS THE ONLY TIME WE DO DIRECT ASSIGNMENT TO STATE
-        this.state = { mapPreview: null, isOpened: props.hasBeenOpened, fieldNames: [], size: 0, fieldValues: [], data: [], continue: false }; // state object, contains properties relevant to component
+        this.state = { toggleValuesArr: null, mapPreview: null, isOpened: props.hasBeenOpened, fieldNames: [], size: 0, fieldValues: [], data: [], continue: false }; // state object, contains properties relevant to component
     }
 
     findDuplicates = (names, values) => {
@@ -53,11 +53,15 @@ class App extends React.Component {
 
     // callback function that retrieves data from file, passed through FileIn.js
     // sets state of the the fieldNames, and fieldValues arrays used throughout program
-    fileCallback = (datafromFile, totalSize) => {
+    fileCallback = (datafromFile, totalSize, toggleValues) => {
 
         let currentComponent = this;
-        let newNames = this.state.fieldNames.slice()
 
+        let toggleObj = {
+            arr: toggleValues
+        }
+        this.props.initToggle(toggleObj)
+        let newNames = this.state.fieldNames.slice()
 
         newNames = newNames.concat(datafromFile[0])
 
@@ -73,7 +77,6 @@ class App extends React.Component {
                 processedValues[1],
             continue: true
         });
-        console.log(this.state.fieldNames)
         if (this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length === totalSize - this.findDuplicates(newNames, newValues).length) {
             const obj = {
                 bool: true
@@ -86,7 +89,7 @@ class App extends React.Component {
         let currentComponent = this
 
         currentComponent.setState({ isOpened: true, mapPreview: data[1].join("\n") })
-        console.log(data)
+
     }
 
 
@@ -116,6 +119,7 @@ class App extends React.Component {
                     <CardList
                         callback={this.isOpenCallback}
                         fields={this.state.fieldNames}
+                        toggleVals={this.state.toggleValuesArr}
                         fieldVal={this.state.fieldValues} />
                     : null}
             </div>
@@ -131,8 +135,9 @@ const mapStateToProps = (state) => {
         hasChosen: state.hasChosenDateFormat,
         pairArr: state.sizeOuterArray,
         hasInit: state.hasInit,
-        hasBeenOpened: state.isOpen
+        hasBeenOpened: state.isOpen,
+        toggleArr: state.toggleArr
     };
 };
 
-export default connect(mapStateToProps, { changeInit })(App);
+export default connect(mapStateToProps, { changeInit, initToggle })(App);
