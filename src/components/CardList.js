@@ -168,7 +168,7 @@ const CardList = (props) => {
     const appendTitleToFront = (multiValueArr, options) => {
         for (let i = 0; i < 3; i++) {
             if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
-                multiValueArr[i] = options[i] + "==> " + multiValueArr[i]
+                multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
         }
     }
 
@@ -264,7 +264,9 @@ const CardList = (props) => {
             }
 
         }
-        console.log(arr)
+        if (finalSizeSelection !== "") {
+            arr.push("size: " + finalSizeSelection.replace("\n", ""))
+        }
 
 
         let finalArray = [finalSizeSelection, arr, finalMultiValue]
