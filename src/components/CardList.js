@@ -158,17 +158,34 @@ const CardList = (props) => {
 
         for (let j = 0; j < 3; j++) {
             if (options.indexOf(props.ent[index].sesarTitle) !== -1) {
-                multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
-                break
+                if (props.ent[index].value !== "") {
+                    if (props.ent[index].sesarTitle === "geological_age") {
+                        multiArr[options.indexOf(props.ent[index].sesarTitle)].push(" " + props.ent[index].header + ": " + props.ent[index].value)
+                        break
+                    }
+                    else {
+                        multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
+                        break
+                    }
+
+                }
+                else {
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": NO_DATA")
+                    break
+                }
+
             }
         }
     }
 
     // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the join(";") array index 
     const appendTitleToFront = (multiValueArr, options) => {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 4; i++) {
             if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
-                multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
+                if (i !== 3)
+                    multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
+                else
+                    multiValueArr[i] = options[i] + " ==>" + multiValueArr[i]
         }
     }
 
@@ -178,13 +195,14 @@ const CardList = (props) => {
 
         ////////////////
         // POP-UP LOCAL VARIABLES
-        let options = ["field_name", "description", "sample_comment"]
-        let multiValueArr = [[], [], []]
+        let options = ["field_name", "description", "sample_comment", "geological_age"]
+        let multiValueArr = [[], [], [], []]
         let mapPreviewArr = []
         let sizeSelection = ["", "", "", ""]
         let fieldIndex = -1;
         let descripIndex = -1;
         let sampleIndex = -1;
+        let geoIndex = -1;
 
 
         /////////////////////////////////////////////////////////
@@ -249,6 +267,12 @@ const CardList = (props) => {
                 finalMap[i] = multiValueArr[2]
                 if (sampleIndex === -1) {
                     sampleIndex = i
+                }
+            }
+            else if (finalMap[i].includes(options[3])) {
+                finalMap[i] = multiValueArr[3]
+                if (geoIndex === -1) {
+                    geoIndex = i
                 }
             }
         }
