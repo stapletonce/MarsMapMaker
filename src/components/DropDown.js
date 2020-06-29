@@ -448,7 +448,13 @@ class DropDown extends React.Component {
             //if (f.format === this.props.fieldType)
             //return <option key={f.title} value={f.title}>{f.title}</option>;
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
+
+            // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
+            if (this.props.fieldType === "both")
+                return <option key={f.title} value={f.title}>{f.title}</option>;
+
             if (f.type === this.props.fieldType || f.type === "both") {
+
                 if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
                     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
                         return
@@ -461,7 +467,8 @@ class DropDown extends React.Component {
                 //return
                 //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
-                if (!this.props.useOnce.includes(f.title))
+
+                else if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;

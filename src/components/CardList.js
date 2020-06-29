@@ -77,7 +77,9 @@ const CardList = (props) => {
         let type;
         let numbers = /^[0-9,/.-]*$/;
 
-        if (numbers.test(f) === true)
+        if (f === "")
+            type = "both";
+        else if (numbers.test(f) === true)
             type = "numbers";
         else
             type = "text"
