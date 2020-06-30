@@ -304,6 +304,8 @@ class FieldCard extends React.Component {
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
+
+
         let value = fieldVal;
 
         if (value.length > 25) {

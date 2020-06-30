@@ -122,7 +122,6 @@ const CardList = (props) => {
         // create the FieldCard that you see in the UI
         return (
             <FieldCard
-                toggleCall={props.toggleCallback}
                 key={newKey}
                 hiding={hide}
                 fieldTitle={field}
@@ -305,12 +304,10 @@ const CardList = (props) => {
     }
 
     const toggleCallback = () => {
-        console.log(props.toggleArr)
         let obj = {
             index: (props.toggleIndex + 1) % props.toggleArr.length
         }
         props.addToggleIndex(obj)
-        return props.toggleArr
     }
 
 
