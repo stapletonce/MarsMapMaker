@@ -541,7 +541,8 @@ const mapStateToProps = (state) => {
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
         pairArr: state.sizeOuterArray,
-        hasInit: state.hasInit
+        hasInit: state.hasInit,
+        toggleIndex: state.toggleIndex
     };
 };
 

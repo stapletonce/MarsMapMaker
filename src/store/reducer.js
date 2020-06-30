@@ -17,6 +17,7 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
+      toggleIndex: -1,
       toggleArr: [],
       isOpen: false,
       hasInit: false,
@@ -311,6 +312,13 @@ const reducer =
         return update(state,
           {
             toggleArr: { $set: action.payload.arr }
+          })
+
+
+      case "ADD_TO_TOGGLE_INDEX":
+        return update(state,
+          {
+            toggleIndex: { $set: action.payload.index }
           })
       default:
         return state
