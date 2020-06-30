@@ -134,3 +134,10 @@ export const addToggleIndex = obj => {
         payload: obj
     }
 }
+
+export const toggleInUse = obj => {
+    return {
+        type: "TOGGLE_IN_USE",
+        payload: obj
+    }
+}

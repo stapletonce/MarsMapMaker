@@ -14,7 +14,7 @@ import arrow from '../icons/loop.png';
 import './App.css';
 
 // Action Creators
-import { firstState, isOpen, addToggleIndex } from '../actions/';
+import { firstState, isOpen, addToggleIndex, toggleInUse } from '../actions/';
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
@@ -24,6 +24,7 @@ import { firstState, isOpen, addToggleIndex } from '../actions/';
 
 const CardList = (props) => {
 
+    const [toggleIndex, addToToggleIndex] = useState(0)
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
 
     const objArray = []
@@ -69,6 +70,7 @@ const CardList = (props) => {
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
+
     //const [setShowModal] = useState(false)
     //showModal ^
 
@@ -95,6 +97,15 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
 
+    const toggleCallback = () => {
+        addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+        let obj = {
+            bool: true
+        }
+        props.toggleInUse(obj)
+    }
+
+
     const fields = props.fields.map((field) => {
         newKey += 1
         //create an object and add it to store
@@ -118,21 +129,43 @@ const CardList = (props) => {
 
 
 
-
         // create the FieldCard that you see in the UI
-        return (
-            <FieldCard
-                toggleCall={props.toggleCallback}
-                key={newKey}
-                hiding={hide}
-                fieldTitle={field}
-                id={newKey}
-                fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""}
-            />
-        );
+        if (toggleIndex === 0) {
+            return (
+                <FieldCard
+                    toggleInUse={props.usingToggle}
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={field}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={props.fieldVal[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+
+        }
+        else {
+            return (
+                <FieldCard
+                    toggleInUse={props.usingToggle}
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+        }
+
+
+
+
     });
+
+    //after fieldcards are set change toggle in use back to false
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
@@ -155,8 +188,7 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
-        console.log("IS OPEN: " + props.hasBeenOpened)
-        console.log("TOGGLE VALUES: " + Object.keys(props.toggleVals[0])[0])
+        console.log("USING TOGGLE??? -> " + props.usingToggle)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -304,14 +336,7 @@ const CardList = (props) => {
 
     }
 
-    const toggleCallback = () => {
-        console.log(props.toggleArr)
-        let obj = {
-            index: (props.toggleIndex + 1) % props.toggleArr.length
-        }
-        props.addToggleIndex(obj)
-        return props.toggleArr
-    }
+
 
 
     return (
@@ -398,8 +423,9 @@ const mapStateToProps = (state) => {
         hasInit: state.hasInit,
         hasBeenOpened: state.isOpen,
         toggleArr: state.toggleArr,
-        toggleIndex: state.toggleIndex
+        toggleIndex: state.toggleIndex,
+        usingToggle: state.toggleInUse
     };
 };
 
-export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex })(CardList);
+export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex, toggleInUse })(CardList);
