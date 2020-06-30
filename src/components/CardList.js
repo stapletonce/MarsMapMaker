@@ -24,6 +24,7 @@ import { firstState, isOpen, addToggleIndex } from '../actions/';
 
 const CardList = (props) => {
 
+    const [toggleIndex, addToToggleIndex] = useState(0)
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
 
     const objArray = []
@@ -95,6 +96,11 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
 
+    const toggleCallback = () => {
+
+        addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+    }
+
     const fields = props.fields.map((field) => {
         newKey += 1
         //create an object and add it to store
@@ -120,17 +126,36 @@ const CardList = (props) => {
 
 
         // create the FieldCard that you see in the UI
-        return (
-            <FieldCard
-                key={newKey}
-                hiding={hide}
-                fieldTitle={field}
-                id={newKey}
-                fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""}
-            />
-        );
+        if (toggleIndex === 0) {
+            return (
+                <FieldCard
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={field}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={props.fieldVal[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+        }
+        else {
+            return (
+                <FieldCard
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+        }
+
+
+
+
     });
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
@@ -154,8 +179,6 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
-        console.log("IS OPEN: " + props.hasBeenOpened)
-        console.log("TOGGLE VALUES: " + Object.keys(props.toggleVals[0])[0])
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -303,12 +326,7 @@ const CardList = (props) => {
 
     }
 
-    const toggleCallback = () => {
-        let obj = {
-            index: (props.toggleIndex + 1) % props.toggleArr.length
-        }
-        props.addToggleIndex(obj)
-    }
+
 
 
     return (

@@ -305,7 +305,6 @@ class FieldCard extends React.Component {
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
 
-
         let value = fieldVal;
 
         if (value.length > 25) {
@@ -348,7 +347,7 @@ class FieldCard extends React.Component {
                 currentComponent.setState({ updatedValue: this.props.fieldTitle + ": NO_DATA" })
         }
         else if (title === "first") {
-            currentComponent.setState({ updateValue: data })
+            currentComponent.setState({ updatedValue: data })
         }
         else {
             currentComponent.setState({ updatedValue: data })
