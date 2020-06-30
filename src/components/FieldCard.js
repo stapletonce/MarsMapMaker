@@ -295,6 +295,17 @@ class FieldCard extends React.Component {
 
     }
 
+    //static getDerivedStateFromProps(props, state) {
+    //if (props.fieldValue !== state.updatedValue) {
+    //return {
+    //updatedValue: props.fieldValue,
+    //};
+    //}
+
+    // Return null if the state hasn't changed
+    //return null;
+    //}
+
 
     // switch between CSS classes to switch between green and white
     btnClass = classNames({
@@ -304,7 +315,6 @@ class FieldCard extends React.Component {
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
-
         let value = fieldVal;
 
         if (value.length > 25) {
@@ -424,7 +434,7 @@ class FieldCard extends React.Component {
     refreshFieldCard = () => {
         setTimeout(() => {
             this.setState({ isGreen: !this.state.isGreen });
-            this.setState({ sesarChosen: "" })
+            this.setState({ sesarChosen: "", updatedValue: this.props.fieldValue })
         }, 0);  // ------------------------------> timeout 0
 
         setTimeout(() => {
@@ -440,6 +450,8 @@ class FieldCard extends React.Component {
         //removes the unchecked field card
         if (this.props.hiding && this.state.isGreen === false)
             return null
+
+
 
         else if ((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) {
             return (

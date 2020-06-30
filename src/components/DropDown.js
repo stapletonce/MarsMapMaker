@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import "semantic-ui-react";
 
 //Action Creators
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat } from "../actions/"
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
 
 class DropDown extends React.Component {
 
@@ -323,8 +323,9 @@ class DropDown extends React.Component {
 
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
     // updates specific object in the redux store
-    updateValue = e => {
+    updateValue = (e) => {
         const newValue = e.target.value
+
         let breakOrFormat;
 
         if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
@@ -424,6 +425,119 @@ class DropDown extends React.Component {
 
     }
 
+    updateValueToggle = () => {
+        const newValue = this.props.ent[this.props.id].sesarTitle
+
+        let breakOrFormat;
+
+        if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
+            const sizeObj = {
+                cardID: this.props.id,
+                index: 0
+            }
+            this.props.clearSizeArray(sizeObj)
+            const obj = {
+                oldValue: this.props.fieldValue,
+                value: this.props.fieldValue,
+                header: this.props.fieldTitle,
+                id: this.props.id + 1,
+                isGreen: this.state.isGreen
+            }
+            this.props.removeContent(obj)
+        }
+
+        if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
+            let obj = {
+                id: 0
+            }
+            this.props.clearSizeArray(obj)
+        }
+        else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
+            let obj = {
+                id: 1
+            }
+            this.props.clearSizeArray(obj)
+        }
+        else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
+            let obj = {
+                id: 2
+            }
+            this.props.clearSizeArray(obj)
+        }
+
+
+
+        if (this.props.dateFormat != null)
+            breakOrFormat = this.props.dateFormat.split(" ")
+
+        this.props.sizeCallback(newValue)
+
+        if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
+
+            alert("You have not selected a date format...")
+            this.props.refresh()
+            console.log("Please choose a date format!!!")
+            return
+        }
+
+        else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && this.props.hasChosen) {
+
+            if ((breakOrFormat.includes("/") || breakOrFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
+
+                alert("Delimiter error")
+                this.props.refresh()
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
+                return
+            }
+
+            else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") && !this.props.value.includes("-"))) {
+
+                alert("Delimiter error")
+                this.props.refresh()
+                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
+                return
+            }
+
+            let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
+
+            if (update !== undefined) {
+                this.props.callback(update)
+                console.log(this.props.multiValues)
+            }
+            return
+        }
+
+        const obj = {
+            id: this.props.id,
+            sesarSelected: newValue,
+            value: this.props.value,
+            header: this.props.title
+        }
+
+
+
+        this.props.dropdownUpdate(obj)
+        //this.updateMulti()
+
+        if (this.props.value !== undefined) {
+            this.props.callback(this.props.value, newValue)
+        }
+        //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
+
+
+    }
+
+
+
+    entWithContent = () => {
+        let index = -1
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].value !== "")
+                index = i
+        }
+        return index
+    }
+
     sizeArrayLoop = () => {
         let count = 0;
         for (let i = 0; i < this.props.ent.length; i++) {
@@ -434,9 +548,25 @@ class DropDown extends React.Component {
 
     }
 
+    toggleNotInUse = () => {
+        let obj = {
+            bool: false
+        }
+
+        if (this.props.usingToggle === true && this.props.id !== this.entWithContent()) {
+            this.updateValueToggle()
+        }
+        else if (this.props.usingToggle === true && this.props.id === this.entWithContent())
+            this.props.toggleInUse(obj)
+
+
+    }
+
+
     render() {
         const sesarOne2One = this.state.sesarOneToOne
         let num = -1
+        this.toggleNotInUse()
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
 
@@ -513,10 +643,11 @@ const mapStateToProps = (state) => {
         multiValues: state.multiValues,
         sizeArray: state.sizeArray,
         hasInit: state.hasInit,
-        pairArr: state.sizeOuterArray
+        pairArr: state.sizeOuterArray,
+        usingToggle: state.toggleInUse
     };
 };
 
 
 
-export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat, toggleInUse })(DropDown);

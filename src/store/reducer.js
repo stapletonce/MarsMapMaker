@@ -18,6 +18,7 @@ const reducer =
   (state =
     {
       toggleIndex: -1,
+      toggleInUse: false,
       toggleArr: [],
       isOpen: false,
       hasInit: false,
@@ -320,6 +321,14 @@ const reducer =
           {
             toggleIndex: { $set: action.payload.index }
           })
+
+
+      case "TOGGLE_IN_USE":
+        return update(state,
+          {
+            toggleInUse: { $set: action.payload.bool }
+          })
+
       default:
         return state
 

@@ -14,7 +14,7 @@ import arrow from '../icons/loop.png';
 import './App.css';
 
 // Action Creators
-import { firstState, isOpen, addToggleIndex } from '../actions/';
+import { firstState, isOpen, addToggleIndex, toggleInUse } from '../actions/';
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
@@ -70,6 +70,7 @@ const CardList = (props) => {
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
+
     //const [setShowModal] = useState(false)
     //showModal ^
 
@@ -97,9 +98,13 @@ const CardList = (props) => {
     // hasContent: for initial filtering of checked cards
 
     const toggleCallback = () => {
-
         addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+        let obj = {
+            bool: true
+        }
+        props.toggleInUse(obj)
     }
+
 
     const fields = props.fields.map((field) => {
         newKey += 1
@@ -124,11 +129,11 @@ const CardList = (props) => {
 
 
 
-
         // create the FieldCard that you see in the UI
         if (toggleIndex === 0) {
             return (
                 <FieldCard
+                    toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
                     fieldTitle={field}
@@ -138,10 +143,12 @@ const CardList = (props) => {
                     hasContent={props.fieldVal[newKey] !== ""}
                 />
             );
+
         }
         else {
             return (
                 <FieldCard
+                    toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
                     fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
@@ -157,6 +164,8 @@ const CardList = (props) => {
 
 
     });
+
+    //after fieldcards are set change toggle in use back to false
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
@@ -179,6 +188,7 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
+        console.log("USING TOGGLE??? -> " + props.usingToggle)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -413,8 +423,9 @@ const mapStateToProps = (state) => {
         hasInit: state.hasInit,
         hasBeenOpened: state.isOpen,
         toggleArr: state.toggleArr,
-        toggleIndex: state.toggleIndex
+        toggleIndex: state.toggleIndex,
+        usingToggle: state.toggleInUse
     };
 };
 
-export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex })(CardList);
+export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex, toggleInUse })(CardList);
