@@ -14,7 +14,7 @@ import arrow from '../icons/loop.png';
 import './App.css';
 
 // Action Creators
-import { firstState, isOpen } from '../actions/';
+import { firstState, isOpen, addToggleIndex } from '../actions/';
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
@@ -122,6 +122,7 @@ const CardList = (props) => {
         // create the FieldCard that you see in the UI
         return (
             <FieldCard
+                toggleCall={props.toggleCallback}
                 key={newKey}
                 hiding={hide}
                 fieldTitle={field}
@@ -303,6 +304,14 @@ const CardList = (props) => {
 
     }
 
+    const toggleCallback = () => {
+        console.log(props.toggleArr)
+        let obj = {
+            index: (props.toggleIndex + 1) % props.toggleArr.length
+        }
+        props.addToggleIndex(obj)
+        return props.toggleArr
+    }
 
 
     return (
@@ -322,7 +331,7 @@ const CardList = (props) => {
                         <CenturyDropDown className="requireOption" />
                     </div>
                     <div className="arrowDiv">
-                        <img className="arrowIcon" src={arrow} alt="arrowIcon" onClick={() => { console.log(props.toggleArr) }}></img>
+                        <img className="arrowIcon" src={arrow} alt="arrowIcon" onClick={() => toggleCallback()}></img>
                         <p>Toggle Content</p>
                     </div>
                     {/*replace this div with new component*/}
@@ -388,8 +397,9 @@ const mapStateToProps = (state) => {
         cent: state.century,
         hasInit: state.hasInit,
         hasBeenOpened: state.isOpen,
-        toggleArr: state.toggleArr
+        toggleArr: state.toggleArr,
+        toggleIndex: state.toggleIndex
     };
 };
 
-export default connect(mapStateToProps, { firstState, isOpen })(CardList);
+export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex })(CardList);
