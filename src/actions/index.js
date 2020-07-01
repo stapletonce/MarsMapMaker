@@ -113,3 +113,31 @@ export const changeInit = obj => {
         payload: obj
     }
 }
+
+export const isOpen = obj => {
+    return {
+        type: "IS_OPEN",
+        payload: obj
+    }
+}
+
+export const initToggle = obj => {
+    return {
+        type: "INIT_TOGGLE",
+        payload: obj
+    }
+}
+
+export const addToggleIndex = obj => {
+    return {
+        type: "ADD_TO_TOGGLE_INDEX",
+        payload: obj
+    }
+}
+
+export const toggleInUse = obj => {
+    return {
+        type: "TOGGLE_IN_USE",
+        payload: obj
+    }
+}

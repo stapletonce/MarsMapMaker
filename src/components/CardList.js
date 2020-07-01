@@ -7,11 +7,15 @@ import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
+import rightArrow from '../icons/next.png'
+import leftArrow from '../icons/return.png'
+import arrow from '../icons/loop.png';
+
 // CSS & Style
 import './App.css';
 
 // Action Creators
-import { firstState } from '../actions/';
+import { firstState, isOpen, addToggleIndex, toggleInUse } from '../actions/';
 ///////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
@@ -21,6 +25,7 @@ import { firstState } from '../actions/';
 
 const CardList = (props) => {
 
+    const [toggleIndex, addToToggleIndex] = useState(0)
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
 
     const objArray = []
@@ -66,6 +71,7 @@ const CardList = (props) => {
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
+
     //const [setShowModal] = useState(false)
     //showModal ^
 
@@ -76,7 +82,9 @@ const CardList = (props) => {
         let type;
         let numbers = /^[0-9,/.-]*$/;
 
-        if (numbers.test(f) === true)
+        if (f === "")
+            type = "both";
+        else if (numbers.test(f) === true)
             type = "numbers";
         else
             type = "text"
@@ -89,6 +97,31 @@ const CardList = (props) => {
     // fieldType: defines if content is number or text
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
+
+    const rightArrowToggle = () => {
+        addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+        let obj = {
+            bool: true
+        }
+        props.toggleInUse(obj)
+    }
+    const leftArrowToggle = () => {
+        if (toggleIndex > 0) {
+            addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
+            let obj = {
+                bool: true
+            }
+            props.toggleInUse(obj)
+        }
+    }
+    const refreshButton = () => {
+        addToToggleIndex(0)
+        let obj = {
+            bool: true
+        }
+        props.toggleInUse(obj)
+    }
+
 
     const fields = props.fields.map((field) => {
         newKey += 1
@@ -113,20 +146,43 @@ const CardList = (props) => {
 
 
 
-
         // create the FieldCard that you see in the UI
-        return (
-            <FieldCard
-                key={newKey}
-                hiding={hide}
-                fieldTitle={field}
-                id={newKey}
-                fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""}
-            />
-        );
+        if (toggleIndex === 0) {
+            return (
+                <FieldCard
+                    toggleInUse={props.usingToggle}
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={field}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={props.fieldVal[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+
+        }
+        else {
+            return (
+                <FieldCard
+                    toggleInUse={props.usingToggle}
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+        }
+
+
+
+
     });
+
+    //after fieldcards are set change toggle in use back to false
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
@@ -149,6 +205,7 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
+        console.log("USING TOGGLE??? -> " + props.usingToggle)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -156,17 +213,34 @@ const CardList = (props) => {
 
         for (let j = 0; j < 3; j++) {
             if (options.indexOf(props.ent[index].sesarTitle) !== -1) {
-                multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
-                break
+                if (props.ent[index].value !== "") {
+                    if (props.ent[index].sesarTitle === "geological_age") {
+                        multiArr[options.indexOf(props.ent[index].sesarTitle)].push(" " + props.ent[index].header + ": " + props.ent[index].value)
+                        break
+                    }
+                    else {
+                        multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
+                        break
+                    }
+
+                }
+                else {
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": NO_DATA")
+                    break
+                }
+
             }
         }
     }
 
     // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the join(";") array index 
     const appendTitleToFront = (multiValueArr, options) => {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 4; i++) {
             if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
-                multiValueArr[i] = options[i] + " => " + multiValueArr[i]
+                if (i !== 3)
+                    multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
+                else
+                    multiValueArr[i] = options[i] + " ==>" + multiValueArr[i]
         }
     }
 
@@ -176,13 +250,14 @@ const CardList = (props) => {
 
         ////////////////
         // POP-UP LOCAL VARIABLES
-        let options = ["field_name", "description", "sample_comment"]
-        let multiValueArr = [[], [], []]
+        let options = ["field_name", "description", "sample_comment", "geological_age"]
+        let multiValueArr = [[], [], [], []]
         let mapPreviewArr = []
         let sizeSelection = ["", "", "", ""]
-        mapPreviewArr.push("-----MAP PREVIEW-----")
-        sizeSelection[0] = "-----SIZE SELECTION PAIRS-----"
-        sizeSelection[2] = "-----SIZE SELECTION SINGLES-----"
+        let fieldIndex = -1;
+        let descripIndex = -1;
+        let sampleIndex = -1;
+        let geoIndex = -1;
 
 
         /////////////////////////////////////////////////////////
@@ -200,26 +275,20 @@ const CardList = (props) => {
 
         appendTitleToFront(multiValueArr, options)
 
-        multiValueArr.unshift("-----MultiValue Selections-----")
-        alert((multiValueArr.join("\n")))
+
 
         /////////////////////////////////
         ////////// Display Map Preview
-        if (mapPreviewArr.length === 1) {
-            alert("No values have been selected for mapping...")
-        }
-        else {
-            alert(mapPreviewArr.join("\n"))
-        }
+
 
         //////////////////////////////////////
         // Display Size Selection Preview
         for (let i = 0; i < props.ent.length; i++) {
             if (props.outerArr[i][0].pairHeader !== "") {
                 if (sizeSelection[1] !== "")
-                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
                 else
-                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + " : " + props.outerArr[i][1].pairHeader)
+                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
             }
         }
         for (let i = 0; i < props.ent.length; i++) {
@@ -230,8 +299,61 @@ const CardList = (props) => {
                     sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
             }
         }
-        alert(sizeSelection.join("\n"))
+
+        let finalSizeSelection = sizeSelection.join("\n")
+        let finalMap = mapPreviewArr
+        let finalMultiValue = (multiValueArr.join("\n"))
+
+        for (let i = 0; i < finalMap.length; i++) {
+            if (finalMap[i].includes(options[0])) {
+                finalMap[i] = multiValueArr[0]
+                if (fieldIndex === -1) {
+                    fieldIndex = i
+                }
+            }
+            else if (finalMap[i].includes(options[1])) {
+                finalMap[i] = multiValueArr[1]
+                if (descripIndex === -1) {
+                    descripIndex = i
+                }
+            }
+            else if (finalMap[i].includes(options[2])) {
+                finalMap[i] = multiValueArr[2]
+                if (sampleIndex === -1) {
+                    sampleIndex = i
+                }
+            }
+            else if (finalMap[i].includes(options[3])) {
+                finalMap[i] = multiValueArr[3]
+                if (geoIndex === -1) {
+                    geoIndex = i
+                }
+            }
+        }
+        let arr = []
+        for (let i = 0; i < finalMap.length; i++) {
+            if (!(arr.includes(finalMap[i]))) {
+                if (!(finalMap[i].includes(options[0]) && i !== fieldIndex))
+                    arr.push(finalMap[i])
+                else if (!(finalMap[i].includes(options[1]) && i !== descripIndex))
+                    arr.push(finalMap[i])
+                else if (!(finalMap[i].includes(options[2]) && i !== sampleIndex))
+                    arr.push(finalMap[i])
+            }
+
+        }
+        if (finalSizeSelection !== "") {
+            arr.push("size: " + finalSizeSelection.replace("\n", ""))
+        }
+
+
+        let finalArray = [finalSizeSelection, arr, finalMultiValue]
+
+        return finalArray
+
     }
+
+
 
 
     return (
@@ -245,11 +367,31 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="dropDown1">
+                    <div className="dropDown1" >
                         <p>Formatting required***</p>
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                         <CenturyDropDown className="requireOption" />
                     </div>
+                    <div className="arrowDiv">
+                        <h4 class="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
+
+                            <div class="content">
+                                Toggle Content
+                            </div>
+                        </h4>
+                        <div disabled class="ui grey ribbon label">Current Row: {toggleIndex}</div>
+                        <button class="ui icon button" style={{ display: "inline-block", width: "40px" }} onClick={() => leftArrowToggle()}>
+                            <i class="left arrow icon"></i>
+                        </button>
+                        <button class="ui icon button" style={{ display: "inline-block", width: "100px" }} onClick={() => refreshButton()}>
+                            Refresh
+                        </button>
+                        <button class="ui icon button" style={{ display: "inline-block", width: "40px" }} onClick={() => rightArrowToggle()}>
+                            <i class="right arrow icon"></i>
+
+                        </button>
+                    </div>
+
                     {/*replace this div with new component*/}
                     {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
                         <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>
@@ -259,7 +401,7 @@ const CardList = (props) => {
 
                     <div style={{ paddingTop: "3em" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
-                        <button className="ui basic button" onClick={previewPopUp}> Preview Map </button>
+                        <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
@@ -273,8 +415,12 @@ const CardList = (props) => {
                             <div className="checkBoxInfo">
                                 Use
                             </div>
+
                             <div dir="rtl" className="fieldTitle">:Header</div>
-                            <div className="fieldVal" > Content</div>
+                            <div className="fieldVal"> Content</div>
+
+
+
                         </object>
                         <object className="arrowInfo">
                             Maps To
@@ -307,8 +453,12 @@ const mapStateToProps = (state) => {
         multi: state.multiValues,
         setDa: state.substringDateFormat,
         cent: state.century,
-        hasInit: state.hasInit
+        hasInit: state.hasInit,
+        hasBeenOpened: state.isOpen,
+        toggleArr: state.toggleArr,
+        toggleIndex: state.toggleIndex,
+        usingToggle: state.toggleInUse
     };
 };
 
-export default connect(mapStateToProps, { firstState })(CardList);
+export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex, toggleInUse })(CardList);

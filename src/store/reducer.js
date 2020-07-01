@@ -17,6 +17,10 @@ import update from 'react-addons-update';
 const reducer =
   (state =
     {
+      toggleIndex: -1,
+      toggleInUse: false,
+      toggleArr: [],
+      isOpen: false,
       hasInit: false,
       singleMeasureArr: [],
       sizeOuterArray: [],
@@ -299,7 +303,31 @@ const reducer =
             substringDateFormat: { $set: action.payload.substringDateFormat }
           })
 
+      case "IS_OPEN":
+        return update(state,
+          {
+            isOpen: { $set: action.payload.bool }
+          })
 
+      case "INIT_TOGGLE":
+        return update(state,
+          {
+            toggleArr: { $set: action.payload.arr }
+          })
+
+
+      case "ADD_TO_TOGGLE_INDEX":
+        return update(state,
+          {
+            toggleIndex: { $set: action.payload.index }
+          })
+
+
+      case "TOGGLE_IN_USE":
+        return update(state,
+          {
+            toggleInUse: { $set: action.payload.bool }
+          })
 
       default:
         return state

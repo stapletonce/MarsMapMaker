@@ -155,13 +155,6 @@ class FieldCard extends React.Component {
                 type: "numbers",
                 format: "two2oneMeasurement"
             },
-            {
-                selected: false,
-                id: 16,
-                title: "size_unit CM IS COMMON",
-                type: "numbers",
-                format: "one2one"
-            },
 
             {
                 selected: false,
@@ -222,23 +215,7 @@ class FieldCard extends React.Component {
                 key: "field",
                 type: "numbers",
                 message: "Age of a sample as described by the stratigraphic era",
-                format: "one2one"
-            },
-            {
-                selected: false,
-                id: 24,
-                title: "age (min)MA",
-                key: "field",
-                type: "numbers",
-                format: "one2one"
-            },
-            {
-                selected: false,
-                id: 25,
-                title: "age (max)MA",
-                key: "field",
-                type: "numbers",
-                format: "one2one"
+                format: "multivalue"
             },
             {
                 selected: false,
@@ -318,6 +295,17 @@ class FieldCard extends React.Component {
 
     }
 
+    //static getDerivedStateFromProps(props, state) {
+    //if (props.fieldValue !== state.updatedValue) {
+    //return {
+    //updatedValue: props.fieldValue,
+    //};
+    //}
+
+    // Return null if the state hasn't changed
+    //return null;
+    //}
+
 
     // switch between CSS classes to switch between green and white
     btnClass = classNames({
@@ -343,14 +331,12 @@ class FieldCard extends React.Component {
                 arr.push(this.state.sesarOptions[i].title)
         }
         return arr
-
     }
 
 
 
     // helper function to display a dropdown IFF it is also green / checked!
     filterDrop = () => {
-        console.log(this.props.fieldTitle + ": " + this.props.hasInit + ": " + this.props.id + ": " + this.props.pairArr[this.props.id])
         if (this.state.isGreen === true)
             return <div className="dropDown"><DropDown sizeCallback={this.getSizeCallback} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
@@ -364,11 +350,14 @@ class FieldCard extends React.Component {
 
     fileCallback = (data, title) => {
         let currentComponent = this
-        if (title === "field_name" || title === "description" || title === "sample_comment") {
-            currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+        if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age") {
+            if (data !== "")
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+            else
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": NO_DATA" })
         }
         else if (title === "first") {
-            currentComponent.setState({ updateValue: data })
+            currentComponent.setState({ updatedValue: data })
         }
         else {
             currentComponent.setState({ updatedValue: data })
@@ -445,7 +434,7 @@ class FieldCard extends React.Component {
     refreshFieldCard = () => {
         setTimeout(() => {
             this.setState({ isGreen: !this.state.isGreen });
-            this.setState({ sesarChosen: "" })
+            this.setState({ sesarChosen: "", updatedValue: this.props.fieldValue })
         }, 0);  // ------------------------------> timeout 0
 
         setTimeout(() => {
@@ -461,6 +450,8 @@ class FieldCard extends React.Component {
         //removes the unchecked field card
         if (this.props.hiding && this.state.isGreen === false)
             return null
+
+
 
         else if ((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) {
             return (
@@ -563,7 +554,8 @@ const mapStateToProps = (state) => {
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
         pairArr: state.sizeOuterArray,
-        hasInit: state.hasInit
+        hasInit: state.hasInit,
+        toggleIndex: state.toggleIndex
     };
 };
 

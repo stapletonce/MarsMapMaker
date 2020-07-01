@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import "semantic-ui-react";
 
 //Action Creators
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat } from "../actions/"
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
 
 class DropDown extends React.Component {
 
@@ -319,12 +319,7 @@ class DropDown extends React.Component {
     }
 
 
-
-
-    // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
-    // updates specific object in the redux store
-    updateValue = e => {
-        const newValue = e.target.value
+    updateValueHelper = (newValue) => {
         let breakOrFormat;
 
         if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
@@ -420,8 +415,34 @@ class DropDown extends React.Component {
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
+    }
+
+    // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
+    // updates specific object in the redux store
+    updateValue = (e) => {
+        const newValue = e.target.value
+
+        this.updateValueHelper(newValue)
 
 
+
+    }
+
+    updateValueToggle = () => {
+        const newValue = this.props.ent[this.props.id].sesarTitle
+
+        this.updateValueHelper(newValue)
+    }
+
+
+
+    entWithContent = () => {
+        let index = -1
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].value !== "")
+                index = i
+        }
+        return index
     }
 
     sizeArrayLoop = () => {
@@ -434,9 +455,25 @@ class DropDown extends React.Component {
 
     }
 
+    toggleNotInUse = () => {
+        let obj = {
+            bool: false
+        }
+
+        if (this.props.usingToggle === true && this.props.id !== this.entWithContent()) {
+            this.updateValueToggle()
+        }
+        else if (this.props.usingToggle === true && this.props.id === this.entWithContent())
+            this.props.toggleInUse(obj)
+
+
+    }
+
+
     render() {
         const sesarOne2One = this.state.sesarOneToOne
         let num = -1
+        this.toggleNotInUse()
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
 
@@ -448,7 +485,13 @@ class DropDown extends React.Component {
             //if (f.format === this.props.fieldType)
             //return <option key={f.title} value={f.title}>{f.title}</option>;
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
+
+            // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
+            if (this.props.fieldType === "both")
+                return <option key={f.title} value={f.title}>{f.title}</option>;
+
             if (f.type === this.props.fieldType || f.type === "both") {
+
                 if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
                     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
                         return
@@ -461,7 +504,8 @@ class DropDown extends React.Component {
                 //return
                 //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
-                if (!this.props.useOnce.includes(f.title))
+
+                else if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
@@ -506,10 +550,11 @@ const mapStateToProps = (state) => {
         multiValues: state.multiValues,
         sizeArray: state.sizeArray,
         hasInit: state.hasInit,
-        pairArr: state.sizeOuterArray
+        pairArr: state.sizeOuterArray,
+        usingToggle: state.toggleInUse
     };
 };
 
 
 
-export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat, toggleInUse })(DropDown);

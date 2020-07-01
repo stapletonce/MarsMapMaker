@@ -155,6 +155,22 @@
 
 }
 
+.arrowDiv{
+    width: 280px;
+    display: inline-block;
+    padding-bottom: 0px;
+    padding-left: 40px;
+}
+
+.arrowIcon { 
+    display: inline-block;
+    width: 70px;
+    padding-left: 25px;
+}
+
+.arrowIcon:hover {
+    cursor: pointer;
+}
 
 .dropDown2 {
     font-size: 15px;
@@ -266,5 +282,16 @@
     border-width: .5px;
 }
 
+
+.rightArrowIcon {
+    display: inline-block;
+    width: 20px;
+}
+
+
+.refreshButton {
+    display: inline-block;
+    margin: 0 auto;
+}
 
 
