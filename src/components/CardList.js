@@ -7,7 +7,8 @@ import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
-
+import rightArrow from '../icons/next.png'
+import leftArrow from '../icons/return.png'
 import arrow from '../icons/loop.png';
 
 // CSS & Style
@@ -97,8 +98,24 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
 
-    const toggleCallback = () => {
+    const rightArrowToggle = () => {
         addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+        let obj = {
+            bool: true
+        }
+        props.toggleInUse(obj)
+    }
+    const leftArrowToggle = () => {
+        if (toggleIndex > 0) {
+            addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
+            let obj = {
+                bool: true
+            }
+            props.toggleInUse(obj)
+        }
+    }
+    const refreshButton = () => {
+        addToToggleIndex(0)
         let obj = {
             bool: true
         }
@@ -356,9 +373,12 @@ const CardList = (props) => {
                         <CenturyDropDown className="requireOption" />
                     </div>
                     <div className="arrowDiv">
-                        <img className="arrowIcon" src={arrow} alt="arrowIcon" onClick={() => toggleCallback()}></img>
+                        <img className="leftArrowIcon" src={leftArrow} alt="leftArrow" onClick={() => leftArrowToggle()}></img>
+                        <button className="refreshButton" onClick={() => refreshButton()}>Refresh</button>
+                        <img className="rightArrowIcon" src={rightArrow} alt="rightArrow" onClick={() => rightArrowToggle()}></img>
                         <p>Toggle Content</p>
                     </div>
+
                     {/*replace this div with new component*/}
                     {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
                         <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>

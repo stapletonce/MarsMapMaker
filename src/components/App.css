@@ -281,4 +281,19 @@
 }
 
 
+.rightArrowIcon {
+    display: inline-block;
+    width: 20px;
+}
+
+.leftArrowIcon {
+    display: inline-block;
+    width: 20px;
+}
+
+.refreshButton {
+    display: inline-block;
+    width: 70px;
+}
+
 

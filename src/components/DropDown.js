@@ -319,13 +319,7 @@ class DropDown extends React.Component {
     }
 
 
-
-
-    // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
-    // updates specific object in the redux store
-    updateValue = (e) => {
-        const newValue = e.target.value
-
+    updateValueHelper = (newValue) => {
         let breakOrFormat;
 
         if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
@@ -421,6 +415,15 @@ class DropDown extends React.Component {
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
+    }
+
+    // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
+    // updates specific object in the redux store
+    updateValue = (e) => {
+        const newValue = e.target.value
+
+        this.updateValueHelper(newValue)
+
 
 
     }
@@ -428,103 +431,7 @@ class DropDown extends React.Component {
     updateValueToggle = () => {
         const newValue = this.props.ent[this.props.id].sesarTitle
 
-        let breakOrFormat;
-
-        if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
-            const sizeObj = {
-                cardID: this.props.id,
-                index: 0
-            }
-            this.props.clearSizeArray(sizeObj)
-            const obj = {
-                oldValue: this.props.fieldValue,
-                value: this.props.fieldValue,
-                header: this.props.fieldTitle,
-                id: this.props.id + 1,
-                isGreen: this.state.isGreen
-            }
-            this.props.removeContent(obj)
-        }
-
-        if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
-            let obj = {
-                id: 0
-            }
-            this.props.clearSizeArray(obj)
-        }
-        else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
-            let obj = {
-                id: 1
-            }
-            this.props.clearSizeArray(obj)
-        }
-        else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
-            let obj = {
-                id: 2
-            }
-            this.props.clearSizeArray(obj)
-        }
-
-
-
-        if (this.props.dateFormat != null)
-            breakOrFormat = this.props.dateFormat.split(" ")
-
-        this.props.sizeCallback(newValue)
-
-        if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
-
-            alert("You have not selected a date format...")
-            this.props.refresh()
-            console.log("Please choose a date format!!!")
-            return
-        }
-
-        else if ((newValue === "collection_end_date" || newValue === "collection_start_date") && this.props.hasChosen) {
-
-            if ((breakOrFormat.includes("/") || breakOrFormat.includes("-")) && (!this.props.value.includes("/") || !this.props.value.includes("-"))) {
-
-                alert("Delimiter error")
-                this.props.refresh()
-                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
-                return
-            }
-
-            else if ((this.props.dateFormat.includes("/") || this.props.dateFormat.includes("-")) && (!this.props.value.includes("/") && !this.props.value.includes("-"))) {
-
-                alert("Delimiter error")
-                this.props.refresh()
-                console.log("You have selected a format that doesn't match the data provided from the file... please try another format (Delimiter error)")
-                return
-            }
-
-            let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
-
-            if (update !== undefined) {
-                this.props.callback(update)
-                console.log(this.props.multiValues)
-            }
-            return
-        }
-
-        const obj = {
-            id: this.props.id,
-            sesarSelected: newValue,
-            value: this.props.value,
-            header: this.props.title
-        }
-
-
-
-        this.props.dropdownUpdate(obj)
-        //this.updateMulti()
-
-        if (this.props.value !== undefined) {
-            this.props.callback(this.props.value, newValue)
-        }
-        //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
-
-
+        this.updateValueHelper(newValue)
     }
 
 
