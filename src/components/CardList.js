@@ -373,10 +373,23 @@ const CardList = (props) => {
                         <CenturyDropDown className="requireOption" />
                     </div>
                     <div className="arrowDiv">
-                        <img className="leftArrowIcon" src={leftArrow} alt="leftArrow" onClick={() => leftArrowToggle()}></img>
-                        <button className="refreshButton" onClick={() => refreshButton()}>Refresh</button>
-                        <img className="rightArrowIcon" src={rightArrow} alt="rightArrow" onClick={() => rightArrowToggle()}></img>
-                        <p>Toggle Content</p>
+                        <h4 class="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
+
+                            <div class="content">
+                                Toggle Content
+                            </div>
+                        </h4>
+                        <div disabled class="ui grey ribbon label">Current Row: {toggleIndex}</div>
+                        <button class="ui icon button" style={{ display: "inline-block", width: "40px" }} onClick={() => leftArrowToggle()}>
+                            <i class="left arrow icon"></i>
+                        </button>
+                        <button class="ui icon button" style={{ display: "inline-block", width: "100px" }} onClick={() => refreshButton()}>
+                            Refresh
+                        </button>
+                        <button class="ui icon button" style={{ display: "inline-block", width: "40px" }} onClick={() => rightArrowToggle()}>
+                            <i class="right arrow icon"></i>
+
+                        </button>
                     </div>
 
                     {/*replace this div with new component*/}
