@@ -367,27 +367,23 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="dropDown1" >
-                        <p>Formatting required***</p>
-                        <DateDropdown className="requireOption" list={dateFormatOption} />
-                        <CenturyDropDown className="requireOption" />
-                    </div>
-                    <div className="arrowDiv">
-                        <h4 class="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
 
-                            <div class="content">
+                    <div className="arrowDiv">
+                        <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
+
+                            <div className="content">
                                 Toggle Content
                             </div>
                         </h4>
-                        <div disabled class="ui grey ribbon label">Current Row: {toggleIndex}</div>
-                        <button class="ui icon button" style={{ display: "inline-block", width: "40px" }} onClick={() => leftArrowToggle()}>
-                            <i class="left arrow icon"></i>
+                        <div disabled className="ui grey ribbon label">Current Row: {toggleIndex}</div>
+                        <button className="ui icon button" style={{ display: "inline-block", width: "60px" }} onClick={() => leftArrowToggle()}>
+                            <i className="left arrow icon"></i>
                         </button>
-                        <button class="ui icon button" style={{ display: "inline-block", width: "100px" }} onClick={() => refreshButton()}>
+                        <button className="ui icon button" style={{ display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
                             Refresh
                         </button>
-                        <button class="ui icon button" style={{ display: "inline-block", width: "40px" }} onClick={() => rightArrowToggle()}>
-                            <i class="right arrow icon"></i>
+                        <button className="ui icon button" style={{ display: "inline-block", width: "60px" }} onClick={() => rightArrowToggle()}>
+                            <i className="right arrow icon"></i>
 
                         </button>
                     </div>
@@ -399,12 +395,18 @@ const CardList = (props) => {
                     </div> */}
                     <MapOutput />
 
+
                     <div style={{ paddingTop: "3em" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
+                    <div className="dropDown1" >
+                        <p>Formatting required***</p>
+                        <DateDropdown className="requireOption" list={dateFormatOption} />
+                        <CenturyDropDown className="requireOption" />
+                    </div>
 
                 </div>
 
@@ -421,9 +423,6 @@ const CardList = (props) => {
 
 
 
-                        </object>
-                        <object className="arrowInfo">
-                            Maps To
                         </object>
 
                         <object className="dropDownWidget" align="right">
