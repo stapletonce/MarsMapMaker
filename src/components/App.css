@@ -144,6 +144,7 @@
 .dropDown1 {
     font-size: 15px;
     display: inline-block;
+    float: right;
     width: 200px;
     padding: 10px;
     margin: 10px;
@@ -151,15 +152,15 @@
     border-color: rgb(224,225,226);
     border-width: 1px;
     border-radius: 5px;
-    margin-top: 2.5%;
+    margin-top: 5%;
 
 }
 
 .arrowDiv{
-    width: 280px;
+    width: 320px;
     display: inline-block;
-    padding-bottom: 0px;
     padding-left: 40px;
+    padding-bottom: 30px;
 }
 
 .arrowIcon { 
@@ -176,8 +177,10 @@
     font-size: 15px;
     display: inline-block;
     width: 200px;
+    
     padding: 10px;
     margin: 10px;
+    margin-top: 2.8%;
     float: right;
 
 }
