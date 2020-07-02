@@ -403,7 +403,6 @@ const CardList = (props) => {
                     </div>
 
                     <div className="dropDown1" >
-                        <p>Formatting required***</p>
                         <DateDropdown className="requireOption" list={dateFormatOption} />
                         <CenturyDropDown className="requireOption" />
                     </div>
