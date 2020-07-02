@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
 import FormatDropdown from './FormatDropdown';
-import { removeContent, clearSizeArray } from '../actions';
+import { removeContent, clearSizeArray, clearSingleMeasureArray } from '../actions';
 
 
 class FieldCard extends React.Component {
@@ -433,8 +433,17 @@ class FieldCard extends React.Component {
 
     refreshFieldCard = () => {
         setTimeout(() => {
+            let obj = {
+                oldValue: this.props.fieldCard,
+                id: this.props.id,
+                value: this.props.fieldValue,
+                header: this.props.fieldTitle,
+                isGreen: this.props.isGreen
+            }
             this.setState({ isGreen: !this.state.isGreen });
             this.setState({ sesarChosen: "", updatedValue: this.props.fieldValue })
+            this.props.removeContent(obj)
+            this.props.clearSingleMeasureArray(obj)
         }, 0);  // ------------------------------> timeout 0
 
         setTimeout(() => {
@@ -559,4 +568,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { removeContent, clearSizeArray })(FieldCard);
+export default connect(mapStateToProps, { removeContent, clearSizeArray, clearSingleMeasureArray })(FieldCard);
