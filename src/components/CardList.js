@@ -353,6 +353,18 @@ const CardList = (props) => {
 
     }
 
+    const dateSelected = () => {
+        let found = false
+        for (let i = 0; i < props.ent.length; i++) {
+
+            if (props.ent[i].sesarTitle === "collection_start_date" || props.ent[i].sesarTitle === "collection_end_date") {
+
+                found = true
+            }
+
+        }
+        return found
+    }
 
 
 
@@ -396,16 +408,33 @@ const CardList = (props) => {
                     <MapOutput />
 
 
-                    <div style={{ paddingTop: "3em" }} className="dropDown2" >
+                    <div style={{ paddingTop: "3em", width: "15%" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div className="dropDown1" >
-                        <DateDropdown className="requireOption" list={dateFormatOption} />
-                        <CenturyDropDown className="requireOption" />
+                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px;", paddingRight: "0px", marginRight: "0px" }}>
+                        {(props.hasDateFormat === false || dateSelected() === false) ?
+                            <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
+                                Select Date Format
+                        </div> : <div style={{ visibility: "hidden", width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
+                                Select Date Format
+                        </div>}
+
+                        {(props.hasDateFormat === false || dateSelected() === false) ?
+                            <div className="dropDown1" style={{ borderColor: "red" }} >
+                                <DateDropdown className="requireOption" list={dateFormatOption} />
+                                <CenturyDropDown className="requireOption" />
+                            </div> : <div className="dropDown1">
+                                <DateDropdown className="requireOption" list={dateFormatOption} />
+                                <CenturyDropDown className="requireOption" />
+                            </div>}
+
+
                     </div>
+
+
 
                 </div>
 
@@ -455,7 +484,8 @@ const mapStateToProps = (state) => {
         hasBeenOpened: state.isOpen,
         toggleArr: state.toggleArr,
         toggleIndex: state.toggleIndex,
-        usingToggle: state.toggleInUse
+        usingToggle: state.toggleInUse,
+        hasDateFormat: state.hasChosenDateFormat
     };
 };
 
