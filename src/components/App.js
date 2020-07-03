@@ -10,7 +10,6 @@ import { changeInit, initToggle } from '../actions/';
 
 // helper function to set up 'fieldNames' array for the App State
 
-
 class App extends React.Component {
     constructor(props) {
         super(props);

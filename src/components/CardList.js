@@ -223,7 +223,7 @@ const CardList = (props) => {
         let options = ["field_name", "description", "sample_comment", "geological_age", "size"]
         let multiValueArr = [[], [], [], [], []]
         let mapPreviewArr = []
-        let sizeSelection = ["", "", "", ""]
+        //let sizeSelection = ["", "", "", ""]
         let fieldIndex = -1;
         let descripIndex = -1;
         let sampleIndex = -1;
@@ -257,24 +257,25 @@ const CardList = (props) => {
 
         //////////////////////////////////////
         // Display Size Selection Preview
-        for (i = 0; i < props.ent.length; i++) {
-            if (props.outerArr[i][0].pairHeader !== "") {
-                if (sizeSelection[1] !== "")
-                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
-                else
-                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
-            }
-        }
-        for (i = 0; i < props.ent.length; i++) {
-            if (props.singleMeasure[i].pairHeader !== "") {
-                if (sizeSelection[3] !== "")
-                    sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
-                else
-                    sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
-            }
-        }
+        // for (i = 0; i < props.ent.length; i++) {
+        //     if (props.outerArr[i][0].pairHeader !== "") {
+        //         if (sizeSelection[1] !== "")
+        //             sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
+        //         else
+        //             sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
+        //     }
+        // }
+        // for (i = 0; i < props.ent.length; i++) {
+        //     if (props.singleMeasure[i].pairHeader !== "") {
+        //         if (sizeSelection[3] !== "")
+        //             sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
+        //         else
+        //             sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
+        //     }
+        // }
 
-        finalSizeSelection = sizeSelection.join("\n")
+        // finalSizeSelection = sizeSelection.join("\n")
+        finalSizeSelection = []
         finalMap = mapPreviewArr
         finalMultiValue = (multiValueArr.join("\n"))
 
