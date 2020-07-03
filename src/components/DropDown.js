@@ -295,44 +295,44 @@ class DropDown extends React.Component {
     }
 
     // josh's section
-    updateMulti = () => {
+    // updateMulti = () => {
 
 
 
-        for (let i = 0; i < this.props.ent.length; i++) {
+    //     for (let i = 0; i < this.props.ent.length; i++) {
 
-            if (this.props.ent[i].sesarTitle === "sample_comment") {
-                const obj = {
-                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-                    ident: "sample_comment",
-                    index: 0
-                }
-                console.log(obj)
-                this.props.multiValueCreateFinish(obj)
-            }
-            else if (this.props.ent[i].sesarTitle === "description") {
-                const obj = {
-                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-                    ident: "description",
-                    index: 1
-                }
-                console.log(obj)
-                this.props.multiValueCreateFinish(obj)
+    //         if (this.props.ent[i].sesarTitle === "sample_comment") {
+    //             const obj = {
+    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+    //                 ident: "sample_comment",
+    //                 index: 0
+    //             }
+    //             console.log(obj)
+    //             this.props.multiValueCreateFinish(obj)
+    //         }
+    //         else if (this.props.ent[i].sesarTitle === "description") {
+    //             const obj = {
+    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+    //                 ident: "description",
+    //                 index: 1
+    //             }
+    //             console.log(obj)
+    //             this.props.multiValueCreateFinish(obj)
 
-            }
-            else if (this.props.ent[i].sesarTitle === "field_name") {
-                console.log("hello")
-                const obj = {
-                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-                    ident: "field_name",
-                    index: 2
-                }
-                console.log(obj)
-                this.props.multiValueCreateFinish(obj)
-            }
-        }
-        console.log(this.props.multiValues)
-    }
+    //         }
+    //         else if (this.props.ent[i].sesarTitle === "field_name") {
+    //             console.log("hello")
+    //             const obj = {
+    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+    //                 ident: "field_name",
+    //                 index: 2
+    //             }
+    //             console.log(obj)
+    //             this.props.multiValueCreateFinish(obj)
+    //         }
+    //     }
+    //     console.log(this.props.multiValues)
+    // }
 
 
     updateValueHelper = (newValue) => {
