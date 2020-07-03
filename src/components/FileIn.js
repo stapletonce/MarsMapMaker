@@ -23,8 +23,6 @@ class FileIn extends React.Component {
         this.updateData = this.updateData.bind(this);
     }
 
-
-
     // helper method for selected CSV to read information from the file
     handleChange = event => {
         this.setState({ files: event.target.files })
@@ -83,6 +81,7 @@ class FileIn extends React.Component {
 
         }
 
+        console.log(this.state.files)
         this.setState({ loaded: true })
 
     };
@@ -90,8 +89,26 @@ class FileIn extends React.Component {
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         var data = result;
+        let finalToggleArray = []
         let toggleArr = this.state.toggleValues;
+        let minimum = Math.min(data.data.length, toggleArr.length)
+        if (toggleArr !== [] && this.state.csvfile2 !== undefined) {
 
+            if (minimum < 10) {
+                for (let i = 0; i < (minimum % 10); i++) {
+                    const finalObj = { ...toggleArr[i], ...data.data[i] }
+                    finalToggleArray.push(finalObj)
+                }
+            }
+            else {
+                for (let i = 0; i < (minimum % 10) + (10 - (minimum % 10)); i++) {
+                    const finalObj = { ...toggleArr[i], ...data.data[i] }
+                    finalToggleArray.push(finalObj)
+                }
+            }
+            toggleArr = finalToggleArray
+
+        }
         toggleArr = toggleArr.concat(data.data)
 
         this.setState({
@@ -107,11 +124,11 @@ class FileIn extends React.Component {
             if (this.state.num === 1) {
                 this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
             }
-
         }
         else {
             this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
         }
+
 
 
 
@@ -128,7 +145,8 @@ class FileIn extends React.Component {
 
         return (
             <div className={readerClass}>
-                <h2>Import CSV File!</h2>
+
+                <h2>Import File(s)!</h2>
 
                 <input
                     className="csv-input"

@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import "semantic-ui-react";
 
 //Action Creators
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
+//clearSizeArray,
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
 
 class DropDown extends React.Component {
 
@@ -16,7 +17,7 @@ class DropDown extends React.Component {
             value: "select",
             selectedValue: "",
             sesarOneToOne: this.props.one2one
-        };
+        }
     }
 
 
@@ -280,89 +281,104 @@ class DropDown extends React.Component {
         // also to think further on that, check if the users value matches their format selection, if not send an error
     }
 
-    // josh's section
-    updateMulti = () => {
-
+    dateSelected = () => {
+        let found = false
         for (let i = 0; i < this.props.ent.length; i++) {
 
-            if (this.props.ent[i].sesarTitle === "sample_comment") {
-                const obj = {
-                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-                    ident: "sample_comment",
-                    index: 0
-                }
-                console.log(obj)
-                this.props.multiValueCreateFinish(obj)
-            }
-            else if (this.props.ent[i].sesarTitle === "description") {
-                const obj = {
-                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-                    ident: "description",
-                    index: 1
-                }
-                console.log(obj)
-                this.props.multiValueCreateFinish(obj)
+            if (this.props.ent[i].sesarTitle === "collection_start_date" || this.props.ent[i].sesarTitle === "collection_end_date") {
 
+                found = true
             }
-            else if (this.props.ent[i].sesarTitle === "field_name") {
-                console.log("hello")
-                const obj = {
-                    keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-                    ident: "field_name",
-                    index: 2
-                }
-                console.log(obj)
-                this.props.multiValueCreateFinish(obj)
-            }
+
         }
-        console.log(this.props.multiValues)
+        return found
     }
+
+    // josh's section
+    // updateMulti = () => {
+
+
+
+    //     for (let i = 0; i < this.props.ent.length; i++) {
+
+    //         if (this.props.ent[i].sesarTitle === "sample_comment") {
+    //             const obj = {
+    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+    //                 ident: "sample_comment",
+    //                 index: 0
+    //             }
+    //             console.log(obj)
+    //             this.props.multiValueCreateFinish(obj)
+    //         }
+    //         else if (this.props.ent[i].sesarTitle === "description") {
+    //             const obj = {
+    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+    //                 ident: "description",
+    //                 index: 1
+    //             }
+    //             console.log(obj)
+    //             this.props.multiValueCreateFinish(obj)
+
+    //         }
+    //         else if (this.props.ent[i].sesarTitle === "field_name") {
+    //             console.log("hello")
+    //             const obj = {
+    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
+    //                 ident: "field_name",
+    //                 index: 2
+    //             }
+    //             console.log(obj)
+    //             this.props.multiValueCreateFinish(obj)
+    //         }
+    //     }
+    //     console.log(this.props.multiValues)
+    // }
 
 
     updateValueHelper = (newValue) => {
         let breakOrFormat;
 
-        if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
-            const sizeObj = {
-                cardID: this.props.id,
-                index: 0
-            }
-            this.props.clearSizeArray(sizeObj)
-            const obj = {
-                oldValue: this.props.fieldValue,
-                value: this.props.fieldValue,
-                header: this.props.fieldTitle,
-                id: this.props.id + 1,
-                isGreen: this.state.isGreen
-            }
-            this.props.removeContent(obj)
-        }
+        // if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
+        //     const sizeObj = {
+        //         cardID: this.props.id,
+        //         index: 0
+        //     }
+        //     this.props.clearSizeArray(sizeObj)
+        //     const obj = {
+        //         oldValue: this.props.fieldValue,
+        //         value: this.props.fieldValue,
+        //         header: this.props.fieldTitle,
+        //         id: this.props.id + 1,
+        //         isGreen: this.state.isGreen
+        //     }
+        //     this.props.removeContent(obj)
+        // }
 
-        if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
-            let obj = {
-                id: 0
-            }
-            this.props.clearSizeArray(obj)
-        }
-        else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
-            let obj = {
-                id: 1
-            }
-            this.props.clearSizeArray(obj)
-        }
-        else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
-            let obj = {
-                id: 2
-            }
-            this.props.clearSizeArray(obj)
-        }
+        // if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
+        //     let obj = {
+        //         id: 0
+        //     }
+        //     this.props.clearSizeArray(obj)
+        // }
+        // else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
+        //     let obj = {
+        //         id: 1
+        //     }
+        //     this.props.clearSizeArray(obj)
+        // }
+        // else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
+        //     let obj = {
+        //         id: 2
+        //     }
+        //     this.props.clearSizeArray(obj)
+        // }
 
 
 
         if (this.props.dateFormat != null)
             breakOrFormat = this.props.dateFormat.split(" ")
 
-        this.props.sizeCallback(newValue)
+        // this.props.sizeCallback(newValue)
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
 
@@ -403,13 +419,15 @@ class DropDown extends React.Component {
             id: this.props.id,
             sesarSelected: newValue,
             value: this.props.value,
-            header: this.props.title
+            header: this.props.title,
+            bool: true,
+            dropOption: this.props.dropDownChosen
         }
-
 
 
         this.props.dropdownUpdate(obj)
         //this.updateMulti()
+
 
         if (this.props.value !== undefined) {
             this.props.callback(this.props.value, newValue)
@@ -492,20 +510,20 @@ class DropDown extends React.Component {
 
             if (f.type === this.props.fieldType || f.type === "both") {
 
-                if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
-                    if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
-                        return
-                }
-                else if (this.sizeArrayLoop() === 2 && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "")) {
-                    if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
-                        return
-                }
+                // if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
+                //     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
+                //         return
+                // }
+                // else if (this.sizeArrayLoop() === 2 && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "")) {
+                //     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
+                //         return
+                // }
                 //if (f.title === "size" && this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
                 //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
 
-                else if (!this.props.useOnce.includes(f.title))
+                if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
@@ -518,21 +536,12 @@ class DropDown extends React.Component {
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
 
-        if (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "") {
-            return (
+        return (
+            <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                {this.props.list.map((field) => filter(field))}
+            </select>
+        );
 
-                <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
-                    <option key={"size"} value={"size"}>size</option>
-                </select>
-            );
-        } else {
-            return (
-
-                <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
-                    {this.props.list.map((field) => filter(field))}
-                </select>
-            );
-        }
 
     }
 }
@@ -544,6 +553,7 @@ const mapStateToProps = (state) => {
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
+        dropDownChosen: state.hasChosenDropdownOption,
         num: state.numOfOneToOne,
         hasChosenCentury: state.centuryChosen,
         century: state.century,
@@ -557,4 +567,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat, toggleInUse })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);

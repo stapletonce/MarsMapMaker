@@ -7,10 +7,6 @@ import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
-import rightArrow from '../icons/next.png'
-import leftArrow from '../icons/return.png'
-import arrow from '../icons/loop.png';
-
 // CSS & Style
 import './App.css';
 
@@ -25,7 +21,6 @@ import { firstState, isOpen, addToggleIndex, toggleInUse } from '../actions/';
 
 const CardList = (props) => {
 
-    const [toggleIndex, addToToggleIndex] = useState(0)
     // global variables for the Object Array the Redux Store is built on along with the id accumulator 
 
     const objArray = []
@@ -71,9 +66,8 @@ const CardList = (props) => {
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
-
-    //const [setShowModal] = useState(false)
-    //showModal ^
+    // used to toggle between the tuples of the csv loaded in
+    const [toggleIndex, addToToggleIndex] = useState(0)
 
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
@@ -98,13 +92,17 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
 
+    // Content Toggle right->add 1, left->sub 1, refresh->reset to 0
     const rightArrowToggle = () => {
-        addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
-        let obj = {
-            bool: true
+        if (toggleIndex < 9) {
+            addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+            let obj = {
+                bool: true
+            }
+            props.toggleInUse(obj)
         }
-        props.toggleInUse(obj)
     }
+
     const leftArrowToggle = () => {
         if (toggleIndex > 0) {
             addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
@@ -114,6 +112,7 @@ const CardList = (props) => {
             props.toggleInUse(obj)
         }
     }
+
     const refreshButton = () => {
         addToToggleIndex(0)
         let obj = {
@@ -122,7 +121,7 @@ const CardList = (props) => {
         props.toggleInUse(obj)
     }
 
-
+    // maps content to separate fieldcards on the screen
     const fields = props.fields.map((field) => {
         newKey += 1
         //create an object and add it to store
@@ -143,23 +142,19 @@ const CardList = (props) => {
         useOnce.push("")
         outerArr.push(sizeArray)
         singleMeasure.push(singleMeasureObj)
-
-
-
+        console.log(toggleIndex)
         // create the FieldCard that you see in the UI
         if (toggleIndex === 0) {
-            return (
-                <FieldCard
-                    toggleInUse={props.usingToggle}
-                    key={newKey}
-                    hiding={hide}
-                    fieldTitle={field}
-                    id={newKey}
-                    fieldType={typeField(props.fieldVal[newKey])}
-                    fieldValue={props.fieldVal[newKey]}
-                    hasContent={props.fieldVal[newKey] !== ""}
-                />
-            );
+            return (<FieldCard
+                toggleInUse={props.usingToggle}
+                key={newKey}
+                hiding={hide}
+                fieldTitle={field}
+                id={newKey}
+                fieldType={typeField(props.fieldVal[newKey])}
+                fieldValue={props.fieldVal[newKey]}
+                hasContent={props.fieldVal[newKey] !== ""}
+            />)
 
         }
         else {
@@ -176,9 +171,7 @@ const CardList = (props) => {
                 />
             );
         }
-
-
-
+        console.log(toggleIndex)
 
     });
 
@@ -205,7 +198,6 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
-        console.log("USING TOGGLE??? -> " + props.usingToggle)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -214,14 +206,14 @@ const CardList = (props) => {
         for (let j = 0; j < 3; j++) {
             if (options.indexOf(props.ent[index].sesarTitle) !== -1) {
                 if (props.ent[index].value !== "") {
-                    if (props.ent[index].sesarTitle === "geological_age") {
-                        multiArr[options.indexOf(props.ent[index].sesarTitle)].push(" " + props.ent[index].header + ": " + props.ent[index].value)
-                        break
-                    }
-                    else {
-                        multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
-                        break
-                    }
+                    // if (props.ent[index].sesarTitle === "geological_age") {
+                    //     multiArr[options.indexOf(props.ent[index].sesarTitle)].push(" " + props.ent[index].header + ": " + props.ent[index].value)
+                    //     break
+                    // }
+
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
+                    break
+
 
                 }
                 else {
@@ -235,12 +227,9 @@ const CardList = (props) => {
 
     // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the join(";") array index 
     const appendTitleToFront = (multiValueArr, options) => {
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
             if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
-                if (i !== 3)
-                    multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
-                else
-                    multiValueArr[i] = options[i] + " ==>" + multiValueArr[i]
+                multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
         }
     }
 
@@ -250,25 +239,29 @@ const CardList = (props) => {
 
         ////////////////
         // POP-UP LOCAL VARIABLES
-        let options = ["field_name", "description", "sample_comment", "geological_age"]
-        let multiValueArr = [[], [], [], []]
+        let options = ["field_name", "description", "sample_comment", "geological_age", "size"]
+        let multiValueArr = [[], [], [], [], []]
         let mapPreviewArr = []
-        let sizeSelection = ["", "", "", ""]
+        //let sizeSelection = ["", "", "", ""]
         let fieldIndex = -1;
         let descripIndex = -1;
         let sampleIndex = -1;
         let geoIndex = -1;
-
+        let sizeIndex = -1;
+        let finalSizeSelection;
+        let finalMap;
+        let finalMultiValue;
+        let i;
 
         /////////////////////////////////////////////////////////
         /////////// Display Preview of Multi-Value Selections
-        for (let i = 0; i < props.ent.length; i++) {
-            if (props.ent[i].sesarTitle !== "" && props.ent[i].sesarTitle !== "size") {
+        for (i = 0; i < props.ent.length; i++) {
+            if (props.ent[i].sesarTitle !== "") {
                 mapPreviewArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
             }
             multiValueArrHelper(options, i, multiValueArr)
         }
-        for (let i = 0; i < 3; i++) {
+        for (i = 0; i < 5; i++) {
             multiValueArr[i] = multiValueArr[i].join(";")
         }
 
@@ -283,28 +276,29 @@ const CardList = (props) => {
 
         //////////////////////////////////////
         // Display Size Selection Preview
-        for (let i = 0; i < props.ent.length; i++) {
-            if (props.outerArr[i][0].pairHeader !== "") {
-                if (sizeSelection[1] !== "")
-                    sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
-                else
-                    sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
-            }
-        }
-        for (let i = 0; i < props.ent.length; i++) {
-            if (props.singleMeasure[i].pairHeader !== "") {
-                if (sizeSelection[3] !== "")
-                    sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
-                else
-                    sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
-            }
-        }
+        // for (i = 0; i < props.ent.length; i++) {
+        //     if (props.outerArr[i][0].pairHeader !== "") {
+        //         if (sizeSelection[1] !== "")
+        //             sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
+        //         else
+        //             sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
+        //     }
+        // }
+        // for (i = 0; i < props.ent.length; i++) {
+        //     if (props.singleMeasure[i].pairHeader !== "") {
+        //         if (sizeSelection[3] !== "")
+        //             sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
+        //         else
+        //             sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
+        //     }
+        // }
 
-        let finalSizeSelection = sizeSelection.join("\n")
-        let finalMap = mapPreviewArr
-        let finalMultiValue = (multiValueArr.join("\n"))
+        // finalSizeSelection = sizeSelection.join("\n")
+        finalSizeSelection = []
+        finalMap = mapPreviewArr
+        finalMultiValue = (multiValueArr.join("\n"))
 
-        for (let i = 0; i < finalMap.length; i++) {
+        for (i = 0; i < finalMap.length; i++) {
             if (finalMap[i].includes(options[0])) {
                 finalMap[i] = multiValueArr[0]
                 if (fieldIndex === -1) {
@@ -329,9 +323,15 @@ const CardList = (props) => {
                     geoIndex = i
                 }
             }
+            else if (finalMap[i].includes(options[4])) {
+                finalMap[i] = multiValueArr[4]
+                if (sizeIndex === -1) {
+                    sizeIndex = i
+                }
+            }
         }
         let arr = []
-        for (let i = 0; i < finalMap.length; i++) {
+        for (i = 0; i < finalMap.length; i++) {
             if (!(arr.includes(finalMap[i]))) {
                 if (!(finalMap[i].includes(options[0]) && i !== fieldIndex))
                     arr.push(finalMap[i])
@@ -339,12 +339,16 @@ const CardList = (props) => {
                     arr.push(finalMap[i])
                 else if (!(finalMap[i].includes(options[2]) && i !== sampleIndex))
                     arr.push(finalMap[i])
+                else if (!(finalMap[i].includes(options[3]) && i !== geoIndex))
+                    arr.push(finalMap[i])
+                else if (!(finalMap[i].includes(options[4]) && i !== sizeIndex))
+                    arr.push(finalMap[i])
             }
 
         }
-        if (finalSizeSelection !== "") {
-            arr.push("size: " + finalSizeSelection.replace("\n", ""))
-        }
+        // if (finalSizeSelection !== "") {
+        //     arr.push("size: " + finalSizeSelection.replace("\n", ""))
+        // }
 
 
         let finalArray = [finalSizeSelection, arr, finalMultiValue]
@@ -353,6 +357,15 @@ const CardList = (props) => {
 
     }
 
+    const dateSelected = () => {
+        let found = false
+        for (let i = 0; i < props.ent.length; i++) {
+            if (props.ent[i].sesarTitle === "collection_start_date" || props.ent[i].sesarTitle === "collection_end_date") {
+                found = true
+            }
+        }
+        return found
+    }
 
 
 
@@ -367,10 +380,8 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-
                     <div className="arrowDiv">
                         <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
-
                             <div className="content">
                                 Toggle Content
                             </div>
@@ -384,32 +395,35 @@ const CardList = (props) => {
                         </button>
                         <button className="ui icon button" style={{ display: "inline-block", width: "60px" }} onClick={() => rightArrowToggle()}>
                             <i className="right arrow icon"></i>
-
                         </button>
                     </div>
 
-                    {/*replace this div with new component*/}
-                    {/* <div style={{ float: "right", paddingTop: "1%", paddingLeft: "1.2em", paddingRight: "2em" }} align="center" className="marsIcon">
-                        <img className="mars" src={mars} alt="marsIcon" onClick={checkStore}></img>
-                        <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
-                    </div> */}
                     <MapOutput />
 
-
-                    <div style={{ paddingTop: "3em" }} className="dropDown2" >
+                    <div style={{ paddingTop: "3em", width: "15%" }} className="dropDown2" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div className="dropDown1" >
-                        <p>Formatting required***</p>
-                        <DateDropdown className="requireOption" list={dateFormatOption} />
-                        <CenturyDropDown className="requireOption" />
+                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px;", paddingRight: "0px", marginRight: "0px" }}>
+                        {(props.hasDateFormat === false || dateSelected() === false) ?
+                            <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
+                                Select Date Format
+                        </div> : <div style={{ visibility: "hidden", width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
+                                Select Date Format
+                        </div>}
+
+                        {(props.hasDateFormat === false || dateSelected() === false) ?
+                            <div className="dropDown1" style={{ borderColor: "red" }} >
+                                <DateDropdown className="requireOption" list={dateFormatOption} />
+                                <CenturyDropDown className="requireOption" />
+                            </div> : <div className="dropDown1">
+                                <DateDropdown className="requireOption" list={dateFormatOption} />
+                                <CenturyDropDown className="requireOption" />
+                            </div>}
                     </div>
-
                 </div>
-
 
                 <div className="uiInfo labelInfo">
                     <div>
@@ -417,22 +431,13 @@ const CardList = (props) => {
                             <div className="checkBoxInfo">
                                 Use
                             </div>
-
                             <div dir="rtl" className="fieldTitle">:Header</div>
                             <div className="fieldVal"> Content</div>
-
-
-
                         </object>
-
                         <object className="dropDownWidget" align="right">
                             <div className="mappedValue">Mapped Content</div>
                             <div className="dropDownInfo"><b>[</b>Mapped Header<b>]</b></div>
-                            {(true) ?
-                                <object className="mappedValue" style={{ paddingRight: "70px" }}>
-                                    Type </object> : <div className="padRight"> Type </div>}
                         </object>
-
                     </div>
                 </div>
 
@@ -456,7 +461,8 @@ const mapStateToProps = (state) => {
         hasBeenOpened: state.isOpen,
         toggleArr: state.toggleArr,
         toggleIndex: state.toggleIndex,
-        usingToggle: state.toggleInUse
+        usingToggle: state.toggleInUse,
+        hasDateFormat: state.hasChosenDateFormat
     };
 };
 

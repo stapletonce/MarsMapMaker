@@ -13,7 +13,6 @@ export default class CheckboxExample extends Component {
         this.setState({ checked: !this.props.isChecked })
     }
 
-
     render() {
         return (
             <div className="innerCheckbox">

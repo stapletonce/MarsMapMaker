@@ -22,29 +22,29 @@ const reducer =
       toggleArr: [],
       isOpen: false,
       hasInit: false,
-      singleMeasureArr: [],
-      sizeOuterArray: [],
-      sizeArray: [
-        // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
-        // In the case of a single measurement for size, on the last object is used [x, x, 2]
-        {
-          pairHeader: "",
-          pairValue: "",
-          currentID: -1
-        },
-        {
-          pairHeader: "",
-          pairValue: "",
-          currentID: -1
-        },
-        {
-          pairHeader: "",
-          pairValue: "",
-          currentID: -1
-        }
-      ],
+      // singleMeasureArr: [],
+      // sizeOuterArray: [],
+      // sizeArray: [
+      //   // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
+      //   // In the case of a single measurement for size, on the last object is used [x, x, 2]
+      //   {
+      //     pairHeader: "",
+      //     pairValue: "",
+      //     currentID: -1
+      //   },
+      //   {
+      //     pairHeader: "",
+      //     pairValue: "",
+      //     currentID: -1
+      //   },
+      //   {
+      //     pairHeader: "",
+      //     pairValue: "",
+      //     currentID: -1
+      //   }
+      // ],
       // stringDateMeasure was used for stringDateMeasure dropdown, but depreciated 
-      stringDateMeasure: [],
+      //stringDateMeasure: [],
       entries: [],
       useOnce: [],
       multiValues: [
@@ -79,9 +79,8 @@ const reducer =
           ...state,
           entries: state.entries.concat(action.payload.objArr),
           useOnce: state.useOnce.concat(action.payload.useOnce),
-          sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
-          singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
-
+          //sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
+          //singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
         }
 
       case "CHANGE_INIT":
@@ -93,9 +92,10 @@ const reducer =
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
       case "DROPDOWN_UPDATE":
         let index = action.payload.id
-        let check;
+        let check = action.payload.dropOption;
         if ((action.payload.sesarSelected === "collection_end_date" || action.payload.sesarSelected === "collection_start_date"))
           check = true
+
 
         return {
           ...state,
@@ -209,93 +209,93 @@ const reducer =
           ]
         }
 
-      case "ADD_TO_SIZE_ARRAY":
-        return update(state,
-          {
-            sizeOuterArray: {
-              [action.payload.cardID]: {
-                [action.payload.index]: {
-                  pairHeader: { $set: action.payload.header },
-                  pairValue: { $set: action.payload.value },
-                  currentID: { $set: action.payload.cardID }
-                },
-                [action.payload.index + 1]: {
-                  pairHeader: { $set: action.payload.nextHeader },
-                  pairValue: { $set: action.payload.nextValue },
-                  currentID: { $set: action.payload.nextID }
-                }
+      // case "ADD_TO_SIZE_ARRAY":
+      //   return update(state,
+      //     {
+      //       sizeOuterArray: {
+      //         [action.payload.cardID]: {
+      //           [action.payload.index]: {
+      //             pairHeader: { $set: action.payload.header },
+      //             pairValue: { $set: action.payload.value },
+      //             currentID: { $set: action.payload.cardID }
+      //           },
+      //           [action.payload.index + 1]: {
+      //             pairHeader: { $set: action.payload.nextHeader },
+      //             pairValue: { $set: action.payload.nextValue },
+      //             currentID: { $set: action.payload.nextID }
+      //           }
 
-              }
-            }
-          });
+      //         }
+      //       }
+      //     });
 
       // add changing second entries to have payload.index + 1 contents
 
 
 
-      case "REMOVE_ITEM_SIZE_ARRAY":
-        return update(state,
-          {
-            sizeOuterArray: {
-              [action.payload.cardID]: {
-                [action.payload.index]: {
-                  pairHeader: { $set: "" },
-                  pairValue: { $set: "" },
-                  currentID: { $set: -1 }
-                },
-                [action.payload.index + 1]: {
-                  pairHeader: { $set: "" },
-                  pairValue: { $set: "" },
-                  currentID: { $set: -1 }
-                }
+      // case "REMOVE_ITEM_SIZE_ARRAY":
+      //   return update(state,
+      //     {
+      //       sizeOuterArray: {
+      //         [action.payload.cardID]: {
+      //           [action.payload.index]: {
+      //             pairHeader: { $set: "" },
+      //             pairValue: { $set: "" },
+      //             currentID: { $set: -1 }
+      //           },
+      //           [action.payload.index + 1]: {
+      //             pairHeader: { $set: "" },
+      //             pairValue: { $set: "" },
+      //             currentID: { $set: -1 }
+      //           }
 
-              }
-            }
-          });
+      //         }
+      //       }
+      //     });
 
-      case "CLEAR_SINGLE_MEASURE":
-        return update(state,
-          {
-            singleMeasureArr: {
-              [action.payload.id]: {
-                pairHeader: { $set: "" },
-                pairValue: { $set: "" },
-                currentID: { $set: -1 }
-              }
-            }
-          });
+      // case "CLEAR_SINGLE_MEASURE":
+      //   return update(state,
+      //     {
+      //       singleMeasureArr: {
+      //         [action.payload.id]: {
+      //           pairHeader: { $set: "" },
+      //           pairValue: { $set: "" },
+      //           currentID: { $set: -1 }
+      //         }
+      //       }
+      //     });
 
-      case "ADD_SINGLE_MEASURE":
-        return update(state,
-          {
-            singleMeasureArr: {
-              [action.payload.cardID]: {
-                pairHeader: { $set: action.payload.header },
-                pairValue: { $set: action.payload.value },
-                currentID: { $set: action.payload.cardID }
-              }
-            }
-          }
-        )
+      // case "ADD_SINGLE_MEASURE":
+      //   return update(state,
+      //     {
+      //       singleMeasureArr: {
+      //         [action.payload.cardID]: {
+      //           pairHeader: { $set: action.payload.header },
+      //           pairValue: { $set: action.payload.value },
+      //           currentID: { $set: action.payload.cardID }
+      //         }
+      //       }
+      //     }
+      //   )
 
-      case "SET_SECOND":
-        return update(state,
-          {
-            entries: {
-              [action.payload.cardID]: {
-                id: { $set: action.payload.id },
-                sesarTitle: { $set: "size" },
-                oldValue: { $set: action.payload.oldValue },
-                value: { $set: action.payload.value },
-                header: { $set: action.payload.header },
-                // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
-                isDate: { $set: false },
-                isMeasurement: { $set: false },
-                isGreen: { $set: action.payload.isGreen }
-              }
-            }
-          }
-        )
+      // case "SET_SECOND":
+      //   return update(state,
+      //     {
+      //       entries: {
+      //         [action.payload.cardID]: {
+      //           id: { $set: action.payload.id },
+      //           sesarTitle: { $set: "size" },
+      //           oldValue: { $set: action.payload.oldValue },
+      //           value: { $set: action.payload.value },
+      //           header: { $set: action.payload.header },
+      //           // taking a look at isDate and isMeasurment later along with other intricacies of the store/dropdown dynamic
+      //           isDate: { $set: false },
+      //           isMeasurement: { $set: false },
+      //           isGreen: { $set: action.payload.isGreen }
+      //         }
+      //       }
+      //     }
+      //   )
 
       case "SET_SUB":
         return update(state,
