@@ -81,12 +81,14 @@ class FileIn extends React.Component {
 
         }
 
+        console.log(this.state.files)
         this.setState({ loaded: true })
 
     };
 
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
+        console.log(result)
         var data = result;
         let toggleArr = this.state.toggleValues;
 
