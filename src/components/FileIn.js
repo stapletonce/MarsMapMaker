@@ -121,7 +121,8 @@ class FileIn extends React.Component {
 
         return (
             <div className={readerClass}>
-                <h2>Import CSV File!</h2>
+
+                <h2>Import File(s)!</h2>
 
                 <input
                     className="csv-input"
