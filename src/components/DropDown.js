@@ -322,40 +322,40 @@ class DropDown extends React.Component {
     updateValueHelper = (newValue) => {
         let breakOrFormat;
 
-        if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
-            const sizeObj = {
-                cardID: this.props.id,
-                index: 0
-            }
-            this.props.clearSizeArray(sizeObj)
-            const obj = {
-                oldValue: this.props.fieldValue,
-                value: this.props.fieldValue,
-                header: this.props.fieldTitle,
-                id: this.props.id + 1,
-                isGreen: this.state.isGreen
-            }
-            this.props.removeContent(obj)
-        }
+        // if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
+        //     const sizeObj = {
+        //         cardID: this.props.id,
+        //         index: 0
+        //     }
+        //     this.props.clearSizeArray(sizeObj)
+        //     const obj = {
+        //         oldValue: this.props.fieldValue,
+        //         value: this.props.fieldValue,
+        //         header: this.props.fieldTitle,
+        //         id: this.props.id + 1,
+        //         isGreen: this.state.isGreen
+        //     }
+        //     this.props.removeContent(obj)
+        // }
 
-        if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
-            let obj = {
-                id: 0
-            }
-            this.props.clearSizeArray(obj)
-        }
-        else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
-            let obj = {
-                id: 1
-            }
-            this.props.clearSizeArray(obj)
-        }
-        else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
-            let obj = {
-                id: 2
-            }
-            this.props.clearSizeArray(obj)
-        }
+        // if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
+        //     let obj = {
+        //         id: 0
+        //     }
+        //     this.props.clearSizeArray(obj)
+        // }
+        // else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
+        //     let obj = {
+        //         id: 1
+        //     }
+        //     this.props.clearSizeArray(obj)
+        // }
+        // else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
+        //     let obj = {
+        //         id: 2
+        //     }
+        //     this.props.clearSizeArray(obj)
+        // }
 
 
 
