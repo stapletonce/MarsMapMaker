@@ -15,39 +15,59 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         // THIS IS THE ONLY TIME WE DO DIRECT ASSIGNMENT TO STATE
-        this.state = { toggleValuesArr: null, mapPreview: null, isOpened: props.hasBeenOpened, fieldNames: [], size: 0, fieldValues: [], data: [], continue: false }; // state object, contains properties relevant to component
+        this.state = {
+            toggleValuesArr: null,
+            mapPreview: null,
+            isOpened: props.hasBeenOpened,
+            fieldNames: [],
+            size: 0,
+            fieldValues: [],
+            data: [],
+            continue: false
+        }; // state object, contains properties relevant to component
     }
 
-    findDuplicates = (names, values) => {
+    // removes duplicates in an array
+    findDuplicates = (names) => {
         let arr = [];
-        let arrValues = [];
-        for (let i = 0; i < names.length; i++) {
-            for (let j = 0; j < names.length; j++) {
+        let final
+        let i;
+        let j;
+
+        for (i = 0; i < names.length; i++) {
+            for (j = 0; j < names.length; j++) {
                 if (i !== j && !arr.includes(names[i])) {
                     if (names[i] === names[j]) {
                         arr = arr.concat(names[i])
-                        arrValues = arrValues.concat(values[i])
 
                     }
                 }
             }
         }
-        let final = arr
+        final = arr
         return final
     }
 
+    // removes duplicates from array
     removeDuplicates = (nameArr, valueArr) => {
         let names = nameArr;
         let values = valueArr;
-        let duplicateArr = this.findDuplicates(nameArr, valueArr)
-        for (let i = nameArr.length - 1; i >= 0; i--) {
+        let i;
+        let duplicateArr;
+        let final;
+
+        duplicateArr = this.findDuplicates(nameArr, valueArr)
+
+        for (i = nameArr.length - 1; i >= 0; i--) {
             if (duplicateArr.includes(nameArr[i])) {
                 duplicateArr.splice(duplicateArr.indexOf(nameArr[i]), 1)
                 names.splice(i, 1)
                 values.splice(i, 1)
             }
         }
-        let final = [names, values]
+
+        final = [names, values]
+
         return final
     }
 
@@ -56,19 +76,25 @@ class App extends React.Component {
     fileCallback = (datafromFile, totalSize, toggleValues) => {
 
         let currentComponent = this;
-
-        let toggleObj = {
+        let newNames;
+        let newValues;
+        let processedValues;
+        const toggleObj = {
             arr: toggleValues
         }
-        this.props.initToggle(toggleObj)
-        let newNames = this.state.fieldNames.slice()
+        const obj = {
+            bool: true
+        }
 
+        this.props.initToggle(toggleObj)
+
+        newNames = this.state.fieldNames.slice()
         newNames = newNames.concat(datafromFile[0])
 
-        let newValues = this.state.fieldValues
+        newValues = this.state.fieldValues
         newValues = newValues.concat(datafromFile[1])
 
-        let processedValues = this.removeDuplicates(newNames, newValues)
+        processedValues = this.removeDuplicates(newNames, newValues)
 
         currentComponent.setState({
             fieldNames:
@@ -77,22 +103,19 @@ class App extends React.Component {
                 processedValues[1],
             continue: true
         });
+
         if (this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length === totalSize - this.findDuplicates(newNames, newValues).length) {
-            const obj = {
-                bool: true
-            }
             this.props.changeInit(obj)
         }
-
     }
+
     isOpenCallback = (data) => {
         let currentComponent = this
-
-        currentComponent.setState({ isOpened: true, mapPreview: data[1].join("\n") })
-
+        currentComponent.setState({
+            isOpened: true,
+            mapPreview: data[1].join("\n")
+        })
     }
-
-
 
     // React says we have to define render!! You have to display JSX!
     render() {
@@ -130,11 +153,6 @@ class App extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
-        useOnce: state.useOnce,
-        dateFormat: state.chosenDateFormat,
-        hasChosen: state.hasChosenDateFormat,
-        pairArr: state.sizeOuterArray,
-        hasInit: state.hasInit,
         hasBeenOpened: state.isOpen,
         toggleArr: state.toggleArr
     };
