@@ -142,18 +142,34 @@ const CardList = (props) => {
         singleMeasure.push(singleMeasureObj)
 
         // create the FieldCard that you see in the UI
-        return (
-            <FieldCard
+        if (toggleIndex === 0) {
+            return (<FieldCard
                 toggleInUse={props.usingToggle}
                 key={newKey}
                 hiding={hide}
-                fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                fieldTitle={field}
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""}
-            />
-        );
+            />)
+
+        }
+        else {
+            return (
+                <FieldCard
+                    toggleInUse={props.usingToggle}
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />
+            );
+        }
+
     });
 
     //after fieldcards are set change toggle in use back to false
