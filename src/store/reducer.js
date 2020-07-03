@@ -93,9 +93,10 @@ const reducer =
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
       case "DROPDOWN_UPDATE":
         let index = action.payload.id
-        let check;
+        let check = action.payload.dropOption;
         if ((action.payload.sesarSelected === "collection_end_date" || action.payload.sesarSelected === "collection_start_date"))
           check = true
+
 
         return {
           ...state,

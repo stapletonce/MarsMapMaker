@@ -16,7 +16,7 @@ class DropDown extends React.Component {
             value: "select",
             selectedValue: "",
             sesarOneToOne: this.props.one2one
-        };
+        }
     }
 
 
@@ -280,8 +280,23 @@ class DropDown extends React.Component {
         // also to think further on that, check if the users value matches their format selection, if not send an error
     }
 
+    dateSelected = () => {
+        let found = false
+        for (let i = 0; i < this.props.ent.length; i++) {
+
+            if (this.props.ent[i].sesarTitle === "collection_start_date" || this.props.ent[i].sesarTitle === "collection_end_date") {
+
+                found = true
+            }
+
+        }
+        return found
+    }
+
     // josh's section
     updateMulti = () => {
+
+
 
         for (let i = 0; i < this.props.ent.length; i++) {
 
@@ -403,13 +418,15 @@ class DropDown extends React.Component {
             id: this.props.id,
             sesarSelected: newValue,
             value: this.props.value,
-            header: this.props.title
+            header: this.props.title,
+            bool: true,
+            dropOption: this.props.dropDownChosen
         }
-
 
 
         this.props.dropdownUpdate(obj)
         //this.updateMulti()
+
 
         if (this.props.value !== undefined) {
             this.props.callback(this.props.value, newValue)
@@ -544,6 +561,7 @@ const mapStateToProps = (state) => {
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
+        dropDownChosen: state.hasChosenDropdownOption,
         num: state.numOfOneToOne,
         hasChosenCentury: state.centuryChosen,
         century: state.century,
