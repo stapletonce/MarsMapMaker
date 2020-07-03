@@ -88,10 +88,27 @@ class FileIn extends React.Component {
 
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
-        console.log(result)
         var data = result;
+        let finalToggleArray = []
         let toggleArr = this.state.toggleValues;
+        let minimum = Math.min(data.data.length, toggleArr.length)
+        if (toggleArr !== [] && this.state.csvfile2 !== undefined) {
 
+            if (minimum < 10) {
+                for (let i = 0; i < (minimum % 10); i++) {
+                    const finalObj = { ...toggleArr[i], ...data.data[i] }
+                    finalToggleArray.push(finalObj)
+                }
+            }
+            else {
+                for (let i = 0; i < (minimum % 10) + (10 - (minimum % 10)); i++) {
+                    const finalObj = { ...toggleArr[i], ...data.data[i] }
+                    finalToggleArray.push(finalObj)
+                }
+            }
+            toggleArr = finalToggleArray
+
+        }
         toggleArr = toggleArr.concat(data.data)
 
         this.setState({
@@ -111,6 +128,11 @@ class FileIn extends React.Component {
         else {
             this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
         }
+
+
+
+
+
     }
 
     render() {
