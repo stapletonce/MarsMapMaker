@@ -5,7 +5,8 @@ import { connect } from "react-redux";
 import "semantic-ui-react";
 
 //Action Creators
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
+//clearSizeArray,
+import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
 
 class DropDown extends React.Component {
 
@@ -377,7 +378,7 @@ class DropDown extends React.Component {
         if (this.props.dateFormat != null)
             breakOrFormat = this.props.dateFormat.split(" ")
 
-        this.props.sizeCallback(newValue)
+        // this.props.sizeCallback(newValue)
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
 
@@ -509,20 +510,20 @@ class DropDown extends React.Component {
 
             if (f.type === this.props.fieldType || f.type === "both") {
 
-                if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
-                    if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
-                        return
-                }
-                else if (this.sizeArrayLoop() === 2 && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "")) {
-                    if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
-                        return
-                }
+                // if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
+                //     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
+                //         return
+                // }
+                // else if (this.sizeArrayLoop() === 2 && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "")) {
+                //     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
+                //         return
+                // }
                 //if (f.title === "size" && this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
                 //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
 
-                else if (!this.props.useOnce.includes(f.title))
+                if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
@@ -535,21 +536,12 @@ class DropDown extends React.Component {
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
 
-        if (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "") {
-            return (
+        return (
+            <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+                {this.props.list.map((field) => filter(field))}
+            </select>
+        );
 
-                <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
-                    <option key={"size"} value={"size"}>size</option>
-                </select>
-            );
-        } else {
-            return (
-
-                <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
-                    {this.props.list.map((field) => filter(field))}
-                </select>
-            );
-        }
 
     }
 }
@@ -575,4 +567,4 @@ const mapStateToProps = (state) => {
 
 
 
-export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, clearSizeArray, setSubstringDateFormat, toggleInUse })(DropDown);
+export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);

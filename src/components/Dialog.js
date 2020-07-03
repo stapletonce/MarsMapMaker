@@ -34,7 +34,6 @@ class Dialog extends Component {
         let dialog = (
             <div style={dialogStyles}>
                 <button style={dialogCloseButtonStyles} onClick={this.props.onClose}>x</button>
-
                 <div>{this.props.children}</div>
             </div>
         );

@@ -23,8 +23,6 @@ class FileIn extends React.Component {
         this.updateData = this.updateData.bind(this);
     }
 
-
-
     // helper method for selected CSV to read information from the file
     handleChange = event => {
         this.setState({ files: event.target.files })
@@ -107,15 +105,10 @@ class FileIn extends React.Component {
             if (this.state.num === 1) {
                 this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
             }
-
         }
         else {
             this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
         }
-
-
-
-
     }
 
     render() {

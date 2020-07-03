@@ -1,3 +1,29 @@
+/*** MARS MAP MAKER CSS ***/
+/*************************/
+/* App.js */
+.marsPhoto {
+    border: solid 10px rgb(46,14,8);
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100vh;
+    width: 100vw;
+}
+
+.marsPhoto1{
+    display: none;
+}
+/* CardList.js */
+/* CenturyDropDown.js */
+/* CheckBox.js */
+/* DateDropdown.js */
+/* Dialog.js */
+/* DropDown.js */
+/* FieldCard.js */
+/* FileIn.js */
+/* FormatDropdown.js */
+/* MapOutput.js */
+
 .fieldVal {
     color: rgb(99,99,102);
     display: inline-block;
@@ -26,18 +52,7 @@
     cursor: pointer;
 }
 
-.marsPhoto {
-    border: solid 10px rgb(46,14,8);
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    height: 100vh;
-    width: 100vw;
-}
 
-.marsPhoto1{
-    display: none;
-}
 
 .preview {
     height: 60px;
