@@ -94,11 +94,13 @@ const CardList = (props) => {
 
     // Content Toggle right->add 1, left->sub 1, refresh->reset to 0
     const rightArrowToggle = () => {
-        addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
-        let obj = {
-            bool: true
+        if (toggleIndex < 9) {
+            addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+            let obj = {
+                bool: true
+            }
+            props.toggleInUse(obj)
         }
-        props.toggleInUse(obj)
     }
 
     const leftArrowToggle = () => {
@@ -140,7 +142,7 @@ const CardList = (props) => {
         useOnce.push("")
         outerArr.push(sizeArray)
         singleMeasure.push(singleMeasureObj)
-
+        console.log(toggleIndex)
         // create the FieldCard that you see in the UI
         if (toggleIndex === 0) {
             return (<FieldCard
@@ -169,6 +171,7 @@ const CardList = (props) => {
                 />
             );
         }
+        console.log(toggleIndex)
 
     });
 
