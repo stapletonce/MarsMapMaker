@@ -22,6 +22,7 @@ const reducer =
       toggleArr: [],
       isOpen: false,
       hasInit: false,
+      jsFile: undefined,
       // singleMeasureArr: [],
       // sizeOuterArray: [],
       // sizeArray: [
@@ -78,10 +79,14 @@ const reducer =
         return {
           ...state,
           entries: state.entries.concat(action.payload.objArr),
-          useOnce: state.useOnce.concat(action.payload.useOnce),
+          useOnce: state.useOnce.concat(action.payload.useOnce)
+
           //sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
           //singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
         }
+
+
+
 
       case "CHANGE_INIT":
         return {
@@ -127,6 +132,9 @@ const reducer =
 
 
         }
+
+
+
 
       case "CHOOSE_FORMAT":
         return {
