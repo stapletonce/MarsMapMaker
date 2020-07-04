@@ -18,6 +18,7 @@ class App extends React.Component {
             toggleValuesArr: null,
             mapPreview: null,
             isOpened: props.hasBeenOpened,
+            jsFile: undefined,
             fieldNames: [],
             size: 0,
             fieldValues: [],
@@ -72,7 +73,7 @@ class App extends React.Component {
 
     // callback function that retrieves data from file, passed through FileIn.js
     // sets state of the the fieldNames, and fieldValues arrays used throughout program
-    fileCallback = (datafromFile, totalSize, toggleValues) => {
+    fileCallback = (datafromFile, totalSize, toggleValues, jsFile) => {
 
         let currentComponent = this;
         let newNames;
@@ -84,6 +85,8 @@ class App extends React.Component {
         const obj = {
             bool: true
         }
+
+        this.setState({ jsFile: jsFile })
 
         this.props.initToggle(toggleObj)
 
@@ -139,6 +142,7 @@ class App extends React.Component {
 
                 {this.state.continue ?
                     <CardList
+                        jsFileValues={this.state.jsFile}
                         callback={this.isOpenCallback}
                         fields={this.state.fieldNames}
                         toggleVals={this.state.toggleValuesArr}
