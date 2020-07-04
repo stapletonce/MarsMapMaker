@@ -15,6 +15,7 @@ class FileIn extends React.Component {
             num: -1,
             readyToInit: false,
             totalFileSize: 0,
+            jsFile: undefined,
             files: undefined,
             csvfile: undefined,
             csvfile2: undefined,
@@ -25,6 +26,7 @@ class FileIn extends React.Component {
 
     // helper method for selected CSV to read information from the file
     handleChange = event => {
+
         this.setState({ files: event.target.files })
         if (event.target.files[1] === undefined) {
             this.setState({
@@ -81,13 +83,47 @@ class FileIn extends React.Component {
 
         }
 
-        console.log(this.state.files)
         this.setState({ loaded: true })
 
     };
 
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
+
+        if (Object.keys(result.data[0])[0].includes("//Start::::")) {
+            let jsArr = []
+
+            let startPushing = false;
+            // parsing out a javascript file
+            for (let i = 1; i < result.data.length - 1; i++) {
+
+                if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("let map")) {
+                    startPushing = true
+                }
+                else if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("}")) {
+                    startPushing = false
+                }
+                if (startPushing === true) {
+                    jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+                }
+            }
+            jsArr.splice(jsArr.length - 1, 1)
+            for (let i = 0; i < jsArr.length; i++) {
+                jsArr[i] = jsArr[i].replace(/(|\r\n|\s|)/gm, "")
+                jsArr[i] = jsArr[i].split(":")
+                jsArr[i][0] = jsArr[i][0].substring(3)
+                jsArr[i][1] = jsArr[i][1].substring(1, jsArr[i][1].length - 1)
+            }
+            this.setState({ jsFile: jsArr })
+
+            console.log(this.state.jsFile)
+            return
+        }
+
+
+
+
+
         var data = result;
         let finalToggleArray = []
         let toggleArr = this.state.toggleValues;
@@ -151,7 +187,7 @@ class FileIn extends React.Component {
                 <input
                     className="csv-input"
                     type="file"
-                    accept=".csv"
+                    accept=".csv, .js"
                     ref={input => {
                         this.filesInput = input;
                     }}
