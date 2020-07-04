@@ -109,16 +109,17 @@ class FileIn extends React.Component {
                     jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
                 }
             }
-            jsArr.splice(jsArr.length - 1, 1)
+            // jsArr.splice(jsArr.length - 1, 1)
             for (let i = 0; i < jsArr.length; i++) {
-                jsArr[i] = jsArr[i].replace(/(|\r\n|\s|)/gm, "")
+                jsArr[i] = jsArr[i].replace(/(|\r\n|\s|})/gm, "")
+                jsArr[i] = jsArr[i].replace("}", "")
                 jsArr[i] = jsArr[i].split(":")
+                console.log("LOOKING HERE: " + jsArr[i])
                 jsArr[i][0] = jsArr[i][0].substring(3)
                 jsArr[i][1] = jsArr[i][1].substring(1, jsArr[i][1].length - 1)
             }
             this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
 
-            console.log(this.state.jsFile)
 
         }
 

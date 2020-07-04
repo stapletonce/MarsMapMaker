@@ -121,13 +121,32 @@ const CardList = (props) => {
         props.toggleInUse(obj)
     }
 
+    const findSesarPassIn = (field) => {
+        let sesarPassIn = "";
+        console.log(props.jsFileValues)
+        if (props.jsFileValues !== undefined)
+            for (let i = 0; i < props.jsFileValues.length; i++) {
+
+                if (field === props.jsFileValues[i][1]) {
+
+                    sesarPassIn = (props.jsFileValues[i][0])
+
+                }
+                console.log(newKey + ": " + sesarPassIn)
+            }
+        return sesarPassIn
+    }
+
     // maps content to separate fieldcards on the screen
     const fields = props.fields.map((field) => {
         newKey += 1
+
+        let sesarFind = findSesarPassIn(field)
+
         //create an object and add it to store
-        const storedValue = {
+        let storedValue = {
             id: newKey,
-            sesarTitle: "",
+            sesarTitle: sesarFind,
             oldValue: props.fieldVal[newKey],
             value: props.fieldVal[newKey],
             // this used to be id 
@@ -138,41 +157,71 @@ const CardList = (props) => {
         }
 
         // after object is created, append it to the object array & add one to the ID
-        objArray.push(storedValue)
+
         useOnce.push("")
         outerArr.push(sizeArray)
         singleMeasure.push(singleMeasureObj)
-        console.log(toggleIndex)
-        // create the FieldCard that you see in the UI
-        if (toggleIndex === 0) {
-            return (<FieldCard
-                toggleInUse={props.usingToggle}
-                key={newKey}
-                hiding={hide}
-                fieldTitle={field}
-                id={newKey}
-                fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""}
-            />)
+        objArray.push(storedValue)
 
-        }
-        else {
-            return (
-                <FieldCard
+        // create the FieldCard that you see in the UI
+        if (props.jsFileValues === undefined) {
+            if (toggleIndex === 0) {
+                return (<FieldCard
                     toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
-                    fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                    fieldTitle={field}
                     id={newKey}
                     fieldType={typeField(props.fieldVal[newKey])}
-                    fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                    fieldValue={props.fieldVal[newKey]}
                     hasContent={props.fieldVal[newKey] !== ""}
-                />
-            );
-        }
-        console.log(toggleIndex)
+                />)
 
+            }
+            else {
+                return (
+                    <FieldCard
+                        toggleInUse={props.usingToggle}
+                        key={newKey}
+                        hiding={hide}
+                        fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                        id={newKey}
+                        fieldType={typeField(props.fieldVal[newKey])}
+                        fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                        hasContent={props.fieldVal[newKey] !== ""}
+                    />
+                );
+            }
+        }
+        else {
+            if (toggleIndex === 0) {
+                return (<FieldCard
+                    toggleInUse={props.usingToggle}
+                    key={newKey}
+                    hiding={hide}
+                    fieldTitle={field}
+                    id={newKey}
+                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldValue={props.fieldVal[newKey]}
+                    hasContent={props.fieldVal[newKey] !== ""}
+                />)
+
+            }
+            else {
+                return (
+                    <FieldCard
+                        toggleInUse={props.usingToggle}
+                        key={newKey}
+                        hiding={hide}
+                        fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+                        id={newKey}
+                        fieldType={typeField(props.fieldVal[newKey])}
+                        fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                        hasContent={props.fieldVal[newKey] !== ""}
+                    />
+                );
+            }
+        }
     });
 
     //after fieldcards are set change toggle in use back to false
@@ -188,6 +237,8 @@ const CardList = (props) => {
         props.firstState(initObj)
     }, []);
 
+
+
     //funciton to pass to modal windown
     //const closeModal = () => {
     //setShowModal(false);
@@ -198,6 +249,7 @@ const CardList = (props) => {
         console.log(props.singleMeasure)
         console.log(props.ent)
         console.log(props.outerArr)
+        console.log(props.storeJsFile)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -462,7 +514,8 @@ const mapStateToProps = (state) => {
         toggleArr: state.toggleArr,
         toggleIndex: state.toggleIndex,
         usingToggle: state.toggleInUse,
-        hasDateFormat: state.hasChosenDateFormat
+        hasDateFormat: state.hasChosenDateFormat,
+        storeJsFile: state.jsFile
     };
 };
 
