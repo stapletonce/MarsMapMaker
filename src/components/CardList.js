@@ -125,8 +125,8 @@ const CardList = (props) => {
         let sesarPassIn = "";
         if (props.jsFileValues !== undefined)
             for (let i = 0; i < props.jsFileValues.length; i++) {
+                if (field === props.jsFileValues[i][1].replace(" ", "")) {
 
-                if (field === props.jsFileValues[i][1]) {
 
                     if (props.jsFileValues[i][1] !== "collection_start_date" && props.jsFileValues[i][1] !== "collection_start_end")
                         sesarPassIn = (props.jsFileValues[i][0])
