@@ -128,7 +128,8 @@ const CardList = (props) => {
 
                 if (field === props.jsFileValues[i][1]) {
 
-                    sesarPassIn = (props.jsFileValues[i][0])
+                    if (props.jsFileValues[i][1] !== "collection_start_date" && props.jsFileValues[i][1] !== "collection_start_end")
+                        sesarPassIn = (props.jsFileValues[i][0])
 
                 }
             }
