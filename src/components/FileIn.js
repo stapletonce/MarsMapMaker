@@ -108,21 +108,19 @@ class FileIn extends React.Component {
                 if (startPushing === true) {
                     if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
                         console.log(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
-                        jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+                        jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
                     }
                     else {
                         let firstIndexFormat;
                         // where we handle multivalue selections
-                        console.log(JSON.stringify(Object.values(result.data[i])))
+
                         firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
-                        console.log(firstIndexFormat[2])
-                        console.log(JSON.stringify(Object.values(result.data[i])[1][0]))
-                        console.log(JSON.stringify(Object.values(result.data[i])[1][1]))
                         firstIndexFormat[3] = firstIndexFormat[3].substring(3, firstIndexFormat[3].length - 3)
-                        console.log("   " + firstIndexFormat[2] + " " + firstIndexFormat[3])
-                        jsArr.push("\"   " + firstIndexFormat[2] + " " + firstIndexFormat[3] + "\"")
-                        for (let j = 0; j < JSON.stringify(Object.values(result.data[i])[1]).length; j++) {
-                            jsArr.push("\"   " + firstIndexFormat[2] + " " + (Object.values(result.data[i])[1][0]).substring(2, (Object.values(result.data[i])[1][0]).length - 1) + "\"")
+                        jsArr.push(firstIndexFormat[2] + firstIndexFormat[3])
+                        if ((Object.values(result.data[i])).length > 1) {
+                            for (let j = 0; j < JSON.stringify(Object.values(result.data[i])[1]).length; j++) {
+                                jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][0]).substring(2, (Object.values(result.data[i])[1][0]).length - 1))
+                            }
                         }
                     }
                 }
@@ -139,12 +137,14 @@ class FileIn extends React.Component {
 
                 jsArr[i] = jsArr[i].replace(/(|\r\n|\s|})/gm, "")
                 jsArr[i] = jsArr[i].replace("}", "")
+                jsArr[i] = jsArr[i].replace(/\\/g, '')
+                jsArr[i] = jsArr[i].replace(/"/g, "")
+                jsArr[i] = jsArr[i].replace(" ", "")
                 console.log(jsArr[i])
                 jsArr[i] = jsArr[i].split(":")
                 jsArr[i][0] = jsArr[i][0].replace(" ", "")
-                jsArr[i][0] = jsArr[i][0].substring(2)
-                jsArr[i][1] = jsArr[i][1].substring(1, jsArr[i][1].length - 1)
             }
+            console.log(jsArr)
             this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
         }
 
