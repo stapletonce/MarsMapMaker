@@ -96,9 +96,9 @@ class FileIn extends React.Component {
             let jsArr = []
 
             let startPushing = false;
+
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
-
                 if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("let map")) {
                     startPushing = true
                 }
@@ -106,21 +106,46 @@ class FileIn extends React.Component {
                     startPushing = false
                 }
                 if (startPushing === true) {
-                    jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+                    if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
+                        console.log(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+                        jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+                    }
+                    else {
+                        let firstIndexFormat;
+                        // where we handle multivalue selections
+                        console.log(JSON.stringify(Object.values(result.data[i])))
+                        firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
+                        console.log(firstIndexFormat[2])
+                        console.log(JSON.stringify(Object.values(result.data[i])[1][0]))
+                        console.log(JSON.stringify(Object.values(result.data[i])[1][1]))
+                        firstIndexFormat[3] = firstIndexFormat[3].substring(3, firstIndexFormat[3].length - 3)
+                        console.log("   " + firstIndexFormat[2] + " " + firstIndexFormat[3])
+                        jsArr.push("\"   " + firstIndexFormat[2] + " " + firstIndexFormat[3] + "\"")
+                        for (let j = 0; j < JSON.stringify(Object.values(result.data[i])[1]).length; j++) {
+                            jsArr.push("\"   " + firstIndexFormat[2] + " " + (Object.values(result.data[i])[1][0]).substring(2, (Object.values(result.data[i])[1][0]).length - 1) + "\"")
+                        }
+                    }
                 }
+                let newJSArr = []
+                for (let i = 0; i < jsArr.length; i++) {
+                    if (!newJSArr.includes(jsArr[i])) {
+                        newJSArr.push(jsArr[i])
+                    }
+                }
+                jsArr = newJSArr
             }
-            // jsArr.splice(jsArr.length - 1, 1)
-            for (let i = 0; i < jsArr.length; i++) {
+
+            for (let i = 0; i < jsArr.length - 1; i++) {
+
                 jsArr[i] = jsArr[i].replace(/(|\r\n|\s|})/gm, "")
                 jsArr[i] = jsArr[i].replace("}", "")
+                console.log(jsArr[i])
                 jsArr[i] = jsArr[i].split(":")
-                console.log("LOOKING HERE: " + jsArr[i])
-                jsArr[i][0] = jsArr[i][0].substring(3)
+                jsArr[i][0] = jsArr[i][0].replace(" ", "")
+                jsArr[i][0] = jsArr[i][0].substring(2)
                 jsArr[i][1] = jsArr[i][1].substring(1, jsArr[i][1].length - 1)
             }
             this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
-
-
         }
 
 

@@ -123,7 +123,6 @@ const CardList = (props) => {
 
     const findSesarPassIn = (field) => {
         let sesarPassIn = "";
-        console.log(props.jsFileValues)
         if (props.jsFileValues !== undefined)
             for (let i = 0; i < props.jsFileValues.length; i++) {
 
@@ -132,7 +131,6 @@ const CardList = (props) => {
                     sesarPassIn = (props.jsFileValues[i][0])
 
                 }
-                console.log(newKey + ": " + sesarPassIn)
             }
         return sesarPassIn
     }

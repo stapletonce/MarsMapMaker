@@ -15,12 +15,10 @@ const scrippsDate = (scrippsValue) => {
 }
 
 let map = {
+  original_archive: FACILITY_CODE,
   igsn: SHIP_CODE,
-  current_archive: SAMPLE,
-  name: DEVICE,
-  field_name: ["FACILITY_CODE", "PLATFORM",  "CRUISE"],
-  size: ["LAT", "LON", "WATER_DEPTH"]
-}
+  cruise_field_prgrm: PLATFORM,
+  name: CRUISE}
 
 let logic = {
   collection_start_date: scrippsDate,  
