@@ -11,6 +11,7 @@ class FieldCard extends React.Component {
 
     state = {
         sesarChosen: "",
+        dropDownChosen: false,
         resetDropDown: false,
         isDate: false,
         isMeasurement: false,
@@ -78,20 +79,44 @@ class FieldCard extends React.Component {
         let currentComponent = this
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "")
-                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data })
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data, dropDownChosen: true })
             else
-                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": NO_DATA" })
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": NO_DATA", dropDownChosen: true })
         }
         else if (title === "first") {
-            currentComponent.setState({ updatedValue: data })
+            currentComponent.setState({ updatedValue: data, dropDownChosen: true })
         }
         else {
-            currentComponent.setState({ updatedValue: data })
+            currentComponent.setState({ updatedValue: data, dropDownChosen: true })
         }
+    }
 
+    multiValuesBoolHelp = (jsFileValue) => {
+        let valid = false;
+        let options = ["field_name", "description", "sample_comment", "size", "geological_age"]
+
+        for (let i = 0; i < options.length; i++) {
+            if (jsFileValue === options[i]) {
+                valid = true
+            }
+        }
+        //console.log("HELPER: " + valid)
+        return valid
+    }
+
+    jsFileValueToggle = () => {
+        let valid = false;
+        for (let i = 0; i < this.props.jsFileValues.length; i++) {
+            console.log(this.props.jsFileValues[i][1] + ":" + this.props.fieldTitle)
+            if ((this.props.jsFileValues[i][1] === this.props.fieldTitle) && this.multiValuesBoolHelp(this.props.jsFileValues[i][0]))
+                valid = true;
+        }
+        //console.log("HERE: " + valid)
+        return valid
     }
 
     greenToggle = () => {
+        this.jsFileValueToggle()
         let currentComponent = this
         currentComponent.setState({ isGreen: !this.state.isGreen })
         this.setState({ updatedValue: this.props.fieldValue })
@@ -220,32 +245,64 @@ class FieldCard extends React.Component {
 
         //returns the green styled field card
         else if (this.state.isGreen) {
-            return (
-                <div className="ui label">
-                    <div className="field_container1" >
-                        <object className="fieldWidget">
-                            <div className="checkBox">
-                                <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
-                            </div>
-                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
-                        </object>
-                        <object className="arrow">
-                            <i className="fa fa-angle-double-right"></i>
-                        </object>
 
-                        <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+            if (this.jsFileValueToggle() === true && this.state.dropDownChosen === false) {
+                return (
+                    <div className="ui label">
+                        <div className="field_container1" >
+                            <object className="fieldWidget">
+                                <div className="checkBox">
+                                    <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
+                                </div>
+                                <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                                <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                            </object>
+                            <object className="arrow">
+                                <i className="fa fa-angle-double-right"></i>
+                            </object>
 
-                            {this.filterDrop()}
-                            {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
-                                <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
-                                    <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>} */}
-                        </object>
+                            <object className="dropDownWidget" align="right">
+                                <div className="mappedValue">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
 
+                                {this.filterDrop()}
+                                {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
+                                    <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
+                                        <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>} */}
+                            </object>
+
+                        </div>
                     </div>
-                </div>
-            )
+                )
+            }
+            else {
+                return (
+                    <div className="ui label">
+                        <div className="field_container1" >
+                            <object className="fieldWidget">
+                                <div className="checkBox">
+                                    <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
+                                </div>
+                                <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
+                                <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                            </object>
+                            <object className="arrow">
+                                <i className="fa fa-angle-double-right"></i>
+                            </object>
+
+                            <object className="dropDownWidget" align="right">
+                                <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+
+                                {this.filterDrop()}
+                                {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
+                                    <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
+                                        <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>} */}
+                            </object>
+
+                        </div>
+                    </div>
+                )
+            }
+
         }
 
         // returns the white styled field card

@@ -166,6 +166,7 @@ const CardList = (props) => {
         if (props.jsFileValues === undefined) {
             if (toggleIndex === 0) {
                 return (<FieldCard
+                    jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
@@ -180,6 +181,7 @@ const CardList = (props) => {
             else {
                 return (
                     <FieldCard
+                        jsFileValues={props.jsFileValues}
                         toggleInUse={props.usingToggle}
                         key={newKey}
                         hiding={hide}
@@ -195,6 +197,7 @@ const CardList = (props) => {
         else {
             if (toggleIndex === 0) {
                 return (<FieldCard
+                    jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
@@ -209,6 +212,7 @@ const CardList = (props) => {
             else {
                 return (
                     <FieldCard
+                        jsFileValues={props.jsFileValues}
                         toggleInUse={props.usingToggle}
                         key={newKey}
                         hiding={hide}
