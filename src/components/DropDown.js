@@ -439,11 +439,7 @@ class DropDown extends React.Component {
     // updates specific object in the redux store
     updateValue = (e) => {
         const newValue = e.target.value
-
         this.updateValueHelper(newValue)
-
-
-
     }
 
     updateValueToggle = () => {
@@ -483,14 +479,21 @@ class DropDown extends React.Component {
         }
         else if (this.props.usingToggle === true && this.props.id === this.entWithContent())
             this.props.toggleInUse(obj)
+    }
 
-
+    hasSesarValue = () => {
+        let arr = [false, ""]
+        if (this.props.hasInit && this.props.ent[this.props.id].sesarTitle !== "") {
+            arr = [true, this.props.ent[this.props.id].sesarTitle]
+        }
+        return arr
     }
 
 
     render() {
         const sesarOne2One = this.state.sesarOneToOne
         let num = -1
+        let sesarId = 0
         this.toggleNotInUse()
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
@@ -500,6 +503,11 @@ class DropDown extends React.Component {
             if (num === 0)
                 return <option key={f.title} value="Sesar Selection" disabled hidden>Sesar Selection</option>;
 
+
+            if (this.hasSesarValue()[0] === true) {
+                console.log(this.hasSesarValue()[1])
+                sesarId = sesarId + 1
+            }
             //if (f.format === this.props.fieldType)
             //return <option key={f.title} value={f.title}>{f.title}</option>;
             // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
@@ -521,7 +529,11 @@ class DropDown extends React.Component {
                 //if (f.title === "size" && this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
                 //return
                 //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
-                //return
+                //
+
+                if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
+                    return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
+                }
 
                 if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
