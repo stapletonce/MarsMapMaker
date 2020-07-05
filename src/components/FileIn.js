@@ -91,6 +91,7 @@ class FileIn extends React.Component {
 
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
+        let removeIndex = []
 
         if (Object.keys(result.data[0])[0].includes("//Start::::")) {
             let jsArr = []
@@ -107,7 +108,6 @@ class FileIn extends React.Component {
                 }
                 if (startPushing === true) {
                     if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
-                        console.log(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
                         jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
                     }
                     else {
@@ -133,18 +133,25 @@ class FileIn extends React.Component {
                 jsArr = newJSArr
             }
 
-            for (let i = 0; i < jsArr.length - 1; i++) {
+            for (let i = 0; i < jsArr.length; i++) {
 
                 jsArr[i] = jsArr[i].replace(/(|\r\n|\s|})/gm, "")
                 jsArr[i] = jsArr[i].replace("}", "")
                 jsArr[i] = jsArr[i].replace(/\\/g, '')
                 jsArr[i] = jsArr[i].replace(/"/g, "")
                 jsArr[i] = jsArr[i].replace(" ", "")
-                console.log(jsArr[i])
-                jsArr[i] = jsArr[i].split(":")
-                jsArr[i][0] = jsArr[i][0].replace(" ", "")
+                if (jsArr[i] !== "") {
+                    jsArr[i] = jsArr[i].split(":")
+                    jsArr[i][0] = jsArr[i][0].replace(" ", "")
+                    jsArr[i][1] = jsArr[i][1].replace(" ", "")
+                }
+                else
+                    removeIndex.push(i)
+
             }
-            console.log(jsArr)
+            for (let i = 0; i < removeIndex.length; i++) {
+                jsArr.splice(removeIndex[i], 1)
+            }
             this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
         }
 
