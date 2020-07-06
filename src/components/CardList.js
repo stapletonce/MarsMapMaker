@@ -127,9 +127,7 @@ const CardList = (props) => {
             for (let i = 0; i < props.jsFileValues.length; i++) {
                 if (field === props.jsFileValues[i][1].replace(" ", "")) {
 
-
-                    if (props.jsFileValues[i][1] !== "collection_start_date" && props.jsFileValues[i][1] !== "collection_start_end")
-                        sesarPassIn = (props.jsFileValues[i][0])
+                    sesarPassIn = (props.jsFileValues[i][0])
 
                 }
             }
@@ -266,13 +264,13 @@ const CardList = (props) => {
                     //     break
                     // }
 
-                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ":" + props.ent[index].value)
                     break
 
 
                 }
                 else {
-                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": NO_DATA")
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ":NO_DATA")
                     break
                 }
 
@@ -312,12 +310,12 @@ const CardList = (props) => {
         /////////// Display Preview of Multi-Value Selections
         for (i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                mapPreviewArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
+                mapPreviewArr.push(String(props.ent[i].sesarTitle + ":" + props.ent[i].header))
             }
             multiValueArrHelper(options, i, multiValueArr)
         }
         for (i = 0; i < 5; i++) {
-            multiValueArr[i] = multiValueArr[i].join(";")
+            multiValueArr[i] = multiValueArr[i].join("; ")
         }
 
 

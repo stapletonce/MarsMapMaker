@@ -63,11 +63,11 @@ class FileIn extends React.Component {
             return
         }
 
-        else if (this.state.files.length > 2) {
-            this.refreshFileIn()
-            alert("You have selected more than two files!")
-            return
-        }
+        // else if (this.state.files.length > 2) {
+        //     this.refreshFileIn()
+        //     alert("You have selected more than two files!")
+        //     return
+        // }
 
         if (this.state.files.length > 1) {
             for (let i = 0; i < 2; i++) {
@@ -89,6 +89,15 @@ class FileIn extends React.Component {
 
     };
 
+    removeBrackets = (arr) => {
+        let newArr = []
+        for (let i = 0; i < arr.length; i++) {
+            if (i !== 3)
+                newArr.push(arr[i])
+        }
+        return newArr
+    }
+
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         let removeIndex = []
@@ -97,7 +106,7 @@ class FileIn extends React.Component {
             let jsArr = []
 
             let startPushing = false;
-
+            console.log(Object.values(result.data))
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
                 if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("let map")) {
@@ -107,21 +116,36 @@ class FileIn extends React.Component {
                     startPushing = false
                 }
                 if (startPushing === true) {
+                    //console.log(JSON.stringify(Object.values(result.data[i])[0]))
+                    //console.log(JSON.stringify(Object.values(result.data[i])[1]))
                     if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
+                        console.log("1: " + JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
                         jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
                     }
                     else {
                         let firstIndexFormat;
                         // where we handle multivalue selections
-
+                        console.log(Object.values(result.data[i])[0])
                         firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
+                        console.log("BEFORE: " + firstIndexFormat)
+                        //BANDAID
+                        if (firstIndexFormat.length === 5) {
+                            firstIndexFormat[4] = "[" + firstIndexFormat[4]
+                            firstIndexFormat = this.removeBrackets(firstIndexFormat)
+                        }
+
                         firstIndexFormat[3] = firstIndexFormat[3].substring(3, firstIndexFormat[3].length - 3)
+                        console.log("2: " + firstIndexFormat[2] + firstIndexFormat[3])
                         jsArr.push(firstIndexFormat[2] + firstIndexFormat[3])
-                        if ((Object.values(result.data[i])).length > 1) {
-                            for (let j = 0; j < JSON.stringify(Object.values(result.data[i])[1]).length; j++) {
-                                jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][0]).substring(2, (Object.values(result.data[i])[1][0]).length - 1))
+
+                        if ((Object.values(result.data[i])[1]).length > 1) {
+                            for (let j = 0; j < (Object.values(result.data[i])[1]).length; j++) {
+                                console.log("3: " + firstIndexFormat[2] + (Object.values(result.data[i])[1][0]).substring(2, (Object.values(result.data[i])[1][0]).length - 1))
+                                if (Object.values(result.data[i])[1][j] !== "")
+                                    jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][j]).substring(2, (Object.values(result.data[i])[1][j]).length - 1))
                             }
                         }
+
                     }
                 }
                 let newJSArr = []
