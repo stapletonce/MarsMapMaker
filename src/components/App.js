@@ -113,6 +113,7 @@ class App extends React.Component {
 
     isOpenCallback = (data) => {
         let currentComponent = this
+        console.log(data)
         currentComponent.setState({
             isOpened: true,
             mapPreview: data[1].join("\n")

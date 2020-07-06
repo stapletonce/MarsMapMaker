@@ -4,7 +4,7 @@ import saveAs from 'file-saver';
 import { formatDate } from "../actions/"
 
 import mars from '../icons/planet.png';
-import { sum } from 'd3';
+//import { sum } from 'd3';
 //need to handle single value measurements and size unit mapping Size unit should always be 'cm'
 //
 class MapOutput extends React.Component {
