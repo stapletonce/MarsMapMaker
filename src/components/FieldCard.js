@@ -77,12 +77,21 @@ class FieldCard extends React.Component {
 
     fileCallback = (data, title) => {
         let currentComponent = this
+
+        console.log(this.props.fieldValue)
+
+
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "")
-                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": " + data, dropDownChosen: true })
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ":" + data, dropDownChosen: true })
             else
-                currentComponent.setState({ updatedValue: this.props.fieldTitle + ": NO_DATA", dropDownChosen: true })
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ":Not Provided", dropDownChosen: true })
         }
+
+        else if (this.props.fieldValue === "") {
+            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true })
+        }
+
         else if (title === "first") {
             currentComponent.setState({ updatedValue: data, dropDownChosen: true })
         }
