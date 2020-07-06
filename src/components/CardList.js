@@ -459,7 +459,7 @@ const CardList = (props) => {
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px;", paddingRight: "0px", marginRight: "0px" }}>
+                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px", paddingRight: "0px", marginRight: "0px" }}>
                         {(props.hasDateFormat === false || dateSelected() === false) ?
                             <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
                                 Select Date Format
