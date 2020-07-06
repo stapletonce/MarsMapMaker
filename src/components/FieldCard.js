@@ -106,11 +106,13 @@ class FieldCard extends React.Component {
 
     jsFileValueToggle = () => {
         let valid = false;
-        for (let i = 0; i < this.props.jsFileValues.length; i++) {
-            console.log(this.props.jsFileValues[i][1] + ":" + this.props.fieldTitle)
-            if ((this.props.jsFileValues[i][1] === this.props.fieldTitle) && this.multiValuesBoolHelp(this.props.jsFileValues[i][0]))
-                valid = true;
+        if (this.props.jsFileValues !== undefined) {
+            for (let i = 0; i < this.props.jsFileValues.length; i++) {
+                if ((this.props.jsFileValues[i][1] === this.props.fieldTitle) && this.multiValuesBoolHelp(this.props.jsFileValues[i][0]))
+                    valid = true;
+            }
         }
+
         //console.log("HERE: " + valid)
         return valid
     }

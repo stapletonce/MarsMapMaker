@@ -505,7 +505,6 @@ class DropDown extends React.Component {
 
 
             if (this.hasSesarValue()[0] === true) {
-                console.log(this.hasSesarValue()[1])
                 sesarId = sesarId + 1
             }
             //if (f.format === this.props.fieldType)
