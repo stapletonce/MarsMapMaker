@@ -15,10 +15,18 @@ const scrippsDate = (scrippsValue) => {
 }
 
 let map = {
+  original_archive: FACILITY_CODE,
+  platform_name: PLATFORM,
+  cruise_field_prgrm: CRUISE,
   collection_start_date: BEGIN_DATE,
-  field_name: ["FACILITY_CODE",  "PLATFORM"],
-  description: ["CRUISE",  "SAMPLE"],
-  size: ["LAT", "LON"]
+  latitude: LAT,
+  longitude: LON,
+  collector: PI,
+  sample_type: SHOW_SAMPL,
+  field_name: [ "STORAGE_METH"]
+  sample_comment: [ "SAMPLE"],
+  description: ["DEVICE",  "LEG"],
+  size: ["SHIP_CODE", "WATER_DEPTH", "CORED_LENGTH", "CORED_LENGTH_MM", "CORED_DIAM"]
 }
 
 let logic = {
