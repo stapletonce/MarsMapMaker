@@ -1,3 +1,9 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// FIELDCARD.JS ///////////////////////////////////////////////////////////////////
+// This component displays  a checkbox on the left of each fieldCard ////////////////
+// Giving the user to decide if they want to use that fieldCard in the map or not //
+///////////////////////////////////////////////////////////////////////////////////
+
 import React from 'react';
 import './App.css';
 import classNames from 'classnames';
@@ -20,8 +26,6 @@ class FieldCard extends React.Component {
         key: this.props.key,
         isGreen: this.props.hasContent,
         sesarOptions: options
-
-
     }
 
     //static getDerivedStateFromProps(props, state) {
