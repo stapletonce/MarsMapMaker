@@ -18,7 +18,7 @@ import './App.css';
 
 // REDUX
 import { firstState, toggleInUse } from '../actions/';
-///////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -31,25 +31,10 @@ const CardList = (props) => {
 
     const objArray = []
     const useOnce = []
-    const outerArr = []
-    const singleMeasure = []
     let newKey = -1
 
-    const dateFormatOption = [
-        { title: "Select Date Format" },
-        { title: "DD/MM/YY or DD-MM-YY", value: "substring", type: "date" },
-        { title: "MM/DD/YY or MM-DD-YY", value: "substring", type: "date" },
-        { title: "YY/DD/MM or YY-DD-MM", value: "substring", type: "date" },
-        { title: "YY/MM/DD or YY-MM-DD", value: "substring", type: "date" },
-        { title: "DD/MM/YYYY or DD-MM-YYYY", value: "substring", type: "date" },
-        { title: "MM/DD/YYYY or MM-DD-YYYY", value: "substring", type: "date" },
-        { title: "YYYY/DD/MM or YYYY-DD-MM", value: "substring", type: "date" },
-        { title: "YYYY/MM/DD or YYYY-MM-DD", value: "substring", type: "date" },
-        { title: "MMDDYYYY", value: "substring", type: "date" },
-        { title: "DDMMYYYY", value: "substring", type: "date" },
-        { title: "YYYYDDMM", value: "substring", type: "date" },
-        { title: "YYYYMMDD", value: "substring", type: "date" }
-    ]
+    // an array of date option objects to choose from in the date dropdown
+    const { dateFormatOption } = require('./sesarOptions')
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
@@ -79,7 +64,7 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
 
-    // Content Toggle right->add 1, left->sub 1, refresh->reset to 0
+    // goes to the next row of content in the csv
     const rightArrowToggle = () => {
         if (toggleIndex < 9) {
             addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
@@ -90,6 +75,7 @@ const CardList = (props) => {
         }
     }
 
+    // goes to the previous row of content in the csv
     const leftArrowToggle = () => {
         if (toggleIndex > 0) {
             addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
@@ -100,6 +86,7 @@ const CardList = (props) => {
         }
     }
 
+    // returns to the first row of content in the csv
     const refreshButton = () => {
         addToToggleIndex(0)
         let obj = {
@@ -108,6 +95,7 @@ const CardList = (props) => {
         props.toggleInUse(obj)
     }
 
+    // if a map (js) file is passed in, it searches for previous selections made to update the Redux store accordingly
     const findSesarPassIn = (field) => {
         let sesarPassIn = "";
         if (props.jsFileValues !== undefined)
@@ -304,11 +292,12 @@ const CardList = (props) => {
             }
         }
 
-        finalArray = [finalSizeSelection, arr, finalMultiValue]
+        finalArray = arr
 
         return finalArray
     }
 
+    // checks the redux store to see if any of the fieldCards have selected a date
     const dateSelected = () => {
         let found = false
         for (let i = 0; i < props.ent.length; i++) {

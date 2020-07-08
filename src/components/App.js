@@ -16,6 +16,9 @@ import Dialog from './Dialog'
 import { connect } from 'react-redux';
 import { changeInit, initToggle } from '../actions/';
 
+/////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
 class App extends React.Component {
 
     constructor(props) {
@@ -124,7 +127,7 @@ class App extends React.Component {
 
         currentComponent.setState({
             isOpened: true,
-            mapPreview: data[1].join("\n")
+            mapPreview: data.join("\n")
         })
     }
 
