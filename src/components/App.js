@@ -1,30 +1,35 @@
+////////////////////////////////////////////////////////////////////////////////
+// APP.JS /////////////////////////////////////////////////////////////////////
+// This component sets the stage for Mars Map Maker///////////////////////////
+// It renders our three main components (FileIn.js, Dialog.js, CardList.js)//
+// Which act as the entire application itself //////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
 import React from 'react';
 import mars from '../icons/mars.png'
+import classNames from 'classnames';
+// COMPONENTS
 import CardList from './CardList';
 import FileIn from './FileIn';
-import classNames from 'classnames';
 import Dialog from './Dialog'
-
+// REDUX
 import { connect } from 'react-redux';
 import { changeInit, initToggle } from '../actions/';
 
-// helper function to set up 'fieldNames' array for the App State
-
 class App extends React.Component {
+
     constructor(props) {
         super(props);
-        // THIS IS THE ONLY TIME WE DO DIRECT ASSIGNMENT TO STATE
+
         this.state = {
             toggleValuesArr: null,
             mapPreview: null,
             isOpened: props.hasBeenOpened,
             jsFile: undefined,
             fieldNames: [],
-            size: 0,
             fieldValues: [],
-            data: [],
             continue: false
-        }; // state object, contains properties relevant to component
+        };
     }
 
     // removes duplicates in an array
@@ -106,14 +111,17 @@ class App extends React.Component {
             continue: true
         });
 
+        // When all for field data is loaded in properly and duplicates have been removed, set Init to True in store
         if (this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length === totalSize - this.findDuplicates(newNames, newValues).length) {
             this.props.changeInit(obj)
         }
     }
 
+    // Displays "Preview Pop Up function from cardList, when the Preview Map button is clicked"
     isOpenCallback = (data) => {
+
         let currentComponent = this
-        console.log(data)
+
         currentComponent.setState({
             isOpened: true,
             mapPreview: data[1].join("\n")
