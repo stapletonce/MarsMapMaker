@@ -14,7 +14,7 @@ import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
 // CSS & Style
-import './App.css';
+import './App.scss';
 
 // REDUX
 import { firstState, toggleInUse } from '../actions/';
@@ -221,9 +221,7 @@ const CardList = (props) => {
         let sampleIndex = -1;
         let geoIndex = -1;
         let sizeIndex = -1;
-        let finalSizeSelection;
         let finalMap;
-        let finalMultiValue;
         let finalArray;
         let arr = [];
         let i;
@@ -241,9 +239,7 @@ const CardList = (props) => {
         }
         appendTitleToFront(multiValueArr, options)
 
-        finalSizeSelection = []
         finalMap = mapPreviewArr
-        finalMultiValue = (multiValueArr.join("\n"))
 
         for (i = 0; i < finalMap.length; i++) {
             if (finalMap[i].includes(options[0])) {
@@ -320,7 +316,7 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="arrowDiv">
+                    <div className="toggle__content">
                         <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
                             <div className="content">
                                 Toggle Content
@@ -340,7 +336,7 @@ const CardList = (props) => {
 
                     <MapOutput />
 
-                    <div style={{ paddingTop: "3em", width: "15%" }} className="dropDown2" >
+                    <div style={{ paddingTop: "3em", width: "15%" }} className="toolbar__help" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
@@ -355,33 +351,33 @@ const CardList = (props) => {
                         </div>}
 
                         {(props.hasDateFormat === false || dateSelected() === false) ?
-                            <div className="dropDown1" style={{ borderColor: "red" }} >
-                                <DateDropdown className="requireOption" list={dateFormatOption} />
-                                <CenturyDropDown className="requireOption" />
-                            </div> : <div className="dropDown1">
-                                <DateDropdown className="requireOption" list={dateFormatOption} />
-                                <CenturyDropDown className="requireOption" />
+                            <div className="toolbar__date__format" style={{ borderColor: "red" }} >
+                                <DateDropdown list={dateFormatOption} />
+                                <CenturyDropDown />
+                            </div> : <div className="toolbar__date__format">
+                                <DateDropdown list={dateFormatOption} />
+                                <CenturyDropDown />
                             </div>}
                     </div>
                 </div>
 
-                <div className="uiInfo labelInfo">
+                <div className="description">
                     <div>
                         <object className="fieldWidget">
-                            <div className="checkBoxInfo">
+                            <div className="description__checkbox">
                                 Use
                             </div>
-                            <div dir="rtl" className="fieldTitle">:Header</div>
-                            <div className="fieldVal"> Content</div>
+                            <div dir="rtl" className="description__title">:Header</div>
+                            <div className="description__value"> Content</div>
                         </object>
-                        <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">Mapped Content</div>
-                            <div className="dropDownInfo"><b>[</b>Mapped Header<b>]</b></div>
+                        <object className="descriptionMapped" align="right">
+                            <div className="description__mapped__content">Mapped Content</div>
+                            <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
                         </object>
                     </div>
                 </div>
 
-                <div className="ui-card" >{fields}</div>
+                <div>{fields}</div>
             </div>
             <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
                 href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

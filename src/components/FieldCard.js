@@ -5,7 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 import React from 'react';
-import './App.css';
+import './App.scss';
 import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
@@ -226,58 +226,26 @@ class FieldCard extends React.Component {
         if (this.props.hiding && this.state.isGreen === false)
             return null
 
-        // else if ((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) {
-        //     return (
-        //         <div className="ui label">
-        //             <div className="field_container1" >
-        //                 <object className="fieldWidgetNoCheckbox">
-        //                     <div className="checkBox">
-        //                         <div>----</div>
-        //                     </div>
-        //                     <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-        //                     <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
-        //                 </object>
-        //                 <object className="arrow">
-        //                     <i className="fa fa-angle-double-right"></i>
-        //                 </object>
-
-        //                 <object className="dropDownWidget" align="right">
-        //                     {((this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== "")) ?
-        //                         <div className="mappedValue">{this.fieldMetricFunction(this.props.ent[this.props.id - 1].value, this.props.ent[this.props.id].value)}</div>
-        //                         : <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-        //                     }
-
-        //                     {this.filterDrop()}
-        //                     {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
-        //                         <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
-        //                             <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>}
-        //                 </object>
-
-        //             </div>
-        //         </div>
-        //     )
-        // }
-
         //returns the green styled field card
         else if (this.state.isGreen) {
 
             if (this.jsFileValueToggle() === true && this.state.dropDownChosen === false) {
                 return (
                     <div className="ui label">
-                        <div className="field_container1" >
-                            <object className="fieldWidget">
-                                <div className="checkBox">
+                        <div className="fieldContainer1" >
+                            <object>
+                                <div className="check__box">
                                     <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                                 </div>
-                                <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                                <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                                <div dir="rtl" className="description__title">{this.props.fieldTitle}</div>
+                                <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                             </object>
                             <object className="arrow">
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
 
-                            <object className="dropDownWidget" align="right">
-                                <div className="mappedValue">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
+                            <object className="descriptionMapped" align="right">
+                                <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
 
                                 {this.filterDrop()}
                                 {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
@@ -292,20 +260,20 @@ class FieldCard extends React.Component {
             else {
                 return (
                     <div className="ui label">
-                        <div className="field_container1" >
-                            <object className="fieldWidget">
-                                <div className="checkBox">
+                        <div className="fieldContainer1" >
+                            <object>
+                                <div className="check__box">
                                     <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                                 </div>
-                                <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                                <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                                <div dir="rtl" className="description__title">{this.props.fieldTitle}</div>
+                                <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                             </object>
                             <object className="arrow">
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
 
-                            <object className="dropDownWidget" align="right">
-                                <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            <object className="descriptionMapped" align="right">
+                                <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
 
                                 {this.filterDrop()}
                                 {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
@@ -324,17 +292,17 @@ class FieldCard extends React.Component {
         else {
             return (
                 <div className="ui label">
-                    <div className="field_container2">
-                        <object className="fieldWidget">
-                            <div className="checkBox">
+                    <div className="fieldContainer2">
+                        <object>
+                            <div className="check__box">
                                 <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                             </div>
-                            <div dir="rtl" className="fieldTitle">{this.props.fieldTitle}</div>
-                            <div className="fieldVal" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                            <div dir="rtl" className="description__title">{this.props.fieldTitle}</div>
+                            <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
 
-                        <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                        <object className="descriptionMapped" align="right">
+                            <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
                             {/* {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
                                 <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
