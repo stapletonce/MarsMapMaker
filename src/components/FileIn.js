@@ -1,6 +1,6 @@
 import React from 'react';
 import Papa from 'papaparse';
-import './App.css';
+import './App.scss';
 import classNames from 'classnames';
 
 
@@ -226,8 +226,8 @@ class FileIn extends React.Component {
 
         // CSS flipflop for loaded or non-loaded file
         let readerClass = classNames({
-            'fileReader': this.state.loaded === false,
-            'fileReader1': this.state.loaded === true
+            'fileReaderUnloaded': this.state.loaded === false,
+            'fileReaderLoaded': this.state.loaded === true
         });
 
         return (
@@ -236,7 +236,7 @@ class FileIn extends React.Component {
                 <h2>Import File(s)!</h2>
 
                 <input
-                    className="csv-input"
+                    className="csv__input"
                     type="file"
                     accept=".csv, .js"
                     ref={input => {
