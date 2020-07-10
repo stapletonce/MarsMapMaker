@@ -134,8 +134,8 @@ class App extends React.Component {
     // React says we have to define render!! You have to display JSX!
     render() {
         let readerClass = classNames({
-            'mars--photo': this.state.continue === false,
-            'mars--photo--hide': this.state.continue === true
+            'mars-photo': this.state.continue === false,
+            'mars-photo_hide': this.state.continue === true
         });
 
         return (
