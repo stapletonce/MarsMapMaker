@@ -1,5 +1,6 @@
 
 import update from 'react-addons-update';
+import { entries } from 'd3';
 //the store will consist of an array of objects with each having the following information attached
 //string: sesarTitle
 //string: value
@@ -85,9 +86,6 @@ const reducer =
           //singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
         }
 
-
-
-
       case "CHANGE_INIT":
         return {
           ...state,
@@ -96,11 +94,18 @@ const reducer =
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
       case "DROPDOWN_UPDATE":
+        let dateSelected = false
         let index = action.payload.id
-        let check = action.payload.dropOption;
-        if ((action.payload.sesarSelected === "collection_end_date" || action.payload.sesarSelected === "collection_start_date"))
-          check = true
+        // let check = action.payload.dropOption;
+        let check = false;
 
+        for (let i = 0; i < state.entries.length; i++) {
+          if (state.entries[i].sesarSelected === "collection_end_date" || state.entries[i].sesarSelected === "collection_start_date") {
+            dateSelected = true
+          }
+        }
+        if (dateSelected === true || (action.payload.sesarSelected === "collection_end_date" || action.payload.sesarSelected === "collection_start_date"))
+          check = true
 
         return {
           ...state,

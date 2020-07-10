@@ -29,6 +29,7 @@ class FileIn extends React.Component {
             files: undefined,
             csvfile: undefined,
             csvfile2: undefined,
+            csvfile3: undefined,
             loaded: false
         };
         this.updateData = this.updateData.bind(this);
@@ -43,12 +44,18 @@ class FileIn extends React.Component {
                 csvfile: event.target.files[0]
             });
         }
-        else {
+        else if (event.target.files[2] === undefined) {
             this.setState({
                 csvfile: event.target.files[0],
                 csvfile2: event.target.files[1]
             });
-
+        }
+        else {
+            this.setState({
+                csvfile: event.target.files[0],
+                csvfile2: event.target.files[1],
+                csvfile3: event.target.files[2]
+            });
         }
     };
 
@@ -64,27 +71,40 @@ class FileIn extends React.Component {
 
     // onclick helper function to parse the CSV with PapaParse 
     importCSV = () => {
+        let count = 0;
+        if (this.state.files !== undefined) {
+            for (let i = 0; i < this.state.files.length; i++) {
+                if (this.state.files[i].type === "text/javascript")
+                    count += 1
+            }
+        }
 
         if (this.state.files === undefined) {
             this.refreshFileIn()
             alert("You have not selected a file!")
             return
         }
-
-        if (this.state.files.length > 1) {
-            for (let i = 0; i < 2; i++) {
-                Papa.parse(this.state.files[i], {
-                    complete: this.updateData,
-                    header: true
-                });
-            }
+        else if (this.state.files.length === 1 && count === 1) {
+            this.refreshFileIn()
+            alert("You have only selected one mapping file with no additional CSV try again!")
+            return
         }
-        else {
-            Papa.parse(this.state.files[0], {
+        else if (this.state.files.length > 3) {
+            this.refreshFileIn()
+            alert("You have selected more that 3 files, try again!")
+            return
+        }
+        else if (this.state.files.length === 3 && count !== 1) {
+            this.refreshFileIn()
+            alert("You have either selected too many CSV or too many mapping files!")
+            return
+        }
+
+        for (let i = 0; i < this.state.files.length; i++) {
+            Papa.parse(this.state.files[i], {
                 complete: this.updateData,
                 header: true
             });
-
         }
 
         this.setState({ loaded: true })
@@ -174,14 +194,12 @@ class FileIn extends React.Component {
 
 
 
-
-
         var data = result;
         let finalToggleArray = []
         let toggleArr = this.state.toggleValues;
         let minimum = Math.min(data.data.length, toggleArr.length)
         if (this.state.isJsFile === false) {
-            if (toggleArr !== [] && this.state.csvfile2 !== undefined) {
+            if (toggleArr.length !== 0 && (this.state.files[1] !== undefined || this.state.files[2] !== undefined)) {
 
                 if (minimum < 10) {
                     for (let i = 0; i < (minimum % 10); i++) {
@@ -198,7 +216,10 @@ class FileIn extends React.Component {
                 toggleArr = finalToggleArray
 
             }
-            toggleArr = toggleArr.concat(data.data)
+            else if (toggleArr.length === 0) {
+                toggleArr = toggleArr.concat(data.data)
+            }
+
 
             this.setState({
                 toggleValues: toggleArr,
@@ -208,16 +229,14 @@ class FileIn extends React.Component {
             })
         }
 
+
         let arr = [this.state.fieldNames, this.state.fieldValues]
-        if (this.state.csvfile2 !== undefined) {
-            this.setState({ num: this.state.num + 1 })
-            if (this.state.num === 1) {
-                this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile)
-            }
+
+        this.setState({ num: this.state.num + 1 })
+        if (this.state.num === this.state.files.length - 1) {
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile)
         }
-        else {
-            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues)
-        }
+
 
         this.setState({ isJsFile: false })
     }
