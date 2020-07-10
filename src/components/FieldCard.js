@@ -1,5 +1,5 @@
 ///////////////////////////////////////////////////////////////////////////////////////
-// FIELDCARD.JS ///////////////////////////////////////////////////////////////////
+// FIELDCARD.JS //////////////////////////////////////////////////////////////////////
 // This component displays  a checkbox on the left of each fieldCard ////////////////
 // Giving the user to decide if they want to use that fieldCard in the map or not //
 ///////////////////////////////////////////////////////////////////////////////////
@@ -27,18 +27,6 @@ class FieldCard extends React.Component {
         isGreen: this.props.hasContent,
         sesarOptions: options
     }
-
-    //static getDerivedStateFromProps(props, state) {
-    //if (props.fieldValue !== state.updatedValue) {
-    //return {
-    //updatedValue: props.fieldValue,
-    //};
-    //}
-
-    // Return null if the state hasn't changed
-    //return null;
-    //}
-
 
     // switch between CSS classes to switch between green and white
     btnClass = classNames({
@@ -136,23 +124,6 @@ class FieldCard extends React.Component {
         currentComponent.setState({ isGreen: !this.state.isGreen })
         this.setState({ updatedValue: this.props.fieldValue })
 
-        // if (this.props.pairArr[this.props.id][0].pairHeader !== "") {
-        //     const sizeObj = {
-        //         cardID: this.props.id,
-        //         index: 0
-        //     }
-        //     this.props.clearSizeArray(sizeObj)
-        //     const obj = {
-        //         oldValue: this.props.ent[this.props.id + 1].oldValue,
-        //         value: this.props.ent[this.props.id + 1].value,
-        //         header: this.props.ent[this.props.id + 1].header,
-        //         id: this.props.id + 1,
-        //         isGreen: this.state.isGreen
-        //     }
-        //     this.props.removeContent(obj)
-
-        // }
-
         const obj = {
             oldValue: this.props.fieldValue,
             value: this.props.fieldValue,
@@ -167,18 +138,6 @@ class FieldCard extends React.Component {
         }
         this.render()
     }
-
-    // getSizeCallback = (data) => {
-    //     let currentComponent = this
-    //     if (data === "size") {
-    //         currentComponent.setState({ sesarChosen: data })
-    //         return
-    //     }
-    //     else {
-    //         currentComponent.setState({ sesarChosen: "meeper" })
-    //     }
-
-    // }
 
     fieldMetricFunction = (firstInPair, secondInPair) => {
         let finalProduct = parseInt(firstInPair);
@@ -243,16 +202,10 @@ class FieldCard extends React.Component {
                             <object className="arrow">
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
-
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
-
                                 {this.filterDrop()}
-                                {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
-                                    <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
-                                        <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>} */}
                             </object>
-
                         </div>
                     </div>
                 )
@@ -271,21 +224,14 @@ class FieldCard extends React.Component {
                             <object className="arrow">
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
-
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-
                                 {this.filterDrop()}
-                                {/* {((this.state.sesarChosen === "size" || (this.props.hasInit && this.props.id > 0 && this.props.pairArr[this.props.id - 1][0].pairHeader !== ""))) ?
-                                    <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
-                                        <FormatDropdown callback={this.fileCallback} isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>} */}
                             </object>
-
                         </div>
                     </div>
                 )
             }
-
         }
 
         // returns the white styled field card
@@ -300,21 +246,14 @@ class FieldCard extends React.Component {
                             <div dir="rtl" className="description__title">{this.props.fieldTitle}</div>
                             <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
-
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
                             {this.filterDrop()}
-                            {/* {(this.props.fieldType === "numbers" && this.state.isGreen === true) ?
-                                <object className="alignLeft" style={{ paddingLeft: "0.93em" }}>
-                                    <FormatDropdown isGreen={this.state.isGreen} id={this.props.id} refresh={this.refreshFieldCard} title={this.props.fieldTitle} mapValue={this.props.fieldValue} /> </object> : <div className="padRight"></div>} */}
                         </object>
-
                     </div>
                 </div>
             )
         }
-
-
     };
 }
 

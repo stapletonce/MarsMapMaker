@@ -1,8 +1,16 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// FILEIN.JS /////////////////////////////////////////////////////////////////////////
+// This component displays a file input box on the first screen /////////////////////
+// This input box recieves 1 or 2 CSVS OR that combination with 1 JS file //////////
+///////////////////////////////////////////////////////////////////////////////////
+
 import React from 'react';
 import Papa from 'papaparse';
 import './App.scss';
 import classNames from 'classnames';
 
+///////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 
 class FileIn extends React.Component {
 
@@ -63,12 +71,6 @@ class FileIn extends React.Component {
             return
         }
 
-        // else if (this.state.files.length > 2) {
-        //     this.refreshFileIn()
-        //     alert("You have selected more than two files!")
-        //     return
-        // }
-
         if (this.state.files.length > 1) {
             for (let i = 0; i < 2; i++) {
                 Papa.parse(this.state.files[i], {
@@ -115,8 +117,6 @@ class FileIn extends React.Component {
                     startPushing = false
                 }
                 if (startPushing === true) {
-                    //console.log(JSON.stringify(Object.values(result.data[i])[0]))
-                    //console.log(JSON.stringify(Object.values(result.data[i])[1]))
                     if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
                         jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
                     }
