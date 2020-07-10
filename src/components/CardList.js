@@ -134,6 +134,7 @@ const CardList = (props) => {
         // create the FieldCard that you see in the UI
         // If toggleIndex is 0 then we're on the 1st row so give it raw input
         // Else give it the object.values..
+        console.log("Here: " + props.toggleArr)
         if (toggleIndex === 0) {
             return (<FieldCard
                 jsFileValues={props.jsFileValues}
