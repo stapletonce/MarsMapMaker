@@ -270,7 +270,6 @@ class FileIn extends React.Component {
             }
             this.props.formatDate(obj)
 
-            console.log(this.props.dateFormatSelected)
 
             // more string cleaning
             // some of the cleaning in the code could be a little smoother with one regex, but some of the symbols we're a little more complicating so handled as strings
