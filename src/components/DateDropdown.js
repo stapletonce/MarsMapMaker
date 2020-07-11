@@ -56,9 +56,19 @@ class DateDropdown extends React.Component {
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         // IFF You have selected a date formate and SUCCESSFULLY selected sesar option, disable date dropdown
-        if ((this.props.hasChosenDateFormat && this.props.hasChosenDropdown)) {
+        console.log(this.props.hasChosenDateFormat)
+        console.log(this.props.hasChosenDropdown)
+        if (this.props.hasChosenDateFormat && this.props.dateFormatSelected) {
             return (
-                <select defaultValue={'Select Date Format'} disabled className="ui search dropdown" onChange={this.updateValue}>
+                <select defaultValue={this.props.dateFormatSelected} disabled selected className="ui search dropdown" onChange={this.updateValue}>
+                    {this.props.list.map((field) => filter(field))}
+                </select>
+            );
+        }
+
+        else if ((this.props.hasChosenDateFormat && this.props.hasChosenDropdown)) {
+            return (
+                <select defaultValue={'Select Date Format'} disabled selected className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );
@@ -78,7 +88,8 @@ class DateDropdown extends React.Component {
 const mapStateToProps = (state) => {
     return {
         hasChosenDropdown: state.hasChosenDropdownOption,
-        hasChosenDateFormat: state.hasChosenDateFormat
+        hasChosenDateFormat: state.hasChosenDateFormat,
+        dateFormatSelected: state.chosenDateFormat
     };
 };
 

@@ -5,9 +5,12 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 import React from 'react';
+import { connect } from "react-redux";
 import Papa from 'papaparse';
 import './App.scss';
 import classNames from 'classnames';
+
+import { formatDate } from '../actions/'
 
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -120,48 +123,139 @@ class FileIn extends React.Component {
         return newArr
     }
 
+    startPushingHelper = (result, i, jsArr) => {
+        if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
+            jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
+        }
+        else {
+            let firstIndexFormat;
+            // where we handle multivalue selections
+            firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
+            // BANDAID
+            // One of the multivalue selections has an extra space in the mapOutput, this is a quick fix
+            // However, when mars reads in mapping file, space may still need to be taken care of
+            if (firstIndexFormat.length === 5) {
+                firstIndexFormat[4] = "[" + firstIndexFormat[4]
+                firstIndexFormat = this.removeBrackets(firstIndexFormat)
+            }
+
+            firstIndexFormat[3] = firstIndexFormat[3].substring(3, firstIndexFormat[3].length - 3)
+            jsArr.push(firstIndexFormat[2] + firstIndexFormat[3])
+            if ((Object.values(result.data[i])[1] !== undefined && Object.values(result.data[i])[1]).length > 1) {
+                for (let j = 0; j < (Object.values(result.data[i])[1]).length; j++) {
+                    if (Object.values(result.data[i])[1][j] !== "")
+                        jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][j]).substring(2, (Object.values(result.data[i])[1][j]).length - 1))
+                }
+            }
+        }
+    }
+
+    foundSection = () => {
+
+    }
+
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         let removeIndex = []
 
-        if (Object.keys(result.data[0])[0].includes("//Start::::")) {
-            let jsArr = []
 
+        // checks to see if the file "result" is a JS mapping file, this file always starts with Start::::
+        if (Object.keys(result.data[0])[0].includes("//Start::::")) {
+            let finalStr = ""
+            let needsCenturyPrefix = false
+
+            // JS mapping file has a section "let map..." which is where we want to retrieve our sesar selections and clean the data
+            let jsArr = []
+            let dateIdArr = []
+            let dateIdentified = false;
+            // start pushing is where we find "let map..." and start reading
             let startPushing = false;
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
+                //console.log(Object.values(result.data[i]))
                 if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("let map")) {
                     startPushing = true
+                }
+                else if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("const scrippsDate")) {
+                    dateIdentified = true
                 }
                 else if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("}")) {
                     startPushing = false
                 }
-                if (startPushing === true) {
-                    if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
-                        jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
-                    }
-                    else {
-                        let firstIndexFormat;
-                        // where we handle multivalue selections
-                        firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
-                        //BANDAID
-                        if (firstIndexFormat.length === 5) {
-                            firstIndexFormat[4] = "[" + firstIndexFormat[4]
-                            firstIndexFormat = this.removeBrackets(firstIndexFormat)
-                        }
-
-                        firstIndexFormat[3] = firstIndexFormat[3].substring(3, firstIndexFormat[3].length - 3)
-                        jsArr.push(firstIndexFormat[2] + firstIndexFormat[3])
-                        if ((Object.values(result.data[i])[1] !== undefined && Object.values(result.data[i])[1]).length > 1) {
-                            for (let j = 0; j < (Object.values(result.data[i])[1]).length; j++) {
-                                if (Object.values(result.data[i])[1][j] !== "")
-                                    jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][j]).substring(2, (Object.values(result.data[i])[1][j]).length - 1))
-                            }
-                        }
-
-                    }
+                else if (JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("return y")) {
+                    dateIdentified = false
                 }
+
+
+
+
+
+                if (startPushing === true) {
+                    this.startPushingHelper(result, i, jsArr)
+                }
+                else if (dateIdentified === true) {
+                    dateIdArr.push(Object.values(result.data[i])[0].match(/[0-9]+/g)[0])
+                    dateIdArr.push(Object.values(result.data[i])[1][0].match(/[0-9]+/g)[0])
+                }
+
+                if (dateIdArr.length === 6) {
+
+                    let dateFormatStr = dateIdArr.join('')
+                    switch (dateFormatStr) {
+
+                        case "046242":
+                            finalStr = "YYYYMMDD"
+                            break
+                        case "044262":
+                            finalStr = "YYYYDDMM"
+                            break
+                        case "440222":
+                            finalStr = "DDMMYYYY"
+                            break
+                        case "442202":
+                            finalStr = "MMDDYYYY"
+                            break
+                        case "048252":
+                            finalStr = "YYYY/MM/DD"
+                            break
+                        case "045282":
+                            finalStr = "YYYY/DD/MM"
+                            break
+                        case "643202":
+                            finalStr = "MM/DD/YYYY"
+                            break;
+                        case "640232":
+                            finalStr = "DD/MM/YYYY"
+                            break;
+                        case "026232":
+                            //prefix = this.props.centuryChosen.substr(0, 2)
+                            finalStr = "YY/MM/DD"
+                            needsCenturyPrefix = true
+                            break;
+                        case "623202":
+                            finalStr = "MM/DD/YY"
+                            needsCenturyPrefix = true
+                            //prefix = this.props.centuryChosen.substr(0, 2)
+                            break;
+                        case "023262":
+                            //prefix = this.props.centuryChosen.substr(0, 2)
+                            finalStr = "MM/DD/YY"
+                            needsCenturyPrefix = true
+                            break;
+                        case "620232":
+                            finalStr = "DD/MM/YY"
+                            needsCenturyPrefix = true
+                            //prefix = this.props.centuryChosen.substr(0, 2)
+                            break;
+                        default:
+                    }
+
+
+                }
+
                 let newJSArr = []
+                // any identical elements in jsArr, only append them once into newJSArr
+
                 for (let i = 0; i < jsArr.length; i++) {
                     if (!newJSArr.includes(jsArr[i])) {
                         newJSArr.push(jsArr[i])
@@ -169,7 +263,16 @@ class FileIn extends React.Component {
                 }
                 jsArr = newJSArr
             }
+            // call dateFormat
+            const obj = {
+                dateFormat: finalStr,
+                hasTwoYs: needsCenturyPrefix
+            }
+            this.props.formatDate(obj)
 
+
+            // more string cleaning
+            // some of the cleaning in the code could be a little smoother with one regex, but some of the symbols we're a little more complicating so handled as strings
             for (let i = 0; i < jsArr.length; i++) {
 
                 jsArr[i] = jsArr[i].replace(/(|\r\n|\s|})/gm, "")
@@ -186,14 +289,17 @@ class FileIn extends React.Component {
                     removeIndex.push(i)
 
             }
+            // removes any empty strings as elements in the jsArr
             for (let i = 0; i < removeIndex.length; i++) {
                 jsArr.splice(removeIndex[i], 1)
             }
+
+            // establish state that we have a jsArr
             this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
         }
 
-
-
+        // this is where we combine objects if there are multiple csv's for the purpose of being able to toggle through tuples of both files
+        // we limit the number of toggles but the minimum size of the files (Ex: CSV1.length = 3 && CSV2.length = 10, then user can toggle through 3 times)
         var data = result;
         let finalToggleArray = []
         let toggleArr = this.state.toggleValues;
@@ -232,12 +338,13 @@ class FileIn extends React.Component {
 
         let arr = [this.state.fieldNames, this.state.fieldValues]
 
+        // we want to make sure that we have handled all CSV's and JS files before we use the callback function
         this.setState({ num: this.state.num + 1 })
         if (this.state.num === this.state.files.length - 1) {
             this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile)
         }
 
-
+        // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies
         this.setState({ isJsFile: false })
     }
 
@@ -274,4 +381,12 @@ class FileIn extends React.Component {
     }
 }
 
-export default FileIn;
+const mapStateToProps = (state) => {
+    return {
+        hasChosenDropdown: state.hasChosenDropdownOption,
+        hasChosenDateFormat: state.hasChosenDateFormat,
+        dateFormatSelected: state.chosenDateFormat
+    };
+};
+
+export default connect(mapStateToProps, { formatDate })(FileIn);

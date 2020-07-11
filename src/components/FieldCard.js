@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
 import { removeContent } from '../actions';
+import { Dropdown } from 'semantic-ui-react';
 const { options } = require('./sesarOptions')
 
 class FieldCard extends React.Component {
@@ -70,7 +71,7 @@ class FieldCard extends React.Component {
     fileCallback = (data, title) => {
         let currentComponent = this
 
-
+        console.log("GOT HERE")
 
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "")

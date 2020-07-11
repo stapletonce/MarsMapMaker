@@ -131,6 +131,7 @@ class DropDown extends React.Component {
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
+        console.log("HELLO")
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -346,10 +347,9 @@ class DropDown extends React.Component {
             }
 
             let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
-
+            console.log(update)
             if (update !== undefined) {
                 this.props.callback(update)
-                console.log(this.props.multiValues)
             }
             return
         }
@@ -369,6 +369,7 @@ class DropDown extends React.Component {
 
 
         if (this.props.value !== undefined) {
+            console.log("HEYYY")
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
@@ -384,6 +385,7 @@ class DropDown extends React.Component {
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     updateValueToggle = () => {
         const newValue = this.props.ent[this.props.id].sesarTitle
+
 
         this.updateValueHelper(newValue)
     }
@@ -409,18 +411,26 @@ class DropDown extends React.Component {
         return count
 
     }
+    componentDidMount() {
+        let obj = {
+            bool: true
+        }
+        this.props.toggleInUse(obj)
+        this.forceUpdate()
+    }
+
 
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     toggleNotInUse = () => {
         let obj = {
             bool: false
         }
-
-        if (this.props.usingToggle === true && this.props.id !== this.entWithContent()) {
+        if ((this.props.usingToggle === true && this.props.id !== this.entWithContent())) {
             this.updateValueToggle()
         }
-        else if (this.props.usingToggle === true && this.props.id === this.entWithContent())
+        else if (this.props.usingToggle === true && this.props.id === this.entWithContent()) {
             this.props.toggleInUse(obj)
+        }
     }
 
     // checks the store for any entrie that already has a sesarSelection, and returns true/that value
@@ -503,7 +513,4 @@ const mapStateToProps = (state) => {
         usingToggle: state.toggleInUse
     };
 };
-
-
-
 export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);
