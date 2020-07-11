@@ -124,9 +124,12 @@ class FileIn extends React.Component {
     updateData(result) {
         let removeIndex = []
 
+        // checks to see if the file "result" is a JS mapping file, this file always starts with Start::::
         if (Object.keys(result.data[0])[0].includes("//Start::::")) {
-            let jsArr = []
 
+            // JS mapping file has a section "let map..." which is where we want to retrieve our sesar selections and clean the data
+            let jsArr = []
+            // start pushing is where we find "let map..." and start reading
             let startPushing = false;
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
@@ -144,7 +147,9 @@ class FileIn extends React.Component {
                         let firstIndexFormat;
                         // where we handle multivalue selections
                         firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
-                        //BANDAID
+                        // BANDAID
+                        // One of the multivalue selections has an extra space in the mapOutput, this is a quick fix
+                        // However, when mars reads in mapping file, space may still need to be taken care of
                         if (firstIndexFormat.length === 5) {
                             firstIndexFormat[4] = "[" + firstIndexFormat[4]
                             firstIndexFormat = this.removeBrackets(firstIndexFormat)
@@ -162,6 +167,8 @@ class FileIn extends React.Component {
                     }
                 }
                 let newJSArr = []
+                // any identical elements in jsArr, only append them once into newJSArr
+
                 for (let i = 0; i < jsArr.length; i++) {
                     if (!newJSArr.includes(jsArr[i])) {
                         newJSArr.push(jsArr[i])
@@ -170,6 +177,8 @@ class FileIn extends React.Component {
                 jsArr = newJSArr
             }
 
+            // more string cleaning
+            // some of the cleaning in the code could be a little smoother with one regex, but some of the symbols we're a little more complicating so handled as strings
             for (let i = 0; i < jsArr.length; i++) {
 
                 jsArr[i] = jsArr[i].replace(/(|\r\n|\s|})/gm, "")
@@ -186,14 +195,17 @@ class FileIn extends React.Component {
                     removeIndex.push(i)
 
             }
+            // removes any empty strings as elements in the jsArr
             for (let i = 0; i < removeIndex.length; i++) {
                 jsArr.splice(removeIndex[i], 1)
             }
+
+            // establish state that we have a jsArr
             this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
         }
 
-
-
+        // this is where we combine objects if there are multiple csv's for the purpose of being able to toggle through tuples of both files
+        // we limit the number of toggles but the minimum size of the files (Ex: CSV1.length = 3 && CSV2.length = 10, then user can toggle through 3 times)
         var data = result;
         let finalToggleArray = []
         let toggleArr = this.state.toggleValues;
@@ -232,12 +244,13 @@ class FileIn extends React.Component {
 
         let arr = [this.state.fieldNames, this.state.fieldValues]
 
+        // we want to make sure that we have handled all CSV's and JS files before we use the callback function
         this.setState({ num: this.state.num + 1 })
         if (this.state.num === this.state.files.length - 1) {
             this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile)
         }
 
-
+        // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies
         this.setState({ isJsFile: false })
     }
 
