@@ -1,18 +1,25 @@
+///////////////////////////////////////////////////////////////////////////////////
+// CARDLIST.JS ///////////////////////////////////////////////////////////////////
+// This component takes data from App.js and creates the cards displayed in UI //
+// Renders and creates the toolbar and the fieldCards displayed in UI //////////
+///////////////////////////////////////////////////////////////////////////////
+
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-// Components
+// COMPONENTS
 import MapOutput from './MapOutput';
 import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
 // CSS & Style
-import './App.css';
+import './App.scss';
 
-// Action Creators
-import { firstState, isOpen, addToggleIndex, toggleInUse } from '../actions/';
-///////////////////////////////////////////////
+// REDUX
+import { firstState, toggleInUse } from '../actions/';
+
+///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
 // there is a particular relationship between checked value and available option in dropdown
@@ -25,44 +32,10 @@ const CardList = (props) => {
 
     const objArray = []
     const useOnce = []
-    const outerArr = []
-    const singleMeasure = []
     let newKey = -1
-    const singleMeasureObj = {
-        pairHeader: "",
-        pairValue: "",
-        currentID: -1
-    }
 
-    const sizeArray = [
-        // In the case of an ordered pair for SIZE, only the first two objects are used [0, 1, x]
-        // In the case of a single measurement for size, on the last object is used [x, x, 2]
-        {
-            pairHeader: "",
-            pairValue: "",
-            currentID: -1
-        },
-        {
-            pairHeader: "",
-            pairValue: "",
-            currentID: -1
-        }
-    ]
-    const dateFormatOption = [
-        { title: "Select Date Format" },
-        { title: "DD/MM/YY or DD-MM-YY", value: "substring", type: "date" },
-        { title: "MM/DD/YY or MM-DD-YY", value: "substring", type: "date" },
-        { title: "YY/DD/MM or YY-DD-MM", value: "substring", type: "date" },
-        { title: "YY/MM/DD or YY-MM-DD", value: "substring", type: "date" },
-        { title: "DD/MM/YYYY or DD-MM-YYYY", value: "substring", type: "date" },
-        { title: "MM/DD/YYYY or MM-DD-YYYY", value: "substring", type: "date" },
-        { title: "YYYY/DD/MM or YYYY-DD-MM", value: "substring", type: "date" },
-        { title: "YYYY/MM/DD or YYYY-MM-DD", value: "substring", type: "date" },
-        { title: "MMDDYYYY", value: "substring", type: "date" },
-        { title: "DDMMYYYY", value: "substring", type: "date" },
-        { title: "YYYYDDMM", value: "substring", type: "date" },
-        { title: "YYYYMMDD", value: "substring", type: "date" }
-    ]
+    // an array of date option objects to choose from in the date dropdown
+    const { dateFormatOption } = require('./sesarOptions')
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
@@ -92,7 +65,7 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
 
-    // Content Toggle right->add 1, left->sub 1, refresh->reset to 0
+    // goes to the next row of content in the csv
     const rightArrowToggle = () => {
         if (toggleIndex < 9) {
             addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
@@ -103,6 +76,7 @@ const CardList = (props) => {
         }
     }
 
+    // goes to the previous row of content in the csv
     const leftArrowToggle = () => {
         if (toggleIndex > 0) {
             addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
@@ -113,6 +87,7 @@ const CardList = (props) => {
         }
     }
 
+    // returns to the first row of content in the csv
     const refreshButton = () => {
         addToToggleIndex(0)
         let obj = {
@@ -121,13 +96,28 @@ const CardList = (props) => {
         props.toggleInUse(obj)
     }
 
+    // if a map (js) file is passed in, it searches for previous selections made to update the Redux store accordingly
+    const findSesarPassIn = (field) => {
+        let sesarPassIn = "";
+        if (props.jsFileValues !== undefined)
+            for (let i = 0; i < props.jsFileValues.length; i++) {
+                if (field === props.jsFileValues[i][1].replace(" ", "")) {
+                    sesarPassIn = (props.jsFileValues[i][0])
+                }
+            }
+        return sesarPassIn
+    }
+
     // maps content to separate fieldcards on the screen
     const fields = props.fields.map((field) => {
         newKey += 1
+
+        let sesarFind = findSesarPassIn(field)
+
         //create an object and add it to store
-        const storedValue = {
+        let storedValue = {
             id: newKey,
-            sesarTitle: "",
+            sesarTitle: sesarFind,
             oldValue: props.fieldVal[newKey],
             value: props.fieldVal[newKey],
             // this used to be id 
@@ -138,14 +128,15 @@ const CardList = (props) => {
         }
 
         // after object is created, append it to the object array & add one to the ID
-        objArray.push(storedValue)
         useOnce.push("")
-        outerArr.push(sizeArray)
-        singleMeasure.push(singleMeasureObj)
-        console.log(toggleIndex)
+        objArray.push(storedValue)
+
         // create the FieldCard that you see in the UI
+        // If toggleIndex is 0 then we're on the 1st row so give it raw input
+        // Else give it the object.values..
         if (toggleIndex === 0) {
             return (<FieldCard
+                jsFileValues={props.jsFileValues}
                 toggleInUse={props.usingToggle}
                 key={newKey}
                 hiding={hide}
@@ -160,6 +151,7 @@ const CardList = (props) => {
         else {
             return (
                 <FieldCard
+                    jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
@@ -171,63 +163,45 @@ const CardList = (props) => {
                 />
             );
         }
-        console.log(toggleIndex)
-
     });
 
-    //after fieldcards are set change toggle in use back to false
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
         const initObj = {
             objArr: objArray,
             useOnce: useOnce,
-            sizeOuter: outerArr,
-            singleMeasureArr: singleMeasure
         }
         props.firstState(initObj)
     }, []);
 
-    //funciton to pass to modal windown
-    //const closeModal = () => {
-    //setShowModal(false);
-    //};
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
-        console.log(props.singleMeasure)
         console.log(props.ent)
-        console.log(props.outerArr)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
     const multiValueArrHelper = (options, index, multiArr) => {
-
-        for (let j = 0; j < 3; j++) {
+        let j;
+        for (j = 0; j < 3; j++) {
             if (options.indexOf(props.ent[index].sesarTitle) !== -1) {
                 if (props.ent[index].value !== "") {
-                    // if (props.ent[index].sesarTitle === "geological_age") {
-                    //     multiArr[options.indexOf(props.ent[index].sesarTitle)].push(" " + props.ent[index].header + ": " + props.ent[index].value)
-                    //     break
-                    // }
-
-                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": " + props.ent[index].value)
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ":" + props.ent[index].value)
                     break
-
-
                 }
                 else {
-                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ": NO_DATA")
+                    multiArr[options.indexOf(props.ent[index].sesarTitle)].push(props.ent[index].header + ":NO_DATA")
                     break
                 }
-
             }
         }
     }
 
     // Helper function add the "field_name", "description", "sample_comment" title to the beginning of the join(";") array index 
     const appendTitleToFront = (multiValueArr, options) => {
-        for (let i = 0; i < 5; i++) {
+        let i
+        for (i = 0; i < 5; i++) {
             if (multiValueArr[i] !== "" && multiValueArr[i] !== undefined)
                 multiValueArr[i] = options[i] + " ==> " + multiValueArr[i]
         }
@@ -248,55 +222,25 @@ const CardList = (props) => {
         let sampleIndex = -1;
         let geoIndex = -1;
         let sizeIndex = -1;
-        let finalSizeSelection;
         let finalMap;
-        let finalMultiValue;
+        let finalArray;
+        let arr = [];
         let i;
 
         /////////////////////////////////////////////////////////
         /////////// Display Preview of Multi-Value Selections
         for (i = 0; i < props.ent.length; i++) {
             if (props.ent[i].sesarTitle !== "") {
-                mapPreviewArr.push(String(props.ent[i].sesarTitle + ": " + props.ent[i].header))
+                mapPreviewArr.push(String(props.ent[i].sesarTitle + ":" + props.ent[i].header))
             }
             multiValueArrHelper(options, i, multiValueArr)
         }
         for (i = 0; i < 5; i++) {
-            multiValueArr[i] = multiValueArr[i].join(";")
+            multiValueArr[i] = multiValueArr[i].join("; ")
         }
-
-
         appendTitleToFront(multiValueArr, options)
 
-
-
-        /////////////////////////////////
-        ////////// Display Map Preview
-
-
-        //////////////////////////////////////
-        // Display Size Selection Preview
-        // for (i = 0; i < props.ent.length; i++) {
-        //     if (props.outerArr[i][0].pairHeader !== "") {
-        //         if (sizeSelection[1] !== "")
-        //             sizeSelection[1] = sizeSelection[1] + "\n" + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
-        //         else
-        //             sizeSelection[1] = sizeSelection[1] + (props.outerArr[i][0].pairHeader + ": " + props.outerArr[i][1].pairHeader)
-        //     }
-        // }
-        // for (i = 0; i < props.ent.length; i++) {
-        //     if (props.singleMeasure[i].pairHeader !== "") {
-        //         if (sizeSelection[3] !== "")
-        //             sizeSelection[3] = sizeSelection[3] + "\n" + (props.singleMeasure[i].pairHeader)
-        //         else
-        //             sizeSelection[3] = sizeSelection[3] + (props.singleMeasure[i].pairHeader)
-        //     }
-        // }
-
-        // finalSizeSelection = sizeSelection.join("\n")
-        finalSizeSelection = []
         finalMap = mapPreviewArr
-        finalMultiValue = (multiValueArr.join("\n"))
 
         for (i = 0; i < finalMap.length; i++) {
             if (finalMap[i].includes(options[0])) {
@@ -330,7 +274,6 @@ const CardList = (props) => {
                 }
             }
         }
-        let arr = []
         for (i = 0; i < finalMap.length; i++) {
             if (!(arr.includes(finalMap[i]))) {
                 if (!(finalMap[i].includes(options[0]) && i !== fieldIndex))
@@ -344,19 +287,14 @@ const CardList = (props) => {
                 else if (!(finalMap[i].includes(options[4]) && i !== sizeIndex))
                     arr.push(finalMap[i])
             }
-
         }
-        // if (finalSizeSelection !== "") {
-        //     arr.push("size: " + finalSizeSelection.replace("\n", ""))
-        // }
 
-
-        let finalArray = [finalSizeSelection, arr, finalMultiValue]
+        finalArray = arr
 
         return finalArray
-
     }
 
+    // checks the redux store to see if any of the fieldCards have selected a date
     const dateSelected = () => {
         let found = false
         for (let i = 0; i < props.ent.length; i++) {
@@ -366,7 +304,6 @@ const CardList = (props) => {
         }
         return found
     }
-
 
 
     return (
@@ -380,7 +317,7 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="arrowDiv">
+                    <div className="toggle__content">
                         <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
                             <div className="content">
                                 Toggle Content
@@ -400,13 +337,13 @@ const CardList = (props) => {
 
                     <MapOutput />
 
-                    <div style={{ paddingTop: "3em", width: "15%" }} className="dropDown2" >
+                    <div style={{ paddingTop: "3em", width: "15%" }} className="toolbar__help" >
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px;", paddingRight: "0px", marginRight: "0px" }}>
+                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px", paddingRight: "0px", marginRight: "0px" }}>
                         {(props.hasDateFormat === false || dateSelected() === false) ?
                             <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
                                 Select Date Format
@@ -415,55 +352,50 @@ const CardList = (props) => {
                         </div>}
 
                         {(props.hasDateFormat === false || dateSelected() === false) ?
-                            <div className="dropDown1" style={{ borderColor: "red" }} >
-                                <DateDropdown className="requireOption" list={dateFormatOption} />
-                                <CenturyDropDown className="requireOption" />
-                            </div> : <div className="dropDown1">
-                                <DateDropdown className="requireOption" list={dateFormatOption} />
-                                <CenturyDropDown className="requireOption" />
+                            <div className="toolbar__date__format" style={{ borderColor: "red" }} >
+                                <DateDropdown list={dateFormatOption} />
+                                <CenturyDropDown />
+                            </div> : <div className="toolbar__date__format">
+                                <DateDropdown list={dateFormatOption} />
+                                <CenturyDropDown />
                             </div>}
                     </div>
                 </div>
 
-                <div className="uiInfo labelInfo">
+                <div className="description">
                     <div>
                         <object className="fieldWidget">
-                            <div className="checkBoxInfo">
+                            <div className="description__checkbox">
                                 Use
                             </div>
-                            <div dir="rtl" className="fieldTitle">:Header</div>
-                            <div className="fieldVal"> Content</div>
+                            <div dir="rtl" className="description__title">:Header</div>
+                            <div className="description__value"> Content</div>
                         </object>
-                        <object className="dropDownWidget" align="right">
-                            <div className="mappedValue">Mapped Content</div>
-                            <div className="dropDownInfo"><b>[</b>Mapped Header<b>]</b></div>
+                        <object className="descriptionMapped" align="right">
+                            <div className="description__mapped__content">Mapped Content</div>
+                            <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
                         </object>
                     </div>
                 </div>
 
-                <div className="ui-card" >{fields}</div>
+                <div>{fields}</div>
             </div>
+            <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+                href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
         </div>
+
     );
 }
 
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
-        sizeArray: state.sizeArray,
-        sizeOuter: state.sizeOuterArray,
-        singleMeasure: state.singleMeasureArr,
-        outerArr: state.sizeOuterArray,
-        multi: state.multiValues,
-        setDa: state.substringDateFormat,
-        cent: state.century,
-        hasInit: state.hasInit,
-        hasBeenOpened: state.isOpen,
         toggleArr: state.toggleArr,
         toggleIndex: state.toggleIndex,
         usingToggle: state.toggleInUse,
-        hasDateFormat: state.hasChosenDateFormat
+        hasDateFormat: state.hasChosenDateFormat,
+        storeJsFile: state.jsFile
     };
 };
 
-export default connect(mapStateToProps, { firstState, isOpen, addToggleIndex, toggleInUse })(CardList);
+export default connect(mapStateToProps, { firstState, toggleInUse })(CardList);

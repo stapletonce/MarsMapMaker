@@ -1,12 +1,28 @@
+///////////////////////////////////////////////////////////////////////////////////////
+// DROPDOWN.JS ///////////////////////////////////////////////////////////////////////
+// This component displays a dropdown of sesar header choices in every field card ///
+// These choices are filter based on the incoming content as a string or a number //
+// When clicked, the store is updated with the selection //////////////////////////
+//////////////////////////////////////////////////////////////////////////////////
+
 import React from "react";
 import { connect } from "react-redux";
 
 //CSS & Styling
 import "semantic-ui-react";
 
-//Action Creators
-//clearSizeArray,
-import { dropdownUpdate, multiValueCreate, multiValueCreateFinish, removeContent, setSubstringDateFormat, toggleInUse } from "../actions/"
+// REDUX
+import {
+    dropdownUpdate,
+    multiValueCreate,
+    multiValueCreateFinish,
+    removeContent,
+    setSubstringDateFormat,
+    toggleInUse
+} from "../actions/"
+
+//////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 
 class DropDown extends React.Component {
 
@@ -20,7 +36,9 @@ class DropDown extends React.Component {
         }
     }
 
-
+    // helper function that removes delimiters from date entry and formats the content into a sesar accepted string
+    // if the user makes an error (Ex: selected a YY format but selects a YYYY value) the field card refreshes
+    // and the user is notified with an Alert() that they have done the wrong thing
     logicHelper = (fS, fA, dS) => {
         if (fS.includes("YYYY")) {
             for (let i = 0; i < 3; i++) {
@@ -107,10 +125,13 @@ class DropDown extends React.Component {
         return returnString
     }
 
-
+    // further date formatting, user error checking, deciding if selection needs a century selection as well
+    // if a valid selection is made, the store is updated with the format selected
+    // and the store ent[i].sesarTitle is updated with the selection 
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
+        console.log("HELLO")
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -267,20 +288,14 @@ class DropDown extends React.Component {
         }
         this.props.dropdownUpdate(obj)
 
-
-
-
         return update
-
-
-
-
 
         // next step is to store this sesar format date into the redux store for the correct field upon choosing one of the date options
         // also, there should be some robust error handling that checks the value to make sure it even qualifies as a date
         // also to think further on that, check if the users value matches their format selection, if not send an error
     }
 
+    // checks if a date has been selected in the store
     dateSelected = () => {
         let found = false
         for (let i = 0; i < this.props.ent.length; i++) {
@@ -294,86 +309,11 @@ class DropDown extends React.Component {
         return found
     }
 
-    // josh's section
-    // updateMulti = () => {
 
-
-
-    //     for (let i = 0; i < this.props.ent.length; i++) {
-
-    //         if (this.props.ent[i].sesarTitle === "sample_comment") {
-    //             const obj = {
-    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-    //                 ident: "sample_comment",
-    //                 index: 0
-    //             }
-    //             console.log(obj)
-    //             this.props.multiValueCreateFinish(obj)
-    //         }
-    //         else if (this.props.ent[i].sesarTitle === "description") {
-    //             const obj = {
-    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-    //                 ident: "description",
-    //                 index: 1
-    //             }
-    //             console.log(obj)
-    //             this.props.multiValueCreateFinish(obj)
-
-    //         }
-    //         else if (this.props.ent[i].sesarTitle === "field_name") {
-    //             console.log("hello")
-    //             const obj = {
-    //                 keyString: this.props.ent[i].header + ":" + this.props.ent[i].value,
-    //                 ident: "field_name",
-    //                 index: 2
-    //             }
-    //             console.log(obj)
-    //             this.props.multiValueCreateFinish(obj)
-    //         }
-    //     }
-    //     console.log(this.props.multiValues)
-    // }
-
-
+    // update onClick function that parses through your selection and how to handle it
+    // Handled differently based on if it is a one2one, multivalue, or a date selection
     updateValueHelper = (newValue) => {
         let breakOrFormat;
-
-        // if (this.props.ent[this.props.id].sesarTitle === "size" && this.props.pairArr[this.props.id][0].pairHeader !== "") {
-        //     const sizeObj = {
-        //         cardID: this.props.id,
-        //         index: 0
-        //     }
-        //     this.props.clearSizeArray(sizeObj)
-        //     const obj = {
-        //         oldValue: this.props.fieldValue,
-        //         value: this.props.fieldValue,
-        //         header: this.props.fieldTitle,
-        //         id: this.props.id + 1,
-        //         isGreen: this.state.isGreen
-        //     }
-        //     this.props.removeContent(obj)
-        // }
-
-        // if (this.props.ent[this.props.id].header === this.props.sizeArray[0].pairHeader && this.sizeArrayLoop() >= 1) {
-        //     let obj = {
-        //         id: 0
-        //     }
-        //     this.props.clearSizeArray(obj)
-        // }
-        // else if (this.props.ent[this.props.id].header === this.props.sizeArray[1].pairHeader && this.sizeArrayLoop() >= 1) {
-        //     let obj = {
-        //         id: 1
-        //     }
-        //     this.props.clearSizeArray(obj)
-        // }
-        // else if (this.props.ent[this.props.id].header === this.props.sizeArray[2].pairHeader && this.sizeArrayLoop() === 1) {
-        //     let obj = {
-        //         id: 2
-        //     }
-        //     this.props.clearSizeArray(obj)
-        // }
-
-
 
         if (this.props.dateFormat != null)
             breakOrFormat = this.props.dateFormat.split(" ")
@@ -407,10 +347,9 @@ class DropDown extends React.Component {
             }
 
             let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
-
+            console.log(update)
             if (update !== undefined) {
                 this.props.callback(update)
-                console.log(this.props.multiValues)
             }
             return
         }
@@ -430,6 +369,7 @@ class DropDown extends React.Component {
 
 
         if (this.props.value !== undefined) {
+            console.log("HEYYY")
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
@@ -439,21 +379,19 @@ class DropDown extends React.Component {
     // updates specific object in the redux store
     updateValue = (e) => {
         const newValue = e.target.value
-
         this.updateValueHelper(newValue)
-
-
-
     }
 
+    // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     updateValueToggle = () => {
         const newValue = this.props.ent[this.props.id].sesarTitle
 
+
         this.updateValueHelper(newValue)
     }
 
 
-
+    // function that searches the ent array in the store for any index with content
     entWithContent = () => {
         let index = -1
         for (let i = 0; i < this.props.ent.length; i++) {
@@ -463,6 +401,7 @@ class DropDown extends React.Component {
         return index
     }
 
+    // counts the number of times size is selected
     sizeArrayLoop = () => {
         let count = 0;
         for (let i = 0; i < this.props.ent.length; i++) {
@@ -473,36 +412,58 @@ class DropDown extends React.Component {
 
     }
 
+    // when the component mounts, run the toggle function once automatically so if JS mapping file has a selected date
+    // it is automatically formatted
+    componentDidMount() {
+        let obj = {
+            bool: true
+        }
+        this.props.toggleInUse(obj)
+        this.forceUpdate()
+    }
+
+
+    // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     toggleNotInUse = () => {
         let obj = {
             bool: false
         }
-
-        if (this.props.usingToggle === true && this.props.id !== this.entWithContent()) {
+        if ((this.props.usingToggle === true && this.props.id !== this.entWithContent())) {
             this.updateValueToggle()
         }
-        else if (this.props.usingToggle === true && this.props.id === this.entWithContent())
+        else if (this.props.usingToggle === true && this.props.id === this.entWithContent()) {
             this.props.toggleInUse(obj)
+        }
+    }
 
-
+    // checks the store for any entrie that already has a sesarSelection, and returns true/that value
+    hasSesarValue = () => {
+        let arr = [false, ""]
+        if (this.props.hasInit && this.props.ent[this.props.id].sesarTitle !== "") {
+            arr = [true, this.props.ent[this.props.id].sesarTitle]
+        }
+        return arr
     }
 
 
     render() {
         const sesarOne2One = this.state.sesarOneToOne
         let num = -1
+        let sesarId = 0
+
+        // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
         this.toggleNotInUse()
+
         // helper function to list "options" based on the 'type' of field (numbers or letters...) 
         let filter = (f) => {
-
 
             num += 1
             if (num === 0)
                 return <option key={f.title} value="Sesar Selection" disabled hidden>Sesar Selection</option>;
 
-            //if (f.format === this.props.fieldType)
-            //return <option key={f.title} value={f.title}>{f.title}</option>;
-            // code works, "current archive" is obviously a placeholder for now just to make sure the logic works
+            if (this.hasSesarValue()[0] === true) {
+                sesarId = sesarId + 1
+            }
 
             // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
             if (this.props.fieldType === "both")
@@ -510,18 +471,9 @@ class DropDown extends React.Component {
 
             if (f.type === this.props.fieldType || f.type === "both") {
 
-                // if (this.sizeArrayLoop() === 1 && this.props.sizeArray[2].pairHeader !== "") {
-                //     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
-                //         return
-                // }
-                // else if (this.sizeArrayLoop() === 2 && (this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1] !== "")) {
-                //     if (f.title === "size" && this.props.ent[this.props.id].sesarTitle !== "size")
-                //         return
-                // }
-                //if (f.title === "size" && this.props.sizeArray[0].pairHeader !== "" && this.props.sizeArray[1].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
-                //return
-                //else if (f.title === "size" && this.props.sizeArray[2].pairHeader !== "" && this.sizeArrayLoop() !== this.props.id)
-                //return
+                if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
+                    return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
+                }
 
                 if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
@@ -564,7 +516,4 @@ const mapStateToProps = (state) => {
         usingToggle: state.toggleInUse
     };
 };
-
-
-
 export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);

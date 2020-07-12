@@ -1,8 +1,11 @@
-/*** MARS MAP MAKER CSS ***/
+/*** MARS MAP MAKER CSS USING BEM (BLOCK, ELEMENT, MODIFIERS) ***/
 /*************************/
+
+$mars--border: rgb(46,14,8);
+
 /* App.js */
-.marsPhoto {
-    border: solid 10px rgb(46,14,8);
+.mars-photo {
+    border: solid 10px $mars--border;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -10,21 +13,35 @@
     width: 100vw;
 }
 
-.marsPhoto1{
+.mars-photo_hide{
     display: none;
 }
-/* CardList.js */
-/* CenturyDropDown.js */
-/* CheckBox.js */
-/* DateDropdown.js */
-/* Dialog.js */
-/* DropDown.js */
-/* FieldCard.js */
-/* FileIn.js */
-/* FormatDropdown.js */
-/* MapOutput.js */
 
-.fieldVal {
+/* CardList.js */
+.label {
+    width: 100%;
+    margin: 0px;
+    display: inline-block;
+}
+.toggle__content{
+    width: 320px;
+    display: inline-block;
+    padding-left: 40px;
+    padding-bottom: 40px;
+}
+.toolbar__help {
+    font-size: 15px;
+    display: inline-block;
+    width: 15%;
+    padding-top: 3em;
+    padding: 10px;
+    margin: 10px;
+    margin-top: 5.4em;
+    float: right;
+}
+
+
+.description__value {
     color: rgb(99,99,102);
     display: inline-block;
     padding-left: 5px;
@@ -33,22 +50,25 @@
     
 }
 
-.marsIcon {
+.marsOutput {
     text-align: center; 
     display: inline-block;
-    padding: 0%;
+    padding-bottom: 0px;
+    padding-top: 2%;
+    padding-left: 22em;
+    padding-right:2em;
     margin: 0%;
 
 }
 
-.mars {
+.mars--icon {
     height: 160px;
     width: 160px;
     padding: 0%;
     margin: 0%;
 }
 
-.mars:hover {
+.mars--icon:hover {
     cursor: pointer;
 }
 
@@ -75,7 +95,7 @@
 }
 
 
-.fieldTitle {
+.description__title {
     max-width: 0px;
     display: inline-block;
     font-size: 18px;
@@ -93,7 +113,7 @@
 
 
 
-.fileReader {
+.fileReaderUnloaded {
     background-color: white;
     opacity: 0.89;
     border: solid 4px rgb(46,14,8);
@@ -106,12 +126,12 @@
     border-radius: 25px;
 }
 
-.csv-input {
+.csv__input {
     padding-left: 17%;
 }
 
 
-.fileReader1 {
+.fileReaderLoaded {
     display: none;
     position: fixed;
     top: 5%;
@@ -149,14 +169,14 @@
     padding-bottom: 20px;
 }
 
-.dropDownInfo {
+.description__mapped__header {
     font-size: 18px;
     display: inline-block;
     width: 200px;
     padding-right: 50px;
 }
 
-.dropDown1 {
+.toolbar__date__format {
     font-size: 15px;
     display: inline-block;
     width: 200px;
@@ -170,13 +190,6 @@
 
 }
 
-.arrowDiv{
-    width: 320px;
-    display: inline-block;
-    padding-left: 40px;
-    padding-bottom: 40px;
-}
-
 .arrowIcon { 
     display: inline-block;
     width: 70px;
@@ -187,17 +200,6 @@
     cursor: pointer;
 }
 
-.dropDown2 {
-    font-size: 15px;
-    display: inline-block;
-    width: 200px;
-    
-    padding: 10px;
-    margin: 10px;
-    margin-top: 5.4em;
-    float: right;
-
-}
 
 .dropDownNoData {
     font-size: 11px;
@@ -209,7 +211,7 @@
 }
 
 
-.dropDownWidget {
+.descriptionMapped {
     display: inline-block;
     padding-right: 55px;
     padding-left: 0px;
@@ -218,7 +220,7 @@
 }
 
 
-.mappedValue {
+.description__mapped__content {
     padding-top: .5em;
     display: inline-block;
     padding-right: 10px;
@@ -232,13 +234,9 @@
     width: 100%;
     display: inline-block;
 }
-.label {
-    width: 100%;
-    margin: 0px;
-    display: inline-block;
-}
 
-.uiInfo {
+
+.description {
     background-color: rgb(224,225,226);
     padding: 0px;
     width: 100%;
@@ -260,7 +258,7 @@
     border-radius: 5px;
 }
 
-.checkBox {
+.check__box {
     display: inline-block;
     height: 100%;
     padding-top: 0px;
@@ -269,7 +267,7 @@
     padding-left: 10px;
 }
 
-.checkBoxInfo {
+.description__checkbox {
     display: inline-block;
     height: 100%;
     padding-top: 0px;
@@ -279,14 +277,14 @@
     font-size: 18px;
 }
 
-.checkBox > .innerCheckbox {
+.check__box > .inner--checkbox {
     padding: 0px;
     margin: 0px;
     height: 0px;
 }
 
 
-.field_container1 {
+.fieldContainer1 {
     border-style: solid;
     border-width: .5px;
     background-color: #e9a9a9;
@@ -294,7 +292,7 @@
 }
 
 
-.field_container2 {
+.fieldContainer2 {
     border-style: solid;
     border-width: .5px;
 }

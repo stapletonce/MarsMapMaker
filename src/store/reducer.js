@@ -1,5 +1,6 @@
 
 import update from 'react-addons-update';
+import { entries } from 'd3';
 //the store will consist of an array of objects with each having the following information attached
 //string: sesarTitle
 //string: value
@@ -22,6 +23,7 @@ const reducer =
       toggleArr: [],
       isOpen: false,
       hasInit: false,
+      jsFile: undefined,
       // singleMeasureArr: [],
       // sizeOuterArray: [],
       // sizeArray: [
@@ -78,7 +80,8 @@ const reducer =
         return {
           ...state,
           entries: state.entries.concat(action.payload.objArr),
-          useOnce: state.useOnce.concat(action.payload.useOnce),
+          useOnce: state.useOnce.concat(action.payload.useOnce)
+
           //sizeOuterArray: state.sizeOuterArray.concat(action.payload.sizeOuter),
           //singleMeasureArr: state.singleMeasureArr.concat(action.payload.singleMeasureArr)
         }
@@ -91,11 +94,18 @@ const reducer =
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
       case "DROPDOWN_UPDATE":
+        let dateSelected = false
         let index = action.payload.id
-        let check = action.payload.dropOption;
-        if ((action.payload.sesarSelected === "collection_end_date" || action.payload.sesarSelected === "collection_start_date"))
-          check = true
+        // let check = action.payload.dropOption;
+        let check = false;
 
+        for (let i = 0; i < state.entries.length; i++) {
+          if (state.entries[i].sesarSelected === "collection_end_date" || state.entries[i].sesarSelected === "collection_start_date") {
+            dateSelected = true
+          }
+        }
+        if (dateSelected === true || (action.payload.sesarSelected === "collection_end_date" || action.payload.sesarSelected === "collection_start_date"))
+          check = true
 
         return {
           ...state,
@@ -127,6 +137,9 @@ const reducer =
 
 
         }
+
+
+
 
       case "CHOOSE_FORMAT":
         return {
