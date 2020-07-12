@@ -58,6 +58,7 @@ class DateDropdown extends React.Component {
         // IFF You have selected a date formate and SUCCESSFULLY selected sesar option, disable date dropdown
         console.log(this.props.hasChosenDateFormat)
         console.log(this.props.hasChosenDropdown)
+        // case for loaded in js mapping file where the date is already previously selected  
         if (this.props.hasChosenDateFormat && this.props.dateFormatSelected) {
             return (
                 <select defaultValue={this.props.dateFormatSelected} disabled selected className="ui search dropdown" onChange={this.updateValue}>

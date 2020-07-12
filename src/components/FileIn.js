@@ -194,11 +194,14 @@ class FileIn extends React.Component {
                     this.startPushingHelper(result, i, jsArr)
                 }
                 else if (dateIdentified === true) {
+                    // create array of the JS mapping file already selected date numbers
                     dateIdArr.push(Object.values(result.data[i])[0].match(/[0-9]+/g)[0])
                     dateIdArr.push(Object.values(result.data[i])[1][0].match(/[0-9]+/g)[0])
                 }
 
                 if (dateIdArr.length === 6) {
+                    // create a string of the date number array above
+                    // use that string to identify the finalStr to display automatically in the date dropdown
 
                     let dateFormatStr = dateIdArr.join('')
                     switch (dateFormatStr) {

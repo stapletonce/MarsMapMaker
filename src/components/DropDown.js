@@ -411,6 +411,9 @@ class DropDown extends React.Component {
         return count
 
     }
+
+    // when the component mounts, run the toggle function once automatically so if JS mapping file has a selected date
+    // it is automatically formatted
     componentDidMount() {
         let obj = {
             bool: true
