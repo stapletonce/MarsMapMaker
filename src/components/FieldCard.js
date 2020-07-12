@@ -71,7 +71,6 @@ class FieldCard extends React.Component {
     fileCallback = (data, title) => {
         let currentComponent = this
 
-        console.log("GOT HERE")
 
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "")

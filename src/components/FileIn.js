@@ -10,7 +10,7 @@ import Papa from 'papaparse';
 import './App.scss';
 import classNames from 'classnames';
 
-import { formatDate } from '../actions/'
+import { formatDate, century } from '../actions/'
 
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -166,6 +166,7 @@ class FileIn extends React.Component {
 
             // JS mapping file has a section "let map..." which is where we want to retrieve our sesar selections and clean the data
             let jsArr = []
+            let prefix = ""
             let dateIdArr = []
             let dateIdentified = false;
             // start pushing is where we find "let map..." and start reading
@@ -188,16 +189,28 @@ class FileIn extends React.Component {
 
 
 
-
+                let arr
 
                 if (startPushing === true) {
                     this.startPushingHelper(result, i, jsArr)
                 }
                 else if (dateIdentified === true) {
+                    if (Object.values(result.data[i])[0].includes("y")) {
+                        arr = Object.values(result.data[i])[0].split(" ")
+                        prefix = arr[7]
+                    }
                     // create array of the JS mapping file already selected date numbers
-                    dateIdArr.push(Object.values(result.data[i])[0].match(/[0-9]+/g)[0])
-                    dateIdArr.push(Object.values(result.data[i])[1][0].match(/[0-9]+/g)[0])
+                    if (Object.values(result.data[i])[0].includes("y")) {
+                        arr = Object.values(result.data[i])[0].split(" ")
+                        dateIdArr.push(arr[arr.length - 1].match(/[0-9]+/g)[0])
+                        dateIdArr.push(Object.values(result.data[i])[1][0].match(/[0-9]+/g)[0])
+                    }
+                    else {
+                        dateIdArr.push(Object.values(result.data[i])[0].match(/[0-9]+/g)[0])
+                        dateIdArr.push(Object.values(result.data[i])[1][0].match(/[0-9]+/g)[0])
+                    }
                 }
+
 
                 if (dateIdArr.length === 6) {
                     // create a string of the date number array above
@@ -232,26 +245,36 @@ class FileIn extends React.Component {
                             break;
                         case "026232":
                             //prefix = this.props.centuryChosen.substr(0, 2)
-                            finalStr = "YY/MM/DD"
+                            finalStr = "YY/MM/DD or YY-MM-DD"
                             needsCenturyPrefix = true
                             break;
                         case "623202":
-                            finalStr = "MM/DD/YY"
+                            finalStr = "MM/DD/YY or MM-DD-YY"
                             needsCenturyPrefix = true
                             //prefix = this.props.centuryChosen.substr(0, 2)
                             break;
                         case "023262":
                             //prefix = this.props.centuryChosen.substr(0, 2)
-                            finalStr = "MM/DD/YY"
+                            finalStr = "MM/DD/YY or MM-DD-YY"
                             needsCenturyPrefix = true
                             break;
                         case "620232":
-                            finalStr = "DD/MM/YY"
+                            finalStr = "DD/MM/YY or DD-MM-YY"
                             needsCenturyPrefix = true
                             //prefix = this.props.centuryChosen.substr(0, 2)
                             break;
                         default:
                     }
+                }
+
+                if (needsCenturyPrefix === true) {
+
+                    const newValue = prefix + "00"
+                    const obj = {
+                        chosenCentury: newValue
+                    }
+
+                    this.props.century(obj)
 
 
                 }
@@ -392,4 +415,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { formatDate })(FileIn);
+export default connect(mapStateToProps, { formatDate, century })(FileIn);

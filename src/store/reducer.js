@@ -161,6 +161,7 @@ const reducer =
       case "CENTURY":
         return {
           ...state,
+          hasTwoYs: true,
           centuryChosen: true,
           century: action.payload.chosenCentury
         }
