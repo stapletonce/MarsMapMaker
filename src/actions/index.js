@@ -142,3 +142,10 @@ export const toggleInUse = obj => {
     }
 }
 
+export const totalMultiValueCount = obj => {
+    return {
+        type: "TOTAL_MULTI_COUNT",
+        payload: obj
+    }
+}
+

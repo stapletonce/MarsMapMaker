@@ -306,6 +306,11 @@ class DropDown extends React.Component {
     }
 
 
+
+
+
+
+
     // update onClick function that parses through your selection and how to handle it
     // Handled differently based on if it is a one2one, multivalue, or a date selection
     updateValueHelper = (newValue) => {
@@ -362,7 +367,6 @@ class DropDown extends React.Component {
 
         this.props.dropdownUpdate(obj)
         //this.updateMulti()
-
 
         if (this.props.value !== undefined) {
             this.props.callback(this.props.value, newValue)

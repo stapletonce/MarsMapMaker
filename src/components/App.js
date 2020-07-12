@@ -115,7 +115,13 @@ class App extends React.Component {
         });
 
         // When all for field data is loaded in properly and duplicates have been removed, set Init to True in store
-        if (this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length === totalSize - this.findDuplicates(newNames, newValues).length) {
+        console.log(this.state.fieldNames.length)
+        console.log(this.findDuplicates(newNames, newValues).length)
+        console.log(totalSize)
+        console.log(this.findDuplicates(newNames, newValues).length)
+        console.log((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length))
+
+        if ((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length)) {
             this.props.changeInit(obj)
         }
     }
