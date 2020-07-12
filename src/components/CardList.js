@@ -136,6 +136,7 @@ const CardList = (props) => {
         // Else give it the object.values..
         if (toggleIndex === 0) {
             return (<FieldCard
+                multiCount={props.multiCount}
                 jsFileValues={props.jsFileValues}
                 toggleInUse={props.usingToggle}
                 key={newKey}
@@ -151,6 +152,7 @@ const CardList = (props) => {
         else {
             return (
                 <FieldCard
+                    multiCount={props.multiCount}
                     jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
                     key={newKey}
@@ -178,6 +180,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
+        console.log(props.multiCount)
         console.log(props.ent)
     }
 
@@ -394,7 +397,8 @@ const mapStateToProps = (state) => {
         toggleIndex: state.toggleIndex,
         usingToggle: state.toggleInUse,
         hasDateFormat: state.hasChosenDateFormat,
-        storeJsFile: state.jsFile
+        storeJsFile: state.jsFile,
+        multiCount: state.totalMultiCount
     };
 };
 

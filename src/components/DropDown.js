@@ -131,7 +131,6 @@ class DropDown extends React.Component {
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
-        console.log("HELLO")
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -165,9 +164,6 @@ class DropDown extends React.Component {
 
             let dateSplit = value.split(/[-/]/)
             let formatSplit = format.split(/[-/ ]/)
-            console.log("Date Split is here: " + dateSplit)
-            console.log("Format Split is here: " + formatSplit)
-            console.log(" Format: " + format)
             if (!this.props.hasChosenCentury && (format[2] !== 'Y' && format[3] !== 'Y')) {
 
                 alert("You have not selected a century!")
@@ -310,6 +306,11 @@ class DropDown extends React.Component {
     }
 
 
+
+
+
+
+
     // update onClick function that parses through your selection and how to handle it
     // Handled differently based on if it is a one2one, multivalue, or a date selection
     updateValueHelper = (newValue) => {
@@ -347,7 +348,7 @@ class DropDown extends React.Component {
             }
 
             let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
-            console.log(update)
+
             if (update !== undefined) {
                 this.props.callback(update)
             }
@@ -367,9 +368,7 @@ class DropDown extends React.Component {
         this.props.dropdownUpdate(obj)
         //this.updateMulti()
 
-
         if (this.props.value !== undefined) {
-            console.log("HEYYY")
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')

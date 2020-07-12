@@ -21,8 +21,17 @@ class CenturyDropDown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            cent: ["", "1800", "1900", "2000"]
+            cent: ["", "1900", "2000"]
         };
+    }
+
+    searchingEntForDate = () => {
+        let valid = false
+        this.props.ent.forEach(entry => {
+            if (entry.sesarTitle === "collection_start_date" || entry.sesarTitle === "collection_end_date")
+                valid = true
+        })
+        return valid
     }
 
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
@@ -60,6 +69,13 @@ class CenturyDropDown extends React.Component {
                 </select>
             )
         }
+        else if (this.props.hasChosenCentury && this.searchingEntForDate()) {
+            return (
+                <select defaultValue={'Select Dating Century'} disabled className="ui search dropdown" onChange={this.updateValue}>
+                    {this.state.cent.map((field) => filter(field))}
+                </select>
+            )
+        }
         else {
             return (
                 <select className="ui search dropdown" onChange={this.updateValue}>
@@ -73,6 +89,7 @@ class CenturyDropDown extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
+        ent: state.entries,
         hasChosenDropdown: state.hasChosenDropdownOption,
         hasChosenCentury: state.centuryChosen,
         hasTwoYs: state.hasTwoYs

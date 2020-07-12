@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
-import { removeContent } from '../actions';
+import { removeContent, totalMultiValueCount } from '../actions';
 import { Dropdown } from 'semantic-ui-react';
 const { options } = require('./sesarOptions')
 
@@ -26,7 +26,9 @@ class FieldCard extends React.Component {
         type: this.props.fieldType,
         key: this.props.key,
         isGreen: this.props.hasContent,
-        sesarOptions: options
+        sesarOptions: options,
+        formattedString: "",
+        index: -1
     }
 
     // switch between CSS classes to switch between green and white
@@ -37,6 +39,7 @@ class FieldCard extends React.Component {
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
+        console.log(this.props.multiCount)
         //console.log(fieldVal)
         let value = fieldVal;
 
@@ -71,11 +74,15 @@ class FieldCard extends React.Component {
     fileCallback = (data, title) => {
         let currentComponent = this
 
-        console.log("GOT HERE")
+
+
 
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
-            if (data !== "")
-                currentComponent.setState({ updatedValue: this.props.fieldTitle + ":" + data, dropDownChosen: true })
+            if (data !== "") {
+
+                currentComponent.setState({ updatedValue: this.props.fieldTitle + ":" + data, dropDownChosen: true, formattedString: this.multiStringOutputFunction(this.props.id, title) })
+
+            }
             else
                 currentComponent.setState({ updatedValue: this.props.fieldTitle + ":Not Provided", dropDownChosen: true })
         }
@@ -176,6 +183,85 @@ class FieldCard extends React.Component {
         }, 10);
     };
 
+    entMultiSizeCount = (id, title) => {
+        let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
+        let index;
+        let count = 1
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].sesarTitle === title) {
+                count += 1
+            }
+        }
+        for (let j = 0; j < objects.length; j++) {
+            if (objects[j] === title)
+                index = j
+        }
+        const obj = {
+            num: count,
+            ftitle: title,
+            findex: index
+        }
+        console.log(obj)
+        this.props.totalMultiValueCount(obj);
+        return String(count)
+    }
+
+    findMultiValueSpot = (id, title) => {
+        let searchOption = ""
+        let count = 1
+        searchOption = title
+
+        console.log(searchOption)
+        for (let i = 0; i < id; i++) {
+            if (this.props.ent[i].sesarTitle === searchOption)
+                count += 1
+        }
+        console.log("COunt: " + count)
+        return String(count)
+    }
+
+    multiStringOutputFunction = (id, title) => {
+        this.entMultiSizeCount(id, title);
+        let valid = false;
+        let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
+        let index;
+        for (let j = 0; j < objects.length; j++) {
+            console.log("HERE: " + objects[j] + " : " + title)
+            if (objects[j] === title) {
+                index = j
+                valid = true
+            }
+
+        }
+        if (valid === false) {
+            this.setState({ index: -1 })
+            this.forceUpdate()
+        }
+        else
+            this.setState({ index: index })
+
+        console.log(index)
+        let formattedString = ""
+        formattedString += this.findMultiValueSpot(id, title) + " of "
+        this.setState({ formattedString: formattedString })
+        console.log(formattedString)
+        return formattedString
+
+
+    }
+
+    findObject = (title) => {
+        console.log(title)
+        let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
+        let index;
+        for (let j = 0; j < objects.length; j++) {
+            if (objects[j] === title)
+                index = j
+        }
+        return index
+    }
+
+
 
     render() {
 
@@ -204,7 +290,8 @@ class FieldCard extends React.Component {
                             </object>
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
-                                {this.filterDrop()}
+                                {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+
                             </object>
                         </div>
                     </div>
@@ -226,7 +313,13 @@ class FieldCard extends React.Component {
                             </object>
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                                {this.filterDrop()}
+                                {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+                                {/* {this.props.hasInit ?
+                                    <div>
+                                        {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
+                                    </div> :
+                                    <div></div>
+                                } */}
                             </object>
                         </div>
                     </div>
@@ -248,7 +341,8 @@ class FieldCard extends React.Component {
                         </object>
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                            {this.filterDrop()}
+                            {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+
                         </object>
                     </div>
                 </div>
@@ -265,8 +359,9 @@ const mapStateToProps = (state) => {
         hasChosen: state.hasChosenDateFormat,
         pairArr: state.sizeOuterArray,
         hasInit: state.hasInit,
-        toggleIndex: state.toggleIndex
+        toggleIndex: state.toggleIndex,
+        totalMulti: state.totalMultiCount
     };
 };
 
-export default connect(mapStateToProps, { removeContent })(FieldCard);
+export default connect(mapStateToProps, { removeContent, totalMultiValueCount })(FieldCard);
