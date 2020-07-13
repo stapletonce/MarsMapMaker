@@ -88,14 +88,14 @@ class FieldCard extends React.Component {
         }
 
         else if (this.props.fieldValue === "") {
-            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true })
+            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true, index: -1 })
         }
 
         else if (title === "first") {
-            currentComponent.setState({ updatedValue: data, dropDownChosen: true })
+            currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
         }
         else {
-            currentComponent.setState({ updatedValue: data, dropDownChosen: true })
+            currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
         }
     }
 
