@@ -88,14 +88,14 @@ class FieldCard extends React.Component {
         }
 
         else if (this.props.fieldValue === "") {
-            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true })
+            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true, index: -1 })
         }
 
         else if (title === "first") {
-            currentComponent.setState({ updatedValue: data, dropDownChosen: true })
+            currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
         }
         else {
-            currentComponent.setState({ updatedValue: data, dropDownChosen: true })
+            currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
         }
     }
 
@@ -290,9 +290,22 @@ class FieldCard extends React.Component {
                             </object>
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
+
                                 {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                        <i class="edit outline icon"></i>
+                                    </button>
+                                </div> : <div style={{ paddingLeft: "10px", float: "right", display: "inline", visibility: "hidden" }}>
+                                        <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                            <i class="edit outline icon"></i>
+                                        </button>
+                                    </div>}
+
 
                             </object>
+
+
                         </div>
                     </div>
                 )
@@ -313,14 +326,26 @@ class FieldCard extends React.Component {
                             </object>
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                                {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+                                {this.filterDrop()}
+                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                        <i class="edit outline icon"></i>
+                                    </button>
+                                </div> : <div style={{ paddingLeft: "10px", float: "right", display: "inline", visibility: "hidden" }}>
+                                        <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                            <i class="edit outline icon"></i>
+                                        </button>
+                                    </div>}
+                                <div>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
                                 {/* {this.props.hasInit ?
                                     <div>
                                         {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
                                     </div> :
                                     <div></div>
                                 } */}
+
                             </object>
+
                         </div>
                     </div>
                 )
@@ -363,5 +388,5 @@ const mapStateToProps = (state) => {
         totalMulti: state.totalMultiCount
     };
 };
-
+// hello robert
 export default connect(mapStateToProps, { removeContent, totalMultiValueCount })(FieldCard);
