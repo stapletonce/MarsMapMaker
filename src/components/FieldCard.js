@@ -313,7 +313,8 @@ class FieldCard extends React.Component {
                             </object>
                             <object className="descriptionMapped" align="right">
                                 <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                                {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+                                {this.filterDrop()}
+                                <div>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
                                 {/* {this.props.hasInit ?
                                     <div>
                                         {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
