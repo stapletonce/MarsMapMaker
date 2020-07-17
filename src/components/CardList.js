@@ -372,8 +372,9 @@ const CardList = (props) => {
                                 Use
                             </div>
                             <div dir="rtl" className="description__title">:Header</div>
-                            <div className="description__value"> Content</div>
+                            <div className="description__value" style={{ width: "23.8%" }}> Content</div>
                         </object>
+                        <button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button">Add New Card</button>
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">Mapped Content</div>
                             <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
