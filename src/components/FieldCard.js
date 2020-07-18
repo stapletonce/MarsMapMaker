@@ -250,15 +250,14 @@ class FieldCard extends React.Component {
 
     }
 
-    findObject = (title) => {
-        console.log(title)
+    isMultiValue = (title) => {
         let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
-        let index;
+        let valid = false
         for (let j = 0; j < objects.length; j++) {
             if (objects[j] === title)
-                index = j
+                valid = true
         }
-        return index
+        return valid
     }
 
     areEditing = () => {
@@ -317,7 +316,7 @@ class FieldCard extends React.Component {
                                         <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                     </div>}
                                 {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
-                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
                                     <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                         <i class="edit outline icon"></i>
                                     </button>
@@ -352,7 +351,7 @@ class FieldCard extends React.Component {
                                     </div>}
 
                                 {this.filterDrop()}
-                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
                                     <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                         <i class="edit outline icon"></i>
                                     </button>
