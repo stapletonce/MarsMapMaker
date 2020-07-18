@@ -40,7 +40,6 @@ class FieldCard extends React.Component {
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
-        console.log(this.props.multiCount)
         //console.log(fieldVal)
         let value = fieldVal;
 
@@ -269,6 +268,7 @@ class FieldCard extends React.Component {
 
     forceEdit = (event) => {
         if (event.key === 'Enter') {
+            console.log(this.props.toggleArr)
             this.setState({ areEditing: !this.state.areEditing, updatedValue: event.target.value })
             console.log(event.target.value)
             const obj = {
@@ -278,6 +278,8 @@ class FieldCard extends React.Component {
 
             }
             this.props.forceEdit(obj)
+
+
         }
 
     }
@@ -314,8 +316,6 @@ class FieldCard extends React.Component {
                                     <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
                                         <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                     </div>}
-
-
                                 {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
                                 {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
                                     <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
@@ -326,11 +326,7 @@ class FieldCard extends React.Component {
                                             <i class="edit outline icon"></i>
                                         </button>
                                     </div>}
-
-
                             </object>
-
-
                         </div>
                     </div>
                 )
@@ -350,7 +346,7 @@ class FieldCard extends React.Component {
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
                             <object className="descriptionMapped" align="right">
-                                {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
+                                {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
                                     <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
                                         <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                     </div>}
@@ -414,7 +410,8 @@ const mapStateToProps = (state) => {
         pairArr: state.sizeOuterArray,
         hasInit: state.hasInit,
         toggleIndex: state.toggleIndex,
-        totalMulti: state.totalMultiCount
+        totalMulti: state.totalMultiCount,
+        toggleArray: state.toggleArr
     };
 };
 // hello robert

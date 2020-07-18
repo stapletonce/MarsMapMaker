@@ -147,7 +147,6 @@ const CardList = (props) => {
                 fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""}
             />)
-
         }
         else {
             return (
@@ -166,7 +165,6 @@ const CardList = (props) => {
             );
         }
     });
-
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
