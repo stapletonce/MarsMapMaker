@@ -149,3 +149,10 @@ export const totalMultiValueCount = obj => {
     }
 }
 
+export const forceEdit = obj => {
+    return {
+        type: "FORCE_EDIT",
+        payload: obj
+    }
+}
+

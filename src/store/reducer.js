@@ -129,6 +129,17 @@ const reducer =
           hasInit: true
         }
 
+      case "FORCE_EDIT":
+        return update(state,
+          {
+            entries: {
+              [action.payload.index]: {
+                value: { $set: action.payload.value },
+                header: { $set: action.payload.header }
+              }
+            }
+          })
+
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
       case "DROPDOWN_UPDATE":
         let dateSelected = false
