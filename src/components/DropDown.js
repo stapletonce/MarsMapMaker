@@ -383,11 +383,11 @@ class DropDown extends React.Component {
             dropOption: this.props.dropDownChosen
         }
 
-
-        this.props.dropdownUpdate(obj)
+        if (this.props.ent[this.props.id].header !== "<METADATA>" || newValue !== this.props.ent[this.props.id].sesarTitle)
+            this.props.dropdownUpdate(obj)
         //this.updateMulti()
 
-        if (this.props.value !== undefined) {
+        if ((this.props.value !== undefined && this.props.ent[this.props.id].header !== "<METADATA>") || newValue !== this.props.ent[this.props.id].sesarTitle) {
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
