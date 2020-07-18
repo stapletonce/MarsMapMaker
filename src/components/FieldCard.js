@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
-import { removeContent, totalMultiValueCount } from '../actions';
+import { removeContent, totalMultiValueCount, forceEdit } from '../actions';
 import { Dropdown } from 'semantic-ui-react';
 const { options } = require('./sesarOptions')
 
@@ -22,6 +22,7 @@ class FieldCard extends React.Component {
         resetDropDown: false,
         isDate: false,
         isMeasurement: false,
+        areEditing: true,
         updatedValue: this.props.fieldValue,
         type: this.props.fieldType,
         key: this.props.key,
@@ -261,6 +262,26 @@ class FieldCard extends React.Component {
         return index
     }
 
+    areEditing = () => {
+        this.setState({ areEditing: !this.state.areEditing })
+        console.log(this.state.areEditing)
+    }
+
+    forceEdit = (event) => {
+        if (event.key === 'Enter') {
+            this.setState({ areEditing: !this.state.areEditing, updatedValue: event.target.value })
+            console.log(event.target.value)
+            const obj = {
+                index: this.props.id,
+                value: event.target.value,
+                header: "<METADATA>"
+
+            }
+            this.props.forceEdit(obj)
+        }
+
+    }
+
 
 
     render() {
@@ -289,11 +310,15 @@ class FieldCard extends React.Component {
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
                             <object className="descriptionMapped" align="right">
-                                <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div>
+                                {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
+                                    <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
+                                    </div>}
+
 
                                 {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
                                 {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
-                                    <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                    <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                         <i class="edit outline icon"></i>
                                     </button>
                                 </div> : <div style={{ paddingLeft: "10px", float: "right", display: "inline", visibility: "hidden" }}>
@@ -325,10 +350,14 @@ class FieldCard extends React.Component {
                                 <i className="fa fa-angle-double-right"></i>
                             </object>
                             <object className="descriptionMapped" align="right">
-                                <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                                {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
+                                    <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
+                                    </div>}
+
                                 {this.filterDrop()}
                                 {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "") ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
-                                    <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                    <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                         <i class="edit outline icon"></i>
                                     </button>
                                 </div> : <div style={{ paddingLeft: "10px", float: "right", display: "inline", visibility: "hidden" }}>
@@ -389,4 +418,4 @@ const mapStateToProps = (state) => {
     };
 };
 // hello robert
-export default connect(mapStateToProps, { removeContent, totalMultiValueCount })(FieldCard);
+export default connect(mapStateToProps, { forceEdit, removeContent, totalMultiValueCount })(FieldCard);

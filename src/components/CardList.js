@@ -182,6 +182,7 @@ const CardList = (props) => {
     const checkStore = () => {
         console.log(props.multiCount)
         console.log(props.ent)
+        console.log(props.toggleArr)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
