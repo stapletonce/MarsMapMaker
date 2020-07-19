@@ -385,6 +385,7 @@ class DropDown extends React.Component {
 
         if (this.props.ent[this.props.id].header !== "<METADATA>" || newValue !== this.props.ent[this.props.id].sesarTitle)
             this.props.dropdownUpdate(obj)
+
         //this.updateMulti()
 
         if ((this.props.value !== undefined && this.props.ent[this.props.id].header !== "<METADATA>") || newValue !== this.props.ent[this.props.id].sesarTitle) {

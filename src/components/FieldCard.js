@@ -34,12 +34,15 @@ class FieldCard extends React.Component {
 
     // switch between CSS classes to switch between green and white
     btnClass = classNames({
+        'field_container3': this.props.addedNewField,
         'field_container1': this.state.isGreen,
-        'field_container2': !this.state.isGreen
+        'field_container2': !this.state.isGreen,
     });
+
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
+
         //console.log(fieldVal)
         let value = fieldVal;
 
@@ -63,11 +66,15 @@ class FieldCard extends React.Component {
     // sizeCallback={this.getSizeCallback}
     filterDrop = () => {
         if (this.state.isGreen === true)
-            return <div className="dropDown"><DropDown refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
+            return <div className="dropDown"><DropDown addedNew={this.props.addedNewField} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
             return <div className="dropDownNoData">---</div>
 
     }
+
+
+
+
 
     // onClick of the checkmark, change the color of the bar between green and white
 
@@ -249,6 +256,7 @@ class FieldCard extends React.Component {
 
 
     }
+
 
     isMultiValue = (title) => {
         let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
