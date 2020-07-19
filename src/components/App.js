@@ -91,7 +91,7 @@ class App extends React.Component {
         console.log(tValues)
 
         for (let j = 0; j < numOfEmptyCards; j++) {
-            newCardObj['~~~' + j] = "~~~";
+            newCardObj[j + '<METADATA>'] = "<METADATA>";
         }
 
         console.log(newCardObj)
@@ -105,7 +105,7 @@ class App extends React.Component {
         }
         console.log(tValues)
 
-        this.setState({ emptyCards: Array(numOfEmptyCards).fill("~~~") })
+        this.setState({ emptyCards: Array(numOfEmptyCards).fill("<METADATA>") })
         console.log("Num of Cards: " + this.state.emptyCards)
         let currentComponent = this;
         let newNames;
