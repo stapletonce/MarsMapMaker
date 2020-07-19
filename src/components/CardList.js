@@ -190,8 +190,6 @@ const CardList = (props) => {
                     hasContent={props.fieldVal[newKey] !== ""}
                 />
             );
-
-
         }
     });
 
