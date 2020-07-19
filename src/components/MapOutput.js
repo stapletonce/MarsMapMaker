@@ -14,7 +14,21 @@ import mars from '../icons/planet.png';
 //need to handle single value measurements and size unit mapping Size unit should always be 'cm'
 //
 class MapOutput extends React.Component {
+    state = {functionIDs: []}
+    forceEditFunction = () => {
+        let id = 0;
+        let functID = ""
 
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].header === "<METADATA>") {
+                functID = functID + "  const forceEditID" + id + "\n    return " +"\"" + this.props.ent[i].value + "\"" + ";\n\n"
+                let appendValue = "forceEditID" + id
+                this.setState(state =>  ({ functionIDs: [ ...state.functionIDs, appendValue] }) )
+                id++
+            }
+        }
+        return functID
+    }
 
     //this takes in the chosen date format and creates the text that corresponds to how the user wants the entry to be manipulated
     createDateFormatString = (chosenFormat) => {
@@ -332,16 +346,22 @@ class MapOutput extends React.Component {
         return letMapString
     }
 
+    logicFunctionAppend() {
+        let id = 0;
+        let logicID = ""
+        alert("current state " + this.state.functionIDs)
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].header === "<METADATA>") {
+                logicID = logicID + "  "+ this.props.ent[i].sesarTitle + ":" + this.state.functionIDs[id]+",\n"
+                id++
+                }
+            }
+
+    return logicID
+}
+
     createLogicAndCombination() {
-        const logic = `let logic = {
-  collection_start_date: scrippsDate,  
-  collection_end_date: scrippsDate,
-  geological_age: keyValueString,
-  field_name: keyValueString, 
-  description: keyValueString,
-  sample_comment: keyValueString,
-  size: keyValueString
-  \}\n\n`
+        const logic = "let logic = { " + "\n" + this.logicFunctionAppend() + "  collection_start_date: scrippsDate,\n  collection_end_date: scrippsDate,\n  geological_age: keyValueString,\n  field_name: keyValueString,\n description: keyValueString,\n  sample_comment: keyValueString,\n  size: keyValueString\n  \}\n\n"
 
         const combination = `let combinations = {
   field_name: delimit,
@@ -361,7 +381,7 @@ class MapOutput extends React.Component {
 
         //this.createSizeConversionString("mm") +
         //this.createSummate() +
-        return fileString + this.createMulitValueJoins() + this.createDateFormatString(this.props.dateFormat) + this.createMapString() + this.createLogicAndCombination()
+        return fileString + this.forceEditFunction() + this.createMulitValueJoins() + this.createDateFormatString(this.props.dateFormat) + this.createMapString() + this.createLogicAndCombination()
     }
 
 
