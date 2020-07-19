@@ -37,6 +37,10 @@ const CardList = (props) => {
     // an array of date option objects to choose from in the date dropdown
     const { dateFormatOption } = require('./sesarOptions')
 
+    const [fieldsState, addAFieldCardHead] = useState(props.fields)
+    const [fieldValState, addAFieldCardVal] = useState(props.fieldVal)
+
+
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
     // used to toggle between the tuples of the csv loaded in
@@ -109,7 +113,7 @@ const CardList = (props) => {
     }
 
     // maps content to separate fieldcards on the screen
-    const fields = props.fields.map((field) => {
+    const fields = fieldsState.map((field) => {
         newKey += 1
 
         let sesarFind = findSesarPassIn(field)
@@ -118,13 +122,13 @@ const CardList = (props) => {
         let storedValue = {
             id: newKey,
             sesarTitle: sesarFind,
-            oldValue: props.fieldVal[newKey],
-            value: props.fieldVal[newKey],
+            oldValue: fieldValState[newKey],
+            value: fieldValState[newKey],
             // this used to be id 
             header: field,
             isDate: false,
             isMeasurement: false,
-            isGreen: props.fieldVal[newKey] !== ""
+            isGreen: fieldValState[newKey] !== ""
         }
 
         // after object is created, append it to the object array & add one to the ID
@@ -137,30 +141,33 @@ const CardList = (props) => {
         if (toggleIndex === 0) {
             return (<FieldCard
                 multiCount={props.multiCount}
+
+                addedNewField={(fieldsState[0] === "~~~" && newKey === 0) ? true : false}
                 jsFileValues={props.jsFileValues}
                 toggleInUse={props.usingToggle}
                 key={newKey}
                 hiding={hide}
                 fieldTitle={field}
                 id={newKey}
-                fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""}
+                fieldType={typeField(fieldValState[newKey])}
+                fieldValue={fieldValState[newKey]}
+                hasContent={fieldValState[newKey] !== ""}
             />)
         }
         else {
             return (
                 <FieldCard
                     multiCount={props.multiCount}
+                    addedNewField={(fieldsState[0] === "~~~") ? true : false}
                     jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
                     key={newKey}
                     hiding={hide}
                     fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
                     id={newKey}
-                    fieldType={typeField(props.fieldVal[newKey])}
-                    fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
-                    hasContent={props.fieldVal[newKey] !== ""}
+                    fieldType={typeField(fieldValState[newKey])}
+                    fieldValue={Object.values(fieldValState[toggleIndex])[newKey]}
+                    hasContent={fieldValState[newKey] !== ""}
                 />
             );
         }
@@ -307,6 +314,13 @@ const CardList = (props) => {
         return found
     }
 
+    const addFieldCard = () => {
+        console.log("HELLO")
+        addAFieldCardHead(["~~~", ...fieldsState])
+        addAFieldCardVal(["~~~", ...fieldValState])
+
+    }
+
 
     return (
 
@@ -373,7 +387,7 @@ const CardList = (props) => {
                             <div dir="rtl" className="description__title">:Header</div>
                             <div className="description__value" style={{ width: "23.8%" }}> Content</div>
                         </object>
-                        <button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button">Add New Card</button>
+                        <button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button" onClick={() => { addFieldCard() }}>Add New Card</button>
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">Mapped Content</div>
                             <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
