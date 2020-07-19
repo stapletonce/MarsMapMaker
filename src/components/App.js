@@ -25,6 +25,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            emptyCards: [],
             toggleValuesArr: null,
             mapPreview: null,
             isOpened: props.hasBeenOpened,
@@ -56,6 +57,8 @@ class App extends React.Component {
         return final
     }
 
+
+
     // removes duplicates from array
     removeDuplicates = (nameArr, valueArr) => {
         let names = nameArr;
@@ -81,8 +84,10 @@ class App extends React.Component {
 
     // callback function that retrieves data from file, passed through FileIn.js
     // sets state of the the fieldNames, and fieldValues arrays used throughout program
-    fileCallback = (datafromFile, totalSize, toggleValues, jsFile) => {
+    fileCallback = (datafromFile, totalSize, toggleValues, jsFile, numOfEmptyCards) => {
 
+        this.setState({ emptyCards: Array(numOfEmptyCards).fill("~~~") })
+        console.log("Num of Cards: " + this.state.emptyCards)
         let currentComponent = this;
         let newNames;
         let newValues;
@@ -137,12 +142,24 @@ class App extends React.Component {
         })
     }
 
+    createSquiggleArray = () => {
+        let arr = []
+        for (let i = 0; i < this.state.emptyCards.length; i++) {
+            arr.push("~~~")
+        }
+        console.log("LOOKING HERE: " + arr)
+    }
+
+
+
     // React says we have to define render!! You have to display JSX!
     render() {
         let readerClass = classNames({
             'mars-photo': this.state.continue === false,
             'mars-photo_hide': this.state.continue === true
         });
+
+        this.createSquiggleArray()
 
         return (
             <div>
@@ -162,9 +179,9 @@ class App extends React.Component {
                     <CardList
                         jsFileValues={this.state.jsFile}
                         callback={this.isOpenCallback}
-                        fields={this.state.fieldNames}
+                        fields={[...this.state.emptyCards, ...this.state.fieldNames]}
                         toggleVals={this.state.toggleValuesArr}
-                        fieldVal={this.state.fieldValues} />
+                        fieldVal={[...this.state.emptyCards, ...this.state.fieldValues]} />
                     : null}
             </div>
         )

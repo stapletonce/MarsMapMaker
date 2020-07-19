@@ -20,6 +20,7 @@ class FileIn extends React.Component {
     constructor() {
         super();
         this.state = {
+            numberOfEmptyCards: 0,
             toggleValues: [],
             fieldNames: [],
             fieldValues: [],
@@ -367,11 +368,18 @@ class FileIn extends React.Component {
         // we want to make sure that we have handled all CSV's and JS files before we use the callback function
         this.setState({ num: this.state.num + 1 })
         if (this.state.num === this.state.files.length - 1) {
-            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile)
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, this.state.numberOfEmptyCards)
         }
 
         // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies
         this.setState({ isJsFile: false })
+    }
+
+    numOfCards = (event) => {
+        console.log(event.key)
+        console.log("function: " + parseInt(event.key))
+        this.setState({ numberOfEmptyCards: parseInt(event.key) })
+
     }
 
     render() {
@@ -399,6 +407,9 @@ class FileIn extends React.Component {
                     onChange={this.handleChange}
                     multiple="multiple"
                 />
+                <div style={{ width: "130px" }} class="ui input">
+                    <input onKeyPress={this.numOfCards} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Empty Cards" />
+                </div>
                 <p />
                 <button onClick={this.importCSV}> Import now!</button>
 
