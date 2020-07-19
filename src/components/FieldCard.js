@@ -42,7 +42,7 @@ class FieldCard extends React.Component {
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
-
+        console.log(fieldVal)
         //console.log(fieldVal)
         let value = fieldVal;
 
@@ -69,7 +69,6 @@ class FieldCard extends React.Component {
             return <div className="dropDown"><DropDown addedNew={this.props.addedNewField} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
             return <div className="dropDownNoData">---</div>
-
     }
 
 
@@ -102,7 +101,14 @@ class FieldCard extends React.Component {
             currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
         }
         else {
-            currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
+            if (this.props.ent[this.props.id].header === "<METADATA>") {
+
+                currentComponent.setState({ updatedValue: this.props.ent[this.props.id].value, dropDownChosen: true, index: -1 })
+            }
+            else {
+                currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
+
+            }
         }
     }
 
@@ -282,13 +288,9 @@ class FieldCard extends React.Component {
                 index: this.props.id,
                 value: event.target.value,
                 header: "<METADATA>"
-
             }
             this.props.forceEdit(obj)
-
-
         }
-
     }
 
 
