@@ -18,7 +18,8 @@ import {
     multiValueCreateFinish,
     removeContent,
     setSubstringDateFormat,
-    toggleInUse
+    toggleInUse,
+    totalMultiValueCount
 } from "../actions/"
 
 //////////////////////////////////////////////////////////
@@ -131,7 +132,6 @@ class DropDown extends React.Component {
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
-        console.log("HELLO")
 
         // makes sure a format has been chosen!
         if (format === null) {
@@ -165,9 +165,6 @@ class DropDown extends React.Component {
 
             let dateSplit = value.split(/[-/]/)
             let formatSplit = format.split(/[-/ ]/)
-            console.log("Date Split is here: " + dateSplit)
-            console.log("Format Split is here: " + formatSplit)
-            console.log(" Format: " + format)
             if (!this.props.hasChosenCentury && (format[2] !== 'Y' && format[3] !== 'Y')) {
 
                 alert("You have not selected a century!")
@@ -310,6 +307,11 @@ class DropDown extends React.Component {
     }
 
 
+
+
+
+
+
     // update onClick function that parses through your selection and how to handle it
     // Handled differently based on if it is a one2one, multivalue, or a date selection
     updateValueHelper = (newValue) => {
@@ -346,12 +348,30 @@ class DropDown extends React.Component {
                 return
             }
 
+            // if entries[id] contains one of these but newValue !== that, subtract that index
+
+
+
             let update = this.formatDate(this.props.value, this.props.dateFormat, newValue)
-            console.log(update)
+
             if (update !== undefined) {
                 this.props.callback(update)
             }
             return
+        }
+
+        let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
+
+        for (let i = 0; i < objects.length; i++) {
+            if (objects[i] === this.props.ent[this.props.id].sesarTitle && newValue !== objects[i]) {
+                const obj = {
+                    num: this.props.totalMulti[i].count - 1,
+                    ftitle: objects[i],
+                    findex: i
+                }
+                console.log(obj)
+                this.props.totalMultiValueCount(obj);
+            }
         }
 
         const obj = {
@@ -363,13 +383,11 @@ class DropDown extends React.Component {
             dropOption: this.props.dropDownChosen
         }
 
-
-        this.props.dropdownUpdate(obj)
+        if (this.props.ent[this.props.id].header !== "<METADATA>" || newValue !== this.props.ent[this.props.id].sesarTitle)
+            this.props.dropdownUpdate(obj)
         //this.updateMulti()
 
-
-        if (this.props.value !== undefined) {
-            console.log("HEYYY")
+        if ((this.props.value !== undefined && this.props.ent[this.props.id].header !== "<METADATA>") || newValue !== this.props.ent[this.props.id].sesarTitle) {
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
@@ -489,7 +507,7 @@ class DropDown extends React.Component {
         // creates the dropdown, uses filter() to specify which items are included in dropdown
 
         return (
-            <select defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+            <select style={{ display: "inline-block", width: "170px" }} defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );
@@ -513,7 +531,8 @@ const mapStateToProps = (state) => {
         sizeArray: state.sizeArray,
         hasInit: state.hasInit,
         pairArr: state.sizeOuterArray,
-        usingToggle: state.toggleInUse
+        usingToggle: state.toggleInUse,
+        totalMulti: state.totalMultiCount
     };
 };
-export default connect(mapStateToProps, { removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);
+export default connect(mapStateToProps, { totalMultiValueCount, removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);

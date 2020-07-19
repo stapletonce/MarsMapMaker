@@ -56,8 +56,7 @@ class DateDropdown extends React.Component {
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
         // IFF You have selected a date formate and SUCCESSFULLY selected sesar option, disable date dropdown
-        console.log(this.props.hasChosenDateFormat)
-        console.log(this.props.hasChosenDropdown)
+
         // case for loaded in js mapping file where the date is already previously selected  
         if (this.props.hasChosenDateFormat && this.props.dateFormatSelected) {
             return (

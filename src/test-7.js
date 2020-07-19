@@ -8,21 +8,17 @@ const delimit = (valueArray) => {
 }
 
 const scrippsDate = (scrippsValue) => {
-  const y  =  "" + scrippsValue.substr()
-  const d = scrippsValue.substr()
-  const m = scrippsValue.substr()
+  const y  =  "19" + scrippsValue.substr(0,2)
+  const d = scrippsValue.substr(6,2)
+  const m = scrippsValue.substr(3,2)
   return y + '-' + m + '-' + d + 'T00:00:00Z'
 }
 
 let map = {
-  name: FACILITY_CODE,
-  latitude_end: SHIP_CODE,
-  collection_method: PLATFORM,
-  primary_location_type: CRUISE,
-  longitude_end: LON,
-  latitude: fl_site_limit,
-  sample_comment: ["DEVICE", "PI"]
-  size: ["hu_site_limit", "tiv_2012"]
+  original_archive: FACILITY_CODE,
+  igsn: SHIP_CODE,
+  collection_start_date: BEGIN_DATE,
+  description: ["PLATFORM"]
 }
 
 let logic = {

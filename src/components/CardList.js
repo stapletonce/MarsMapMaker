@@ -136,6 +136,7 @@ const CardList = (props) => {
         // Else give it the object.values..
         if (toggleIndex === 0) {
             return (<FieldCard
+                multiCount={props.multiCount}
                 jsFileValues={props.jsFileValues}
                 toggleInUse={props.usingToggle}
                 key={newKey}
@@ -146,11 +147,11 @@ const CardList = (props) => {
                 fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""}
             />)
-
         }
         else {
             return (
                 <FieldCard
+                    multiCount={props.multiCount}
                     jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
                     key={newKey}
@@ -165,7 +166,6 @@ const CardList = (props) => {
         }
     });
 
-
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
         const initObj = {
@@ -178,7 +178,9 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
+        console.log(props.multiCount)
         console.log(props.ent)
+        console.log(props.toggleArr)
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
@@ -369,8 +371,9 @@ const CardList = (props) => {
                                 Use
                             </div>
                             <div dir="rtl" className="description__title">:Header</div>
-                            <div className="description__value"> Content</div>
+                            <div className="description__value" style={{ width: "23.8%" }}> Content</div>
                         </object>
+                        <button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button">Add New Card</button>
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">Mapped Content</div>
                             <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
@@ -394,7 +397,8 @@ const mapStateToProps = (state) => {
         toggleIndex: state.toggleIndex,
         usingToggle: state.toggleInUse,
         hasDateFormat: state.hasChosenDateFormat,
-        storeJsFile: state.jsFile
+        storeJsFile: state.jsFile,
+        multiCount: state.totalMultiCount
     };
 };
 

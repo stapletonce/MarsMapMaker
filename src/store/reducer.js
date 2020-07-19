@@ -18,6 +18,28 @@ import { entries } from 'd3';
 const reducer =
   (state =
     {
+      totalMultiCount: [
+        {
+          title: "field_name",
+          count: 0
+        },
+        {
+          title: "description",
+          count: 0
+        },
+        {
+          title: "sample_comment",
+          count: 0
+        },
+        {
+          title: "geological_age",
+          count: 0
+        },
+        {
+          title: "size",
+          count: 0
+        }
+      ],
       toggleIndex: -1,
       toggleInUse: false,
       toggleArr: [],
@@ -75,6 +97,21 @@ const reducer =
     action) => {
 
     switch (action.type) {
+
+      case "TOTAL_MULTI_COUNT":
+        return update(state,
+          {
+            totalMultiCount: {
+              [action.payload.findex]: {
+                title: { $set: action.payload.ftitle },
+                count: { $set: action.payload.num }
+              }
+            }
+          })
+
+
+
+
       // MAPPED_VALUE should happen one time, it initializes the redux store array
       case "MAPPED_VALUE":
         return {
@@ -91,6 +128,17 @@ const reducer =
           ...state,
           hasInit: true
         }
+
+      case "FORCE_EDIT":
+        return update(state,
+          {
+            entries: {
+              [action.payload.index]: {
+                value: { $set: action.payload.value },
+                header: { $set: action.payload.header }
+              }
+            }
+          })
 
       // DROPDOWN_UPDATE updates a specific object in the store "entries[id[" when option is clicked
       case "DROPDOWN_UPDATE":
@@ -161,6 +209,7 @@ const reducer =
       case "CENTURY":
         return {
           ...state,
+          hasTwoYs: true,
           centuryChosen: true,
           century: action.payload.chosenCentury
         }
