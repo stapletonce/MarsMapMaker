@@ -25,6 +25,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            emptyCards: [],
             toggleValuesArr: null,
             mapPreview: null,
             isOpened: props.hasBeenOpened,
@@ -56,6 +57,8 @@ class App extends React.Component {
         return final
     }
 
+
+
     // removes duplicates from array
     removeDuplicates = (nameArr, valueArr) => {
         let names = nameArr;
@@ -81,14 +84,36 @@ class App extends React.Component {
 
     // callback function that retrieves data from file, passed through FileIn.js
     // sets state of the the fieldNames, and fieldValues arrays used throughout program
-    fileCallback = (datafromFile, totalSize, toggleValues, jsFile) => {
+    fileCallback = (datafromFile, totalSize, toggleValues, jsFile, numOfEmptyCards) => {
 
+        let newCardObj = {}
+        let tValues = toggleValues
+        console.log(tValues)
+
+        for (let j = 0; j < numOfEmptyCards; j++) {
+            newCardObj[j + '<METADATA>'] = "<METADATA>";
+        }
+
+        console.log(newCardObj)
+
+
+        console.log(tValues)
+        for (let i = 0; i < tValues.length; i++) {
+            console.log(Object.values(newCardObj) + Object.values(tValues[i]))
+            tValues[i] = { ...newCardObj, ...tValues[i] }
+
+        }
+        console.log(tValues)
+
+        this.setState({ emptyCards: Array(numOfEmptyCards).fill("<METADATA>") })
+        console.log("Num of Cards: " + this.state.emptyCards)
         let currentComponent = this;
         let newNames;
         let newValues;
         let processedValues;
+        console.log("Ladeedo" + Object.keys(toggleValues[0]))
         const toggleObj = {
-            arr: toggleValues
+            arr: tValues
         }
         const obj = {
             bool: true
@@ -137,12 +162,24 @@ class App extends React.Component {
         })
     }
 
+    createSquiggleArray = () => {
+        let arr = []
+        for (let i = 0; i < this.state.emptyCards.length; i++) {
+            arr.push("~~~")
+        }
+        console.log("LOOKING HERE: " + arr)
+    }
+
+
+
     // React says we have to define render!! You have to display JSX!
     render() {
         let readerClass = classNames({
             'mars-photo': this.state.continue === false,
             'mars-photo_hide': this.state.continue === true
         });
+
+        this.createSquiggleArray()
 
         return (
             <div>
@@ -162,9 +199,9 @@ class App extends React.Component {
                     <CardList
                         jsFileValues={this.state.jsFile}
                         callback={this.isOpenCallback}
-                        fields={this.state.fieldNames}
+                        fields={[...this.state.emptyCards, ...this.state.fieldNames]}
                         toggleVals={this.state.toggleValuesArr}
-                        fieldVal={this.state.fieldValues} />
+                        fieldVal={[...this.state.emptyCards, ...this.state.fieldValues]} />
                     : null}
             </div>
         )

@@ -37,16 +37,23 @@ const CardList = (props) => {
     // an array of date option objects to choose from in the date dropdown
     const { dateFormatOption } = require('./sesarOptions')
 
+    const [fieldsState, addAFieldCardHead] = useState(props.fields)
+
+    const [fieldValState, addAFieldCardVal] = useState(props.fieldVal)
+
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false);
     // used to toggle between the tuples of the csv loaded in
     const [toggleIndex, addToToggleIndex] = useState(0)
+
+    const [addingCard, clickingAddCard] = useState(false)
 
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
     let typeField = (f) => {
 
         let type;
+
         let numbers = /^[0-9,/.-]*$/;
 
         if (f === "")
@@ -64,8 +71,8 @@ const CardList = (props) => {
     // fieldType: defines if content is number or text
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
-
     // goes to the next row of content in the csv
+
     const rightArrowToggle = () => {
         if (toggleIndex < 9) {
             addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
@@ -108,8 +115,28 @@ const CardList = (props) => {
         return sesarPassIn
     }
 
+    // const createEmptyField = () => {
+    //     return (
+    //         <FieldCard
+    //             multiCount={props.multiCount}
+    //             addedNewField={(fieldsState[0] === "~~~" && newKey === 0) ? true : false}
+    //             jsFileValues={props.jsFileValues}
+    //             toggleInUse={props.usingToggle}
+    //             key={newKey}
+    //             hiding={hide}
+    //             fieldTitle={"~~~"}
+    //             id={newKey}
+    //             fieldType={"both"}
+    //             fieldValue={"~~~"}
+    //             hasContent={true}
+    //         />
+    //     )
+    // }
+
+
+
     // maps content to separate fieldcards on the screen
-    const fields = props.fields.map((field) => {
+    const fields = fieldsState.map((field) => {
         newKey += 1
 
         let sesarFind = findSesarPassIn(field)
@@ -118,13 +145,13 @@ const CardList = (props) => {
         let storedValue = {
             id: newKey,
             sesarTitle: sesarFind,
-            oldValue: props.fieldVal[newKey],
-            value: props.fieldVal[newKey],
+            oldValue: fieldValState[newKey],
+            value: fieldValState[newKey],
             // this used to be id 
             header: field,
             isDate: false,
             isMeasurement: false,
-            isGreen: props.fieldVal[newKey] !== ""
+            isGreen: fieldValState[newKey] !== ""
         }
 
         // after object is created, append it to the object array & add one to the ID
@@ -166,14 +193,31 @@ const CardList = (props) => {
         }
     });
 
+    // const addFieldCard = () => {
+
+    //     props.addedCallback()
+    //     // clickingAddCard(false)
+    //     // console.log(addingCard)
+    //     // clickingAddCard(true)
+    //     // console.log(addingCard)
+    // }
+
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
+        console.log(objArray)
         const initObj = {
             objArr: objArray,
             useOnce: useOnce,
         }
         props.firstState(initObj)
     }, []);
+
+
+    // useEffect(() => {
+    //     for (let i = 0; i < 3; i++)
+    //         addAFieldCardHead(["~~~", ...fieldsState])
+    //     addAFieldCardVal(["~~~", ...fieldValState])
+    // }, [])
 
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
@@ -307,6 +351,8 @@ const CardList = (props) => {
         return found
     }
 
+    //<button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button" onClick={() => { addFieldCard() }}>Add New Card</button>
+
 
     return (
 
@@ -373,14 +419,13 @@ const CardList = (props) => {
                             <div dir="rtl" className="description__title">:Header</div>
                             <div className="description__value" style={{ width: "23.8%" }}> Content</div>
                         </object>
-                        <button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button">Add New Card</button>
+
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">Mapped Content</div>
                             <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
                         </object>
                     </div>
                 </div>
-
                 <div>{fields}</div>
             </div>
             <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
