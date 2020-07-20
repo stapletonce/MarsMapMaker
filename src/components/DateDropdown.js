@@ -40,6 +40,16 @@ class DateDropdown extends React.Component {
         this.props.formatDate(obj)
     }
 
+    dateFormatSelection = () => {
+        let valid = false;
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].sesarTitle === "collection_start_date" || this.props.ent[i].sesarTitle === "collection_end_date") {
+                valid = true
+            }
+        }
+        return valid
+    }
+
 
 
     render() {
@@ -58,15 +68,15 @@ class DateDropdown extends React.Component {
         // IFF You have selected a date formate and SUCCESSFULLY selected sesar option, disable date dropdown
 
         // case for loaded in js mapping file where the date is already previously selected  
-        if (this.props.hasChosenDateFormat && this.props.dateFormatSelected) {
+        if (this.props.hasInit === true && this.props.hasChosenDateFormat && this.dateFormatSelection()) {
             return (
-                <select defaultValue={this.props.dateFormatSelected} disabled selected className="ui search dropdown" onChange={this.updateValue}>
+                <select defaultValue={this.dateFormatSelection()} disabled selected className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );
         }
 
-        else if ((this.props.hasChosenDateFormat && this.props.hasChosenDropdown)) {
+        else if (this.props.hasInit === true && this.dateFormatSelection() && this.props.hasChosenDropdown) {
             return (
                 <select defaultValue={'Select Date Format'} disabled selected className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
@@ -89,7 +99,9 @@ const mapStateToProps = (state) => {
     return {
         hasChosenDropdown: state.hasChosenDropdownOption,
         hasChosenDateFormat: state.hasChosenDateFormat,
-        dateFormatSelected: state.chosenDateFormat
+        dateFormatSelected: state.chosenDateFormat,
+        hasInit: state.hasInit,
+        ent: state.entries
     };
 };
 
