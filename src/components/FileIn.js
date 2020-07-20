@@ -376,9 +376,9 @@ class FileIn extends React.Component {
     }
 
     numOfCards = (event) => {
-        console.log(event.key)
-        console.log("function: " + parseInt(event.key))
-        this.setState({ numberOfEmptyCards: parseInt(event.key) })
+        console.log("HERE HERE HERE : " + event.target.value)
+        console.log("function: " + parseInt(event.target.value))
+        this.setState({ numberOfEmptyCards: parseInt(event.target.value) })
 
     }
 
@@ -407,9 +407,22 @@ class FileIn extends React.Component {
                     onChange={this.handleChange}
                     multiple="multiple"
                 />
-                <div style={{ width: "130px" }} class="ui input">
-                    <input onKeyPress={this.numOfCards} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Empty Cards" />
+                <div style={{ padding: "0px", margin: "0px", paddingTop: "10px" }}>
+                    <select onChange={this.numOfCards} style={{ paddingTop: "10px", width: "120px" }} class="ui search dropdown">
+                        <option value="">Extra Cards</option>
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                    </select>
                 </div>
+
                 <p />
                 <button onClick={this.importCSV}> Import now!</button>
 
