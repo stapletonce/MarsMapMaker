@@ -265,7 +265,7 @@ class FieldCard extends React.Component {
 
 
     isMultiValue = (title) => {
-        let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
+        let objects = ["field_name", "description", "sample_comment", "geological_age", "size", "collection_start_date", "collection_end_date"]
         let valid = false
         for (let j = 0; j < objects.length; j++) {
             if (objects[j] === title)
