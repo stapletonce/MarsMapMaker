@@ -340,6 +340,17 @@ const CardList = (props) => {
         return finalArray
     }
 
+    const hideOrShow = () => {
+        let final = ""
+        if (hide === true) {
+            final = "Unhide"
+        }
+        else {
+            final = "Hide"
+        }
+        return final
+    }
+
     // checks the redux store to see if any of the fieldCards have selected a date
     const dateSelected = () => {
         let found = false
@@ -386,7 +397,8 @@ const CardList = (props) => {
                     <MapOutput />
 
                     <div style={{ paddingTop: "3em", width: "15%" }} className="toolbar__help" >
-                        <button className="ui toggle button" onClick={() => setHide(!hide)}> Hide Unused </button>
+
+                        <button className="ui toggle button" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
@@ -419,7 +431,9 @@ const CardList = (props) => {
                             <div dir="rtl" className="description__title">:Header</div>
                             <div className="description__value" style={{ width: "23.8%" }}> Content</div>
                         </object>
-
+                        <object style={{ display: "inline-block", paddingLeft: "4.2em" }}>
+                            <div style={{ fontSize: "18px" }}>Maps To</div>
+                        </object>
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">Mapped Content</div>
                             <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
