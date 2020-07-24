@@ -131,6 +131,10 @@ $mars--border: rgb(46,14,8);
     display: inline-block;
 }
 
+.ui.search.dropdown:disabled {
+    color: lightslategray;
+}
+
 
 .fileReaderLoaded {
     display: none;
@@ -303,6 +307,12 @@ $mars--border: rgb(46,14,8);
     border-style: solid;
     border-width: .5px;
     background-color: #fcb471;
+}
+
+.fieldContainer4 {
+    border-style: solid;
+    border-width: .5px;
+    background-color: #fcfa71d2;
 }
 
 .rightArrowIcon {
