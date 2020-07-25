@@ -42,11 +42,14 @@ class FieldCard extends React.Component {
 
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
-        console.log(fieldVal)
         //console.log(fieldVal)
         let value = fieldVal;
 
-        if (value.length > 25) {
+        if (value === "<METADATA_ADD>") {
+            value = "ADDED_CARD : " + String(this.props.id + 1)
+        }
+
+        else if (value.length > 25) {
             value = value.slice(0, 20);
             value = value + "..."
         }
@@ -101,7 +104,7 @@ class FieldCard extends React.Component {
             currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
         }
         else {
-            if (this.props.ent[this.props.id].header === "<METADATA>") {
+            if (this.props.ent[this.props.id].header === "<METADATA>" || this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
 
                 currentComponent.setState({ updatedValue: this.props.ent[this.props.id].value, dropDownChosen: true, index: -1 })
             }
@@ -280,14 +283,24 @@ class FieldCard extends React.Component {
     }
 
     forceEdit = (event) => {
+        let obj = {}
         if (event.key === 'Enter') {
             console.log(this.props.toggleArr)
             this.setState({ areEditing: !this.state.areEditing, updatedValue: event.target.value })
             console.log(event.target.value)
-            const obj = {
-                index: this.props.id,
-                value: event.target.value,
-                header: "<METADATA>"
+            if (this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
+                obj = {
+                    index: this.props.id,
+                    value: event.target.value,
+                    header: "<METADATA_ADD>"
+                }
+            }
+            else {
+                obj = {
+                    index: this.props.id,
+                    value: event.target.value,
+                    header: "<METADATA>"
+                }
             }
             this.props.forceEdit(obj)
         }
@@ -305,6 +318,7 @@ class FieldCard extends React.Component {
 
         //returns the green styled field card
         else if (this.state.isGreen) {
+
 
             if (this.jsFileValueToggle() === true && this.state.dropDownChosen === false) {
                 if (this.props.hasInit && this.props.ent[this.props.id].header === "<METADATA>") {
@@ -377,8 +391,52 @@ class FieldCard extends React.Component {
                 }
 
             }
+            else if (this.props.hasInit && this.props.ent[this.props.id].header === "<METADATA>") {
+                return (
+                    <div className="ui label">
+                        <div className="fieldContainer4" >
+                            <object>
+                                <div className="check__box">
+                                    <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
+                                </div>
+                                <div dir="rtl" className="description__title">{this.props.fieldTitle}</div>
+                                <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                            </object>
+                            <object className="arrow">
+                                <i className="fa fa-angle-double-right"></i>
+                            </object>
+                            <object className="descriptionMapped" align="right">
+                                {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
+                                    <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
+                                    </div>}
+
+                                {this.filterDrop()}
+                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
+                                        <i class="edit outline icon"></i>
+                                    </button>
+                                </div> : <div style={{ paddingLeft: "10px", float: "right", display: "inline", visibility: "hidden" }}>
+                                        <button style={{ float: "right", width: "35px" }} class="ui icon button">
+                                            <i class="edit outline icon"></i>
+                                        </button>
+                                    </div>}
+                                <div>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                {/* {this.props.hasInit ?
+                                        <div>
+                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
+                                        </div> :
+                                        <div></div>
+                                    } */}
+
+                            </object>
+
+                        </div>
+                    </div>
+                )
+            }
             else {
-                if (this.props.hasInit && this.props.ent[this.props.id].header === "<METADATA>") {
+                if (this.props.hasInit && this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
                     return (
                         <div className="ui label">
                             <div className="fieldContainer3" >
@@ -386,8 +444,8 @@ class FieldCard extends React.Component {
                                     <div className="check__box">
                                         <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                                     </div>
-                                    <div dir="rtl" className="description__title">{this.props.fieldTitle}</div>
-                                    <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
+                                    <div dir="rtl" className="description__title">{"ADDED_CARD"}</div>
+                                    <div className="description__value" >{":        " + String(this.props.id + 1)}</div>
                                 </object>
                                 <object className="arrow">
                                     <i className="fa fa-angle-double-right"></i>

@@ -212,6 +212,8 @@ class DropDown extends React.Component {
                 value: update,
                 header: this.props.title
             }
+
+            console.log("WERE GETTING IN THE DATE!")
             this.props.dropdownUpdate(obj)
 
             return update
@@ -283,6 +285,7 @@ class DropDown extends React.Component {
             value: update,
             header: this.props.title
         }
+        console.log("WERE GETTING IN THE DATE!")
         this.props.dropdownUpdate(obj)
 
         return update
@@ -383,12 +386,24 @@ class DropDown extends React.Component {
             dropOption: this.props.dropDownChosen
         }
 
-        if (this.props.ent[this.props.id].header !== "<METADATA>" || newValue !== this.props.ent[this.props.id].sesarTitle)
+
+
+        if ((((this.props.ent[this.props.id].header !== "<METADATA>" &&
+            this.props.ent[this.props.id].header !== "<METADATA_ADD>" &&
+            this.props.ent[this.props.id].header !== "0<METADATA_ADD>" &&
+            this.props.ent[this.props.id].header !== "1<METADATA_ADD>" &&
+            this.props.ent[this.props.id].header !== "2<METADATA_ADD>" &&
+            this.props.ent[this.props.id].header !== "3<METADATA_ADD>" &&
+            this.props.ent[this.props.id].header !== "4<METADATA_ADD>") || newValue !== this.props.ent[this.props.id].sesarTitle))) {
+
             this.props.dropdownUpdate(obj)
+
+
+        }
 
         //this.updateMulti()
 
-        if ((this.props.value !== undefined && this.props.ent[this.props.id].header !== "<METADATA>") || newValue !== this.props.ent[this.props.id].sesarTitle) {
+        if (this.props.value !== undefined && (this.props.ent[this.props.id].header !== "<METADATA>" || newValue !== this.props.ent[this.props.id].sesarTitle)) {
             this.props.callback(this.props.value, newValue)
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')

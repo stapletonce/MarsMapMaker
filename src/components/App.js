@@ -91,7 +91,7 @@ class App extends React.Component {
         console.log(tValues)
 
         for (let j = 0; j < numOfEmptyCards; j++) {
-            newCardObj[j + '<METADATA>'] = "<METADATA>";
+            newCardObj[j + '<METADATA_ADD>'] = "ADDED_CARD : " + String((j + 1));
         }
 
         console.log(newCardObj)
@@ -105,13 +105,12 @@ class App extends React.Component {
         }
         console.log(tValues)
 
-        this.setState({ emptyCards: Array(numOfEmptyCards).fill("<METADATA>") })
+        this.setState({ emptyCards: Array(numOfEmptyCards).fill("<METADATA_ADD>") })
         console.log("Num of Cards: " + this.state.emptyCards)
         let currentComponent = this;
         let newNames;
         let newValues;
         let processedValues;
-        console.log("Ladeedo" + Object.keys(toggleValues[0]))
         const toggleObj = {
             arr: tValues
         }
