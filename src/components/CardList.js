@@ -377,21 +377,28 @@ const CardList = (props) => {
             <div className="label">
                 <div className="label">
                     <div className="toggle__content">
-                        <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
-                            <div className="content">
-                                Toggle Content
-                            </div>
-                        </h4>
-                        <div disabled className="ui grey ribbon label">Current Row: {toggleIndex}</div>
-                        <button className="ui icon button" style={{ display: "inline-block", width: "60px" }} onClick={() => leftArrowToggle()}>
-                            <i className="left arrow icon"></i>
-                        </button>
-                        <button className="ui icon button" style={{ display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
-                            Refresh
-                        </button>
-                        <button className="ui icon button" style={{ display: "inline-block", width: "60px" }} onClick={() => rightArrowToggle()}>
-                            <i className="right arrow icon"></i>
-                        </button>
+                        <div style = {{display : "inline", float: "left", width : '250px'}}>
+                            <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
+                                <div className="content">
+                                    Change Displayed Row
+                                </div>
+                            </h4>
+                            <div disabled className="ui grey ribbon label">Current Row: {toggleIndex}</div>
+                            <button className="ui icon button" style={{ display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
+                                Refresh
+                            </button>
+                        </div>
+                        <div style = {{display : "inline", float: 'left', width : '100px'}}>
+                            <button className="ui icon button" style={{  float: "left", width: "60px", marginBottom: '5px' }} onClick={() => leftArrowToggle()}>
+                                <i className="up arrow icon"></i>
+                            </button>
+                            <button className="ui icon button" style={{ float: "left", width: "60px" }} onClick={() => rightArrowToggle()}>
+                                <i className="down arrow icon"></i>
+                            </button>
+                        </div>
+                        
+                        
+                       
                     </div>
 
                     <MapOutput />
