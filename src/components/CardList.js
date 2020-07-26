@@ -42,7 +42,8 @@ const CardList = (props) => {
     const [fieldValState, addAFieldCardVal] = useState(props.fieldVal)
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
-    const [hide, setHide] = useState(false);
+    const [hide, setHide] = useState(false)
+    
     // used to toggle between the tuples of the csv loaded in
     const [toggleIndex, addToToggleIndex] = useState(0)
 
@@ -72,6 +73,8 @@ const CardList = (props) => {
     // fieldValue: the content of an column attribute
     // hasContent: for initial filtering of checked cards
     // goes to the next row of content in the csv
+
+
 
     const rightArrowToggle = () => {
         if (toggleIndex < 9) {
@@ -134,7 +137,6 @@ const CardList = (props) => {
     // }
 
 
-
     // maps content to separate fieldcards on the screen
     const fields = fieldsState.map((field) => {
         newKey += 1
@@ -172,7 +174,8 @@ const CardList = (props) => {
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
                 fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""}
+                hasContent={props.fieldVal[newKey] !== ""
+            }
             />)
         }
         else {
@@ -404,7 +407,6 @@ const CardList = (props) => {
                     <MapOutput />
 
                     <div style={{ paddingTop: "3em", width: "15%" }} className="toolbar__help" >
-
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
