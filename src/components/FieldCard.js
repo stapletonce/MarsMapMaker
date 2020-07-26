@@ -152,8 +152,10 @@ class FieldCard extends React.Component {
     greenToggle = () => {
         this.jsFileValueToggle()
         let currentComponent = this
-        currentComponent.setState({ isGreen: !this.state.isGreen })
-        this.setState({ updatedValue: this.props.fieldValue })
+        currentComponent.setState({ 
+            isGreen: !this.state.isGreen,
+            updatedValue: this.props.fieldValue 
+            })
 
         const obj = {
             oldValue: this.props.fieldValue,
@@ -164,9 +166,10 @@ class FieldCard extends React.Component {
         }
         this.props.removeContent(obj)
         this.setState({ isGreen: !this.state.isGreen })
-        if (!this.state.isGreen) {
-            this.refreshFieldCard()
-        }
+        //REMOVED TO AVOID FLICKERING UPON CLICKING USE CHECKBOX
+        //if (!this.state.isGreen) {
+            //this.refreshFieldCard()
+        //}
         this.render()
     }
 
@@ -187,7 +190,7 @@ class FieldCard extends React.Component {
         return finalProduct
     }
 
-    refreshFieldCard = () => {
+   refreshFieldCard = () => {
         setTimeout(() => {
             let obj = {
                 oldValue: this.props.fieldCard,

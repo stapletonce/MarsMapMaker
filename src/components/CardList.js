@@ -17,7 +17,7 @@ import FieldCard from './FieldCard';
 import './App.scss';
 
 // REDUX
-import { firstState, toggleInUse, showMetaDataCard } from '../actions/';
+import { firstState, toggleInUse } from '../actions/';
 
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -42,9 +42,8 @@ const CardList = (props) => {
     const [fieldValState, addAFieldCardVal] = useState(props.fieldVal)
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
-    const [hide, setHide] = useState(true);
+    const [hide, setHide] = useState(false)
     
-    const [metadataCard, setMetadataCard] = useState(0)
     // used to toggle between the tuples of the csv loaded in
     const [toggleIndex, addToToggleIndex] = useState(0)
 
@@ -75,21 +74,7 @@ const CardList = (props) => {
     // hasContent: for initial filtering of checked cards
     // goes to the next row of content in the csv
 
-    const addMetaDataCard = () => {
-        if (metadataCard >= 4){
-            console.log("number of metadata cards:" + metadataCard)
-        }
-        
-        else {
-            let obj = {
-                id : metadataCard
-            }
-            props.showMetaDataCard(obj)
-            //need to be able to set the proper field card index child isGreen to true here
-            setMetadataCard(metadataCard + 1, console.log("metaDataCards num: "+ metadataCard))
-        }
-        return metadataCard
-    }
+
 
     const rightArrowToggle = () => {
         if (toggleIndex < 9) {
@@ -168,7 +153,7 @@ const CardList = (props) => {
             header: field,
             isDate: false,
             isMeasurement: false,
-            isGreen: fieldValState[newKey] !== "" && field !== "<METADATA_ADD>"
+            isGreen: fieldValState[newKey] !== ""
         }
 
         // after object is created, append it to the object array & add one to the ID
@@ -180,7 +165,6 @@ const CardList = (props) => {
         // Else give it the object.values..
         if (toggleIndex === 0) {
             return (<FieldCard
-                metaDataCardCallback={addMetaDataCard}
                 multiCount={props.multiCount}
                 jsFileValues={props.jsFileValues}
                 toggleInUse={props.usingToggle}
@@ -190,13 +174,13 @@ const CardList = (props) => {
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
                 fieldValue={props.fieldVal[newKey]}
-                hasContent={props.fieldVal[newKey] !== "" && props.fields[newKey] !== "<METADATA_ADD>"}
+                hasContent={props.fieldVal[newKey] !== ""
+            }
             />)
         }
         else {
             return (
                 <FieldCard
-                    metaDataCardCallback={addMetaDataCard}
                     multiCount={props.multiCount}
                     jsFileValues={props.jsFileValues}
                     toggleInUse={props.usingToggle}
@@ -423,7 +407,6 @@ const CardList = (props) => {
                     <MapOutput />
 
                     <div style={{ paddingTop: "3em", width: "15%" }} className="toolbar__help" >
-                        <button className="ui toggle button" onClick={() => addMetaDataCard()}> {metadataCard} </button>
                         <button className="ui toggle button" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
                         <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
                         <button className="ui basic button" onClick={checkStore}> Help </button>
@@ -487,4 +470,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { firstState, toggleInUse, showMetaDataCard })(CardList);
+export default connect(mapStateToProps, { firstState, toggleInUse })(CardList);

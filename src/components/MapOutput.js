@@ -3,7 +3,7 @@
 // This component displays an icon in the center of the toolbar /////////////////////
 // This input box recieves 1 or 2 CSVS OR that combination with 1 JS file //////////
 ///////////////////////////////////////////////////////////////////////////////////
-
+//FIX
 import React from 'react';
 import { connect } from 'react-redux';
 import saveAs from 'file-saver';
@@ -20,11 +20,12 @@ class MapOutput extends React.Component {
         let functID = ""
 
         for (let i = 0; i < this.props.ent.length; i++) {
-            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen) {
-                functID = functID + "  const forceEditID" + id + "\n    return " +"\"" + this.props.ent[i].value + "\"" + ";\n\n"
+            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
+                functID = functID + "const forceEditID" + id + "\n  return " +"\"" + this.props.ent[i].value + "\"" + ";\n\n"
                 let appendValue = "forceEditID" + id
+                //alert("This is checking id: " + "  "+ id + "   " + appendValue + "  " + this.props.ent[i].value)
                 this.setState(state =>  ({ functionIDs: [ ...state.functionIDs, appendValue] }) )
-              
+                //alert("BLEH" + this.state.functionIDs)
                 id++
             }
         }
@@ -212,6 +213,7 @@ class MapOutput extends React.Component {
 
     //this method loops through the array entries in the store multiple times to append to the string based on corresponding SesarTitles selected that
     createMapString() {
+        //FIX multivalue adds on a comma when it should end the line!
         let letMapString = "let map = {\n"
         let lastIndexOfContent = -1
         let singleLastIndexOfContent = -1
@@ -225,7 +227,7 @@ class MapOutput extends React.Component {
 
         for (let j = 0; j < this.props.ent.length; j++) {
             //these conditionals track the last occurance of each type of sesarTitle
-            if (this.props.ent[j].sesarTitle !== "" && this.props.ent[j].sesarTitle !== "field_name" && this.props.ent[j].sesarTitle !== "sample_comment" && this.props.ent[j].sesarTitle !== "description" && this.props.ent[j].sesarTitle !== "size" && this.props.ent[j].sesarTitle !== "geological_age")
+            if (this.props.ent[j].sesarTitle !== "" && this.props.ent[j].value !== "<METADATA_ADD>" && this.props.ent[j].sesarTitle !== "field_name" && this.props.ent[j].sesarTitle !== "sample_comment" && this.props.ent[j].sesarTitle !== "description" && this.props.ent[j].sesarTitle !== "size" && this.props.ent[j].sesarTitle !== "geological_age")
                 singleLastIndexOfContent = j
             else if (this.props.ent[j].sesarTitle === "geological_age")
                 geological_age_found = j
@@ -247,18 +249,18 @@ class MapOutput extends React.Component {
         let singlesAppendingString = "";
         for (let i = 0; i < this.props.ent.length; i++) {
             if (this.props.ent[i].sesarTitle !== "" &&
+                this.props.ent[i].value !== "<METADATA_ADD>" &&
                 this.props.ent[i].sesarTitle !== "geological_age" &&
                 this.props.ent[i].sesarTitle !== "field_name" &&
                 this.props.ent[i].sesarTitle !== "sample_comment" &&
                 this.props.ent[i].sesarTitle !== "description" &&
                 this.props.ent[i].sesarTitle !== "size") {
+                
+                    if (i === lastIndexOfContent && geological_age_found < 0 && field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0 )
+                        singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": \"" + this.props.ent[i].header + "\""
+                    else 
+                        singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": \"" + this.props.ent[i].header + "\",\n"
 
-                if (i !== singleLastIndexOfContent || i + 1 >= this.props.ent.length)
-                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header + ",\n"
-                else if (i === lastIndexOfContent && field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0)
-                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header
-                else if (i === singleLastIndexOfContent)
-                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": " + this.props.ent[i].header + ",\n"
             }
 
         }
@@ -269,12 +271,12 @@ class MapOutput extends React.Component {
             multiAppendingString += "  geological_age: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "geological_age") {
-                    if (z === geological_age_found && (field_found >= 0 && sample_found >= 0 && size_found >= 0 && description_found >= 0))
-                        multiAppendingString += " \"" + this.props.ent[z].header + "\"]\n"
+                    if (z === geological_age_found && (field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0 ))
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === geological_age_found && (field_found > -1 || sample_found > -1 || size_found > -1 || description_found > -1))
-                        multiAppendingString += " \"" + this.props.ent[z].header + "\"],\n"
-                    else if (z < lastIndexOfContent)
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\", "
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
+                    else
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\", "
                 }
             }
         }
@@ -285,12 +287,13 @@ class MapOutput extends React.Component {
             multiAppendingString += "  field_name: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "field_name") {
-                    if (z === field_found && (sample_found >= 0 && size_found >= 0 && description_found >= 0))
-                        multiAppendingString += " \"" + this.props.ent[z].header + "\"]\n"
+                    if (z === field_found && (sample_found < 0 && size_found < 0  && description_found < 0 ))
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === field_found && (sample_found > -1 || size_found > -1 || description_found > -1))
-                        multiAppendingString += " \"" + this.props.ent[z].header + "\"],\n"
-                    else if (z < lastIndexOfContent)
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\", "
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
+                    else
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\", "
+
                 }
 
 
@@ -302,12 +305,12 @@ class MapOutput extends React.Component {
             multiAppendingString += "  sample_comment: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "sample_comment") {
-                    if (z === sample_found && (size_found < 0 || description_found < 0))
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\"]\n"
+                    if (z === sample_found && (size_found < 0 && description_found < 0 ))
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === sample_found && (size_found > -1 || description_found > -1))
-                        multiAppendingString += " \"" + this.props.ent[z].header + "\"],\n"
-                    else if (z < lastIndexOfContent)
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\", "
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
+                    else if (z < lastIndexOfContent && z < sample_found)
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\", "
                 }
             }
         }
@@ -317,12 +320,12 @@ class MapOutput extends React.Component {
             multiAppendingString += "  description: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "description") {
-                    if (z === description_found && (size_found < 0))
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\"]\n"
+                    if (z === description_found && (size_found < 0 ))
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === description_found && (size_found > -1))
-                        multiAppendingString += " \"" + this.props.ent[z].header + "\"],\n"
-                    else if (z < lastIndexOfContent)
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\", "
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
+                    else if (z < lastIndexOfContent && z < description_found)
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\", "
                 }
             }
         }
@@ -333,9 +336,9 @@ class MapOutput extends React.Component {
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "size") {
                     if (z === size_found)
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\"]\n"
-                    else if (z < lastIndexOfContent)
-                        multiAppendingString += "\"" + this.props.ent[z].header + "\", "
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
+                    else if (z < lastIndexOfContent  && z < size_found)
+                        multiAppendingString += " \"" + this.props.ent[z].header + "\", "
                 }
             }
         }
@@ -352,7 +355,7 @@ class MapOutput extends React.Component {
         let logicID = ""
 
         for (let i = 0; i < this.props.ent.length; i++) {
-            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>")  && this.props.ent[i].isGreen) {
+            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>")  && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
                 logicID = logicID + "  "+ this.props.ent[i].sesarTitle + ":" + this.state.functionIDs[id]+",\n"
                 id++
                 }
@@ -362,6 +365,7 @@ class MapOutput extends React.Component {
 }
 
     createLogicAndCombination() {
+        alert("Mapping Accepted!")
         const logic = "let logic = { " + "\n" + this.logicFunctionAppend() + "  collection_start_date: scrippsDate,\n  collection_end_date: scrippsDate,\n  geological_age: keyValueString,\n  field_name: keyValueString,\n description: keyValueString,\n  sample_comment: keyValueString,\n  size: keyValueString\n  \}\n\n"
 
         const combination = `let combinations = {
@@ -379,10 +383,14 @@ class MapOutput extends React.Component {
 
     finalAppend = () => {
         let fileString = "//Start::::\n"
-
+        fileString = fileString + this.forceEditFunction()
+        fileString = fileString + this.createMulitValueJoins()
+        fileString = fileString + this.createDateFormatString(this.props.dateFormat)
+        fileString = fileString + this.createMapString()
+        fileString = fileString + this.createLogicAndCombination()
         //this.createSizeConversionString("mm") +
         //this.createSummate() +
-        return fileString + this.forceEditFunction() + this.createMulitValueJoins() + this.createDateFormatString(this.props.dateFormat) + this.createMapString() + this.createLogicAndCombination()
+        return fileString
     }
 
 
