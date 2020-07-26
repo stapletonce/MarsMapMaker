@@ -39,13 +39,6 @@ class FieldCard extends React.Component {
         'field_container2': !this.state.isGreen,
     });
 
-    metaDataCardCallback = () => {
-        let check = this.props.addMeta()
-        if(check >= 4 && check === this.state.index){
-            this.setState({isGreen: true})}
-           
-}
-
     // helper function to limit length of 'fieldValue' displayed in the UI
     lengthCheckedValue = (fieldVal) => {
         //console.log(fieldVal)
