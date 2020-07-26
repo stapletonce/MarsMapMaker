@@ -58,6 +58,13 @@ export const multiValueCreateFinish = obj => {
     }
 }
 
+export const showMetaDataCard = obj => {
+    return {
+        type: "SHOW_METADATA_CARD",
+        payload: obj
+    }
+}
+
 export const isDate = obj => {
     return {
         type: "IS_DATE",

@@ -186,7 +186,15 @@ const reducer =
 
         }
 
-
+        case "SHOW_METADATA_CARD":
+          return update(state, {
+            entries: {
+              [action.payload.id]: {
+                isGreen: { $set: true}
+              }
+            }
+          }
+            )
 
 
       case "CHOOSE_FORMAT":

@@ -350,7 +350,7 @@ class MapOutput extends React.Component {
     logicFunctionAppend() {
         let id = 0;
         let logicID = ""
-        alert("current state " + this.state.functionIDs)
+
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>")  && this.props.ent[i].isGreen) {
                 logicID = logicID + "  "+ this.props.ent[i].sesarTitle + ":" + this.state.functionIDs[id]+",\n"

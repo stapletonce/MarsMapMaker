@@ -368,19 +368,20 @@ class FileIn extends React.Component {
         // we want to make sure that we have handled all CSV's and JS files before we use the callback function
         this.setState({ num: this.state.num + 1 })
         if (this.state.num === this.state.files.length - 1) {
-            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, this.state.numberOfEmptyCards)
+            //force card edit replace 5 with  this.numOfEmptyCards
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 5)
         }
 
         // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies
         this.setState({ isJsFile: false })
     }
+    /*force card edit */
+    // numOfCards = (event) => {
+    //     console.log("HERE HERE HERE : " + event.target.value)
+    //     console.log("function: " + parseInt(event.target.value))
+    //     this.setState({ numberOfEmptyCards: parseInt(event.target.value) })
 
-    numOfCards = (event) => {
-        console.log("HERE HERE HERE : " + event.target.value)
-        console.log("function: " + parseInt(event.target.value))
-        this.setState({ numberOfEmptyCards: parseInt(event.target.value) })
-
-    }
+    // }
 
     render() {
 
@@ -407,7 +408,9 @@ class FileIn extends React.Component {
                     onChange={this.handleChange}
                     multiple="multiple"
                 />
-                <div style={{ padding: "0px", margin: "0px", paddingTop: "10px" }}>
+                {/*force card edit */}
+                {/* <div style={{ padding: "0px", margin: "0px", paddingTop: "10px" }}>
+                    
                     <select onChange={this.numOfCards} style={{ paddingTop: "10px", width: "120px" }} class="ui search dropdown">
                         <option value="">Extra Cards</option>
                         <option value="0">0</option>
@@ -417,7 +420,7 @@ class FileIn extends React.Component {
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </select>
-                </div>
+                </div> */}
 
                 <p />
                 <button onClick={this.importCSV}> Import now!</button>
