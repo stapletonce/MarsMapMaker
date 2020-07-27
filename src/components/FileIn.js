@@ -116,6 +116,7 @@ class FileIn extends React.Component {
     };
 
     removeBrackets = (arr) => {
+
         let newArr = []
         for (let i = 0; i < arr.length; i++) {
             if (i !== 3)
@@ -125,30 +126,58 @@ class FileIn extends React.Component {
     }
 
     startPushingHelper = (result, i, jsArr) => {
+        console.log(JSON.stringify(Object.values(result.data[i])[1]))
+
         if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
+
+
+            console.log("FLAG 1: " + Object.values(result.data[i])[0])
             jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
         }
+
         else {
+            // if (Object.values(result.data[i])[0].includes("[") && Object.values(result.data[i])[0].includes("]")) {
+            //     let value = JSON.stringify(Object.values(result.data[i])[0])
+            //     value.replace(" ", "")
+            //     value.replace("[", "")
+            //     value.replace("]", "")
+            //     console.log(value)
+            // }
+
+            console.log("FLAG 4: " + Object.values(result.data[i])[0].includes("["))
+
             let firstIndexFormat;
             // where we handle multivalue selections
             firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
+            console.log(firstIndexFormat)
             // BANDAID
             // One of the multivalue selections has an extra space in the mapOutput, this is a quick fix
             // However, when mars reads in mapping file, space may still need to be taken care of
-            if (firstIndexFormat.length === 5) {
-                firstIndexFormat[4] = "[" + firstIndexFormat[4]
+            if (firstIndexFormat.length === 5 || firstIndexFormat.length === 6) {
+                console.log("FLAG 2: " + Object.values(result.data[i])[0])
+                //firstIndexFormat[4] = firstIndexFormat[4]
                 firstIndexFormat = this.removeBrackets(firstIndexFormat)
             }
 
-            firstIndexFormat[3] = firstIndexFormat[3].substring(3, firstIndexFormat[3].length - 3)
+            console.log("CHANGED: " + firstIndexFormat + " : " + firstIndexFormat.length)
+
+            if (firstIndexFormat.length === 4)
+                firstIndexFormat[3] = firstIndexFormat[3].substring(0, firstIndexFormat[3].length - 3)
+            else if (firstIndexFormat.length === 5)
+                firstIndexFormat[3] = firstIndexFormat[3].substring(2, firstIndexFormat[3].length - 1)
+            console.log("BEFORE IT GOES IN: " + firstIndexFormat[2] + firstIndexFormat[3])
             jsArr.push(firstIndexFormat[2] + firstIndexFormat[3])
-            if ((Object.values(result.data[i])[1] !== undefined && Object.values(result.data[i])[1]).length > 1) {
+            if ((Object.values(result.data[i])[1] !== undefined && Object.values(result.data[i])[1]).length >= 1) {
+
+                console.log("FLAG 3: " + Object.values(result.data[i])[1].length)
                 for (let j = 0; j < (Object.values(result.data[i])[1]).length; j++) {
+                    console.log("LATEST: " + Object.values(result.data[i])[1][j])
                     if (Object.values(result.data[i])[1][j] !== "")
                         jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][j]).substring(2, (Object.values(result.data[i])[1][j]).length - 1))
                 }
             }
         }
+        console.log(jsArr)
     }
 
     foundSection = () => {
