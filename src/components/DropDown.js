@@ -43,11 +43,16 @@ class DropDown extends React.Component {
     logicHelper = (fS, fA, dS) => {
         if (fS.includes("YYYY")) {
             for (let i = 0; i < 3; i++) {
-                if (fS[i] === "YYYY" && dS[i].length !== 4) {
-
+                if (fS[i] === "YYYY" && dS[i].length !== 4 && !isNaN(dS[i])) {
+                    
+                    alert("fS errors if any index is YYYY: " + fS + "\nFA "+ fA + " \nds errors if any index length is not 4: " + dS + "\nalso dS length")
                     alert("YYYY instead of YY error")
                     this.props.refresh()
                     console.log("You have selected a format that doesn't match the data provided from the file... please try another format (YYYY format for YY)")
+                    return null
+                }
+                if (isNaN(dS[i])){
+                    //needs to populate field card with not provided here
                     return null
                 }
             }
@@ -129,6 +134,13 @@ class DropDown extends React.Component {
     // further date formatting, user error checking, deciding if selection needs a century selection as well
     // if a valid selection is made, the store is updated with the format selected
     // and the store ent[i].sesarTitle is updated with the selection 
+    detectNonDateCharacters = (value) => {
+        //needs more robust detection
+        const regexCheck = /([^0-9/-]|[]|[?@!#$%\^&*\(\)_\=+{}[]"])+/g
+        return regexCheck.test(value)
+    }
+    
+    
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
@@ -141,7 +153,9 @@ class DropDown extends React.Component {
             return
         }
 
-        if (value.length !== 8 && value.length !== 10) {
+        if (value.length !== 8 && value.length !== 10 && value.length !== 0 && !this.detectNonDateCharacters(value)) {
+            
+            alert(value)
             alert("You have not selected a date, try again...")
             this.props.refresh()
             console.log("You have not selected a date, try again...")
@@ -230,7 +244,7 @@ class DropDown extends React.Component {
         let formatSplit = format.split('')
         let newDateSplit = ["", "", ""]
         let newFormatSplit = ["", "", ""]
-
+//work with if newDateSplit === "start"
         if ((formatSplit[0] === "M" && formatSplit[1] === "M") || (formatSplit[0] === "M" && formatSplit[1] === "M")) {
             newDateSplit[0] = dateSplit[0] + dateSplit[1]
             newFormatSplit[0] = formatSplit[0] + formatSplit[1]
@@ -326,10 +340,12 @@ class DropDown extends React.Component {
         // this.props.sizeCallback(newValue)
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
-
+//if dateformat and dropdownoption is not chosen do this 
+            if (!this.props.dropDownChosen) {
             alert("You have not selected a date format...")
             this.props.refresh()
             console.log("Please choose a date format!!!")
+            }
             return
         }
 
