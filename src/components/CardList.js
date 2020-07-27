@@ -43,11 +43,13 @@ const CardList = (props) => {
 
     // used to hide 'non-green / non-checked fields in the UI (hides field and checks)
     const [hide, setHide] = useState(false)
-    
+
     // used to toggle between the tuples of the csv loaded in
     const [toggleIndex, addToToggleIndex] = useState(0)
 
     const [addingCard, clickingAddCard] = useState(false)
+
+
 
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
@@ -175,7 +177,7 @@ const CardList = (props) => {
                 fieldType={typeField(props.fieldVal[newKey])}
                 fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""
-            }
+                }
             />)
         }
         else {
@@ -380,7 +382,7 @@ const CardList = (props) => {
             <div className="label">
                 <div className="label">
                     <div className="toggle__content">
-                        <div style = {{display : "inline", float: "left", width : '250px'}}>
+                        <div style={{ display: "inline", float: "left", width: '250px' }}>
                             <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
                                 <div className="content">
                                     Change Displayed Row
@@ -391,17 +393,17 @@ const CardList = (props) => {
                                 Refresh
                             </button>
                         </div>
-                        <div style = {{display : "inline", float: 'left', width : '100px'}}>
-                            <button className="ui icon button" style={{  float: "left", width: "60px", marginBottom: '5px' }} onClick={() => leftArrowToggle()}>
+                        <div style={{ display: "inline", float: 'left', width: '100px' }}>
+                            <button className="ui icon button" style={{ float: "left", width: "60px", marginBottom: '5px' }} onClick={() => leftArrowToggle()}>
                                 <i className="up arrow icon"></i>
                             </button>
                             <button className="ui icon button" style={{ float: "left", width: "60px" }} onClick={() => rightArrowToggle()}>
                                 <i className="down arrow icon"></i>
                             </button>
                         </div>
-                        
-                        
-                       
+
+
+
                     </div>
 
                     <MapOutput />
