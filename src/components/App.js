@@ -88,25 +88,16 @@ class App extends React.Component {
 
         let newCardObj = {}
         let tValues = toggleValues
-        console.log(tValues)
 
         for (let j = 0; j < numOfEmptyCards; j++) {
             newCardObj[j + '<METADATA_ADD>'] = "ADDED_CARD : " + String((j + 1));
         }
-
-        console.log(newCardObj)
-
-
-        console.log(tValues)
         for (let i = 0; i < tValues.length; i++) {
-            console.log(Object.values(newCardObj) + Object.values(tValues[i]))
             tValues[i] = { ...newCardObj, ...tValues[i] }
 
         }
-        console.log(tValues)
 
         this.setState({ emptyCards: Array(numOfEmptyCards).fill("<METADATA_ADD>") })
-        console.log("Num of Cards: " + this.state.emptyCards)
         let currentComponent = this;
         let newNames;
         let newValues;
@@ -139,11 +130,11 @@ class App extends React.Component {
         });
 
         // When all for field data is loaded in properly and duplicates have been removed, set Init to True in store
-        console.log(this.state.fieldNames.length)
-        console.log(this.findDuplicates(newNames, newValues).length)
-        console.log(totalSize)
-        console.log(this.findDuplicates(newNames, newValues).length)
-        console.log((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length))
+        // console.log(this.state.fieldNames.length)
+        // console.log(this.findDuplicates(newNames, newValues).length)
+        // console.log(totalSize)
+        // console.log(this.findDuplicates(newNames, newValues).length)
+        // console.log((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length))
 
         if ((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length)) {
             this.props.changeInit(obj)

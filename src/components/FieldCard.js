@@ -145,10 +145,10 @@ class FieldCard extends React.Component {
     greenToggle = () => {
         this.jsFileValueToggle()
         let currentComponent = this
-        currentComponent.setState({ 
+        currentComponent.setState({
             isGreen: !this.state.isGreen,
-            updatedValue: this.props.fieldValue 
-            })
+            updatedValue: this.props.fieldValue
+        })
 
         const obj = {
             oldValue: this.props.fieldValue,
@@ -161,10 +161,12 @@ class FieldCard extends React.Component {
         this.setState({ isGreen: !this.state.isGreen })
         //REMOVED TO AVOID FLICKERING UPON CLICKING USE CHECKBOX
         //if (!this.state.isGreen) {
-            //this.refreshFieldCard()
+        //this.refreshFieldCard()
         //}
         this.render()
     }
+
+
 
     fieldMetricFunction = (firstInPair, secondInPair) => {
         let finalProduct = parseInt(firstInPair);
@@ -183,7 +185,7 @@ class FieldCard extends React.Component {
         return finalProduct
     }
 
-   refreshFieldCard = () => {
+    refreshFieldCard = () => {
         setTimeout(() => {
             let obj = {
                 oldValue: this.props.fieldCard,
@@ -206,7 +208,12 @@ class FieldCard extends React.Component {
     entMultiSizeCount = (id, title) => {
         let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
         let index;
-        let count = 1
+        let count;
+        if (this.props.jsFileValues === undefined)
+            count = 1
+        else
+            count = 0
+
         for (let i = 0; i < this.props.ent.length; i++) {
             if (this.props.ent[i].sesarTitle === title) {
                 count += 1
@@ -216,12 +223,13 @@ class FieldCard extends React.Component {
             if (objects[j] === title)
                 index = j
         }
+
+
         const obj = {
             num: count,
             ftitle: title,
             findex: index
         }
-        console.log(obj)
         this.props.totalMultiValueCount(obj);
         return String(count)
     }
@@ -231,14 +239,14 @@ class FieldCard extends React.Component {
         let count = 1
         searchOption = title
 
-        console.log(searchOption)
         for (let i = 0; i < id; i++) {
             if (this.props.ent[i].sesarTitle === searchOption)
                 count += 1
         }
-        console.log("COunt: " + count)
         return String(count)
     }
+
+
 
     multiStringOutputFunction = (id, title) => {
         this.entMultiSizeCount(id, title);
@@ -246,7 +254,6 @@ class FieldCard extends React.Component {
         let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
         let index;
         for (let j = 0; j < objects.length; j++) {
-            console.log("HERE: " + objects[j] + " : " + title)
             if (objects[j] === title) {
                 index = j
                 valid = true
@@ -260,11 +267,9 @@ class FieldCard extends React.Component {
         else
             this.setState({ index: index })
 
-        console.log(index)
         let formattedString = ""
         formattedString += this.findMultiValueSpot(id, title) + " of "
         this.setState({ formattedString: formattedString })
-        console.log(formattedString)
         return formattedString
 
 
@@ -283,15 +288,12 @@ class FieldCard extends React.Component {
 
     areEditing = () => {
         this.setState({ areEditing: !this.state.areEditing })
-        console.log(this.state.areEditing)
     }
 
     forceEdit = (event) => {
         let obj = {}
         if (event.key === 'Enter') {
-            console.log(this.props.toggleArr)
             this.setState({ areEditing: !this.state.areEditing, updatedValue: event.target.value })
-            console.log(event.target.value)
             if (this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
                 obj = {
                     index: this.props.id,
@@ -315,6 +317,7 @@ class FieldCard extends React.Component {
     render() {
 
         //these renders return different fieldcards based on the hiding toggle value
+
 
         //removes the unchecked field card
         if (this.props.hiding && this.state.isGreen === false)
