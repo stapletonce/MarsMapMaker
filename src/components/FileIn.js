@@ -398,7 +398,7 @@ class FileIn extends React.Component {
         this.setState({ num: this.state.num + 1 })
         if (this.state.num === this.state.files.length - 1) {
             //force card edit replace 5 with  this.numOfEmptyCards
-            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 5)
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 1)
         }
 
         // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies
