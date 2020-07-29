@@ -381,7 +381,7 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="toggle__content">
+                    <div style={{ paddingTop: "8em" }} className="toggle__content">
                         <div style={{ display: "inline", float: "left", width: '250px' }}>
                             <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
                                 <div className="content">
@@ -401,9 +401,6 @@ const CardList = (props) => {
                                 <i className="down arrow icon"></i>
                             </button>
                         </div>
-
-
-
                     </div>
 
                     <MapOutput />
@@ -414,7 +411,7 @@ const CardList = (props) => {
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px", paddingRight: "0px", marginRight: "0px" }}>
+                    <div style={{ display: "inline-block", float: "right", paddingRight: "0px", marginRight: "0px" }}>
                         {(props.hasDateFormat === false || dateSelected() === false) ?
                             <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
                                 Select Date Format
