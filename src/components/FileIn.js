@@ -201,16 +201,14 @@ class FileIn extends React.Component {
 
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
-                console.log(Object.values(result.data[i]))
+                //console.log(Object.values(result.data[i]))
                 if (JSON.stringify(Object.values(result.data[i])).includes("forceEdit")) {
                     addToForceEdit = true
                 }
 
                 if (addToForceEdit === true && JSON.stringify(Object.values(result.data[i])).includes("return")) {
-                    console.log("YEP!")
                     let forceEditValue = JSON.stringify(Object.values(result.data[i])).split(" ")
                     forceEditValueArr.push(forceEditValue[3].substring(2, forceEditValue[3].length - 5))
-                    console.log(forceEditValueArr)
                     addToForceEdit = false
                 }
 
@@ -369,7 +367,6 @@ class FileIn extends React.Component {
                     forceEditValuesCount++
                 }
             }
-            console.log(addForceEditValues)
 
             // establish state that we have a jsArr
             this.setState({ jsFile: addForceEditValues, includesJsFile: true, isJsFile: true })

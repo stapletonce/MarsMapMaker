@@ -54,6 +54,7 @@ const CardList = (props) => {
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
     let typeField = (f) => {
+        console.log(f)
 
         let type;
 
@@ -61,6 +62,9 @@ const CardList = (props) => {
 
         if (f === "")
             type = "both";
+        else if (f === "<METADATA_ADD>") {
+            type = "added_card"
+        }
         else if (numbers.test(f) === true)
             type = "numbers";
         else
