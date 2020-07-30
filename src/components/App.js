@@ -157,7 +157,6 @@ class App extends React.Component {
         for (let i = 0; i < this.state.emptyCards.length; i++) {
             arr.push("~~~")
         }
-        console.log("LOOKING HERE: " + arr)
     }
 
 
