@@ -54,7 +54,6 @@ const CardList = (props) => {
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
     let typeField = (f) => {
-        console.log(f)
 
         let type;
 
@@ -83,7 +82,7 @@ const CardList = (props) => {
 
 
     const rightArrowToggle = () => {
-        if (toggleIndex < 9) {
+        if (toggleIndex < props.tValLength) {
             addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
             let obj = {
                 bool: true
