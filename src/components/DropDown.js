@@ -492,6 +492,17 @@ class DropDown extends React.Component {
         return arr
     }
 
+    checkForSampleType = () => {
+        let valid = false;
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].sesarTitle === "sample_type")
+                valid = true
+        }
+        return valid
+    }
+
+
+
 
     render() {
         const sesarOne2One = this.state.sesarOneToOne
@@ -516,28 +527,31 @@ class DropDown extends React.Component {
             if (this.props.fieldType === "both")
                 return <option key={f.title} value={f.title}>{f.title}</option>;
 
-            if (this.props.fieldType === "added_card") {
-                if (f.title === "sample_type") {
 
-                    return <option key={f.title} value={f.title}>{f.title}</option>;
+            if (f.type === this.props.fieldType || f.type === "both" || this.props.fieldType === "added_card") {
+
+                if (this.props.fieldType === "added_card") {
+                    if (!this.checkForSampleType() === true && f.title === "sample_type")
+                        return <option key={f.title} value={f.title}>{f.title}</option>
+                    else
+                        return
                 }
-            }
-
-            if (f.type === this.props.fieldType || f.type === "both") {
+                if (!this.checkForSampleType() === true && f.title === "sample_type") {
+                    return <option key={f.title} value={f.title}>{f.title}</option>
+                }
 
                 if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
                     return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
                 }
-
                 if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.indexOf(f.title) === this.props.id)
                     return <option key={f.title} value={f.title}>{f.title}</option>;
-
-
             }
+
+
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown
