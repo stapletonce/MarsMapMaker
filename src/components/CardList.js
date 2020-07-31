@@ -83,7 +83,7 @@ const CardList = (props) => {
 
     const rightArrowToggle = () => {
         if (toggleIndex < props.tValLength) {
-            addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+            addToToggleIndex((toggleIndex + 1) % props.tValLength)
             let obj = {
                 bool: true
             }
