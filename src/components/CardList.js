@@ -229,6 +229,7 @@ const CardList = (props) => {
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
+        console.log(props.persist)
         console.log(props.multiCount)
         console.log(props.ent)
         console.log(props.toggleArr)
@@ -462,6 +463,7 @@ const CardList = (props) => {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
+        persist: state.persistingMetaData,
         toggleArr: state.toggleArr,
         toggleIndex: state.toggleIndex,
         usingToggle: state.toggleInUse,

@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
-import { removeContent, totalMultiValueCount, forceEdit } from '../actions';
+import { removeContent, totalMultiValueCount, forceEdit, persistingDataConcat, persistingDataUpdate } from '../actions';
 import { Dropdown } from 'semantic-ui-react';
 const { options } = require('./sesarOptions')
 
@@ -292,7 +292,17 @@ class FieldCard extends React.Component {
 
     forceEdit = (event) => {
         let obj = {}
+        let persistentMetaData = {}
+
         if (event.key === 'Enter') {
+            persistentMetaData = {
+                index: this.props.id,
+                value: this.props.ent[this.props.id].value,
+                header:this.props.ent[this.props.id].header,
+                isMetaData: this.props.ent[this.props.id].header.includes("<METADATA>"),
+                isMetaDataAdd: this.props.ent[this.props.id].header.includes("<METADATA_ADD>")
+            }
+
             this.setState({ areEditing: !this.state.areEditing, updatedValue: event.target.value })
             if (this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
                 obj = {
@@ -308,6 +318,19 @@ class FieldCard extends React.Component {
                     header: "<METADATA>"
                 }
             }
+            
+            let alreadySet = false
+            for (let i = 0; i < this.props.persist.length; i++) {
+                if (this.props.persist[i].index === persistentMetaData.index) {
+                    alreadySet = true
+                    break
+                }
+            }
+
+            if (alreadySet) { console.log("Header already recorded")}
+            else {
+                this.props.persistingDataConcat(persistentMetaData) }
+            
             this.props.forceEdit(obj)
         }
     }
@@ -562,6 +585,7 @@ class FieldCard extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
+        persist: state.persistingMetaData,
         useOnce: state.useOnce,
         dateFormat: state.chosenDateFormat,
         hasChosen: state.hasChosenDateFormat,
@@ -573,4 +597,4 @@ const mapStateToProps = (state) => {
     };
 };
 // hello robert
-export default connect(mapStateToProps, { forceEdit, removeContent, totalMultiValueCount })(FieldCard);
+export default connect(mapStateToProps, { forceEdit, removeContent, totalMultiValueCount, persistingDataConcat, persistingDataUpdate })(FieldCard);
