@@ -61,6 +61,9 @@ const CardList = (props) => {
 
         if (f === "")
             type = "both";
+        else if (f === "<METADATA_ADD>") {
+            type = "added_card"
+        }
         else if (numbers.test(f) === true)
             type = "numbers";
         else
@@ -79,8 +82,8 @@ const CardList = (props) => {
 
 
     const rightArrowToggle = () => {
-        if (toggleIndex < 9) {
-            addToToggleIndex((toggleIndex + 1) % props.toggleArr.length)
+        if (toggleIndex < props.tValLength) {
+            addToToggleIndex((toggleIndex + 1) % props.tValLength)
             let obj = {
                 bool: true
             }
@@ -209,7 +212,6 @@ const CardList = (props) => {
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
-        console.log(objArray)
         const initObj = {
             objArr: objArray,
             useOnce: useOnce,
@@ -381,7 +383,7 @@ const CardList = (props) => {
         <div>
             <div className="label">
                 <div className="label">
-                    <div className="toggle__content">
+                    <div style={{ paddingTop: "8em" }} className="toggle__content">
                         <div style={{ display: "inline", float: "left", width: '250px' }}>
                             <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
                                 <div className="content">
@@ -401,9 +403,6 @@ const CardList = (props) => {
                                 <i className="down arrow icon"></i>
                             </button>
                         </div>
-
-
-
                     </div>
 
                     <MapOutput />
@@ -414,7 +413,7 @@ const CardList = (props) => {
                         <button className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div style={{ width: "25%", display: "inline-block", float: "right", paddingLeft: "10px", paddingRight: "0px", marginRight: "0px" }}>
+                    <div style={{ display: "inline-block", float: "right", paddingRight: "0px", marginRight: "0px" }}>
                         {(props.hasDateFormat === false || dateSelected() === false) ?
                             <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
                                 Select Date Format

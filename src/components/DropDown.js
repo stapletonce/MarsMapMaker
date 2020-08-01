@@ -44,14 +44,14 @@ class DropDown extends React.Component {
         if (fS.includes("YYYY")) {
             for (let i = 0; i < 3; i++) {
                 if (fS[i] === "YYYY" && dS[i].length !== 4 && !isNaN(dS[i])) {
-                    
-                    alert("fS errors if any index is YYYY: " + fS + "\nFA "+ fA + " \nds errors if any index length is not 4: " + dS + "\nalso dS length")
+
+                    alert("fS errors if any index is YYYY: " + fS + "\nFA " + fA + " \nds errors if any index length is not 4: " + dS + "\nalso dS length")
                     alert("YYYY instead of YY error")
                     this.props.refresh()
                     console.log("You have selected a format that doesn't match the data provided from the file... please try another format (YYYY format for YY)")
                     return null
                 }
-                if (isNaN(dS[i])){
+                if (isNaN(dS[i])) {
                     //needs to populate field card with not provided here
                     return null
                 }
@@ -139,8 +139,8 @@ class DropDown extends React.Component {
         const regexCheck = /([^0-9/-]|[]|[?@!#$%\^&*\(\)_\=+{}[]"])+/g
         return regexCheck.test(value)
     }
-    
-    
+
+
     formatDate = (value, format, title) => {
         let finalArray = ["", "", ""]
         let update;
@@ -154,7 +154,7 @@ class DropDown extends React.Component {
         }
 
         if (value.length !== 8 && value.length !== 10 && value.length !== 0 && !this.detectNonDateCharacters(value)) {
-            
+
             alert(value)
             alert("You have not selected a date, try again...")
             this.props.refresh()
@@ -209,7 +209,6 @@ class DropDown extends React.Component {
             }
             // if DD-MM-YYYY is selected instead of just DD-MM-YY
             else {
-                console.log("Hey my datesplit is working with YYYY")
                 update = this.logicHelper(formatSplit, finalArray, dateSplit)
 
             }
@@ -227,7 +226,6 @@ class DropDown extends React.Component {
                 header: this.props.title
             }
 
-            console.log("WERE GETTING IN THE DATE!")
             this.props.dropdownUpdate(obj)
 
             return update
@@ -244,7 +242,7 @@ class DropDown extends React.Component {
         let formatSplit = format.split('')
         let newDateSplit = ["", "", ""]
         let newFormatSplit = ["", "", ""]
-//work with if newDateSplit === "start"
+        //work with if newDateSplit === "start"
         if ((formatSplit[0] === "M" && formatSplit[1] === "M") || (formatSplit[0] === "M" && formatSplit[1] === "M")) {
             newDateSplit[0] = dateSplit[0] + dateSplit[1]
             newFormatSplit[0] = formatSplit[0] + formatSplit[1]
@@ -340,11 +338,11 @@ class DropDown extends React.Component {
         // this.props.sizeCallback(newValue)
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
-//if dateformat and dropdownoption is not chosen do this 
+            //if dateformat and dropdownoption is not chosen do this 
             if (!this.props.dropDownChosen) {
-            alert("You have not selected a date format...")
-            this.props.refresh()
-            console.log("Please choose a date format!!!")
+                alert("You have not selected a date format...")
+                this.props.refresh()
+                console.log("Please choose a date format!!!")
             }
             return
         }
@@ -388,7 +386,6 @@ class DropDown extends React.Component {
                     ftitle: objects[i],
                     findex: i
                 }
-                console.log(obj)
                 this.props.totalMultiValueCount(obj);
             }
         }
@@ -495,6 +492,17 @@ class DropDown extends React.Component {
         return arr
     }
 
+    checkForSampleType = () => {
+        let valid = false;
+        for (let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].sesarTitle === "sample_type")
+                valid = true
+        }
+        return valid
+    }
+
+
+
 
     render() {
         const sesarOne2One = this.state.sesarOneToOne
@@ -519,21 +527,34 @@ class DropDown extends React.Component {
             if (this.props.fieldType === "both")
                 return <option key={f.title} value={f.title}>{f.title}</option>;
 
-            if (f.type === this.props.fieldType || f.type === "both") {
+
+            if (f.type === this.props.fieldType || f.type === "both" || this.props.fieldType === "added_card") {
+
+                if (this.props.fieldType === "added_card") {
+                    if (!this.checkForSampleType() === true && f.title === "sample_type")
+                        return <option key={f.title} value={f.title}>{f.title}</option>
+                    else if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
+                        return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
+                    }
+                    else
+                        return
+                }
+                if (!this.checkForSampleType() === true && f.title === "sample_type") {
+                    return <option key={f.title} value={f.title}>{f.title}</option>
+                }
 
                 if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
                     return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
                 }
-
                 if (!this.props.useOnce.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title))
                     return <option key={f.title} value={f.title}>{f.title}</option>;
                 else if (this.props.useOnce.indexOf(f.title) === this.props.id)
                     return <option key={f.title} value={f.title}>{f.title}</option>;
-
-
             }
+
+
         };
 
         // creates the dropdown, uses filter() to specify which items are included in dropdown

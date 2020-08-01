@@ -25,6 +25,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            toggleValueLength: 0,
             emptyCards: [],
             toggleValuesArr: null,
             mapPreview: null,
@@ -122,6 +123,7 @@ class App extends React.Component {
         processedValues = this.removeDuplicates(newNames, newValues)
 
         currentComponent.setState({
+            toggleValueLength: tValues.length,
             fieldNames:
                 processedValues[0],
             fieldValues:
@@ -157,7 +159,6 @@ class App extends React.Component {
         for (let i = 0; i < this.state.emptyCards.length; i++) {
             arr.push("~~~")
         }
-        console.log("LOOKING HERE: " + arr)
     }
 
 
@@ -187,6 +188,7 @@ class App extends React.Component {
 
                 {this.state.continue ?
                     <CardList
+                        tValLength={this.state.toggleValueLength}
                         jsFileValues={this.state.jsFile}
                         callback={this.isOpenCallback}
                         fields={[...this.state.emptyCards, ...this.state.fieldNames]}

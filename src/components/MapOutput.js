@@ -14,17 +14,17 @@ import mars from '../icons/planet.png';
 //need to handle single value measurements and size unit mapping Size unit should always be 'cm'
 //
 class MapOutput extends React.Component {
-    state = {functionIDs: []}
+    state = { functionIDs: [] }
     forceEditFunction = () => {
         let id = 0;
         let functID = ""
 
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                functID = functID + "const forceEditID" + id + "\n  return " +"\"" + this.props.ent[i].value + "\"" + ";\n\n"
+                functID = functID + "const forceEditID" + id + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n\n"
                 let appendValue = "forceEditID" + id
                 //alert("This is checking id: " + "  "+ id + "   " + appendValue + "  " + this.props.ent[i].value)
-                this.setState(state =>  ({ functionIDs: [ ...state.functionIDs, appendValue] }) )
+                this.setState(state => ({ functionIDs: [...state.functionIDs, appendValue] }))
                 //alert("BLEH" + this.state.functionIDs)
                 id++
             }
@@ -35,8 +35,8 @@ class MapOutput extends React.Component {
     //this takes in the chosen date format and creates the text that corresponds to how the user wants the entry to be manipulated
     createDateFormatString = (chosenFormat) => {
         let letDateString = ""
-        
-        if (chosenFormat !== "start"){
+
+        if (chosenFormat !== "start") {
             let y = ""
             let d = ""
             let m = ""
@@ -262,11 +262,11 @@ class MapOutput extends React.Component {
                 this.props.ent[i].sesarTitle !== "sample_comment" &&
                 this.props.ent[i].sesarTitle !== "description" &&
                 this.props.ent[i].sesarTitle !== "size") {
-                
-                    if (i === lastIndexOfContent && geological_age_found < 0 && field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0 )
-                        singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": \"" + this.props.ent[i].header + "\"\n"
-                    else 
-                        singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": \"" + this.props.ent[i].header + "\",\n"
+
+                if (i === lastIndexOfContent && geological_age_found < 0 && field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0)
+                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": \"" + this.props.ent[i].header + "\"\n"
+                else
+                    singlesAppendingString += "  " + this.props.ent[i].sesarTitle + ": \"" + this.props.ent[i].header + "\",\n"
 
             }
 
@@ -278,7 +278,7 @@ class MapOutput extends React.Component {
             multiAppendingString += "  geological_age: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "geological_age") {
-                    if (z === geological_age_found && (field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0 ))
+                    if (z === geological_age_found && (field_found < 0 && sample_found < 0 && size_found < 0 && description_found < 0))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === geological_age_found && (field_found > -1 || sample_found > -1 || size_found > -1 || description_found > -1))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
@@ -294,7 +294,7 @@ class MapOutput extends React.Component {
             multiAppendingString += "  field_name: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "field_name") {
-                    if (z === field_found && (sample_found < 0 && size_found < 0  && description_found < 0 ))
+                    if (z === field_found && (sample_found < 0 && size_found < 0 && description_found < 0))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === field_found && (sample_found > -1 || size_found > -1 || description_found > -1))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
@@ -312,7 +312,7 @@ class MapOutput extends React.Component {
             multiAppendingString += "  sample_comment: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "sample_comment") {
-                    if (z === sample_found && (size_found < 0 && description_found < 0 ))
+                    if (z === sample_found && (size_found < 0 && description_found < 0))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === sample_found && (size_found > -1 || description_found > -1))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
@@ -327,7 +327,7 @@ class MapOutput extends React.Component {
             multiAppendingString += "  description: ["
             for (let z = 0; z < this.props.ent.length; z++) {
                 if (this.props.ent[z].sesarTitle === "description") {
-                    if (z === description_found && (size_found < 0 ))
+                    if (z === description_found && (size_found < 0))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
                     else if (z === description_found && (size_found > -1))
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ],\n"
@@ -344,7 +344,7 @@ class MapOutput extends React.Component {
                 if (this.props.ent[z].sesarTitle === "size") {
                     if (z === size_found)
                         multiAppendingString += " \"" + this.props.ent[z].header + "\" ]\n"
-                    else if (z < lastIndexOfContent  && z < size_found)
+                    else if (z < lastIndexOfContent && z < size_found)
                         multiAppendingString += " \"" + this.props.ent[z].header + "\", "
                 }
             }
@@ -362,14 +362,14 @@ class MapOutput extends React.Component {
         let logicID = ""
 
         for (let i = 0; i < this.props.ent.length; i++) {
-            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>")  && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                logicID = logicID + "  "+ this.props.ent[i].sesarTitle + ":" + this.state.functionIDs[id]+",\n"
+            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
+                logicID = logicID + "  " + this.props.ent[i].sesarTitle + ":" + this.state.functionIDs[id] + ",\n"
                 id++
-                }
             }
+        }
 
-    return logicID
-}
+        return logicID
+    }
 
     createLogicAndCombination() {
         alert("Mapping Accepted!")
@@ -396,7 +396,7 @@ class MapOutput extends React.Component {
                 break;
             }
         }
-        
+
         let fileString = "//Start::::\n"
         fileString = fileString + this.forceEditFunction()
         fileString = fileString + this.createMulitValueJoins()
@@ -417,7 +417,7 @@ class MapOutput extends React.Component {
 
     render() {
         return (
-            <div align="center" className="marsOutput">
+            <div style={{ paddingLeft: "200px", margin: "10 auto" }} className="marsOutput">
                 <img className="mars--icon" src={mars} alt="marsIcon" onClick={() => this.createMapFile()}></img>
                 <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
             </div>

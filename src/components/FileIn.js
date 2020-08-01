@@ -126,12 +126,10 @@ class FileIn extends React.Component {
     }
 
     startPushingHelper = (result, i, jsArr) => {
-        console.log(JSON.stringify(Object.values(result.data[i])[1]))
 
         if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
 
 
-            console.log("FLAG 1: " + Object.values(result.data[i])[0])
             jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
         }
 
@@ -144,40 +142,32 @@ class FileIn extends React.Component {
             //     console.log(value)
             // }
 
-            console.log("FLAG 4: " + Object.values(result.data[i])[0].includes("["))
 
             let firstIndexFormat;
             // where we handle multivalue selections
             firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
-            console.log(firstIndexFormat)
             // BANDAID
             // One of the multivalue selections has an extra space in the mapOutput, this is a quick fix
             // However, when mars reads in mapping file, space may still need to be taken care of
             if (firstIndexFormat.length === 5 || firstIndexFormat.length === 6) {
-                console.log("FLAG 2: " + Object.values(result.data[i])[0])
                 //firstIndexFormat[4] = firstIndexFormat[4]
                 firstIndexFormat = this.removeBrackets(firstIndexFormat)
             }
 
-            console.log("CHANGED: " + firstIndexFormat + " : " + firstIndexFormat.length)
 
             if (firstIndexFormat.length === 4)
                 firstIndexFormat[3] = firstIndexFormat[3].substring(0, firstIndexFormat[3].length - 3)
             else if (firstIndexFormat.length === 5)
                 firstIndexFormat[3] = firstIndexFormat[3].substring(2, firstIndexFormat[3].length - 1)
-            console.log("BEFORE IT GOES IN: " + firstIndexFormat[2] + firstIndexFormat[3])
             jsArr.push(firstIndexFormat[2] + firstIndexFormat[3])
             if ((Object.values(result.data[i])[1] !== undefined && Object.values(result.data[i])[1]).length >= 1) {
 
-                console.log("FLAG 3: " + Object.values(result.data[i])[1].length)
                 for (let j = 0; j < (Object.values(result.data[i])[1]).length; j++) {
-                    console.log("LATEST: " + Object.values(result.data[i])[1][j])
                     if (Object.values(result.data[i])[1][j] !== "")
                         jsArr.push(firstIndexFormat[2] + (Object.values(result.data[i])[1][j]).substring(2, (Object.values(result.data[i])[1][j]).length - 1))
                 }
             }
         }
-        console.log(jsArr)
     }
 
     foundSection = () => {
@@ -201,9 +191,28 @@ class FileIn extends React.Component {
             let dateIdentified = false;
             // start pushing is where we find "let map..." and start reading
             let startPushing = false;
+            let addToForceEdit = false;
+            let forceEditValueArr = [];
+
+            if (JSON.stringify(Object.values(result.data[0])).includes("forceEdit")) {
+                addToForceEdit = true
+            }
+
+
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
                 //console.log(Object.values(result.data[i]))
+                if (JSON.stringify(Object.values(result.data[i])).includes("forceEdit")) {
+                    addToForceEdit = true
+                }
+
+                if (addToForceEdit === true && JSON.stringify(Object.values(result.data[i])).includes("return")) {
+                    let forceEditValue = JSON.stringify(Object.values(result.data[i])).split(" ")
+                    forceEditValueArr.push(forceEditValue[3].substring(2, forceEditValue[3].length - 5))
+                    addToForceEdit = false
+                }
+
+
                 if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("let map")) {
                     startPushing = true
                 }
@@ -350,8 +359,17 @@ class FileIn extends React.Component {
                 jsArr.splice(removeIndex[i], 1)
             }
 
+            let addForceEditValues = jsArr
+            let forceEditValuesCount = 0
+            for (let i = 0; i < addForceEditValues.length; i++) {
+                if (addForceEditValues[i][1] === "<METADATA_ADD>" || addForceEditValues[i][1] === "<METADATA>") {
+                    addForceEditValues[i][1] = forceEditValueArr[forceEditValuesCount]
+                    forceEditValuesCount++
+                }
+            }
+
             // establish state that we have a jsArr
-            this.setState({ jsFile: jsArr, includesJsFile: true, isJsFile: true })
+            this.setState({ jsFile: addForceEditValues, includesJsFile: true, isJsFile: true })
         }
 
         // this is where we combine objects if there are multiple csv's for the purpose of being able to toggle through tuples of both files
@@ -398,7 +416,8 @@ class FileIn extends React.Component {
         this.setState({ num: this.state.num + 1 })
         if (this.state.num === this.state.files.length - 1) {
             //force card edit replace 5 with  this.numOfEmptyCards
-            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 5)
+
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 1)
         }
 
         // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies
