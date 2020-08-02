@@ -156,3 +156,16 @@ export const forceEdit = obj => {
     }
 }
 
+export const persistingDataConcat = obj => {
+    return {
+        type: "PERSISTING_METADATA_CONCAT",
+        payload: obj,
+    }
+}
+
+export const persistingDataUpdate = obj => {
+    return {
+        type: "PERSISTING_METADATA_UPDATE",
+        payload: obj,
+    }
+}

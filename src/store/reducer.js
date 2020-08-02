@@ -40,6 +40,7 @@ const reducer =
           count: 0
         }
       ],
+      persistingMetaData: [],
       toggleIndex: -1,
       toggleInUse: false,
       toggleArr: [],
@@ -98,6 +99,23 @@ const reducer =
 
     switch (action.type) {
 
+      case "PERSISTING_METADATA_CONCAT":
+        return {
+          ...state,
+          persistingMetaData : state.persistingMetaData.concat(action.payload)
+        }
+
+        //might not be necessary
+      case "PERSISTING_METADATA_UPDATE":
+        return update(state, 
+          { 
+          persistingMetaData: {
+            [action.payload.index]: {
+              value: { $set: action.payload.value}
+              }
+            }
+          })
+        
       case "TOTAL_MULTI_COUNT":
         return update(state,
           {

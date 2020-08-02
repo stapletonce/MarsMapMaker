@@ -19,9 +19,14 @@ class MapOutput extends React.Component {
         let id = 0;
         let functID = ""
 
+        let sortedPersistent = this.props.persist
+        sortedPersistent.sort((a, b) => (a.index > b.index) ? 1 : -1)
+        //for (let i = 0; i < sortedPersistent.length; i++)
+        //    {alert(sortedPersistent[i].header) }
+
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                functID = functID + "const forceEditID" + id + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n\n"
+                functID = functID + "const forceEditID" + id + "= () => {" + "\n" + "let mapMakerHeader = " + "\"" + sortedPersistent[id].header + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
                 //alert("This is checking id: " + "  "+ id + "   " + appendValue + "  " + this.props.ent[i].value)
                 this.setState(state => ({ functionIDs: [...state.functionIDs, appendValue] }))
@@ -428,6 +433,7 @@ class MapOutput extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
+        persist: state.persistingMetaData,
         multiValue: state.multiValues,
         singleMeasure: state.singleMeasureArr,
         dateFormat: state.substringDateFormat,
