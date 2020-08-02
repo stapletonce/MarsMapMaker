@@ -298,7 +298,8 @@ class FieldCard extends React.Component {
             persistentMetaData = {
                 index: this.props.id,
                 value: this.props.ent[this.props.id].value,
-                header:this.props.ent[this.props.id].header,
+                header: this.props.ent[this.props.id].header,
+                forceID: this.props.persist.length,
                 isMetaData: this.props.ent[this.props.id].header.includes("<METADATA>"),
                 isMetaDataAdd: this.props.ent[this.props.id].header.includes("<METADATA_ADD>")
             }
