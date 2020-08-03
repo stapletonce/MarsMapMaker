@@ -83,9 +83,7 @@ class FieldCard extends React.Component {
 
     fileCallback = (data, title) => {
         let currentComponent = this
-
-
-
+        console.log(data)
 
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "") {
@@ -107,7 +105,7 @@ class FieldCard extends React.Component {
         else {
             if (this.props.ent[this.props.id].header === "<METADATA>" || this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
 
-                currentComponent.setState({ updatedValue: this.props.ent[this.props.id].value, dropDownChosen: true, index: -1 })
+                currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
             }
             else {
                 currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
@@ -319,7 +317,7 @@ class FieldCard extends React.Component {
                     header: "<METADATA>"
                 }
             }
-            
+
             let alreadySet = false
             for (let i = 0; i < this.props.persist.length; i++) {
                 if (this.props.persist[i].index === persistentMetaData.index) {
@@ -328,10 +326,11 @@ class FieldCard extends React.Component {
                 }
             }
 
-            if (alreadySet) { console.log("Header already recorded")}
+            if (alreadySet) { console.log("Header already recorded") }
             else {
-                this.props.persistingDataConcat(persistentMetaData) }
-            
+                this.props.persistingDataConcat(persistentMetaData)
+            }
+
             this.props.forceEdit(obj)
         }
     }

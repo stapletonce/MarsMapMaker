@@ -166,8 +166,6 @@ const CardList = (props) => {
         }
         else {
             if (newKey !== 0) {
-                console.log("GETTING HERE")
-                console.log(props.forceValues[forcedIndex])
                 storedValue = {
                     id: newKey,
                     sesarTitle: sesarFind,
@@ -182,8 +180,6 @@ const CardList = (props) => {
                 fieldContentValue = props.forceValues[forcedIndex]
             }
             else {
-                console.log("GETTING HERE")
-                console.log(props.forceValues[forcedIndex])
                 storedValue = {
                     id: newKey,
                     sesarTitle: sesarFind,
@@ -219,7 +215,8 @@ const CardList = (props) => {
                 fieldTitle={field}
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={fieldContentValue}
+                fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                //fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""
                 }
             />)
@@ -253,7 +250,6 @@ const CardList = (props) => {
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
-        console.log(objArray)
         const initObj = {
             objArr: objArray,
             useOnce: useOnce,
