@@ -19,7 +19,8 @@ import {
     removeContent,
     setSubstringDateFormat,
     toggleInUse,
-    totalMultiValueCount
+    totalMultiValueCount,
+    setForcedOldToNew
 } from "../actions/"
 
 //////////////////////////////////////////////////////////
@@ -329,13 +330,24 @@ class DropDown extends React.Component {
 
     // update onClick function that parses through your selection and how to handle it
     // Handled differently based on if it is a one2one, multivalue, or a date selection
-    updateValueHelper = (newValue) => {
+    updateValueHelper = (newValue, isAutomatic) => {
         let breakOrFormat;
+        let entriesHeader = this.props.ent[this.props.id].header
+        let entriesOld = this.props.ent[this.props.id].oldValue
 
         if (this.props.dateFormat != null)
             breakOrFormat = this.props.dateFormat.split(" ")
 
         // this.props.sizeCallback(newValue)
+
+        // if (entriesHeader === "<METADATA>" && isAutomatic === false) {
+        //     console.log("GETTING IN HERE!!!!")
+        //     const obj = {
+        //         index: this.props.id,
+        //         old: entriesOld
+        //     }
+        //     this.props.setForcedOldToNew(obj)
+        // }
 
         if ((newValue === "collection_end_date" || newValue === "collection_start_date") && !this.props.hasChosen) {
             //if dateformat and dropdownoption is not chosen do this 
@@ -418,15 +430,20 @@ class DropDown extends React.Component {
 
         if (this.props.value !== undefined && (this.props.ent[this.props.id].header !== "<METADATA>" || newValue !== this.props.ent[this.props.id].sesarTitle)) {
             this.props.callback(this.props.value, newValue)
+            return
         }
         //this.props.value.toLowerCase().replace(/[ -/*_#]/g, '')
+        if (this.props.ent[this.props.id].header === "<METADATA>") {
+            this.props.callback(this.props.ent[this.props.id].value, newValue)
+            return
+        }
     }
 
     // uses the clicked list-item in the dropdown to create an object to be passed into the dropdownUpdate action
     // updates specific object in the redux store
     updateValue = (e) => {
         const newValue = e.target.value
-        this.updateValueHelper(newValue)
+        this.updateValueHelper(newValue, false)
     }
 
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
@@ -434,7 +451,7 @@ class DropDown extends React.Component {
         const newValue = this.props.ent[this.props.id].sesarTitle
 
 
-        this.updateValueHelper(newValue)
+        this.updateValueHelper(newValue, true)
     }
 
 
@@ -588,4 +605,4 @@ const mapStateToProps = (state) => {
         totalMulti: state.totalMultiCount
     };
 };
-export default connect(mapStateToProps, { totalMultiValueCount, removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);
+export default connect(mapStateToProps, { setForcedOldToNew, totalMultiValueCount, removeContent, dropdownUpdate, multiValueCreate, multiValueCreateFinish, setSubstringDateFormat, toggleInUse })(DropDown);
