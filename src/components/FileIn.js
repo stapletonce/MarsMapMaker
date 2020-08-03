@@ -80,7 +80,8 @@ class FileIn extends React.Component {
         let count = 0;
         if (this.state.files !== undefined) {
             for (let i = 0; i < this.state.files.length; i++) {
-                if (this.state.files[i].type === "text/javascript")
+                console.log(this.state.files[i].type)
+                if (this.state.files[i].type.includes("javascript"))
                     count += 1
             }
         }
@@ -101,6 +102,8 @@ class FileIn extends React.Component {
             return
         }
         else if (this.state.files.length === 3 && count !== 1) {
+            console.log(this.state.files.length)
+            console.log(count)
             this.refreshFileIn()
             alert("You have either selected too many CSV or too many mapping files!")
             return
