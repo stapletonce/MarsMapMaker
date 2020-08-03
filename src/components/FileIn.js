@@ -345,10 +345,12 @@ class FileIn extends React.Component {
                 jsArr[i] = jsArr[i].replace(/\\/g, '')
                 jsArr[i] = jsArr[i].replace(/"/g, "")
                 jsArr[i] = jsArr[i].replace(" ", "")
+                console.log(jsArr[i])
                 if (jsArr[i] !== "") {
                     jsArr[i] = jsArr[i].split(":")
                     jsArr[i][0] = jsArr[i][0].replace(" ", "")
-                    jsArr[i][1] = jsArr[i][1].replace(" ", "")
+                    if (jsArr[i][1] !== undefined)
+                        jsArr[i][1] = jsArr[i][1].replace(" ", "")
                 }
                 else
                     removeIndex.push(i)
