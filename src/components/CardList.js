@@ -165,20 +165,39 @@ const CardList = (props) => {
             fieldContentValue = fieldValState[newKey]
         }
         else {
-            console.log("GETTING HERE")
-            console.log(props.forceValues[forcedIndex])
-            storedValue = {
-                id: newKey,
-                sesarTitle: sesarFind,
-                oldValue: fieldValState[newKey],
-                value: props.forceValues[forcedIndex],
-                // this used to be id 
-                header: field,
-                isDate: false,
-                isMeasurement: false,
-                isGreen: fieldValState[newKey] !== ""
+            if (newKey !== 0) {
+                console.log("GETTING HERE")
+                console.log(props.forceValues[forcedIndex])
+                storedValue = {
+                    id: newKey,
+                    sesarTitle: sesarFind,
+                    oldValue: fieldValState[newKey],
+                    value: props.forceValues[forcedIndex],
+                    // this used to be id 
+                    header: "<METADATA>",
+                    isDate: false,
+                    isMeasurement: false,
+                    isGreen: fieldValState[newKey] !== ""
+                }
+                fieldContentValue = props.forceValues[forcedIndex]
             }
-            fieldContentValue = props.forceValues[forcedIndex]
+            else {
+                console.log("GETTING HERE")
+                console.log(props.forceValues[forcedIndex])
+                storedValue = {
+                    id: newKey,
+                    sesarTitle: sesarFind,
+                    oldValue: fieldValState[newKey],
+                    value: props.forceValues[forcedIndex],
+                    // this used to be id 
+                    header: "<METADATA_ADD>",
+                    isDate: false,
+                    isMeasurement: false,
+                    isGreen: fieldValState[newKey] !== ""
+                }
+                fieldContentValue = props.forceValues[forcedIndex]
+            }
+
         }
 
         //create an object and add it to store
