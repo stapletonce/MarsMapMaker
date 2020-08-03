@@ -96,7 +96,8 @@ class FieldCard extends React.Component {
         }
 
         else if (this.props.fieldValue === "") {
-            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true, index: -1 })
+            if (this.props.ent[this.props.id].value === "")
+                currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true, index: -1 })
         }
 
         else if (title === "first") {
