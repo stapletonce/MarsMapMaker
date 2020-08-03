@@ -116,7 +116,7 @@ const CardList = (props) => {
         let sesarPassIn = "";
         if (props.jsFileValues !== undefined)
             for (let i = 0; i < props.jsFileValues.length; i++) {
-                if (field === props.jsFileValues[i][1].replace(" ", "")) {
+                if (props.jsFileValues[i][1] !== undefined && field === props.jsFileValues[i][1].replace(" ", "")) {
                     sesarPassIn = (props.jsFileValues[i][0])
                 }
             }
