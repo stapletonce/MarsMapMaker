@@ -45,7 +45,7 @@ const CardList = (props) => {
     const [hide, setHide] = useState(false)
 
     // used to toggle between the tuples of the csv loaded in
-    const [toggleIndex, addToToggleIndex] = useState(0)
+    const [toggleIndex, addToToggleIndex] = useState(1)
 
     const [addingCard, clickingAddCard] = useState(false)
 
@@ -93,7 +93,7 @@ const CardList = (props) => {
 
     // goes to the previous row of content in the csv
     const leftArrowToggle = () => {
-        if (toggleIndex > 0) {
+        if (toggleIndex > 1) {
             addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
             let obj = {
                 bool: true
@@ -104,7 +104,7 @@ const CardList = (props) => {
 
     // returns to the first row of content in the csv
     const refreshButton = () => {
-        addToToggleIndex(0)
+        addToToggleIndex(1)
         let obj = {
             bool: true
         }
@@ -145,21 +145,43 @@ const CardList = (props) => {
     // maps content to separate fieldcards on the screen
     const fields = fieldsState.map((field) => {
         newKey += 1
-
+        let storedValue = {}
         let sesarFind = findSesarPassIn(field)
+        let fieldContentValue;
+
+        let forcedIndex = props.forceTitles.indexOf(field)
+        if (forcedIndex === -1) {
+            storedValue = {
+                id: newKey,
+                sesarTitle: sesarFind,
+                oldValue: fieldValState[newKey],
+                value: fieldValState[newKey],
+                // this used to be id 
+                header: field,
+                isDate: false,
+                isMeasurement: false,
+                isGreen: fieldValState[newKey] !== ""
+            }
+            fieldContentValue = fieldValState[newKey]
+        }
+        else {
+            console.log("GETTING HERE")
+            console.log(props.forceValues[forcedIndex])
+            storedValue = {
+                id: newKey,
+                sesarTitle: sesarFind,
+                oldValue: fieldValState[newKey],
+                value: props.forceValues[forcedIndex],
+                // this used to be id 
+                header: field,
+                isDate: false,
+                isMeasurement: false,
+                isGreen: fieldValState[newKey] !== ""
+            }
+            fieldContentValue = props.forceValues[forcedIndex]
+        }
 
         //create an object and add it to store
-        let storedValue = {
-            id: newKey,
-            sesarTitle: sesarFind,
-            oldValue: fieldValState[newKey],
-            value: fieldValState[newKey],
-            // this used to be id 
-            header: field,
-            isDate: false,
-            isMeasurement: false,
-            isGreen: fieldValState[newKey] !== ""
-        }
 
         // after object is created, append it to the object array & add one to the ID
         useOnce.push("")
@@ -168,7 +190,7 @@ const CardList = (props) => {
         // create the FieldCard that you see in the UI
         // If toggleIndex is 0 then we're on the 1st row so give it raw input
         // Else give it the object.values..
-        if (toggleIndex === 0) {
+        if (toggleIndex === 1) {
             return (<FieldCard
                 multiCount={props.multiCount}
                 jsFileValues={props.jsFileValues}
@@ -178,7 +200,7 @@ const CardList = (props) => {
                 fieldTitle={field}
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
+                fieldValue={fieldContentValue}
                 hasContent={props.fieldVal[newKey] !== ""
                 }
             />)
@@ -212,6 +234,7 @@ const CardList = (props) => {
 
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
+        console.log(objArray)
         const initObj = {
             objArr: objArray,
             useOnce: useOnce,
@@ -351,10 +374,10 @@ const CardList = (props) => {
     const hideOrShow = () => {
         let final = ""
         if (hide === true) {
-            final = "Unhide"
+            final = "Show Unused Cards"
         }
         else {
-            final = "Hide"
+            final = "Hide Unused Cards"
         }
         return final
     }
