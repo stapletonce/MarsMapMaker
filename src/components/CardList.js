@@ -421,7 +421,7 @@ const CardList = (props) => {
 
         <div>
             <div className="label">
-                <div className="label">
+                <div className="label" style={{ position: "fixed", background: "white", zIndex: "10", borderBottom: "4px solid black", borderTop: "8px solid black", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
                     <div style={{ paddingTop: "8em" }} className="toggle__content">
                         <div style={{ display: "inline", float: "left", width: '250px' }}>
                             <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
@@ -469,27 +469,28 @@ const CardList = (props) => {
                                 <CenturyDropDown />
                             </div>}
                     </div>
-                </div>
-
-                <div className="description">
-                    <div>
-                        <object className="fieldWidget">
-                            <div className="description__checkbox">
-                                Use
+                    <div className="description">
+                        <div>
+                            <object className="fieldWidget">
+                                <div className="description__checkbox">
+                                    Use
                             </div>
-                            <div dir="rtl" className="description__title">:Header</div>
-                            <div className="description__value" style={{ width: "23.8%" }}> Content</div>
-                        </object>
-                        <object style={{ display: "inline-block", paddingLeft: "4.2em" }}>
-                            <div style={{ fontSize: "18px" }}>Maps To</div>
-                        </object>
-                        <object className="descriptionMapped" align="right">
-                            <div className="description__mapped__content">Mapped Content</div>
-                            <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
-                        </object>
+                                <div dir="rtl" className="description__title">:Header</div>
+                                <div className="description__value" style={{ width: "23.8%" }}> Content</div>
+                            </object>
+                            <object style={{ display: "inline-block", paddingLeft: "4.2em" }}>
+                                <div style={{ fontSize: "18px" }}>Maps To</div>
+                            </object>
+                            <object className="descriptionMapped" align="right">
+                                <div className="description__mapped__content">Mapped Content</div>
+                                <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
+                            </object>
+                        </div>
                     </div>
                 </div>
-                <div>{fields}</div>
+
+                <div style={{ paddingTop: "22.6em" }}>{fields}</div>
+
             </div>
             <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
                 href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

@@ -363,7 +363,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
@@ -397,7 +397,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
@@ -433,7 +433,7 @@ class FieldCard extends React.Component {
                                 <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                             </object>
                             <object className="arrow">
-                                <i className="fa fa-angle-double-right"></i>
+                                <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                             </object>
                             <object className="descriptionMapped" align="right">
                                 {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
@@ -478,7 +478,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + String(this.props.id + 1)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
@@ -522,7 +522,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
