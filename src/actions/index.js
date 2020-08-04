@@ -159,13 +159,20 @@ export const forceEdit = obj => {
 export const persistingDataConcat = obj => {
     return {
         type: "PERSISTING_METADATA_CONCAT",
-        payload: obj,
+        payload: obj
     }
 }
 
 export const persistingDataUpdate = obj => {
     return {
         type: "PERSISTING_METADATA_UPDATE",
-        payload: obj,
+        payload: obj
+    }
+}
+
+export const setForcedOldToNew = obj => {
+    return {
+        type: "CHANGE_FORCED_CARD_VALUE_TO_OLD",
+        payload: obj
     }
 }

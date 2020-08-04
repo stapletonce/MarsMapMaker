@@ -45,7 +45,7 @@ const CardList = (props) => {
     const [hide, setHide] = useState(false)
 
     // used to toggle between the tuples of the csv loaded in
-    const [toggleIndex, addToToggleIndex] = useState(0)
+    const [toggleIndex, addToToggleIndex] = useState(1)
 
     const [addingCard, clickingAddCard] = useState(false)
 
@@ -93,7 +93,7 @@ const CardList = (props) => {
 
     // goes to the previous row of content in the csv
     const leftArrowToggle = () => {
-        if (toggleIndex > 0) {
+        if (toggleIndex > 1) {
             addToToggleIndex((toggleIndex - 1) % props.toggleArr.length)
             let obj = {
                 bool: true
@@ -104,7 +104,7 @@ const CardList = (props) => {
 
     // returns to the first row of content in the csv
     const refreshButton = () => {
-        addToToggleIndex(0)
+        addToToggleIndex(1)
         let obj = {
             bool: true
         }
@@ -116,7 +116,7 @@ const CardList = (props) => {
         let sesarPassIn = "";
         if (props.jsFileValues !== undefined)
             for (let i = 0; i < props.jsFileValues.length; i++) {
-                if (field === props.jsFileValues[i][1].replace(" ", "")) {
+                if (props.jsFileValues[i][1] !== undefined && field === props.jsFileValues[i][1].replace(" ", "")) {
                     sesarPassIn = (props.jsFileValues[i][0])
                 }
             }
@@ -145,21 +145,58 @@ const CardList = (props) => {
     // maps content to separate fieldcards on the screen
     const fields = fieldsState.map((field) => {
         newKey += 1
-
+        let storedValue = {}
         let sesarFind = findSesarPassIn(field)
+        let fieldContentValue;
+
+        let forcedIndex = props.forceTitles.indexOf(field)
+        if (forcedIndex === -1) {
+            storedValue = {
+                id: newKey,
+                sesarTitle: sesarFind,
+                oldValue: fieldValState[newKey],
+                value: fieldValState[newKey],
+                // this used to be id 
+                header: field,
+                isDate: false,
+                isMeasurement: false,
+                isGreen: fieldValState[newKey] !== ""
+            }
+            fieldContentValue = fieldValState[newKey]
+        }
+        else {
+            if (newKey !== 0) {
+                storedValue = {
+                    id: newKey,
+                    sesarTitle: sesarFind,
+                    oldValue: fieldValState[newKey],
+                    value: props.forceValues[forcedIndex],
+                    // this used to be id 
+                    header: "<METADATA>",
+                    isDate: false,
+                    isMeasurement: false,
+                    isGreen: fieldValState[newKey] !== ""
+                }
+                fieldContentValue = props.forceValues[forcedIndex]
+            }
+            else {
+                storedValue = {
+                    id: newKey,
+                    sesarTitle: sesarFind,
+                    oldValue: fieldValState[newKey],
+                    value: props.forceValues[forcedIndex],
+                    // this used to be id 
+                    header: "<METADATA_ADD>",
+                    isDate: false,
+                    isMeasurement: false,
+                    isGreen: fieldValState[newKey] !== ""
+                }
+                fieldContentValue = props.forceValues[forcedIndex]
+            }
+
+        }
 
         //create an object and add it to store
-        let storedValue = {
-            id: newKey,
-            sesarTitle: sesarFind,
-            oldValue: fieldValState[newKey],
-            value: fieldValState[newKey],
-            // this used to be id 
-            header: field,
-            isDate: false,
-            isMeasurement: false,
-            isGreen: fieldValState[newKey] !== ""
-        }
 
         // after object is created, append it to the object array & add one to the ID
         useOnce.push("")
@@ -168,7 +205,7 @@ const CardList = (props) => {
         // create the FieldCard that you see in the UI
         // If toggleIndex is 0 then we're on the 1st row so give it raw input
         // Else give it the object.values..
-        if (toggleIndex === 0) {
+        if (toggleIndex === 1) {
             return (<FieldCard
                 multiCount={props.multiCount}
                 jsFileValues={props.jsFileValues}
@@ -178,7 +215,8 @@ const CardList = (props) => {
                 fieldTitle={field}
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
-                fieldValue={props.fieldVal[newKey]}
+                fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
+                //fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""
                 }
             />)
@@ -351,10 +389,10 @@ const CardList = (props) => {
     const hideOrShow = () => {
         let final = ""
         if (hide === true) {
-            final = "Unhide"
+            final = "Show Unused Cards"
         }
         else {
-            final = "Hide"
+            final = "Hide Unused Cards"
         }
         return final
     }
@@ -383,7 +421,7 @@ const CardList = (props) => {
 
         <div>
             <div className="label">
-                <div className="label">
+                <div className="label" style={{ position: "fixed", background: "white", zIndex: "10", borderBottom: "4px solid black", borderTop: "8px solid black", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
                     <div style={{ paddingTop: "8em" }} className="toggle__content">
                         <div style={{ display: "inline", float: "left", width: '250px' }}>
                             <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
@@ -431,27 +469,28 @@ const CardList = (props) => {
                                 <CenturyDropDown />
                             </div>}
                     </div>
-                </div>
-
-                <div className="description">
-                    <div>
-                        <object className="fieldWidget">
-                            <div className="description__checkbox">
-                                Use
+                    <div className="description">
+                        <div>
+                            <object className="fieldWidget">
+                                <div className="description__checkbox">
+                                    Use
                             </div>
-                            <div dir="rtl" className="description__title">:Header</div>
-                            <div className="description__value" style={{ width: "23.8%" }}> Content</div>
-                        </object>
-                        <object style={{ display: "inline-block", paddingLeft: "4.2em" }}>
-                            <div style={{ fontSize: "18px" }}>Maps To</div>
-                        </object>
-                        <object className="descriptionMapped" align="right">
-                            <div className="description__mapped__content">Mapped Content</div>
-                            <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
-                        </object>
+                                <div dir="rtl" className="description__title">:Header</div>
+                                <div className="description__value" style={{ width: "23.8%" }}> Content</div>
+                            </object>
+                            <object style={{ display: "inline-block", paddingLeft: "4.2em" }}>
+                                <div style={{ fontSize: "18px" }}>Maps To</div>
+                            </object>
+                            <object className="descriptionMapped" align="right">
+                                <div className="description__mapped__content">Mapped Content</div>
+                                <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
+                            </object>
+                        </div>
                     </div>
                 </div>
-                <div>{fields}</div>
+
+                <div style={{ paddingTop: "22.6em" }}>{fields}</div>
+
             </div>
             <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
                 href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>

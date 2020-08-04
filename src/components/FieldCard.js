@@ -83,9 +83,7 @@ class FieldCard extends React.Component {
 
     fileCallback = (data, title) => {
         let currentComponent = this
-
-
-
+        console.log(data)
 
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "") {
@@ -98,7 +96,8 @@ class FieldCard extends React.Component {
         }
 
         else if (this.props.fieldValue === "") {
-            currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true, index: -1 })
+            if (this.props.ent[this.props.id].value === "")
+                currentComponent.setState({ updatedValue: "Not Provided", dropDownChosen: true, index: -1 })
         }
 
         else if (title === "first") {
@@ -107,7 +106,7 @@ class FieldCard extends React.Component {
         else {
             if (this.props.ent[this.props.id].header === "<METADATA>" || this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) {
 
-                currentComponent.setState({ updatedValue: this.props.ent[this.props.id].value, dropDownChosen: true, index: -1 })
+                currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
             }
             else {
                 currentComponent.setState({ updatedValue: data, dropDownChosen: true, index: -1 })
@@ -319,7 +318,7 @@ class FieldCard extends React.Component {
                     header: "<METADATA>"
                 }
             }
-            
+
             let alreadySet = false
             for (let i = 0; i < this.props.persist.length; i++) {
                 if (this.props.persist[i].index === persistentMetaData.index) {
@@ -328,10 +327,11 @@ class FieldCard extends React.Component {
                 }
             }
 
-            if (alreadySet) { console.log("Header already recorded")}
+            if (alreadySet) { console.log("Header already recorded") }
             else {
-                this.props.persistingDataConcat(persistentMetaData) }
-            
+                this.props.persistingDataConcat(persistentMetaData)
+            }
+
             this.props.forceEdit(obj)
         }
     }
@@ -364,7 +364,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
@@ -398,7 +398,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
@@ -434,7 +434,7 @@ class FieldCard extends React.Component {
                                 <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                             </object>
                             <object className="arrow">
-                                <i className="fa fa-angle-double-right"></i>
+                                <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                             </object>
                             <object className="descriptionMapped" align="right">
                                 {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
@@ -479,7 +479,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + String(this.props.id + 1)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
@@ -523,7 +523,7 @@ class FieldCard extends React.Component {
                                     <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                                 </object>
                                 <object className="arrow">
-                                    <i className="fa fa-angle-double-right"></i>
+                                    <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :

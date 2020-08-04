@@ -98,24 +98,33 @@ const reducer =
     action) => {
 
     switch (action.type) {
+      case "CHANGE_FORCED_CARD_VALUE_TO_OLD":
+        return update(state,
+          {
+            entries: {
+              [action.payload.index]: {
+                value: { $set: "hello" }
+              }
+            }
+          })
 
       case "PERSISTING_METADATA_CONCAT":
         return {
           ...state,
-          persistingMetaData : state.persistingMetaData.concat(action.payload)
+          persistingMetaData: state.persistingMetaData.concat(action.payload)
         }
 
-        //might not be necessary
+      //might not be necessary
       case "PERSISTING_METADATA_UPDATE":
-        return update(state, 
-          { 
-          persistingMetaData: {
-            [action.payload.index]: {
-              value: { $set: action.payload.value}
+        return update(state,
+          {
+            persistingMetaData: {
+              [action.payload.index]: {
+                value: { $set: action.payload.value }
               }
             }
           })
-        
+
       case "TOTAL_MULTI_COUNT":
         return update(state,
           {
@@ -204,15 +213,15 @@ const reducer =
 
         }
 
-        case "SHOW_METADATA_CARD":
-          return update(state, {
-            entries: {
-              [action.payload.id]: {
-                isGreen: { $set: true}
-              }
+      case "SHOW_METADATA_CARD":
+        return update(state, {
+          entries: {
+            [action.payload.id]: {
+              isGreen: { $set: true }
             }
           }
-            )
+        }
+        )
 
 
       case "CHOOSE_FORMAT":

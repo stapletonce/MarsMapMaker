@@ -1,6 +1,6 @@
 //Start::::
 const forceEditID0= () => {
-let mapMakerHeader = "SHIP_CODE"
+let mapMakerHeader = "<METADATA_ADD>"
   return "Scripps";
 }
 const keyValueString = (scrippsValue, scrippsKey) => {
@@ -19,15 +19,16 @@ const scrippsDate = (scrippsValue) => {
 }
 
 let map = {
-  igsn: "<METADATA>",
-  current_archive: "PLATFORM",
-  collection_method: "CRUISE",
-  cruise_field_prgrm: "SAMPLE",
-  collection_start_date: "BEGIN_DATE"
+  sample_type: "<METADATA_ADD>",
+  platform_name: "FACILITY_CODE",
+  name: "CRUISE",
+  collection_start_date: "BEGIN_DATE",
+  field_name: [ "PLATFORM" ],
+  size: [ "SHIP_CODE" ]
 }
 
 let logic = { 
-  igsn:undefined,
+  sample_type: forceEditID0,
   collection_start_date: scrippsDate,
   collection_end_date: scrippsDate,
   geological_age: keyValueString,

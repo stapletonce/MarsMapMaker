@@ -34,7 +34,9 @@ class FileIn extends React.Component {
             csvfile: undefined,
             csvfile2: undefined,
             csvfile3: undefined,
-            loaded: false
+            loaded: false,
+            forceEditTitles: [],
+            forceEditValues: []
         };
         this.updateData = this.updateData.bind(this);
     }
@@ -78,7 +80,8 @@ class FileIn extends React.Component {
         let count = 0;
         if (this.state.files !== undefined) {
             for (let i = 0; i < this.state.files.length; i++) {
-                if (this.state.files[i].type === "text/javascript")
+                console.log(this.state.files[i].type)
+                if (this.state.files[i].type.includes("javascript"))
                     count += 1
             }
         }
@@ -99,6 +102,8 @@ class FileIn extends React.Component {
             return
         }
         else if (this.state.files.length === 3 && count !== 1) {
+            console.log(this.state.files.length)
+            console.log(count)
             this.refreshFileIn()
             alert("You have either selected too many CSV or too many mapping files!")
             return
@@ -192,7 +197,8 @@ class FileIn extends React.Component {
             // start pushing is where we find "let map..." and start reading
             let startPushing = false;
             let addToForceEdit = false;
-            let forceEditValueArr = [];
+            let forceEditValueTitleArr = [];
+            let forceEditValueContentArr = []
 
             if (JSON.stringify(Object.values(result.data[0])).includes("forceEdit")) {
                 addToForceEdit = true
@@ -202,14 +208,22 @@ class FileIn extends React.Component {
             // parsing out a javascript file
             for (let i = 1; i < result.data.length - 1; i++) {
                 //console.log(Object.values(result.data[i]))
-                if (JSON.stringify(Object.values(result.data[i])).includes("forceEdit")) {
+                if (JSON.stringify(Object.values(result.data[i])).includes("forceEdit") && JSON.stringify(Object.values(result.data[i])).includes("const")) {
                     addToForceEdit = true
                 }
 
-                if (addToForceEdit === true && JSON.stringify(Object.values(result.data[i])).includes("return")) {
-                    let forceEditValue = JSON.stringify(Object.values(result.data[i])).split(" ")
-                    forceEditValueArr.push(forceEditValue[3].substring(2, forceEditValue[3].length - 5))
-                    addToForceEdit = false
+                if (addToForceEdit === true) {
+                    if (JSON.stringify(Object.values(result.data[i])).includes("mapMakerHeader")) {
+                        let forceEditValue = JSON.stringify(Object.values(result.data[i])).split(" ")
+                        forceEditValueTitleArr.push(forceEditValue[forceEditValue.length - 1].substring(2, forceEditValue[3].length - 4))
+                    }
+                    if (JSON.stringify(Object.values(result.data[i])).includes("return")) {
+                        let forceEditValue = JSON.stringify(Object.values(result.data[i])).split(" ")
+                        forceEditValueContentArr.push(forceEditValue[3].substring(2, forceEditValue[3].length - 5))
+                        addToForceEdit = false
+                    }
+
+
                 }
 
 
@@ -345,10 +359,12 @@ class FileIn extends React.Component {
                 jsArr[i] = jsArr[i].replace(/\\/g, '')
                 jsArr[i] = jsArr[i].replace(/"/g, "")
                 jsArr[i] = jsArr[i].replace(" ", "")
+                console.log(jsArr[i])
                 if (jsArr[i] !== "") {
                     jsArr[i] = jsArr[i].split(":")
                     jsArr[i][0] = jsArr[i][0].replace(" ", "")
-                    jsArr[i][1] = jsArr[i][1].replace(" ", "")
+                    if (jsArr[i][1] !== undefined)
+                        jsArr[i][1] = jsArr[i][1].replace(" ", "")
                 }
                 else
                     removeIndex.push(i)
@@ -363,13 +379,13 @@ class FileIn extends React.Component {
             let forceEditValuesCount = 0
             for (let i = 0; i < addForceEditValues.length; i++) {
                 if (addForceEditValues[i][1] === "<METADATA_ADD>" || addForceEditValues[i][1] === "<METADATA>") {
-                    addForceEditValues[i][1] = forceEditValueArr[forceEditValuesCount]
+                    addForceEditValues[i][1] = forceEditValueTitleArr[forceEditValuesCount]
                     forceEditValuesCount++
                 }
             }
 
             // establish state that we have a jsArr
-            this.setState({ jsFile: addForceEditValues, includesJsFile: true, isJsFile: true })
+            this.setState({ jsFile: addForceEditValues, includesJsFile: true, isJsFile: true, forceEditTitles: forceEditValueTitleArr, forceEditValues: forceEditValueContentArr })
         }
 
         // this is where we combine objects if there are multiple csv's for the purpose of being able to toggle through tuples of both files
@@ -417,7 +433,7 @@ class FileIn extends React.Component {
         if (this.state.num === this.state.files.length - 1) {
             //force card edit replace 5 with  this.numOfEmptyCards
 
-            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 1)
+            this.props.callbackFromParent(arr, this.state.totalFileSize, this.state.toggleValues, this.state.jsFile, 1, this.state.forceEditTitles, this.state.forceEditValues)
         }
 
         // this function checks every file to see if it is a JS or CSV file, if JS certain parts of the code are ignored, if CSV the same applies

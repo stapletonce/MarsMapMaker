@@ -28,8 +28,10 @@ class MapOutput extends React.Component {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
                 functID = functID + "const forceEditID" + id + "= () => {" + "\n" + "let mapMakerHeader = " + "\"" + sortedPersistent[id].header + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
+                let arr = this.state.functionIDs
+                arr.push(appendValue)
                 //alert("This is checking id: " + "  "+ id + "   " + appendValue + "  " + this.props.ent[i].value)
-                this.setState(state => ({ functionIDs: [...state.functionIDs, appendValue] }))
+                this.setState(state => ({ functionIDs: arr }))
                 //alert("BLEH" + this.state.functionIDs)
                 id++
             }
@@ -368,7 +370,9 @@ class MapOutput extends React.Component {
 
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                logicID = logicID + "  " + this.props.ent[i].sesarTitle + ":" + this.state.functionIDs[id] + ",\n"
+                console.log(this.props.ent[i].sesarTitle)
+                console.log(this.state.functionIDs)
+                logicID = logicID + "  " + this.props.ent[i].sesarTitle + ": " + this.state.functionIDs[id] + ",\n"
                 id++
             }
         }

@@ -33,7 +33,9 @@ class App extends React.Component {
             jsFile: undefined,
             fieldNames: [],
             fieldValues: [],
-            continue: false
+            continue: false,
+            forceTitles: [],
+            forceValues: []
         };
     }
 
@@ -85,7 +87,7 @@ class App extends React.Component {
 
     // callback function that retrieves data from file, passed through FileIn.js
     // sets state of the the fieldNames, and fieldValues arrays used throughout program
-    fileCallback = (datafromFile, totalSize, toggleValues, jsFile, numOfEmptyCards) => {
+    fileCallback = (datafromFile, totalSize, toggleValues, jsFile, numOfEmptyCards, forceTitles, forceValues) => {
 
         let newCardObj = {}
         let tValues = toggleValues
@@ -128,7 +130,10 @@ class App extends React.Component {
                 processedValues[0],
             fieldValues:
                 processedValues[1],
-            continue: true
+            continue: true,
+            forceTitles: forceTitles,
+            forceValues: forceValues
+
         });
 
         // When all for field data is loaded in properly and duplicates have been removed, set Init to True in store
@@ -193,7 +198,10 @@ class App extends React.Component {
                         callback={this.isOpenCallback}
                         fields={[...this.state.emptyCards, ...this.state.fieldNames]}
                         toggleVals={this.state.toggleValuesArr}
-                        fieldVal={[...this.state.emptyCards, ...this.state.fieldValues]} />
+                        fieldVal={[...this.state.emptyCards, ...this.state.fieldValues]}
+                        forceTitles={this.state.forceTitles}
+                        forceValues={this.state.forceValues} />
+
                     : null}
             </div>
         )
