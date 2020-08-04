@@ -298,7 +298,6 @@ class DropDown extends React.Component {
             value: update,
             header: this.props.title
         }
-        console.log("WERE GETTING IN THE DATE!")
         this.props.dropdownUpdate(obj)
 
         return update

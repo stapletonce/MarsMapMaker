@@ -3,6 +3,11 @@
 
 $mars--border: rgb(46,14,8);
 
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
 /* App.js */
 .mars-photo {
     border: solid 10px $mars--border;

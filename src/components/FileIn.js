@@ -80,8 +80,7 @@ class FileIn extends React.Component {
         let count = 0;
         if (this.state.files !== undefined) {
             for (let i = 0; i < this.state.files.length; i++) {
-                console.log(this.state.files[i].type)
-                if (this.state.files[i].type.includes("javascript"))
+                if (this.state.files[i].type === "text/javascript")
                     count += 1
             }
         }
@@ -102,8 +101,6 @@ class FileIn extends React.Component {
             return
         }
         else if (this.state.files.length === 3 && count !== 1) {
-            console.log(this.state.files.length)
-            console.log(count)
             this.refreshFileIn()
             alert("You have either selected too many CSV or too many mapping files!")
             return
@@ -219,8 +216,10 @@ class FileIn extends React.Component {
                     }
                     if (JSON.stringify(Object.values(result.data[i])).includes("return")) {
                         let forceEditValue = JSON.stringify(Object.values(result.data[i])).split(" ")
-                        forceEditValueContentArr.push(forceEditValue[3].substring(2, forceEditValue[3].length - 5))
+                        let trimmedForceEditValue = forceEditValue.slice(3).join(" ")
+                        forceEditValueContentArr.push(trimmedForceEditValue.substring(2, trimmedForceEditValue.length - 5))
                         addToForceEdit = false
+
                     }
 
 
@@ -359,7 +358,6 @@ class FileIn extends React.Component {
                 jsArr[i] = jsArr[i].replace(/\\/g, '')
                 jsArr[i] = jsArr[i].replace(/"/g, "")
                 jsArr[i] = jsArr[i].replace(" ", "")
-                console.log(jsArr[i])
                 if (jsArr[i] !== "") {
                     jsArr[i] = jsArr[i].split(":")
                     jsArr[i][0] = jsArr[i][0].replace(" ", "")

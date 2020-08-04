@@ -1,15 +1,15 @@
 //Start::::
 const forceEditID0= () => {
-let mapMakerHeader = "<METADATA_ADD>"
-  return "Scripps";
+let mapMakerHeader = "FACILITY_CODE"
+  return "Hey";
 }
 const forceEditID1= () => {
 let mapMakerHeader = "SHIP_CODE"
-  return "Bowring";
+  return "1546"";
 }
 const forceEditID2= () => {
 let mapMakerHeader = "PLATFORM"
-  return "Julius";
+  return "Scripps Ocean Institute";
 }
 const keyValueString = (scrippsValue, scrippsKey) => {
   return scrippsKey + ' : ' + scrippsValue
@@ -19,25 +19,14 @@ const delimit = (valueArray) => {
   return valueArray.join(';')
 }
 
-const scrippsDate = (scrippsValue) => {
-  const y  =  "" + scrippsValue.substr(0,4)
-  const d = scrippsValue.substr(6,2)
-  const m = scrippsValue.substr(4,2)
-  return y + '-' + m + '-' + d + 'T00:00:00Z'
-}
-
 let map = {
-  sample_type: "<METADATA_ADD>",
-  current_archive: "FACILITY_CODE",
+  original_archive: "<METADATA>",
   latitude: "<METADATA>",
-  name: "<METADATA>",
-  collector: "CRUISE",
-  collection_start_date: "BEGIN_DATE",
-  field_name: [ "SAMPLE",  "DEVICE" ]
+  name: "<METADATA>"
 }
 
 let logic = { 
-  sample_type: forceEditID0,
+  original_archive: forceEditID0,
   latitude: forceEditID1,
   name: forceEditID2,
   collection_start_date: scrippsDate,

@@ -59,7 +59,7 @@ class DateDropdown extends React.Component {
         let filter = (f) => {
             num += 1
             if (num === 0)
-                return <option key={num} value="Select Date Format" disabled hidden>Select Date Format</option>;
+                return <option style={{ fontFamily: "Lucida Grande" }} key={num} value="Select Date Format" disabled hidden>Select Date Format</option>;
             else
                 return <option key={num} value={f.title}>{f.title}</option>;
         };
@@ -70,7 +70,7 @@ class DateDropdown extends React.Component {
         // case for loaded in js mapping file where the date is already previously selected  
         if (this.props.hasInit === true && this.props.hasChosenDateFormat && this.dateFormatSelection()) {
             return (
-                <select defaultValue={this.dateFormatSelection()} disabled selected className="ui search dropdown" onChange={this.updateValue}>
+                <select style={{ fontFamily: "Lucida Grande" }} defaultValue={this.dateFormatSelection()} disabled selected className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );
@@ -78,7 +78,7 @@ class DateDropdown extends React.Component {
 
         else if (this.props.hasInit === true && this.dateFormatSelection() && this.props.hasChosenDropdown) {
             return (
-                <select defaultValue={'Select Date Format'} disabled selected className="ui search dropdown" onChange={this.updateValue}>
+                <select style={{ fontFamily: "Lucida Grande" }} defaultValue={'Select Date Format'} disabled selected className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );
@@ -86,7 +86,7 @@ class DateDropdown extends React.Component {
 
         else {
             return (
-                <select className="ui search dropdown" onChange={this.updateValue}>
+                <select style={{ fontFamily: "Lucida Grande" }} className="ui search dropdown" onChange={this.updateValue}>
                     {this.props.list.map((field) => filter(field))}
                 </select>
             );
