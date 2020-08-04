@@ -64,21 +64,21 @@ class CenturyDropDown extends React.Component {
             (this.props.hasTwoYs && this.props.hasChosenCentury && this.props.hasChosenDropdown)
         ) {
             return (
-                <select defaultValue={'Select Dating Century'} disabled className="ui search dropdown" onChange={this.updateValue}>
+                <select style={{ fontFamily: "Lucida Grande" }} defaultValue={'Select Dating Century'} disabled className="ui search dropdown" onChange={this.updateValue}>
                     {this.state.cent.map((field) => filter(field))}
                 </select>
             )
         }
         else if (this.props.hasChosenCentury && this.searchingEntForDate()) {
             return (
-                <select defaultValue={'Select Dating Century'} disabled className="ui search dropdown" onChange={this.updateValue}>
+                <select style={{ fontFamily: "Lucida Grande" }} defaultValue={'Select Dating Century'} disabled className="ui search dropdown" onChange={this.updateValue}>
                     {this.state.cent.map((field) => filter(field))}
                 </select>
             )
         }
         else {
             return (
-                <select className="ui search dropdown" onChange={this.updateValue}>
+                <select style={{ fontFamily: "Lucida Grande" }} className="ui search dropdown" onChange={this.updateValue}>
                     {this.state.cent.map((field) => filter(field))}
                 </select>
             );

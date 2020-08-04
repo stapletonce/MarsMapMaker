@@ -43,7 +43,6 @@ class FieldCard extends React.Component {
     lengthCheckedValue = (fieldVal) => {
         //console.log(fieldVal)
         let value = fieldVal;
-
         if (value === "<METADATA_ADD>") {
             value = "ADDED_CARD : " + String(this.props.id + 1)
         }
@@ -83,7 +82,6 @@ class FieldCard extends React.Component {
 
     fileCallback = (data, title) => {
         let currentComponent = this
-        console.log(data)
 
         if (title === "field_name" || title === "description" || title === "sample_comment" || title === "geological_age" || title === "size") {
             if (data !== "") {
