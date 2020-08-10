@@ -15,18 +15,65 @@ import mars from '../icons/planet.png';
 //
 class MapOutput extends React.Component {
     state = { functionIDs: [] }
+    
+    filterSortedPersistent = (sorted) => {
+        let unfiltered = sorted
+        let filtered  = []
+        let reference = this.props.ent
+        //alert("THIS IS SORTED LENGTH INSIDE FUNCTION: " + unfiltered.length)
+        //alert(unfiltered.length + "   " + reference.length)
+        
+      //  for (let i = 0; i < unfiltered.length; i++)
+      //  {alert("HEADER: " + unfiltered[i].header + "VALUE: " + unfiltered[i].value + "sesarTitle: " + unfiltered[i].sesar) }
+
+        let checker = 0
+        for (let i = 0; i < reference.length; i++) {
+            let count = 0
+            
+            for (let j = 0; j < unfiltered.length; j++) {
+                
+                //alert("UNFILTERED HEADER AND VALUE:" + unfiltered[j].header + " " + unfiltered[j].value)
+                //alert(unfiltered[j].value + "======" + reference[i].value)
+                //alert(unfiltered[j].sesar === reference[i].sesarTitle + "VALUES BEING CONSIDERED: " + unfiltered[j].sesar + " " + reference[i].sesarTitle + " " + unfiltered[j].value)
+                if (unfiltered[j].sesar === reference[i].sesarTitle && count < 1){
+                    //if (j < 2 && i < 3)
+                        //alert("CHECKING REFERENCE CONTENT " + j + " " + unfiltered[j].value + "  " + reference[i].value)
+                    //alert("WHAT THE HELL AM I ADDING TO SIFTED: " + unfiltered[j].value)
+                        filtered.push(unfiltered[j])
+                    checker++
+                    count++
+                }
+               
+            }
+            
+        }
+      //  alert("filtered length: " + filtered.length)
+        return filtered
+    }
+
+    
     forceEditFunction = () => {
         let id = 0;
         let functID = ""
 
+        //prepopulate sortedpersist with entries
         let sortedPersistent = this.props.persist
         sortedPersistent.sort((a, b) => (a.index > b.index) ? 1 : -1)
         //for (let i = 0; i < sortedPersistent.length; i++)
         //    {alert(sortedPersistent[i].header) }
+        //alert("THIS IS SORTED LENGTH BEFORE FUNCTION: " + sortedPersistent.length)
+        
+        let sifted = this.filterSortedPersistent(sortedPersistent)
 
+        //for (let i = 0; i < sifted.length; i++)
+         //   {alert("HEADER: " + sifted[i].header + "VALUE: " + sifted[i].value + "sesarTitle: " + sifted[i].sesar) }
+        //alert("THIS IS SORTED LENGTH BEFORE FUNCTION: " + sortedPersistent.length)
+
+       // alert("THIS IS SIFTED LENGTH: " + sifted.length)
         for (let i = 0; i < this.props.ent.length; i++) {
-            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                functID = functID + "const forceEditID" + id + "= () => {" + "\n" + "let mapMakerHeader = " + "\"" + sortedPersistent[id].header + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
+            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && id < sifted.length) {
+                //alert(sifted[id].value + "  " + id)
+                functID = functID + "const forceEditID " + id + "= () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].value + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
                 let arr = this.state.functionIDs
                 arr.push(appendValue)
@@ -36,6 +83,7 @@ class MapOutput extends React.Component {
                 id++
             }
         }
+        //alert("This is id: "+ id)
         return functID
     }
 
@@ -124,106 +172,12 @@ class MapOutput extends React.Component {
         return letDateString
     }
 
-    // createSizeConversionString(precisionChosen) {
-    //     //must find which field contains the presicion field and what unit it is in
-    //     //default to MM which is 10
-    //     let secondInPair = []
-    //     let unit = { size: "mm",
-    //                 divisor: "10"}
-
-    //     //populates precision fields chosen
-    //     for (let i = 0; i < this.props.sizeArr.length; i++) {
-    //         if (this.props.sizeArr[i][1].pairHeader !== "")
-    //             secondInPair = secondInPair.concat( "\"" + this.props.sizeArr[i][1].pairHeader + "\"")
-    //     }            
-
-    //     let stringVersion = secondInPair.join(",")
-    //     let sizeString = "const size = (scrippsValue, scrippsKey) => {\n  let chosenPrecision =[" + stringVersion + "]\n  return chosenPrecision.includes(scrippsKey) ? scrippsValue/" + unit.divisor + " : scrippsValue\n}\n\n"
-
-    //     return sizeString
-    // }
-
     createMulitValueJoins() {
         const keyValueString = "const keyValueString = (scrippsValue, scrippsKey) => {\n  return scrippsKey + ' : ' + scrippsValue\n}\n\n"
         const delimit = "const delimit = (valueArray) => {\n  return valueArray.join(';')\n}\n\n"
 
         return keyValueString + delimit
     }
-
-    //these are used for clarity about the string concat below SHOULD RETURN BOTH ARRAYS IN PARSEABLE STRING FORM
-    summateSingleHelper = (singleAndValueArray) => { }
-
-    summatePairHelper = (pairAndValuesArray) => { }
-
-    // createSummate() {
-    //     //this assumes that the single value is already in the format of CM
-    //     let getSingleSums = []
-    //     let getRawSingleSums = []
-
-    //     //for single measurement values
-    //     let singleSumString = ""
-
-    //     //for pair measurement values
-    //     let getPairInfoString = ""
-
-    //     const fourSpace = "    "
-
-    //     for (let z = 0; z < this.props.singleMeasure.length; z++) {
-    //         if (this.props.singleMeasure[z].pairHeader !== "") {
-
-    //             //for direct output
-    //             singleSumString = "(" + this.props.singleMeasure[z].pairHeader + ") = " + this.props.singleMeasure[z].pairValue
-
-    //             getSingleSums = getSingleSums.concat(singleSumString)
-
-    //             //for avoiding duplicates for pulling pair size values in loop below
-
-    //             let rawObj = {
-    //                 header : this.props.singleMeasure[z].pairHeader,
-    //                 value : this.props.singleMeasure[z].pairValue
-    //             }
-
-    //             getRawSingleSums = getRawSingleSums.concat( rawObj )
-    //         }
-    //     }
-
-    //     //this assumes that the 1st in pair is in format CM and 2nd in pair is in format MM
-    //     let getSizeSums = []
-    //     let getRawSize = []
-    //     for (let z = 0; z < this.props.sizeArr.length - 1; z++) {
-    //         if (this.props.sizeArr[z][0].pairHeader !== "" && !getRawSingleSums.includes(this.props.sizeArr[z][0].header)) {
-    //             let rawObj = {
-    //                 firstHeader : this.props.sizeArr[z][0].pairHeader,
-    //                 firstValue : this.props.sizeArr[z][0].pairValue,
-    //                 secondHeader : this.props.sizeArr[z][1].pairHeader,
-    //                 secondValue : this.props.sizeArr[z][1].pairValue
-    //             }
-
-    //             getRawSize = getRawSize.concat(rawObj)
-
-    //             getPairInfoString = "(" + this.props.sizeArr[z][0].pairHeader + " + " + this.props.sizeArr[z][1].pairHeader + ") = " + this.props.sizeArr[z][0].pairValue + "." + this.props.sizeArr[z][1].pairValue
-    //             getSizeSums = getSizeSums.concat(getPairInfoString)
-    //             z++    
-    //         }
-    //     }        
-
-    //     const initialValue = ""
-    //     const singleReducer = (accumulator, item) => { return accumulator + fourSpace + "{ header: " + item.header + ", value: "+ item.value + " },\n"}
-
-    //     const pairInitialValue = ""
-    //     const pairReducer = (accumulator, item) => { return accumulator + "{\n "+ fourSpace + "firstHeader: " + item.firstHeader + ",\n"+ fourSpace + "firstValue: " + item.firstValue + ",\n" + fourSpace + "secondHeader: " + item.secondHeader + ",\n" + fourSpace + "secondValue :" + item.secondValue + "\n},"}
-
-    //     let summateString = "const summate = () => {\n  "
-    //     summateString = summateString + "const singleMeasure = [\n" + getRawSingleSums.reduce(singleReducer, initialValue).replace(/,(?=[^,]*$)/, " ") + "]\n  const pairMeasure = [" + getRawSize.reduce(pairReducer, pairInitialValue).replace(/,(?=[^,]*$)/, " ") + "]\n" //continue to reduce pair values
-
-    //     const readSingleMeasure = "  let singleJoin = \"\"\n   for (let i = 0; i < singleMeasure.length; i++) {\n    singleJoin = singleJoin + singleMeasure[i].header + \" = \" singleMeasure.Value[i] +  \"; \"\n   }\n"
-    //     const readPairMeasure = "  let pairJoin = \"\"\n   for (let i = 0; i < pairMeasure; i++) {\n    pairJoin = pairJoin + \"(\" + pairMeasure[i].firstHeader + \" + \" + pairMeasure[i].secondHeader + \")\" + \" = \" + pairMeasure[i].firstValue + \".\" + pairMeasure[i].secondValue + \"; \" \n   }\n return singleMeasure + pairMeasure\n}\n"
-
-    //     summateString = summateString + readSingleMeasure + readPairMeasure
-    //     alert(summateString)
-
-    //     return summateString
-    // }
 
     //this method loops through the array entries in the store multiple times to append to the string based on corresponding SesarTitles selected that
     createMapString() {
@@ -370,10 +324,14 @@ class MapOutput extends React.Component {
 
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                console.log(this.props.ent[i].sesarTitle)
-                console.log(this.state.functionIDs)
-                logicID = logicID + "  " + this.props.ent[i].sesarTitle + ": " + this.state.functionIDs[id] + ",\n"
-                id++
+                //alert("FUCNTIONID: " + this.state.functionIDs[id])
+                if (this.state.functionIDs[id] === undefined) {
+
+                }
+                else {
+                    logicID = logicID + "  " + this.props.ent[i].sesarTitle + ": forceEditID" + id + ",\n"
+                    id++
+                }
             }
         }
 
