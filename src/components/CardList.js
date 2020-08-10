@@ -65,7 +65,7 @@ const CardList = (props) => {
             type = "added_card"
         }
         else if (numbers.test(f) === true)
-            type = "numbers";
+            type = "both";
         else
             type = "text"
         return type

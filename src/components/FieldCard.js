@@ -299,6 +299,7 @@ class FieldCard extends React.Component {
                 value: this.props.ent[this.props.id].value,
                 header: this.props.ent[this.props.id].header,
                 forceID: this.props.persist.length,
+                sesar: this.props.ent[this.props.id].sesarTitle,
                 isMetaData: this.props.ent[this.props.id].header.includes("<METADATA>"),
                 isMetaDataAdd: this.props.ent[this.props.id].header.includes("<METADATA_ADD>")
             }
@@ -321,7 +322,7 @@ class FieldCard extends React.Component {
 
             let alreadySet = false
             for (let i = 0; i < this.props.persist.length; i++) {
-                if (this.props.persist[i].index === persistentMetaData.index) {
+                if (this.props.persist[i].index === persistentMetaData.index && this.props.ent[this.props.persist[i].index].sesarTitle === this.props.persist[i].sesar) {
                     alreadySet = true
                     break
                 }
