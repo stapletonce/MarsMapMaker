@@ -80,7 +80,7 @@ class FileIn extends React.Component {
         let count = 0;
         if (this.state.files !== undefined) {
             for (let i = 0; i < this.state.files.length; i++) {
-                if (this.state.files[i].type === "text/javascript")
+                if (this.state.files[i].type.includes("javascript"))
                     count += 1
             }
         }
