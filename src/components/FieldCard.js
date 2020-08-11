@@ -72,7 +72,7 @@ class FieldCard extends React.Component {
 
 
         if (this.state.isGreen === true)
-            return <div className="dropDown"><DropDown addedNew={this.props.addedNewField} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
+            return <div style={{ paddingBottom: "" }} className="dropDown"><DropDown addedNew={this.props.addedNewField} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
             return <div className="dropDownNoData">---</div>
     }
@@ -370,7 +370,7 @@ class FieldCard extends React.Component {
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
-                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
                                             <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                         </div>}
                                     {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
@@ -405,7 +405,7 @@ class FieldCard extends React.Component {
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
-                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
                                             <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                         </div>}
                                     {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
@@ -442,7 +442,7 @@ class FieldCard extends React.Component {
                             </object>
                             <object className="descriptionMapped" align="right">
                                 {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
-                                    <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                    <div style={{ display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
                                         <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                     </div>}
                                 {this.filterDrop()}
@@ -487,7 +487,7 @@ class FieldCard extends React.Component {
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
-                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
                                             <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                         </div>}
                                     {this.filterDrop()}
@@ -531,7 +531,7 @@ class FieldCard extends React.Component {
                                 </object>
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
-                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "10px" }} class="ui input">
+                                        <div style={{ display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
                                             <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                         </div>}
 
