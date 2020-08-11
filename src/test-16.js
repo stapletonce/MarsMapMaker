@@ -1,15 +1,7 @@
 //Start::::
-const forceEditID0= () => {
-let mapMakerHeader = "FACILITY_CODE"
-  return "Hey";
-}
-const forceEditID1= () => {
-let mapMakerHeader = "SHIP_CODE"
-  return "1546"";
-}
-const forceEditID2= () => {
-let mapMakerHeader = "PLATFORM"
-  return "Scripps Ocean Institute";
+const forceEditID 0= () => {
+let mapMakerHeader = "SIO"
+  return "<METADATA_ADD>";
 }
 const keyValueString = (scrippsValue, scrippsKey) => {
   return scrippsKey + ' : ' + scrippsValue
@@ -20,15 +12,11 @@ const delimit = (valueArray) => {
 }
 
 let map = {
-  original_archive: "<METADATA>",
-  latitude: "<METADATA>",
-  name: "<METADATA>"
+  current_archive: "<METADATA>"
 }
 
 let logic = { 
-  original_archive: forceEditID0,
-  latitude: forceEditID1,
-  name: forceEditID2,
+  current_archive: forceEditID0,
   collection_start_date: scrippsDate,
   collection_end_date: scrippsDate,
   geological_age: keyValueString,
