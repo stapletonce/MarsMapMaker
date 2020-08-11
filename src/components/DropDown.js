@@ -598,7 +598,7 @@ class DropDown extends React.Component {
         // creates the dropdown, uses filter() to specify which items are included in dropdown
 
         return (
-            <select style={{ display: "inline-block", width: "170px" }} defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+            <select style={{ maxHeight: "25px", display: "inline-block", width: "170px" }} defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );
