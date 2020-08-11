@@ -142,10 +142,14 @@ class App extends React.Component {
         // console.log(totalSize)
         // console.log(this.findDuplicates(newNames, newValues).length)
         // console.log((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length))
-
-        if ((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) === (totalSize - this.findDuplicates(newNames, newValues).length)) {
+        console.log("FIRST PART: " + this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length)
+        console.log("SECOND PART: " + totalSize - this.findDuplicates(newNames, newValues).length)
+        if ((this.state.fieldNames.length - this.findDuplicates(newNames, newValues).length) == (totalSize - this.findDuplicates(newNames, newValues).length)) {
+            console.log("GETTING HEREEEE!!!!")
             this.props.changeInit(obj)
         }
+        else
+            this.props.changeInit(obj)
     }
 
     // Displays "Preview Pop Up function from cardList, when the Preview Map button is clicked"

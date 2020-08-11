@@ -425,12 +425,12 @@ const CardList = (props) => {
                     <div style={{ paddingTop: "8em" }} className="toggle__content">
                         <div style={{ display: "inline", float: "left", width: '250px' }}>
                             <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
-                                <div className="content">
+                                <div className="content" style={{ fontFamily: "Lucida Grande" }}>
                                     Change Displayed Row
                                 </div>
                             </h4>
-                            <div disabled className="ui grey ribbon label">Current Row: {toggleIndex}</div>
-                            <button className="ui icon button" style={{ display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
+                            <div disabled style={{ fontFamily: "Lucida Grande" }} className="ui grey ribbon label">Current Row: {toggleIndex}</div>
+                            <button className="ui icon button" style={{ fontFamily: "Lucida Grande", display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
                                 Refresh
                             </button>
                         </div>
@@ -446,13 +446,13 @@ const CardList = (props) => {
 
                     <MapOutput />
 
-                    <div style={{ paddingTop: "3em", width: "15%" }} className="toolbar__help" >
-                        <button className="ui toggle button" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
-                        <button className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
-                        <button className="ui basic button" onClick={checkStore}> Help </button>
+                    <div style={{ paddingTop: "1.5em", width: "15%" }} className="toolbar__help" >
+                        <button style={{ fontFamily: "Lucida Grande" }} className="ui toggle button" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
+                        <button style={{ fontFamily: "Lucida Grande" }} className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
+                        <button style={{ fontFamily: "Lucida Grande" }} className="ui basic button" onClick={checkStore}> Help </button>
                     </div>
 
-                    <div style={{ display: "inline-block", float: "right", paddingRight: "0px", marginRight: "0px" }}>
+                    <div style={{ position: "absolute", bottom: "5em", right: "15em", display: "inline-block", float: "right", paddingRight: "0px" }}>
                         {(props.hasDateFormat === false || dateSelected() === false) ?
                             <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
                                 Select Date Format
@@ -472,18 +472,18 @@ const CardList = (props) => {
                     <div className="description">
                         <div>
                             <object className="fieldWidget">
-                                <div className="description__checkbox">
+                                <div style={{ fontFamily: "Lucida Grande" }} className="description__checkbox">
                                     Use
                             </div>
-                                <div dir="rtl" className="description__title">:Header</div>
-                                <div className="description__value" style={{ width: "23.8%" }}> Content</div>
+                                <div style={{ fontFamily: "Lucida Grande" }} dir="rtl" className="description__title">Header</div>
+                                <div className="description__value" style={{ fontFamily: "Lucida Grande", width: "23.8%" }}> : Content</div>
                             </object>
-                            <object style={{ display: "inline-block", paddingLeft: "4.2em" }}>
-                                <div style={{ fontSize: "18px" }}>Maps To</div>
+                            <object style={{ fontFamily: "Lucida Grande", display: "inline-block", paddingLeft: "4.2em" }}>
+                                <div style={{ fontFamily: "Lucida Grande", fontSize: "18px" }}>Maps To</div>
                             </object>
                             <object className="descriptionMapped" align="right">
-                                <div className="description__mapped__content">Mapped Content</div>
-                                <div className="description__mapped__header"><b>[</b>Mapped Header<b>]</b></div>
+                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__content">Mapped Content</div>
+                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__header">[Mapped Header]</div>
                             </object>
                         </div>
                     </div>

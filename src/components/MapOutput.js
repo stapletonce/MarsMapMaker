@@ -384,9 +384,9 @@ class MapOutput extends React.Component {
 
     render() {
         return (
-            <div style={{ paddingLeft: "200px", margin: "10 auto" }} className="marsOutput">
+            <div style={{ position: "absolute", left: "29.2%", paddingLeft: "200px", margin: "10 auto" }} className="marsOutput">
                 <img className="mars--icon" src={mars} alt="marsIcon" onClick={() => this.createMapFile()}></img>
-                <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
+                <h4 style={{ fontFamily: "Lucida Grande", padding: "0%", margin: "0%" }}>Click to Map</h4>
             </div>
         )
     }
