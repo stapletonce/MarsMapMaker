@@ -382,6 +382,8 @@ class FileIn extends React.Component {
                 }
             }
 
+            console.log("LOOKING HERE TITLE ARR: " + forceEditValueTitleArr)
+            console.log("LOOKING HERE VALUE ARR: " + forceEditValueContentArr)
             // establish state that we have a jsArr
             this.setState({ jsFile: addForceEditValues, includesJsFile: true, isJsFile: true, forceEditTitles: forceEditValueTitleArr, forceEditValues: forceEditValueContentArr })
         }

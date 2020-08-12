@@ -15,43 +15,43 @@ import mars from '../icons/planet.png';
 //
 class MapOutput extends React.Component {
     state = { functionIDs: [] }
-    
+
     filterSortedPersistent = (sorted) => {
         let unfiltered = sorted
-        let filtered  = []
+        let filtered = []
         let reference = this.props.ent
         //alert("THIS IS SORTED LENGTH INSIDE FUNCTION: " + unfiltered.length)
         //alert(unfiltered.length + "   " + reference.length)
-        
-      //  for (let i = 0; i < unfiltered.length; i++)
-      //  {alert("HEADER: " + unfiltered[i].header + "VALUE: " + unfiltered[i].value + "sesarTitle: " + unfiltered[i].sesar) }
+
+        //  for (let i = 0; i < unfiltered.length; i++)
+        //  {alert("HEADER: " + unfiltered[i].header + "VALUE: " + unfiltered[i].value + "sesarTitle: " + unfiltered[i].sesar) }
 
         let checker = 0
         for (let i = 0; i < reference.length; i++) {
             let count = 0
-            
+
             for (let j = 0; j < unfiltered.length; j++) {
-                
+
                 //alert("UNFILTERED HEADER AND VALUE:" + unfiltered[j].header + " " + unfiltered[j].value)
                 //alert(unfiltered[j].value + "======" + reference[i].value)
                 //alert(unfiltered[j].sesar === reference[i].sesarTitle + "VALUES BEING CONSIDERED: " + unfiltered[j].sesar + " " + reference[i].sesarTitle + " " + unfiltered[j].value)
-                if (unfiltered[j].sesar === reference[i].sesarTitle && count < 1){
+                if (unfiltered[j].sesar === reference[i].sesarTitle && count < 1) {
                     //if (j < 2 && i < 3)
-                        //alert("CHECKING REFERENCE CONTENT " + j + " " + unfiltered[j].value + "  " + reference[i].value)
+                    //alert("CHECKING REFERENCE CONTENT " + j + " " + unfiltered[j].value + "  " + reference[i].value)
                     //alert("WHAT THE HELL AM I ADDING TO SIFTED: " + unfiltered[j].value)
-                        filtered.push(unfiltered[j])
+                    filtered.push(unfiltered[j])
                     checker++
                     count++
                 }
-               
+
             }
-            
+
         }
-      //  alert("filtered length: " + filtered.length)
+        //  alert("filtered length: " + filtered.length)
         return filtered
     }
 
-    
+
     forceEditFunction = () => {
         let id = 0;
         let functID = ""
@@ -62,18 +62,18 @@ class MapOutput extends React.Component {
         //for (let i = 0; i < sortedPersistent.length; i++)
         //    {alert(sortedPersistent[i].header) }
         //alert("THIS IS SORTED LENGTH BEFORE FUNCTION: " + sortedPersistent.length)
-        
+
         let sifted = this.filterSortedPersistent(sortedPersistent)
 
         //for (let i = 0; i < sifted.length; i++)
-         //   {alert("HEADER: " + sifted[i].header + "VALUE: " + sifted[i].value + "sesarTitle: " + sifted[i].sesar) }
+        //   {alert("HEADER: " + sifted[i].header + "VALUE: " + sifted[i].value + "sesarTitle: " + sifted[i].sesar) }
         //alert("THIS IS SORTED LENGTH BEFORE FUNCTION: " + sortedPersistent.length)
 
-       // alert("THIS IS SIFTED LENGTH: " + sifted.length)
+        // alert("THIS IS SIFTED LENGTH: " + sifted.length)
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && id < sifted.length) {
                 //alert(sifted[id].value + "  " + id)
-                functID = functID + "const forceEditID " + id + "= () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].value + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
+                functID = functID + "const forceEditID" + id + " = () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].value + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
                 let arr = this.state.functionIDs
                 arr.push(appendValue)
