@@ -376,7 +376,7 @@ class FieldCard extends React.Component {
                                         </div>}
                                     {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
 
-                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
                                         <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                             <i class="edit outline icon"></i>
                                         </button>
@@ -411,7 +411,7 @@ class FieldCard extends React.Component {
                                         </div>}
                                     {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
 
-                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
                                         <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                             <i class="edit outline icon"></i>
                                         </button>
@@ -447,7 +447,7 @@ class FieldCard extends React.Component {
                                         <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                     </div>}
                                 {this.filterDrop()}
-                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
                                     <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                         <i class="edit outline icon"></i>
                                     </button>
@@ -492,7 +492,7 @@ class FieldCard extends React.Component {
                                             <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Search..." />
                                         </div>}
                                     {this.filterDrop()}
-                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
                                         <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                             <i class="edit outline icon"></i>
                                         </button>
@@ -501,7 +501,9 @@ class FieldCard extends React.Component {
                                                 <i class="edit outline icon"></i>
                                             </button>
                                         </div>}
-                                    <div>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                    <div style={{ visibility: "hidden", paddingLeft: "10px", float: "right", display: "inline" }}>
+                                        <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                    </div>
                                     {/* {this.props.hasInit ?
                                         <div>
                                             {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
@@ -537,7 +539,7 @@ class FieldCard extends React.Component {
                                         </div>}
 
                                     {this.filterDrop()}
-                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingLeft: "10px", float: "right", display: "inline" }}>
+                                    {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
                                         <button onClick={() => this.areEditing()} style={{ float: "right", width: "35px" }} class="ui icon button">
                                             <i class="edit outline icon"></i>
                                         </button>
@@ -546,7 +548,11 @@ class FieldCard extends React.Component {
                                                 <i class="edit outline icon"></i>
                                             </button>
                                         </div>}
-                                    <div>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+
+                                    <div style={{ paddingTop: "10px", paddingLeft: "10px", float: "right", display: "inline" }}>
+                                        <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                    </div>
+
                                     {/* {this.props.hasInit ?
                                         <div>
                                             {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
@@ -578,7 +584,8 @@ class FieldCard extends React.Component {
                         </object>
                         <object className="descriptionMapped" align="right">
                             <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
-                            {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
+                            {this.filterDrop()}
+
 
                         </object>
                     </div>
