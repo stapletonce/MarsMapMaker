@@ -73,7 +73,8 @@ class MapOutput extends React.Component {
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && id < sifted.length) {
                 //alert(sifted[id].value + "  " + id)
-                functID = functID + "const forceEditID" + id + " = () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].value + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
+
+                functID = functID + "const forceEditID" + id + " = () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].header + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
                 let arr = this.state.functionIDs
                 arr.push(appendValue)
