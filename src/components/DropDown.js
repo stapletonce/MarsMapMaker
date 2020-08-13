@@ -7,7 +7,6 @@
 
 import React from "react";
 import { connect } from "react-redux";
-import { Select } from "semantic-ui-react";
 
 //CSS & Styling
 import "semantic-ui-react";
@@ -527,6 +526,12 @@ class DropDown extends React.Component {
         return valid
     }
 
+    alreadyInDropdown = (arr, value) => {
+        let array = arr
+        array.push(value)
+        return array
+    }
+
 
 
 
@@ -534,6 +539,7 @@ class DropDown extends React.Component {
         const sesarOne2One = this.state.sesarOneToOne
         let num = -1
         let sesarId = 0
+        let alreadyDropdownArr = []
 
         // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
         this.toggleNotInUse()
@@ -550,11 +556,13 @@ class DropDown extends React.Component {
             }
 
             // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
-            if (this.props.fieldType === "both" && (!this.props.useOnce.includes(f.title) || this.props.useOnce[this.props.id] === f.title))
+            if (this.props.fieldType === "both" && !alreadyDropdownArr.includes(f.title) && (!this.props.useOnce.includes(f.title) || this.props.useOnce[this.props.id] === f.title)) {
+                alreadyDropdownArr = this.alreadyInDropdown(alreadyDropdownArr, f.title)
                 return <option key={f.title} value={f.title}>{f.title}</option>;
+            }
 
 
-            if (f.type === this.props.fieldType || f.type === "both" || this.props.fieldType === "added_card") {
+            if ((f.type === this.props.fieldType || f.type === "both" || this.props.fieldType === "added_card")) {
 
                 if (this.props.fieldType === "added_card") {
                     if (f.title === "sample_type")
@@ -599,7 +607,7 @@ class DropDown extends React.Component {
         // creates the dropdown, uses filter() to specify which items are included in dropdown
 
         return (
-            <select style={{ display: "inline-block", width: "170px" }} defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
+            <select style={{ maxHeight: "25px", display: "inline-block", width: "170px" }} defaultValue={'Sesar Selection'} className="ui dropdown" prompt="Please select option" onChange={this.updateValue}>
                 {this.props.list.map((field) => filter(field))}
             </select>
         );

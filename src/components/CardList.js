@@ -114,12 +114,14 @@ const CardList = (props) => {
     // if a map (js) file is passed in, it searches for previous selections made to update the Redux store accordingly
     const findSesarPassIn = (field) => {
         let sesarPassIn = "";
-        if (props.jsFileValues !== undefined)
+        if (props.jsFileValues !== undefined) {
             for (let i = 0; i < props.jsFileValues.length; i++) {
                 if (props.jsFileValues[i][1] !== undefined && field === props.jsFileValues[i][1].replace(" ", "")) {
                     sesarPassIn = (props.jsFileValues[i][0])
                 }
             }
+        }
+
         return sesarPassIn
     }
 
