@@ -242,7 +242,9 @@ class FieldCard extends React.Component {
             ftitle: title,
             findex: index
         }
+        console.log(obj)
         this.props.totalMultiValueCount(obj);
+
         return String(count)
     }
 
@@ -251,10 +253,11 @@ class FieldCard extends React.Component {
         let count = 1
         searchOption = title
 
-        for (let i = 0; i < id; i++) {
+        for (let i = 0; i < this.props.ent.length; i++) {
             if (this.props.ent[i].sesarTitle === searchOption)
                 count += 1
         }
+        console.log("HERREEEE: " + count)
         return String(count)
     }
 
