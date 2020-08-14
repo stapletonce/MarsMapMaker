@@ -527,6 +527,7 @@ class DropDown extends React.Component {
     }
 
     alreadyInDropdown = (arr, value) => {
+        console.log(arr)
         let array = arr
         array.push(value)
         return array
@@ -556,13 +557,13 @@ class DropDown extends React.Component {
             }
 
             // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
-            if (this.props.fieldType === "both" && !alreadyDropdownArr.includes(f.title) && (!this.props.useOnce.includes(f.title) || this.props.useOnce[this.props.id] === f.title)) {
+            if (this.props.fieldType === "both" && (!this.props.useOnce.includes(f.title) || this.props.useOnce[this.props.id] === f.title)) {
                 alreadyDropdownArr = this.alreadyInDropdown(alreadyDropdownArr, f.title)
                 return <option key={f.title} value={f.title}>{f.title}</option>;
             }
 
 
-            if ((f.type === this.props.fieldType || f.type === "both" || this.props.fieldType === "added_card")) {
+            if ((f.type === this.props.fieldType || this.props.fieldType === "added_card")) {
 
                 if (this.props.fieldType === "added_card") {
                     if (f.title === "sample_type")

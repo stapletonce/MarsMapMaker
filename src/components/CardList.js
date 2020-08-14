@@ -65,7 +65,7 @@ const CardList = (props) => {
             type = "added_card"
         }
         else if (numbers.test(f) === true)
-            type = "both";
+            type = "numbers";
         else
             type = "text"
         return type
@@ -425,13 +425,13 @@ const CardList = (props) => {
             <div className="label">
                 <div className="label" style={{ position: "fixed", background: "white", zIndex: "10", borderBottom: "4px solid black", borderTop: "8px solid black", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
                     <div style={{ paddingTop: "8em" }} className="toggle__content">
-                        <div style={{ display: "inline", float: "left", width: '250px' }}>
-                            <h4 className="ui header" style={{ fontSize: "18px", padding: "0px", margin: "0px" }}>
+                        <div style={{ display: "inline", float: "left", width: '259px' }}>
+                            <h4 className="ui header" style={{ fontSize: "17px", padding: "0px", margin: "0px" }}>
                                 <div className="content" style={{ fontFamily: "Lucida Grande" }}>
-                                    Change Displayed Row
+                                    Change Displayed Sample
                                 </div>
                             </h4>
-                            <div disabled style={{ fontFamily: "Lucida Grande" }} className="ui grey ribbon label">Current Row: {toggleIndex}</div>
+                            <div disabled style={{ fontFamily: "Lucida Grande" }} className="ui grey ribbon label">Current Sample Row: {toggleIndex}</div>
                             <button className="ui icon button" style={{ fontFamily: "Lucida Grande", display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
                                 Refresh
                             </button>
