@@ -257,7 +257,6 @@ class FieldCard extends React.Component {
             if (this.props.ent[i].sesarTitle === searchOption)
                 count += 1
         }
-        console.log("HERREEEE: " + count)
         return String(count)
     }
 
@@ -471,7 +470,7 @@ class FieldCard extends React.Component {
                                         </button>
                                     </div>}
                                 <div style={{ visibility: "hidden", paddingLeft: "10px", float: "right", display: "inline" }}>
-                                    <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                    <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? "Total:" + this.props.multiCount[this.state.index].count : ""}</div>
                                 </div>
                                 {/* {this.props.hasInit ?
                                         <div>
@@ -518,7 +517,7 @@ class FieldCard extends React.Component {
                                             </button>
                                         </div>}
                                     <div style={{ visibility: "hidden", paddingLeft: "10px", float: "right", display: "inline" }}>
-                                        <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                        <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? "Total:" + this.props.multiCount[this.state.index].count : ""}</div>
                                     </div>
                                     {/* {this.props.hasInit ?
                                         <div>
@@ -566,7 +565,7 @@ class FieldCard extends React.Component {
                                         </div>}
 
                                     <div style={{ paddingTop: "10px", paddingLeft: "10px", float: "right", display: "inline" }}>
-                                        <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}</div>
+                                        <div style={{ float: "right", width: "35px" }}>{(this.state.index !== -1) ? "Total:" + this.props.multiCount[this.state.index].count : ""}</div>
                                     </div>
 
                                     {/* {this.props.hasInit ?
