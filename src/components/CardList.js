@@ -204,6 +204,32 @@ const CardList = (props) => {
         useOnce.push("")
         objArray.push(storedValue)
 
+
+        const findOneToTwo = () => {
+            if (props.hasInit) {
+                let objects = ["field_name", "description", "sample_comment", "geological_age", "size"]
+                for (let j = 0; j < objects.length; j++) {
+
+                    let count = 0;
+                    if (objects[j] === props.ent[newKey].sesarTitle) {
+                        for (let i = 0; i < props.ent.length; i++) {
+                            if (props.ent[i].sesarTitle === objects[j]) {
+                                count += 1
+                            }
+                        }
+                        console.log("MEEPDY MEEP: " + count)
+                        return count
+                    }
+
+                }
+            }
+        }
+
+
+
+
+
+
         // create the FieldCard that you see in the UI
         // If toggleIndex is 0 then we're on the 1st row so give it raw input
         // Else give it the object.values..
@@ -215,6 +241,7 @@ const CardList = (props) => {
                 key={newKey}
                 hiding={hide}
                 fieldTitle={field}
+                oneOfTwoID={findOneToTwo()}
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
                 fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
@@ -232,6 +259,8 @@ const CardList = (props) => {
                     key={newKey}
                     hiding={hide}
                     fieldTitle={Object.keys(props.toggleArr[toggleIndex])[newKey]}
+
+                    oneOfTwoID={findOneToTwo()}
                     id={newKey}
                     fieldType={typeField(props.fieldVal[newKey])}
                     fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
@@ -503,6 +532,7 @@ const CardList = (props) => {
 
 const mapStateToProps = (state) => {
     return {
+        hasInit: state.hasInit,
         ent: state.entries,
         persist: state.persistingMetaData,
         toggleArr: state.toggleArr,
