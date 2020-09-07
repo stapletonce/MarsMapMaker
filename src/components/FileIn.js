@@ -43,7 +43,7 @@ class FileIn extends React.Component {
 
     // helper method for selected CSV to read information from the file
     handleChange = event => {
-
+        console.log(event)
         this.setState({ files: event.target.files })
         if (event.target.files[1] === undefined) {
             this.setState({
@@ -90,11 +90,11 @@ class FileIn extends React.Component {
             alert("You have not selected a file!")
             return
         }
-        else if (this.state.files.length === 1 && count === 1) {
-            this.refreshFileIn()
-            alert("You have only selected one mapping file with no additional CSV try again!")
-            return
-        }
+        // else if (this.state.files.length === 1 && count === 1) {
+        //     this.refreshFileIn()
+        //     alert("You have only selected one mapping file with no additional CSV try again!")
+        //     return
+        // }
         else if (this.state.files.length > 3) {
             this.refreshFileIn()
             alert("You have selected more that 3 files, try again!")
@@ -459,19 +459,39 @@ class FileIn extends React.Component {
             <div className={readerClass}>
 
                 <h2>Import File(s)!</h2>
+                <div>
+                    <label>Choose CSV Files</label>
+                    <input
+                        className="csv__input"
+                        type="file"
+                        accept=".csv, .js"
+                        ref={input => {
+                            this.filesInput = input;
+                        }}
+                        name="file"
+                        placeholder={null}
+                        onChange={this.handleChange}
+                        multiple="multiple"
+                    />
+                </div>
+                <br></br>
+                <label>Choose Mapping Files</label>
+                <div>
 
-                <input
-                    className="csv__input"
-                    type="file"
-                    accept=".csv, .js"
-                    ref={input => {
-                        this.filesInput = input;
-                    }}
-                    name="file"
-                    placeholder={null}
-                    onChange={this.handleChange}
-                    multiple="multiple"
-                />
+                    <input
+                        className="csv__input"
+                        type="file"
+                        accept=".csv, .js"
+                        ref={input => {
+                            this.filesInput = input;
+                        }}
+                        name="file"
+                        placeholder={null}
+                        onChange={this.handleChange}
+                        multiple="multiple"
+                    />
+                </div>
+
                 {/*force card edit */}
                 {/* <div style={{ padding: "0px", margin: "0px", paddingTop: "10px" }}>
                     
