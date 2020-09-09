@@ -125,24 +125,6 @@ const CardList = (props) => {
         return sesarPassIn
     }
 
-    // const createEmptyField = () => {
-    //     return (
-    //         <FieldCard
-    //             multiCount={props.multiCount}
-    //             addedNewField={(fieldsState[0] === "~~~" && newKey === 0) ? true : false}
-    //             jsFileValues={props.jsFileValues}
-    //             toggleInUse={props.usingToggle}
-    //             key={newKey}
-    //             hiding={hide}
-    //             fieldTitle={"~~~"}
-    //             id={newKey}
-    //             fieldType={"both"}
-    //             fieldValue={"~~~"}
-    //             hasContent={true}
-    //         />
-    //     )
-    // }
-
 
     // maps content to separate fieldcards on the screen
     const fields = fieldsState.map((field) => {
@@ -217,7 +199,7 @@ const CardList = (props) => {
                                 count += 1
                             }
                         }
-                        console.log("MEEPDY MEEP: " + count)
+
                         return count
                     }
 
@@ -226,13 +208,10 @@ const CardList = (props) => {
         }
 
 
-
-
-
-
         // create the FieldCard that you see in the UI
         // If toggleIndex is 0 then we're on the 1st row so give it raw input
         // Else give it the object.values..
+        // Meaning refer to Sample Row array created in store
         if (toggleIndex === 1) {
             return (<FieldCard
                 multiCount={props.multiCount}
@@ -245,7 +224,6 @@ const CardList = (props) => {
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
                 fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
-                //fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== ""
                 }
             />)
@@ -270,15 +248,6 @@ const CardList = (props) => {
         }
     });
 
-    // const addFieldCard = () => {
-
-    //     props.addedCallback()
-    //     // clickingAddCard(false)
-    //     // console.log(addingCard)
-    //     // clickingAddCard(true)
-    //     // console.log(addingCard)
-    // }
-
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
         const initObj = {
@@ -287,13 +256,6 @@ const CardList = (props) => {
         }
         props.firstState(initObj)
     }, []);
-
-
-    // useEffect(() => {
-    //     for (let i = 0; i < 3; i++)
-    //         addAFieldCardHead(["~~~", ...fieldsState])
-    //     addAFieldCardVal(["~~~", ...fieldValState])
-    // }, [])
 
 
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
@@ -339,7 +301,6 @@ const CardList = (props) => {
         let options = ["field_name", "description", "sample_comment", "geological_age", "size"]
         let multiValueArr = [[], [], [], [], []]
         let mapPreviewArr = []
-        //let sizeSelection = ["", "", "", ""]
         let fieldIndex = -1;
         let descripIndex = -1;
         let sampleIndex = -1;
@@ -438,9 +399,6 @@ const CardList = (props) => {
         }
         return found
     }
-
-    //<button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button" onClick={() => { addFieldCard() }}>Add New Card</button>
-
 
     return (
 
