@@ -38,35 +38,61 @@ class FileIn extends React.Component {
             forceEditTitles: [],
             forceEditValues: [],
             dualFileLoadInArr: [],
-            loadedInFirstFile: false
+            loadedInFirstFile: false,
+            validNumOfFiles: true
         };
         this.updateData = this.updateData.bind(this);
     }
 
     // this function reads in from both "choose files" to get both events before running handle change
-    preHandleChange = event => {
-        console.log(event.target.files[0])
-        let arr = this.state.dualFileLoadInArr;
-        arr.push(event.target.files[0]);
-        console.log(arr)
+    // preHandleChange = event => {
+    //     console.log(event.target.files[0])
+    //     let arr = this.state.dualFileLoadInArr;
+    //     arr.push(event.target.files[0]);
+    //     console.log(arr)
 
-        if (this.state.loadedInFirstFile === true) {
-            this.handleChange(this.state.dualFileLoadInArr)
+    //     if (this.state.loadedInFirstFile === true) {
+    //         this.handleChange(this.state.dualFileLoadInArr)
+    //     }
+
+    //     if (this.state.loadedInFirstFile === false) {
+    //         this.setState({
+    //             dualFileLoadInArr: true
+    //         })
+    //     }
+
+
+    // }
+
+    // method to make sure that 0 < # of CSV's < 3 && # of mapping files < 2
+    validateFiles = file => {
+        let valid = false;
+        let numCsv = 0;
+        let numJs = 0;
+
+        if (file.type === "text/javascript") {
+            numJs += 1;
+        }
+        else if (file.type === "text/csv") {
+            numCsv += 1;
         }
 
-        if (this.state.loadedInFirstFile === false) {
+        if ((numCsv > 0 && numCsv < 3) && (numJs < 2)) {
+            valid = true;
             this.setState({
-                dualFileLoadInArr: true
+                validNumOfFiles: true
             })
         }
 
-
+        return valid;
     }
 
     // helper method for selected CSV to read information from the file
     handleChange = event => {
 
-        console.log(event.target.files.length)
+
+
+        console.log(event.target.files)
         let arr = this.state.dualFileLoadInArr;
         for (let i = 0; i < event.target.files.length; i++) {
 
@@ -99,7 +125,7 @@ class FileIn extends React.Component {
 
     refreshFileIn = () => {
         setTimeout(() => {
-            this.setState({ loaded: !this.state.loaded });
+            this.setState({ loaded: !this.state.loaded, dualFileLoadInArr: [] });
         }, 0);  // ------------------------------> timeout 0
 
         setTimeout(() => {
@@ -109,12 +135,18 @@ class FileIn extends React.Component {
 
     // onclick helper function to parse the CSV with PapaParse 
     importCSV = () => {
-        let count = 0;
+        let jscount = 0;
+        let csvcount = 0;
         if (this.state.files !== undefined) {
             for (let i = 0; i < this.state.files.length; i++) {
                 if (this.state.files[i].type.includes("javascript"))
-                    count += 1
+                    jscount += 1
+                else if (this.state.files[i].type === "text/csv")
+                    csvcount += 1
             }
+
+            console.log("JSCOUNT: " + jscount)
+            console.log("CSVCOUNT: " + csvcount)
         }
 
         // if (this.state.files === undefined) {
@@ -127,18 +159,30 @@ class FileIn extends React.Component {
         //     alert("You have only selected one mapping file with no additional CSV try again!")
         //     return
         // }
-        else if (this.state.files.length > 3) {
+        if (csvcount > 3) {
+            console.log("csv count stuff correct")
             this.refreshFileIn()
             alert("You have selected more that 3 files, try again!")
             return
         }
-        else if (this.state.files.length === 3 && count !== 1) {
+        if (csvcount > 2 || jscount > 1) {
             this.refreshFileIn()
             alert("You have either selected too many CSV or too many mapping files!")
             return
         }
 
         for (let i = 0; i < this.state.files.length; i++) {
+            let numOfJsFiles = 0;
+            if (this.state.files[i].type === "text/javascript") {
+                numOfJsFiles += 1;
+            }
+            if (!(numOfJsFiles < 2)) {
+                this.refreshFileIn()
+                alert("Two many Mapping files....")
+                return
+            }
+
+
             Papa.parse(this.state.files[i], {
                 complete: this.updateData,
                 header: true
@@ -146,6 +190,7 @@ class FileIn extends React.Component {
         }
 
         this.setState({ loaded: true })
+
 
     };
 
@@ -490,9 +535,9 @@ class FileIn extends React.Component {
         return (
             <div className={readerClass}>
 
-                <h2>Import File(s)!</h2>
+                <h2>Load File(s)!</h2>
                 <div>
-                    <label>Choose CSV Files</label>
+                    <label>Choose CSV File(s)</label>
                     <input
                         className="csv__input"
                         type="file"
@@ -507,7 +552,7 @@ class FileIn extends React.Component {
                     />
                 </div>
                 <br></br>
-                <label>Choose Mapping Files</label>
+                <label>Load Mapping File</label>
                 <div>
 
                     <input
@@ -539,7 +584,7 @@ class FileIn extends React.Component {
                 </div> */}
 
                 <p />
-                <button onClick={this.importCSV}> Import now!</button>
+                <button onClick={this.importCSV}> Load now!</button>
 
             </div>
         );
