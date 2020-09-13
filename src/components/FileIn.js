@@ -36,15 +36,47 @@ class FileIn extends React.Component {
             csvfile3: undefined,
             loaded: false,
             forceEditTitles: [],
-            forceEditValues: []
+            forceEditValues: [],
+            dualFileLoadInArr: [],
+            loadedInFirstFile: false
         };
         this.updateData = this.updateData.bind(this);
     }
 
+    // this function reads in from both "choose files" to get both events before running handle change
+    preHandleChange = event => {
+        console.log(event.target.files[0])
+        let arr = this.state.dualFileLoadInArr;
+        arr.push(event.target.files[0]);
+        console.log(arr)
+
+        if (this.state.loadedInFirstFile === true) {
+            this.handleChange(this.state.dualFileLoadInArr)
+        }
+
+        if (this.state.loadedInFirstFile === false) {
+            this.setState({
+                dualFileLoadInArr: true
+            })
+        }
+
+
+    }
+
     // helper method for selected CSV to read information from the file
     handleChange = event => {
-        console.log(event)
-        this.setState({ files: event.target.files })
+
+        console.log(event.target.files.length)
+        let arr = this.state.dualFileLoadInArr;
+        for (let i = 0; i < event.target.files.length; i++) {
+
+            arr.push(event.target.files[i]);
+        }
+        console.log(arr)
+
+
+        console.log(event.target.files)
+        this.setState({ files: arr })
         if (event.target.files[1] === undefined) {
             this.setState({
                 csvfile: event.target.files[0]
@@ -85,11 +117,11 @@ class FileIn extends React.Component {
             }
         }
 
-        if (this.state.files === undefined) {
-            this.refreshFileIn()
-            alert("You have not selected a file!")
-            return
-        }
+        // if (this.state.files === undefined) {
+        //     this.refreshFileIn()
+        //     alert("You have not selected a file!")
+        //     return
+        // }
         // else if (this.state.files.length === 1 && count === 1) {
         //     this.refreshFileIn()
         //     alert("You have only selected one mapping file with no additional CSV try again!")
