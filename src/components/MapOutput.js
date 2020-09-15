@@ -3,7 +3,7 @@
 // This component displays an icon in the center of the toolbar /////////////////////
 // This input box recieves 1 or 2 CSVS OR that combination with 1 JS file //////////
 ///////////////////////////////////////////////////////////////////////////////////
-//FIX
+
 import React from 'react';
 import { connect } from 'react-redux';
 import saveAs from 'file-saver';
@@ -51,6 +51,21 @@ class MapOutput extends React.Component {
         return filtered
     }
 
+    fileMetadataHeader = () => {
+        let headerText = "//Mars Map Maker metadata\n//const createdFrom = "
+
+        let arrayContent = "[ "
+        for (let i = 0; i < this.props.fileMeta.length; i++) {
+            if( i < this.props.fileMeta.length - 1) {
+                arrayContent += "\"" + this.props.fileMeta[i] + "\", "
+            }
+            else {
+                arrayContent += "\"" + this.props.fileMeta[i] + "\" ]\n"
+            }
+        }
+
+        return headerText + arrayContent
+    }
 
     forceEditFunction = () => {
         let id = 0;
@@ -59,32 +74,21 @@ class MapOutput extends React.Component {
         //prepopulate sortedpersist with entries
         let sortedPersistent = this.props.persist
         sortedPersistent.sort((a, b) => (a.index > b.index) ? 1 : -1)
-        //for (let i = 0; i < sortedPersistent.length; i++)
-        //    {alert(sortedPersistent[i].header) }
-        //alert("THIS IS SORTED LENGTH BEFORE FUNCTION: " + sortedPersistent.length)
+
 
         let sifted = this.filterSortedPersistent(sortedPersistent)
 
-        //for (let i = 0; i < sifted.length; i++)
-        //   {alert("HEADER: " + sifted[i].header + "VALUE: " + sifted[i].value + "sesarTitle: " + sifted[i].sesar) }
-        //alert("THIS IS SORTED LENGTH BEFORE FUNCTION: " + sortedPersistent.length)
-
-        // alert("THIS IS SIFTED LENGTH: " + sifted.length)
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && id < sifted.length) {
-                //alert(sifted[id].value + "  " + id)
-
+            
                 functID = functID + "const forceEditID" + id + " = () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].header + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
                 let arr = this.state.functionIDs
                 arr.push(appendValue)
-                //alert("This is checking id: " + "  "+ id + "   " + appendValue + "  " + this.props.ent[i].value)
                 this.setState(state => ({ functionIDs: arr }))
-                //alert("BLEH" + this.state.functionIDs)
                 id++
             }
         }
-        //alert("This is id: "+ id)
         return functID
     }
 
@@ -182,7 +186,7 @@ class MapOutput extends React.Component {
 
     //this method loops through the array entries in the store multiple times to append to the string based on corresponding SesarTitles selected that
     createMapString() {
-        //FIX multivalue adds on a comma when it should end the line!
+
         let letMapString = "let map = {\n"
         let lastIndexOfContent = -1
         let singleLastIndexOfContent = -1
@@ -325,7 +329,7 @@ class MapOutput extends React.Component {
 
         for (let i = 0; i < this.props.ent.length; i++) {
             if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && this.props.ent[i].value !== "<METADATA_ADD>") {
-                //alert("FUCNTIONID: " + this.state.functionIDs[id])
+
                 if (this.state.functionIDs[id] === undefined) {
 
                 }
@@ -366,13 +370,12 @@ class MapOutput extends React.Component {
         }
 
         let fileString = "//Start::::\n"
+        fileString = fileString + this.fileMetadataHeader()
         fileString = fileString + this.forceEditFunction()
         fileString = fileString + this.createMulitValueJoins()
         fileString = fileString + this.createDateFormatString(dateDoubleCheck)
         fileString = fileString + this.createMapString()
         fileString = fileString + this.createLogicAndCombination()
-        //this.createSizeConversionString("mm") +
-        //this.createSummate() +
         return fileString
     }
 
@@ -396,6 +399,7 @@ class MapOutput extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ent: state.entries,
+        fileMeta: state.fileMetadata,
         persist: state.persistingMetaData,
         multiValue: state.multiValues,
         singleMeasure: state.singleMeasureArr,
