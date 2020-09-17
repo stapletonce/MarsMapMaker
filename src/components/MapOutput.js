@@ -53,7 +53,6 @@ class MapOutput extends React.Component {
 
     fileMetadataHeader = () => {
         let headerText = "//Mars Map Maker metadata\n//const createdFrom = "
-
         let arrayContent = "[ "
         for (let i = 0; i < this.props.fileMeta.length; i++) {
             if( i < this.props.fileMeta.length - 1) {
@@ -63,9 +62,16 @@ class MapOutput extends React.Component {
                 arrayContent += "\"" + this.props.fileMeta[i] + "\" ]\n"
             }
         }
-
+        for(let i = 0; i < this.props.ent.length; i++) {
+            if (this.props.ent[i].sesarTitle === "current_archive") {
+                arrayContent += "//Mapping file for "+ this.props.ent[i].value + "\n"
+            }
+        }
+        arrayContent += "//Revised 2020.08.03 per discussions with SESAR\n"
+        arrayContent += "//This file was created by MARS Map Maker\n//CIRDLES.org\n\n"
         return headerText + arrayContent
     }
+
 
     forceEditFunction = () => {
         let id = 0;
@@ -79,7 +85,7 @@ class MapOutput extends React.Component {
         let sifted = this.filterSortedPersistent(sortedPersistent)
 
         for (let i = 0; i < this.props.ent.length; i++) {
-            if ((this.props.ent[i].header === "<METADATA>" || this.props.ent[i].header === "<METADATA_ADD>") && this.props.ent[i].isGreen && id < sifted.length) {
+            if ((this.props.ent[i].header === "<METADATA>" || (this.props.ent[i].header === "<METADATA_ADD>" && this.props.ent[i].value !== "<METADATA_ADD>")) && this.props.ent[i].isGreen && id < sifted.length) {
             
                 functID = functID + "const forceEditID" + id + " = () => {" + "\n" + "let mapMakerHeader = " + "\"" + sifted[id].header + "\"" + "\n  return " + "\"" + this.props.ent[i].value + "\"" + ";\n}\n"
                 let appendValue = "forceEditID" + id
