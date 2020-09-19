@@ -98,6 +98,7 @@ const CardList = (props) => {
             }
             props.toggleInUse(obj)
         }
+        console.log(props.jsFileValues)
     }
 
     // returns to the first row of content in the csv
@@ -123,6 +124,37 @@ const CardList = (props) => {
         return sesarPassIn
     }
 
+    // const createEmptyField = () => {
+    //     return (
+    //         <FieldCard
+    //             multiCount={props.multiCount}
+    //             addedNewField={(fieldsState[0] === "~~~" && newKey === 0) ? true : false}
+    //             jsFileValues={props.jsFileValues}
+    //             toggleInUse={props.usingToggle}
+    //             key={newKey}
+    //             hiding={hide}
+    //             fieldTitle={"~~~"}
+    //             id={newKey}
+    //             fieldType={"both"}
+    //             fieldValue={"~~~"}
+    //             hasContent={true}
+    //         />
+    //     )
+    // }
+
+    const valueIsInJsMappingFile = (field) => {
+        let valid = false;
+        if (props.jsFileValues !== undefined) {
+            for (let i = 0; i < props.jsFileValues.length; i++) {
+
+                if (props.jsFileValues[i][1] === field)
+                    valid = true;
+            }
+        }
+
+        return valid
+    }
+
 
     // maps content to separate fieldcards on the screen
     const fields = fieldsState.map((field) => {
@@ -142,7 +174,7 @@ const CardList = (props) => {
                 header: field,
                 isDate: false,
                 isMeasurement: false,
-                isGreen: fieldValState[newKey] !== ""
+                isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
             }
             fieldContentValue = fieldValState[newKey]
         }
@@ -157,7 +189,7 @@ const CardList = (props) => {
                     header: "<METADATA>",
                     isDate: false,
                     isMeasurement: false,
-                    isGreen: fieldValState[newKey] !== ""
+                    isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
                 }
                 fieldContentValue = props.forceValues[forcedIndex]
             }
@@ -171,7 +203,7 @@ const CardList = (props) => {
                     header: "<METADATA_ADD>",
                     isDate: false,
                     isMeasurement: false,
-                    isGreen: fieldValState[newKey] !== ""
+                    isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
                 }
                 fieldContentValue = props.forceValues[forcedIndex]
             }
@@ -222,7 +254,8 @@ const CardList = (props) => {
                 id={newKey}
                 fieldType={typeField(props.fieldVal[newKey])}
                 fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
-                hasContent={props.fieldVal[newKey] !== ""
+                //fieldValue={props.fieldVal[newKey]}
+                hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(field)
                 }
             />)
         }
@@ -240,7 +273,7 @@ const CardList = (props) => {
                     id={newKey}
                     fieldType={typeField(props.fieldVal[newKey])}
                     fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
-                    hasContent={props.fieldVal[newKey] !== ""}
+                    hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(Object.keys(props.toggleArr[toggleIndex])[newKey])}
                 />
             );
         }
@@ -263,6 +296,7 @@ const CardList = (props) => {
         console.log(props.multiCount)
         console.log(props.ent)
         console.log(props.toggleArr)
+        valueIsInJsMappingFile()
     }
 
     // This helper function fills the multiValueArray where each index represents the "field_name", "description", or "sample_comment" selections
