@@ -176,3 +176,10 @@ export const setForcedOldToNew = obj => {
         payload: obj
     }
 }
+
+export const setFileMetadata = obj => {
+    return {
+        type: "STORE_FILE_METADATA",
+        payload: obj
+    }
+}

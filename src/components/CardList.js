@@ -23,8 +23,6 @@ import { firstState, toggleInUse } from '../actions/';
 //////////////////////////////////////////////////////////////
 
 // there is a particular relationship between checked value and available option in dropdown
-// consider formatting specs for outside of 1 to 1 version, comment fields
-// add another array in store for values that adds values that can only be used once, iterate array before updating store with new dropdown clicks
 
 const CardList = (props) => {
 
@@ -231,7 +229,7 @@ const CardList = (props) => {
                                 count += 1
                             }
                         }
-                        console.log("MEEPDY MEEP: " + count)
+
                         return count
                     }
 
@@ -240,13 +238,10 @@ const CardList = (props) => {
         }
 
 
-
-
-
-
         // create the FieldCard that you see in the UI
         // If toggleIndex is 0 then we're on the 1st row so give it raw input
         // Else give it the object.values..
+        // Meaning refer to Sample Row array created in store
         if (toggleIndex === 1) {
             return (<FieldCard
                 multiCount={props.multiCount}
@@ -284,15 +279,6 @@ const CardList = (props) => {
         }
     });
 
-    // const addFieldCard = () => {
-
-    //     props.addedCallback()
-    //     // clickingAddCard(false)
-    //     // console.log(addingCard)
-    //     // clickingAddCard(true)
-    //     // console.log(addingCard)
-    // }
-
     // uses the action "firstState" with the argument "objArray" to create the Redux Store ***ONE TIME***
     useEffect(() => {
         const initObj = {
@@ -303,15 +289,9 @@ const CardList = (props) => {
     }, []);
 
 
-    // useEffect(() => {
-    //     for (let i = 0; i < 3; i++)
-    //         addAFieldCardHead(["~~~", ...fieldsState])
-    //     addAFieldCardVal(["~~~", ...fieldValState])
-    // }, [])
-
-
     // shows contents of the store if you click the "help" button in the console (FOR NOW)
     const checkStore = () => {
+        console.log(props.fileMeta)
         console.log(props.persist)
         console.log(props.multiCount)
         console.log(props.ent)
@@ -354,7 +334,6 @@ const CardList = (props) => {
         let options = ["field_name", "description", "sample_comment", "geological_age", "size"]
         let multiValueArr = [[], [], [], [], []]
         let mapPreviewArr = []
-        //let sizeSelection = ["", "", "", ""]
         let fieldIndex = -1;
         let descripIndex = -1;
         let sampleIndex = -1;
@@ -454,9 +433,6 @@ const CardList = (props) => {
         return found
     }
 
-    //<button style={{ width: "12%", display: "inline-block" }} class="ui inverted secondary button" onClick={() => { addFieldCard() }}>Add New Card</button>
-
-
     return (
 
         /////////////////////////
@@ -555,7 +531,8 @@ const mapStateToProps = (state) => {
         usingToggle: state.toggleInUse,
         hasDateFormat: state.hasChosenDateFormat,
         storeJsFile: state.jsFile,
-        multiCount: state.totalMultiCount
+        multiCount: state.totalMultiCount,
+        fileMeta: state.fileMetadata
     };
 };
 

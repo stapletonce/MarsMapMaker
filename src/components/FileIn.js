@@ -10,7 +10,7 @@ import Papa from 'papaparse';
 import './App.scss';
 import classNames from 'classnames';
 
-import { formatDate, century } from '../actions/'
+import { formatDate, century, setFileMetadata } from '../actions/'
 
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -137,28 +137,28 @@ class FileIn extends React.Component {
     importCSV = () => {
         let jscount = 0;
         let csvcount = 0;
+        let fileName = []
         if (this.state.files !== undefined) {
             for (let i = 0; i < this.state.files.length; i++) {
+                
+                fileName.push(this.state.files[i].name)
+                
                 if (this.state.files[i].type.includes("javascript"))
                     jscount += 1
                 else if (this.state.files[i].type === "text/csv")
                     csvcount += 1
             }
 
+            const obj = {
+                files : fileName
+            }
+            this.props.setFileMetadata(obj)
+            
+            console.log(fileName)
             console.log("JSCOUNT: " + jscount)
             console.log("CSVCOUNT: " + csvcount)
         }
 
-        // if (this.state.files === undefined) {
-        //     this.refreshFileIn()
-        //     alert("You have not selected a file!")
-        //     return
-        // }
-        // else if (this.state.files.length === 1 && count === 1) {
-        //     this.refreshFileIn()
-        //     alert("You have only selected one mapping file with no additional CSV try again!")
-        //     return
-        // }
         if (csvcount > 3) {
             console.log("csv count stuff correct")
             this.refreshFileIn()
@@ -178,7 +178,7 @@ class FileIn extends React.Component {
             }
             if (!(numOfJsFiles < 2)) {
                 this.refreshFileIn()
-                alert("Two many Mapping files....")
+                alert("Too many Mapping files....")
                 return
             }
 
@@ -213,15 +213,6 @@ class FileIn extends React.Component {
         }
 
         else {
-            // if (Object.values(result.data[i])[0].includes("[") && Object.values(result.data[i])[0].includes("]")) {
-            //     let value = JSON.stringify(Object.values(result.data[i])[0])
-            //     value.replace(" ", "")
-            //     value.replace("[", "")
-            //     value.replace("]", "")
-            //     console.log(value)
-            // }
-
-
             let firstIndexFormat;
             // where we handle multivalue selections
             firstIndexFormat = JSON.stringify(Object.values(result.data[i])[0]).split(" ")
@@ -599,4 +590,4 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps, { formatDate, century })(FileIn);
+export default connect(mapStateToProps, { formatDate, century, setFileMetadata })(FileIn);

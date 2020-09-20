@@ -93,11 +93,20 @@ const reducer =
       hasChosenDateFormat: false,
       hasChosenDropdownOption: false,
       hasTwoYs: false,
-      substringDateFormat: "start"
+      substringDateFormat: "start",
+      fileMetadata: []
     },
     action) => {
 
     switch (action.type) {
+      
+      case "STORE_FILE_METADATA":
+        return {
+          ...state,
+          fileMetadata : state.fileMetadata.concat(action.payload.files)
+        }
+      
+      
       case "CHANGE_FORCED_CARD_VALUE_TO_OLD":
         return update(state,
           {
