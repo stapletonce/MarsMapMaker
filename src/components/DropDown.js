@@ -556,74 +556,47 @@ class DropDown extends React.Component {
             }
 
             // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
-            if (this.props.fieldType === "both" && (!this.props.useOnce.includes(f.title) || this.props.useOnce[this.props.id] === f.title)) {
-                console.log(f.title + ": Flag 1")
-
-                //recently added to accept new checked but "empty" selections
 
 
+            console.log("TITLE: " + f.title)
 
+            if (this.props.fieldType === "added_card") {
+                if (f.title === "sample_type")
+                    return <option key={f.title} value={f.title} selected>sample_type</option>
 
-
-                if (!this.checkForSampleType() === true && f.title === "sample_type") {
-
-                    console.log(f.title + ": Flag 2")
+                if (this.checkForSampleType() !== true && f.title === "sample_type")
                     return <option key={f.title} value={f.title}>{f.title}</option>
-                }
-
-                if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
-                    console.log(f.title + ": Flag 4")
+                else if (this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
                     return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
-                }
-                if (!arr.includes(f.title)) {
-                    console.log(f.title + ": Flag 5" + arr)
-                    arr = this.alreadyInDropdown(arr, f.title)
-                    return <option key={f.title} value={f.title}>{f.title}</option>;
                 }
                 else
                     return
             }
+            if (!this.checkForSampleType() === true && f.title === "sample_type") {
 
-
-            if ((f.type === this.props.fieldType || this.props.fieldType === "added_card")) {
-
-                if (this.props.fieldType === "added_card") {
-                    if (f.title === "sample_type")
-                        return <option key={f.title} value={f.title} selected>sample_type</option>
-
-                    if (this.checkForSampleType() !== true && f.title === "sample_type")
-                        return <option key={f.title} value={f.title}>{f.title}</option>
-                    else if (this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
-                        return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
-                    }
-                    else
-                        return
-                }
-                if (!this.checkForSampleType() === true && f.title === "sample_type") {
-
-                    console.log(f.title + ": Flag 2")
-                    return <option key={f.title} value={f.title}>{f.title}</option>
-                }
-
-                if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
-                    console.log(f.title + ": Flag 4")
-                    return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
-                }
-                if (!this.props.useOnce.includes(f.title)) {
-                    console.log(f.title + ": Flag 5" + this.hasSesarValue()[1])
-
-                    return <option key={f.title} value={f.title}>{f.title}</option>;
-                }
-
-                else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title)) {
-                    console.log(f.title + ": Flag 3")
-                    return <option key={f.title} value={f.title}>{f.title}</option>;
-                }
-                else if (this.props.useOnce.indexOf(f.title) === this.props.id) {
-
-                    return <option key={f.title} value={f.title}>{f.title}</option>;
-                }
+                console.log(f.title + ": Flag 2")
+                return <option key={f.title} value={f.title}>{f.title}</option>
             }
+
+            if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
+                console.log(f.title + ": Flag 4")
+                return <option key={f.title} value={this.hasSesarValue()[1]} selected>{this.hasSesarValue()[1]}</option>;
+            }
+            if (!this.props.useOnce.includes(f.title)) {
+                console.log(f.title + ": Flag 5" + this.hasSesarValue()[1])
+
+                return <option key={f.title} value={f.title}>{f.title}</option>;
+            }
+
+            else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title)) {
+                console.log(f.title + ": Flag 3")
+                return <option key={f.title} value={f.title}>{f.title}</option>;
+            }
+            else if (this.props.useOnce.indexOf(f.title) === this.props.id) {
+
+                return <option key={f.title} value={f.title}>{f.title}</option>;
+            }
+
 
 
         };
