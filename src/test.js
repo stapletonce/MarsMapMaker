@@ -1,12 +1,4 @@
 //Start::::
-const forceEditID0 = () => {
-let mapMakerHeader = "<METADATA_ADD>"
-  return "Scripps";
-}
-const forceEditID1 = () => {
-let mapMakerHeader = "CRUISE"
-  return "Hello";
-}
 const keyValueString = (scrippsValue, scrippsKey) => {
   return scrippsKey + ' : ' + scrippsValue
 }
@@ -16,13 +8,11 @@ const delimit = (valueArray) => {
 }
 
 let map = {
-  sample_type: "<METADATA_ADD>",
-  current_archive: "<METADATA>"
+  current_archive: "END_DATE",
+  name: "END_LATMIN"
 }
 
 let logic = { 
-  sample_type: forceEditID0,
-  current_archive: forceEditID1,
   collection_start_date: scrippsDate,
   collection_end_date: scrippsDate,
   geological_age: keyValueString,

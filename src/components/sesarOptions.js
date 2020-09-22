@@ -173,14 +173,6 @@ let options = [
     },
     {
         selected: false,
-        id: 21,
-        title: "latitude",
-        type: "numbers",
-        key: "field",
-        format: "one2one"
-    },
-    {
-        selected: false,
         id: 22,
         title: "description",
         type: "text",
@@ -212,51 +204,6 @@ let options = [
         key: "field",
         type: "text",
         message: "The type of sample which comes from a SESAR controlled list",
-        format: "one2one"
-    },
-    {
-        selected: false,
-        id: 28,
-        title: "latitude_end",
-        key: "field",
-        type: "numbers",
-        message: "Ending Longitude",
-        format: "one2one"
-    },
-    {
-        selected: false,
-        id: 29,
-        title: "longitude",
-        key: "field",
-        type: "numbers",
-        message: "Longitude",
-        format: "one2one"
-    },
-    {
-        selected: false,
-        id: 30,
-        title: "longitude_end",
-        key: "field",
-        type: "numbers",
-        message: "Ending Longitude",
-        format: "one2one"
-    },
-    {
-        selected: false,
-        id: 31,
-        title: "elevation",
-        key: "field",
-        type: "numbers",
-        message: "Water Depth",
-        format: "one2one"
-    },
-    {
-        selected: false,
-        id: 32,
-        title: "elevation_end",
-        key: "field",
-        type: "numbers",
-        message: "Ending Water Depth",
         format: "one2one"
     },
     {
