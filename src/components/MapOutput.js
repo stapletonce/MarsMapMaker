@@ -52,7 +52,7 @@ class MapOutput extends React.Component {
     }
 
     fileMetadataHeader = () => {
-        let headerText = "//mapping file created with "
+        let headerText = "//Mapping file created with file(s)"
         let arrayContent = ""
         for (let i = 0; i < this.props.fileMeta.length; i++) {
             if( i < this.props.fileMeta.length - 1) {
@@ -70,7 +70,7 @@ class MapOutput extends React.Component {
             }
         }
         arrayContent += "//Revised 2020.08.03 per discussions with SESAR\n"
-        arrayContent += "//\n//Mars Map Maker was created by the members of CIRDLES.org Josh Gilley and Robert Niggebrugge\n//under the guidance of Principal Investigator Dr. Jim Bowring\n\n"
+        arrayContent += "//\n//Mars Map Maker was created by the members of CIRDLES.org Josh Gilley and Robert Niggebrugge\n//under the guidance of Principal Investigator Dr. Jim Bowring.\n\n"
         return headerText + arrayContent
     }
 

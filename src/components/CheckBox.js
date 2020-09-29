@@ -5,8 +5,6 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 import React, { Component } from 'react';
-import { removeContent } from '../actions';
-
 
 // CSS & Styling
 import { Checkbox } from 'semantic-ui-react';
@@ -17,10 +15,12 @@ import './App.scss';
 
 export default class CheckboxExample extends Component {
 
+    state = { checked: this.props.isChecked }
 
     // function that goes back to the fieldCard and changes the color of the fieldCard (previously the cards were green, hints the name)
     toggle = () => {
         this.props.greenCallback()
+        this.setState({ checked: !this.props.isChecked })
     }
 
     render() {
@@ -28,6 +28,7 @@ export default class CheckboxExample extends Component {
             <div className="inner--checkbox">
                 <Checkbox
                     onChange={this.toggle}
+                    checked={this.state.checked}
                 />
             </div>
         )
