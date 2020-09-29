@@ -52,23 +52,25 @@ class MapOutput extends React.Component {
     }
 
     fileMetadataHeader = () => {
-        let headerText = "//Mars Map Maker metadata\n//const createdFrom = "
-        let arrayContent = "[ "
+        let headerText = "//mapping file created with "
+        let arrayContent = ""
         for (let i = 0; i < this.props.fileMeta.length; i++) {
             if( i < this.props.fileMeta.length - 1) {
-                arrayContent += "\"" + this.props.fileMeta[i] + "\", "
+                arrayContent +=  this.props.fileMeta[i] + ", "
             }
             else {
-                arrayContent += "\"" + this.props.fileMeta[i] + "\" ]\n"
+                arrayContent += this.props.fileMeta[i] + "\n"
             }
         }
         for(let i = 0; i < this.props.ent.length; i++) {
-            if (this.props.ent[i].sesarTitle === "current_archive") {
-                arrayContent += "//Mapping file for "+ this.props.ent[i].value + "\n"
+            if (this.props.ent[i].sesarTitle === "current_archive" && this.props.ent[i].value !== "") {
+                arrayContent += "//This is a mapping file for the organization "+ this.props.ent[i].value + "\n"
+            } else {
+                arrayContent += ""
             }
         }
         arrayContent += "//Revised 2020.08.03 per discussions with SESAR\n"
-        arrayContent += "//This file was created by MARS Map Maker\n//CIRDLES.org\n\n"
+        arrayContent += "//\n//Mars Map Maker was created by the members of CIRDLES.org Josh Gilley and Robert Niggebrugge\n//under the guidance of Principal Investigator Dr. Jim Bowring\n\n"
         return headerText + arrayContent
     }
 
@@ -375,7 +377,13 @@ class MapOutput extends React.Component {
             }
         }
 
-        let fileString = "//Start::::\n"
+        let today = new Date()
+        let year = today.getFullYear()
+        let month = today.getMonth() + 1
+        let day = today.getDate()
+        let currentDate = " " + year + "-" + month + "-" + day
+
+        let fileString = "//Mapping file created by Mars Map Maker on" + currentDate + "\n"
         fileString = fileString + this.fileMetadataHeader()
         fileString = fileString + this.forceEditFunction()
         fileString = fileString + this.createMulitValueJoins()

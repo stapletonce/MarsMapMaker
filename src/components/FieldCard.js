@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { connect } from 'react-redux';
 import CheckboxExample from './CheckBox';
 import DropDown from './DropDown';
-import { removeContent, totalMultiValueCount, forceEdit, persistingDataConcat, persistingDataUpdate } from '../actions';
+import { removeContent, totalMultiValueCount, forceEdit, persistingDataConcat } from '../actions';
 import { Dropdown } from 'semantic-ui-react';
 const { options } = require('./sesarOptions')
 
@@ -241,7 +241,7 @@ class FieldCard extends React.Component {
             ftitle: title,
             findex: index
         }
-        console.log(obj)
+     //   console.log(obj)
         this.props.totalMultiValueCount(obj);
 
         return String(count)
@@ -351,7 +351,16 @@ class FieldCard extends React.Component {
         }
     }
 
+    editPlaceholderText= () => {
+        let valueInStore = this.props.ent[this.props.id].value
+        let headerInStore = this.props.ent[this.props.id].header
+        let inputPlaceHolder = "Edit content..."
 
+        if((this.props.id === 0 && (valueInStore !== "<METADATA_ADD>" && valueInStore !== "ADDED_CARD : 1")) || headerInStore === "<METADATA>"){
+            inputPlaceHolder = valueInStore
+        }
+        return inputPlaceHolder
+    }
 
     render() {
 
@@ -384,7 +393,7 @@ class FieldCard extends React.Component {
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
                                         <div style={{ paddingTop: ".8em", display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
-                                            <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Edit Content..." />
+                                            <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder={this.editPlaceholderText()} />
                                         </div>}
                                     {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
 
@@ -419,7 +428,7 @@ class FieldCard extends React.Component {
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.props.fieldTitle + ": " + this.props.fieldValue)}</div> :
                                         <div style={{ paddingTop: ".8em", display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
-                                            <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Edit Content..." />
+                                            <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder={this.editPlaceholderText()} />
                                         </div>}
                                     {this.filterDrop()}{(this.state.index !== -1) ? this.state.formattedString + this.props.multiCount[this.state.index].count : ""}
 
@@ -456,7 +465,7 @@ class FieldCard extends React.Component {
                             <object className="descriptionMapped" align="right">
                                 {(this.props.hasInit === true && this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
                                     <div style={{ paddingTop: ".8em", display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
-                                        <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Edit Content..." />
+                                        <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder={this.editPlaceholderText()} />
                                     </div>}
                                 {this.filterDrop()}
                                 {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
@@ -494,8 +503,8 @@ class FieldCard extends React.Component {
                                     <div className="check__box">
                                         <CheckboxExample greenCallback={this.greenToggle} isChecked={this.state.isGreen} />
                                     </div>
-                                    <div dir="rtl" className="description__title">{"ADDED_CARD"}</div>
-                                    <div className="description__value" >{":        " + String(this.props.id + 1)}</div>
+                                    <div dir="rtl" className="description__title">{"Missing field"}</div>
+                                    <div className="description__value" >{" "}</div>
                                 </object>
                                 <object className="arrow">
                                     <i className="fa fa-angle-double-right" style={{ zIndex: 1 }}></i>
@@ -503,7 +512,7 @@ class FieldCard extends React.Component {
                                 <object className="descriptionMapped" align="right">
                                     {(this.state.areEditing === true) ? <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div> :
                                         <div style={{ paddingTop: ".8em", display: "inline-block", width: "150px", paddingRight: "35px" }} class="ui input">
-                                            <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder="Edit Content..." />
+                                            <input onKeyPress={this.forceEdit} style={{ display: "inline-block", width: "150px" }} type="text" placeholder={this.editPlaceholderText()} />
                                         </div>}
                                     {this.filterDrop()}
                                     {(this.props.hasInit === true && this.props.ent[this.props.id].sesarTitle !== "" && this.isMultiValue(this.props.ent[this.props.id].sesarTitle) === false) ? <div style={{ paddingTop: "8px", paddingLeft: "10px", float: "right", display: "inline" }}>
@@ -624,4 +633,4 @@ const mapStateToProps = (state) => {
     };
 };
 // hello robert
-export default connect(mapStateToProps, { forceEdit, removeContent, totalMultiValueCount, persistingDataConcat, persistingDataUpdate })(FieldCard);
+export default connect(mapStateToProps, { forceEdit, removeContent, totalMultiValueCount, persistingDataConcat })(FieldCard);
