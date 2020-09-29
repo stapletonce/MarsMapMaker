@@ -414,10 +414,10 @@ const CardList = (props) => {
     const hideOrShow = () => {
         let final = ""
         if (hide === true) {
-            final = "Show Unused Cards"
+            final = "Show Unused Fields"
         }
         else {
-            final = "Hide Unused Cards"
+            final = "Hide Unused Fields"
         }
         return final
     }
@@ -504,8 +504,8 @@ const CardList = (props) => {
                                 <div style={{ fontFamily: "Lucida Grande", fontSize: "18px" }}>Maps To</div>
                             </object>
                             <object className="descriptionMapped" align="right">
-                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__content">Mapped Content</div>
-                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__header">[Mapped Header]</div>
+                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__content">Content</div>
+                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__header">[Header]</div>
                             </object>
                         </div>
                     </div>

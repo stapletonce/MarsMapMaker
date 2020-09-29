@@ -10,7 +10,7 @@ import Papa from 'papaparse';
 import './App.scss';
 import classNames from 'classnames';
 
-import { formatDate, century, setFileMetadata } from '../actions/'
+import { formatDate, century, setFileMetadata, persistingDataConcat } from '../actions/'
 
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -203,12 +203,37 @@ class FileIn extends React.Component {
         }
         return newArr
     }
-
-    startPushingHelper = (result, i, jsArr) => {
-
+    //iStart is beginning of map array
+    startPushingHelper = (result, i, jsArr, iStart) => {
+        //let findout = (JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+        //console.log("this is i right after being called: " + i + " and findout is this: " + findout)
+        
         if (!(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("["))) {
+            //make function to identify Metadata or metadata add inside and add sesar value to persistmetadata in store 
+            //this splits each line of the map into an array of [sesarTitle, mappedHeader]
+            let cleaned = Object.values(result.data[i])[0].replace(/(\r\n|\n|\r)/gm, "").replace(" ", "").split(":")
+            if (!(cleaned[0].includes("return") || cleaned[0].includes("}"))) {
+                let sesarCleaned = cleaned[0]
+                let addToStore = cleaned[1].includes("<METADATA")
+                //console.log( "\n" +"This is i:  "+ i + "      " + sesarCleaned + "  SHOULD be SESARCLEANED AND SHOULD BE TRUE for sampletype and current archive" + addToStore + "\n")
+            
+                if (addToStore){
+                    console.log(cleaned)
+                    //console.log("iStart should not be -1 :" + iStart)
+                    let persistObj = {
+                        sesar: sesarCleaned,
+                        value: "value",
+                        isMetaData: false,
+                        isMetaDataAdd: false,
+                        header: cleaned[1].replace(/\"/g, ""),
+                        forceID: this.props.persist.length,
+                        index: i - iStart
+                    }
+                    this.props.persistingDataConcat(persistObj)
 
-
+                    //put object in store with only the sesar value to persistmetadata
+                }
+            }
             jsArr.push(JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, "").replace(" ", ""))
         }
 
@@ -247,10 +272,10 @@ class FileIn extends React.Component {
     // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
     updateData(result) {
         let removeIndex = []
-
+        let mapIndex = -1
 
         // checks to see if the file "result" is a JS mapping file, this file always starts with Start::::
-        if (Object.keys(result.data[0])[0].includes("//Start::::")) {
+        if (Object.keys(result.data[0])[0].includes("//Mapping file created by Mars Map Maker")) {
             let finalStr = ""
             let needsCenturyPrefix = false
 
@@ -295,6 +320,8 @@ class FileIn extends React.Component {
 
 
                 if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("let map")) {
+                    if (!(JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("}") || JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("return")))
+                        mapIndex = i 
                     startPushing = true
                 }
                 else if (JSON.stringify(Object.values(result.data[i - 1])[0]).replace(/(\r\n|\n|\r)/gm, "").includes("const scrippsDate")) {
@@ -312,7 +339,9 @@ class FileIn extends React.Component {
                 let arr
 
                 if (startPushing === true) {
-                    this.startPushingHelper(result, i, jsArr)
+                   
+                    //console.log("This is indexSet before startpush: " + "  " + mapIndex + "   " + JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
+                    this.startPushingHelper(result, i, jsArr, mapIndex)
                 }
                 else if (dateIdentified === true) {
                     if (Object.values(result.data[i])[0].includes("y")) {
@@ -445,13 +474,14 @@ class FileIn extends React.Component {
             let forceEditValuesCount = 0
             for (let i = 0; i < addForceEditValues.length; i++) {
                 if (addForceEditValues[i][1] === "<METADATA_ADD>" || addForceEditValues[i][1] === "<METADATA>") {
+                  //  console.log("is this something?: "+ forceEditValueTitleArr[forceEditValuesCount])
                     addForceEditValues[i][1] = forceEditValueTitleArr[forceEditValuesCount]
                     forceEditValuesCount++
                 }
             }
 
-            console.log("LOOKING HERE TITLE ARR: " + forceEditValueTitleArr)
-            console.log("LOOKING HERE VALUE ARR: " + forceEditValueContentArr)
+         //   console.log("LOOKING HERE TITLE ARR: " + forceEditValueTitleArr)
+         //   console.log("LOOKING HERE VALUE ARR: " + forceEditValueContentArr)
             // establish state that we have a jsArr
             this.setState({ jsFile: addForceEditValues, includesJsFile: true, isJsFile: true, forceEditTitles: forceEditValueTitleArr, forceEditValues: forceEditValueContentArr })
         }
@@ -586,8 +616,9 @@ const mapStateToProps = (state) => {
     return {
         hasChosenDropdown: state.hasChosenDropdownOption,
         hasChosenDateFormat: state.hasChosenDateFormat,
+        persist: state.persistingMetaData,
         dateFormatSelected: state.chosenDateFormat
     };
 };
 
-export default connect(mapStateToProps, { formatDate, century, setFileMetadata })(FileIn);
+export default connect(mapStateToProps, { formatDate, century, setFileMetadata, persistingDataConcat })(FileIn);
