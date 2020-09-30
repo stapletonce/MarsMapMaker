@@ -44,7 +44,7 @@ class FieldCard extends React.Component {
         //console.log(fieldVal)
         let value = fieldVal;
         if (value === "<METADATA_ADD>") {
-            value = "ADDED_CARD : " + String(this.props.id + 1)
+            value = ""
         }
 
         else if (value.length > 25) {
@@ -52,6 +52,15 @@ class FieldCard extends React.Component {
             value = value + "..."
         }
         return value
+    }
+
+    getMulti = () => {
+        let arr = []
+        for (let i = 0; i < this.state.sesarOptions.length; i++) {
+            if (this.state.sesarOptions[i].format === "multivalue")
+                arr.push(this.state.sesarOptions[i].title)
+        }
+        return arr
     }
 
     getOne2One = () => {
@@ -71,9 +80,9 @@ class FieldCard extends React.Component {
 
 
         if (this.state.isGreen === true)
-            return <div className="dropDown"><DropDown addedNew={this.props.addedNewField} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
+            return <div className="dropDown"><DropDown addedNew={this.props.addedNewField} refresh={this.refreshFieldCard} callback={this.fileCallback} title={this.props.fieldTitle} id={this.props.id} value={this.props.fieldValue} fieldType={this.state.type} multiList={this.getMulti()} one2one={this.getOne2One()} list={this.state.sesarOptions} /> </div>
         else
-            return <div className="dropDownNoData">---</div>
+            return <div className="dropDownNoData">{"   "}</div>
     }
 
 
@@ -87,7 +96,7 @@ class FieldCard extends React.Component {
         if (this.props.id === 0) {
             let value;
             if (this.props.ent[this.props.id].value === "<METADATA_ADD>") {
-                value = "ADDED_CARD : 1"
+                value = "_"
             }
             else {
                 value = this.props.ent[this.props.id].value
@@ -606,7 +615,7 @@ class FieldCard extends React.Component {
                             <div className="description__value" >{":        " + this.lengthCheckedValue(this.props.fieldValue)}</div>
                         </object>
                         <object className="descriptionMapped" align="right">
-                            <div className="description__mapped__content">{this.lengthCheckedValue(this.state.updatedValue)}</div>
+                            <div className="description__mapped__content">{" "}</div>
                             {this.filterDrop()}
 
 
@@ -623,8 +632,6 @@ const mapStateToProps = (state) => {
         ent: state.entries,
         persist: state.persistingMetaData,
         useOnce: state.useOnce,
-        dateFormat: state.chosenDateFormat,
-        hasChosen: state.hasChosenDateFormat,
         pairArr: state.sizeOuterArray,
         hasInit: state.hasInit,
         toggleIndex: state.toggleIndex,

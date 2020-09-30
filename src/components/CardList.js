@@ -497,15 +497,15 @@ const CardList = (props) => {
                                 <div style={{ fontFamily: "Lucida Grande" }} className="description__checkbox">
                                     Use
                             </div>
-                                <div style={{ fontFamily: "Lucida Grande" }} dir="rtl" className="description__title">Header</div>
-                                <div className="description__value" style={{ fontFamily: "Lucida Grande", width: "23.8%" }}> : Content</div>
+                        <div style={{ fontFamily: "Lucida Grande" }} dir="rtl" className="description__title">{"Field"}</div>
+                                <div className="description__value" style={{ fontFamily: "Lucida Grande", width: "23.8%" }}> {": Content"}</div>
                             </object>
                             <object style={{ fontFamily: "Lucida Grande", display: "inline-block", paddingLeft: "4.2em" }}>
                                 <div style={{ fontFamily: "Lucida Grande", fontSize: "18px" }}>Maps To</div>
                             </object>
-                            <object className="descriptionMapped" align="right">
-                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__content">Content</div>
-                                <div style={{ fontFamily: "Lucida Grande" }} className="description__mapped__header">[Header]</div>
+                            <object className="descriptionKeyMapped" align="right">
+                                <div style={{ fontFamily: "Lucida Grande", whiteSpace: "nowrap" }} className="description__mapped__content">{"Content : [Field]"}</div>
+
                             </object>
                         </div>
                     </div>
