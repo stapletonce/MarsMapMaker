@@ -1,3 +1,5 @@
+
+
 let options = [
     {
         selected: false,
@@ -132,7 +134,7 @@ let options = [
         title: "size",
         message: "Size of the registered object",
         type: "numbers",
-        format: "two2oneMeasurement"
+        format: "multivalue"
     },
 
     {
