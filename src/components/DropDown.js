@@ -34,6 +34,7 @@ class DropDown extends React.Component {
             list: this.props.list,
             value: "select",
             selectedValue: "",
+            sesarMulti: this.props.multiList,
             sesarOneToOne: this.props.one2one,
             alreadyInArray: []
         }
@@ -576,6 +577,15 @@ class DropDown extends React.Component {
 
               //  console.log(f.title + ": Flag 2")
                 return <option key={f.title} value={f.title}>{f.title}</option>
+
+            }
+
+            if (this.props.hasInit && this.state.sesarMulti.includes(f.title)) {
+
+                let ital = f.title.italics()
+                console.log(ital)
+            return <option style={{fontStyle: "italic"}}key={f.title} value={f.title}>{f.title}</option>;
+
             }
 
             if (this.props.hasInit && this.hasSesarValue()[0] === true && this.hasSesarValue()[1] === f.title) {
@@ -588,10 +598,13 @@ class DropDown extends React.Component {
                 return <option key={f.title} value={f.title}>{f.title}</option>;
             }
 
+
+
             else if (this.props.useOnce.includes(f.title) && !sesarOne2One.includes(f.title)) {
                // console.log(f.title + ": Flag 3")
                 return <option key={f.title} value={f.title}>{f.title}</option>;
             }
+
             else if (this.props.useOnce.indexOf(f.title) === this.props.id) {
 
                 return <option key={f.title} value={f.title}>{f.title}</option>;
