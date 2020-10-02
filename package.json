@@ -29,9 +29,10 @@
     "semantic-ui-react": "^0.88.2"
   },
   "scripts": {
+    "__testComment__": "watchAll disables watch on completion. json and outputfile pipe results to testOutput",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test \"--watchAll=false\" \"--json\" \"--outputFile=testOutput.json\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
