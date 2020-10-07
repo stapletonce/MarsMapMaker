@@ -88,7 +88,7 @@ class MapOutput extends React.Component {
     }
 
     arrayContent +=
-      "//\n// Mars Map Maker was created by  Josh Gilley and Robert Niggebrugge\n// of CIRDLES.org, with help from James Rundle,\n// under the guidance of Principal Investigator Dr. Jim Bowring.\n//\n" +
+      "//\n// Mars Map Maker was created by  Josh Gilley and Robert Niggebrugge\n// of CIRDLES.org, with help from James Rundle,\n// under the guidance of Principal Investigator Dr. Jim Bowring\n// in coordination with geosamples.org.\n//\n//\n" +
       this.apacheLicense() +
       "//\n// **************************************************\n\n";
     return headerText + arrayContent;
