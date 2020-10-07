@@ -1,8 +1,22 @@
 import React from "react";
+import React from "react";
 import { shallow } from "enzyme";
-import App from "../components/App";
-import { Item } from "semantic-ui-react";
+// { COMPONENT } does not import the connected component
+import { App } from "../components/App";
+import BrowserApp from "../components/BrowserApp";
 
-it("App should render without errors", () => {
-  expect(1).toBe(1);
+describe('App Component',  () => {
+
+  it("App should render without errors", () => {
+    const wrapper = shallow(
+      <BrowserApp />
+    );
+    const finder = wrapper.find({ testID: 'App'});
+    expect(finder.length).toBe(1);
+  });
+
 });
+
+
+
+

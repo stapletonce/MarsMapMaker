@@ -19,7 +19,7 @@ import { changeInit, initToggle } from "../actions/";
 /////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////
 
-class App extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -192,7 +192,7 @@ class App extends React.Component {
       <div>
         <img className={readerClass} src={mars} alt="marsphoto"></img>
 
-        <FileIn callbackFromParent={this.fileCallback} />
+        <FileIn testID='FileIn' callbackFromParent={this.fileCallback} />
 
         {this.state.isOpened ? (
           <Dialog
