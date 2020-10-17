@@ -51,8 +51,7 @@ class MapOutput extends React.Component {
 
   apacheLicense = () => {
     return (
-      "//                                                                 \n" +
-      "// Copyright [yyyy] [name of copyright owner] Licensed under the\n" +
+      "// Copyright [2020] [CIRDLES.org] Licensed under the\n" +
       '// Apache License, Version 2.0 (the "License"); you may not use this\n' +
       "// file except in compliance with the License. You may obtain a copy\n" +
       "// of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless\n" +

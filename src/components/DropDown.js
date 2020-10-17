@@ -26,7 +26,7 @@ import {
 //////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
-class DropDown extends React.Component {
+export class DropDown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -483,10 +483,10 @@ class DropDown extends React.Component {
   };
 
   // function that searches the ent array in the store for any index with content
-  entWithContent = () => {
+  entWithContent = (entries) => {
     let index = -1;
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (this.props.ent[i].value !== "") index = i;
+    for (let i = 0; i < entries.length; i++) {
+      if (entries[i].value !== "") index = i;
     }
     return index;
   };
@@ -517,12 +517,12 @@ class DropDown extends React.Component {
     };
     if (
       this.props.usingToggle === true &&
-      this.props.id !== this.entWithContent()
+      this.props.id !== this.entWithContent(this.props.ent)
     ) {
       this.updateValueToggle();
     } else if (
       this.props.usingToggle === true &&
-      this.props.id === this.entWithContent()
+      this.props.id === this.entWithContent(this.props.ent)
     ) {
       this.props.toggleInUse(obj);
     }
