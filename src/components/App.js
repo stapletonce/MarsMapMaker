@@ -189,8 +189,10 @@ export class App extends React.Component {
     this.createSquiggleArray();
 
     return (
-      <div>
-        <img className={readerClass} src={mars} alt="marsphoto"></img>
+      <div style={{height: "100vh", position: "relative"}}>
+        <div className={readerClass} >
+        
+
 
         <FileIn testID='FileIn' callbackFromParent={this.fileCallback} />
 
@@ -204,7 +206,7 @@ export class App extends React.Component {
             })}
           </Dialog>
         ) : null}
-
+        </div>
         {this.state.continue ? (
           <CardList
             tValLength={this.state.toggleValueLength}
@@ -217,6 +219,7 @@ export class App extends React.Component {
             forceValues={this.state.forceValues}
           />
         ) : null}
+        
       </div>
     );
   }
