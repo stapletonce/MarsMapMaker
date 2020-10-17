@@ -32,7 +32,7 @@
     "__testComment__": "watchAll disables watch on completion. json and outputfile pipe results to testOutput",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test \"--watchAll=false\" \"--json\" \"--outputFile=testOutput.json\"",
+    "test": "react-scripts test \"--watchAll=false\" \"--silent\" \"--json\" \"--outputFile=testOutput.json\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

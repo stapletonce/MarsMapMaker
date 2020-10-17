@@ -20,7 +20,7 @@ class MapOutput extends React.Component {
     let unfiltered = sorted;
     let filtered = [];
     let reference = this.props.ent;
-    //alert("THIS IS SORTED LENGTH INSIDE FUNCTION: " + unfiltered.length)
+    alert("THIS IS SORTED LENGTH INSIDE FUNCTION: " + unfiltered.length);
     //alert(unfiltered.length + "   " + reference.length)
 
     //  for (let i = 0; i < unfiltered.length; i++)
@@ -44,14 +44,14 @@ class MapOutput extends React.Component {
         }
       }
     }
+    alert(filtered.length)
     //  alert("filtered length: " + filtered.length)
     return filtered;
   };
 
   apacheLicense = () => {
     return (
-      "//                                                                 \n" +
-      "// Copyright [yyyy] [name of copyright owner] Licensed under the\n" +
+      "// Copyright [2020] [CIRDLES.org] Licensed under the\n" +
       '// Apache License, Version 2.0 (the "License"); you may not use this\n' +
       "// file except in compliance with the License. You may obtain a copy\n" +
       "// of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless\n" +
@@ -100,9 +100,11 @@ class MapOutput extends React.Component {
 
     //prepopulate sortedpersist with entries
     let sortedPersistent = this.props.persist;
+    console.log("this is sifted before filter "+ sortedPersistent.length)
     sortedPersistent.sort((a, b) => (a.index > b.index ? 1 : -1));
-
+    console.log("this is sifted after sorted " + sortedPersistent.length)
     let sifted = this.filterSortedPersistent(sortedPersistent);
+    console.log("this is sifted after filter" + sifted.length)
 
     for (let i = 0; i < this.props.ent.length; i++) {
       if (
@@ -127,6 +129,7 @@ class MapOutput extends React.Component {
           this.props.ent[i].value +
           '"' +
           ";\n}\n";
+        alert(functID)
         let appendValue = "forceEditID" + id;
         let arr = this.state.functionIDs;
         arr.push(appendValue);

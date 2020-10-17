@@ -214,14 +214,15 @@ class FileIn extends React.Component {
           console.log(cleaned);
           //console.log("iStart should not be -1 :" + iStart)
           let persistObj = {
-            sesar: sesarCleaned,
+            sesar: sesarCleaned.replace(/^\s|\"/g, ""),
             value: "value",
             isMetaData: false,
             isMetaDataAdd: false,
-            header: cleaned[1].replace(/\"/g, ""),
+            header: cleaned[1].replace(/^\s|\"/g, ""),
             forceID: this.props.persist.length,
             index: i - iStart
           };
+          console.log("this is obj we add to persist "+ persistObj.sesar + " " + persistObj.header)
           this.props.persistingDataConcat(persistObj);
 
           //put object in store with only the sesar value to persistmetadata
