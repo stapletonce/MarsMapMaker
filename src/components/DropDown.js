@@ -564,7 +564,8 @@ class DropDown extends React.Component {
     let num = -1;
     let sesarId = 0;
     let arr = [];
-
+    
+    
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     this.toggleNotInUse();
 
@@ -704,6 +705,8 @@ const mapStateToProps = state => {
     totalMulti: state.totalMultiCount
   };
 };
+
+
 export default connect(
   mapStateToProps,
   {
