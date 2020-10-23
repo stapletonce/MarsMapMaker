@@ -288,7 +288,7 @@ class FileIn extends React.Component {
     // checks to see if the file "result" is a JS mapping file, this file always starts with Start::::
     if (
       Object.keys(result.data[0])[0].includes(
-        "//Mapping file created by Mars Map Maker"
+        "Mapping file created by Mars Map Maker"
       )
     ) {
       let finalStr = "";
