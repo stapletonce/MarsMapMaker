@@ -616,13 +616,30 @@ class FileIn extends React.Component {
 
     return (
       <div className={readerClass}>
-        <h2>Load File(s)!</h2>
+      <h2>Load File(s)!</h2>
+      
+      <label>Load JS Mapping File (optional)</label>
+      <div>
+        <input
+          className="csv__input"
+          type="file"
+          accept=".js"
+          ref={input => {
+            this.filesInput = input;
+          }}
+          name="file"
+          placeholder={null}
+          onChange={this.handleChange}
+          multiple="multiple"
+        />
+      </div>  
+      <br></br>
         <div>
           <label>Choose CSV File(s)</label>
           <input
             className="csv__input"
             type="file"
-            accept=".csv, .js"
+            accept=".csv"
             ref={input => {
               this.filesInput = input;
             }}
@@ -632,22 +649,8 @@ class FileIn extends React.Component {
             multiple="multiple"
           />
         </div>
-        <br></br>
-        <label>Load Mapping File</label>
-        <div>
-          <input
-            className="csv__input"
-            type="file"
-            accept=".csv, .js"
-            ref={input => {
-              this.filesInput = input;
-            }}
-            name="file"
-            placeholder={null}
-            onChange={this.handleChange}
-            multiple="multiple"
-          />
-        </div>
+      <br></br>
+
 
         {/*force card edit */}
         {/* <div style={{ padding: "0px", margin: "0px", paddingTop: "10px" }}>
