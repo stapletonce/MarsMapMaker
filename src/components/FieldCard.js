@@ -981,7 +981,7 @@ class FieldCard extends React.Component {
                       {this.state.index !== -1
                         ? "Total:" +
                           this.props.multiCount[this.state.index].count
-                        : "morp"}
+                        : ""}
                     </div>
                   </div>
 
