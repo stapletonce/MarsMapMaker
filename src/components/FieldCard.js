@@ -90,7 +90,7 @@ class FieldCard extends React.Component {
             multiList={this.getMulti()}
             one2one={this.getOne2One()}
             list={this.state.sesarOptions}
-          />{" "}
+          />
         </div>
       );
     else return <div className="dropDownNoData">{"   "}</div>;
