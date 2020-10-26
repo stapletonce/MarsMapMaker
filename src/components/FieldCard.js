@@ -44,7 +44,7 @@ class FieldCard extends React.Component {
 
   // helper function to limit length of 'fieldValue' displayed in the UI
   lengthCheckedValue = fieldVal => {
-    //console.log(fieldVal)
+    
     let value = fieldVal;
     if (value === "<METADATA_ADD>") {
       value = "";
@@ -110,7 +110,7 @@ class FieldCard extends React.Component {
       currentComponent.setState({ updatedValue: value });
       return;
     }
-
+    
     if (
       title === "field_name" ||
       title === "description" ||
@@ -118,6 +118,9 @@ class FieldCard extends React.Component {
       title === "geological_age" ||
       title === "size"
     ) {
+      //first two cases: if fieldcard sesarSelected is set to a multivalue
+      // if non empty value for multivalue
+      // else empty value
       if (data !== "") {
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":" + data,
@@ -127,7 +130,8 @@ class FieldCard extends React.Component {
       } else
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":Not Provided",
-          dropDownChosen: true
+          dropDownChosen: true,
+          formattedString: this.multiStringOutputFunction(this.props.id, title)
         });
     } else if (this.props.fieldValue === "") {
       if (this.props.ent[this.props.id].value === "")
@@ -178,7 +182,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
-    //console.log("HELPER: " + valid)
+   
     return valid;
   };
 
@@ -194,7 +198,7 @@ class FieldCard extends React.Component {
       }
     }
 
-    //console.log("HERE: " + valid)
+   
     return valid;
   };
 
@@ -285,7 +289,7 @@ class FieldCard extends React.Component {
       ftitle: title,
       findex: index
     };
-    //   console.log(obj)
+   
     this.props.totalMultiValueCount(obj);
 
     return String(count);
@@ -319,6 +323,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
+    
     if (valid === false) {
       this.setState({ index: -1 });
       this.forceUpdate();
@@ -354,7 +359,7 @@ class FieldCard extends React.Component {
   forceEdit = event => {
     let obj = {};
     let persistentMetaData = {};
-    console.log(event.key + "this is the event key");
+    
 
     if (event.key === "Enter" || typeof event.key === "undefined") {
       persistentMetaData = {
@@ -499,10 +504,6 @@ class FieldCard extends React.Component {
                     </div>
                   )}
                   {this.filterDrop()}
-                  {this.state.index !== -1
-                    ? this.state.formattedString +
-                      this.props.multiCount[this.state.index].count
-                    : ""}
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
@@ -602,7 +603,7 @@ class FieldCard extends React.Component {
                   {this.state.index !== -1
                     ? this.state.formattedString +
                       this.props.multiCount[this.state.index].count
-                    : ""}
+                    : "dorp"}
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
