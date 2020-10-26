@@ -110,7 +110,7 @@ class FieldCard extends React.Component {
       currentComponent.setState({ updatedValue: value });
       return;
     }
-
+    
     if (
       title === "field_name" ||
       title === "description" ||
@@ -127,7 +127,8 @@ class FieldCard extends React.Component {
       } else
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":Not Provided",
-          dropDownChosen: true
+          dropDownChosen: true,
+          formattedString: this.multiStringOutputFunction(this.props.id, title)
         });
     } else if (this.props.fieldValue === "") {
       if (this.props.ent[this.props.id].value === "")
@@ -319,6 +320,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
+    console.log(title + "for the multiarray")
     if (valid === false) {
       this.setState({ index: -1 });
       this.forceUpdate();
@@ -499,10 +501,6 @@ class FieldCard extends React.Component {
                     </div>
                   )}
                   {this.filterDrop()}
-                  {this.state.index !== -1
-                    ? this.state.formattedString +
-                      this.props.multiCount[this.state.index].count
-                    : ""}
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
@@ -602,7 +600,7 @@ class FieldCard extends React.Component {
                   {this.state.index !== -1
                     ? this.state.formattedString +
                       this.props.multiCount[this.state.index].count
-                    : ""}
+                    : "dorp"}
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
@@ -983,7 +981,7 @@ class FieldCard extends React.Component {
                       {this.state.index !== -1
                         ? "Total:" +
                           this.props.multiCount[this.state.index].count
-                        : ""}
+                        : "morp"}
                     </div>
                   </div>
 
