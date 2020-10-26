@@ -44,7 +44,7 @@ class FieldCard extends React.Component {
 
   // helper function to limit length of 'fieldValue' displayed in the UI
   lengthCheckedValue = fieldVal => {
-    //console.log(fieldVal)
+    
     let value = fieldVal;
     if (value === "<METADATA_ADD>") {
       value = "";
@@ -118,6 +118,9 @@ class FieldCard extends React.Component {
       title === "geological_age" ||
       title === "size"
     ) {
+      //first two cases: if fieldcard sesarSelected is set to a multivalue
+      // if non empty value for multivalue
+      // else empty value
       if (data !== "") {
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":" + data,
@@ -179,7 +182,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
-    //console.log("HELPER: " + valid)
+   
     return valid;
   };
 
@@ -195,7 +198,7 @@ class FieldCard extends React.Component {
       }
     }
 
-    //console.log("HERE: " + valid)
+   
     return valid;
   };
 
@@ -286,7 +289,7 @@ class FieldCard extends React.Component {
       ftitle: title,
       findex: index
     };
-    //   console.log(obj)
+   
     this.props.totalMultiValueCount(obj);
 
     return String(count);
@@ -320,7 +323,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
-    console.log(title + "for the multiarray")
+    
     if (valid === false) {
       this.setState({ index: -1 });
       this.forceUpdate();
@@ -356,7 +359,7 @@ class FieldCard extends React.Component {
   forceEdit = event => {
     let obj = {};
     let persistentMetaData = {};
-    console.log(event.key + "this is the event key");
+    
 
     if (event.key === "Enter" || typeof event.key === "undefined") {
       persistentMetaData = {
