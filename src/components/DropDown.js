@@ -336,22 +336,11 @@ export class DropDown extends React.Component {
   // Handled differently based on if it is a one2one, multivalue, or a date selection
   updateValueHelper = (newValue, isAutomatic) => {
     let breakOrFormat;
-    let entriesHeader = this.props.ent[this.props.id].header;
-    let entriesOld = this.props.ent[this.props.id].oldValue;
 
     if (this.props.dateFormat != null)
       breakOrFormat = this.props.dateFormat.split(" ");
 
-    // this.props.sizeCallback(newValue)
 
-    // if (entriesHeader === "<METADATA>" && isAutomatic === false) {
-    //     console.log("GETTING IN HERE!!!!")
-    //     const obj = {
-    //         index: this.props.id,
-    //         old: entriesOld
-    //     }
-    //     this.props.setForcedOldToNew(obj)
-    // }
 
     if (
       (newValue === "collection_end_date" ||

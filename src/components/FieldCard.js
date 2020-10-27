@@ -110,7 +110,7 @@ class FieldCard extends React.Component {
       currentComponent.setState({ updatedValue: value });
       return;
     }
-    
+    console.log("This needs to be a multi value ONLY::::::  "+ title)
     if (
       title === "field_name" ||
       title === "description" ||
@@ -219,28 +219,9 @@ class FieldCard extends React.Component {
     };
     this.props.removeContent(obj);
     this.setState({ isGreen: !this.state.isGreen });
-    //REMOVED TO AVOID FLICKERING UPON CLICKING USE CHECKBOX
-    //if (!this.state.isGreen) {
-    //this.refreshFieldCard()
-    //}
     this.render();
   };
 
-  fieldMetricFunction = (firstInPair, secondInPair) => {
-    let finalProduct = parseInt(firstInPair);
-
-    if (secondInPair !== "0") {
-      let second = parseInt(secondInPair);
-      finalProduct = finalProduct + second / 10;
-    } else {
-      finalProduct = String(finalProduct) + ".0 cm";
-      return finalProduct;
-    }
-
-    finalProduct = String(finalProduct) + " cm";
-
-    return finalProduct;
-  };
 
   refreshFieldCard = () => {
     setTimeout(() => {
@@ -254,7 +235,6 @@ class FieldCard extends React.Component {
       this.setState({ isGreen: !this.state.isGreen });
       this.setState({ sesarChosen: "", updatedValue: this.props.fieldValue });
       this.props.removeContent(obj);
-      //this.props.clearSingleMeasureArray(obj)
     }, 0); // ------------------------------> timeout 0
 
     setTimeout(() => {
@@ -447,7 +427,7 @@ class FieldCard extends React.Component {
       if (
         this.jsFileValueToggle() === true &&
         this.state.dropDownChosen === false
-      ) {
+      ) { 
         if (
           this.props.hasInit &&
           this.props.ent[this.props.id].header === "<METADATA>"
@@ -600,10 +580,7 @@ class FieldCard extends React.Component {
                     </div>
                   )}
                   {this.filterDrop()}
-                  {this.state.index !== -1
-                    ? this.state.formattedString +
-                      this.props.multiCount[this.state.index].count
-                    : "dorp"}
+
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
@@ -632,15 +609,13 @@ class FieldCard extends React.Component {
                         paddingLeft: "10px",
                         float: "right",
                         display: "inline",
-                        visibility: "hidden"
+                        
                       }}
-                    >
-                      <button
-                        style={{ float: "right", width: "35px" }}
-                        class="ui icon button"
-                      >
-                        <i class="edit outline icon"></i>
-                      </button>
+                    > {this.state.index !== -1
+                      ? this.state.formattedString +
+                        this.props.multiCount[this.state.index].count
+                      : "dorp"}
+                      
                     </div>
                   )}
                 </object>
@@ -753,12 +728,6 @@ class FieldCard extends React.Component {
                       : ""}
                   </div>
                 </div>
-                {/* {this.props.hasInit ?
-                                        <div>
-                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
-                                        </div> :
-                                        <div></div>
-                                    } */}
               </object>
             </div>
           </div>
@@ -870,12 +839,6 @@ class FieldCard extends React.Component {
                         : ""}
                     </div>
                   </div>
-                  {/* {this.props.hasInit ?
-                                        <div>
-                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
-                                        </div> :
-                                        <div></div>
-                                    } */}
                 </object>
               </div>
             </div>
@@ -988,12 +951,7 @@ class FieldCard extends React.Component {
                     </div>
                   </div>
 
-                  {/* {this.props.hasInit ?
-                                        <div>
-                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
-                                        </div> :
-                                        <div></div>
-                                    } */}
+                
                 </object>
               </div>
             </div>
