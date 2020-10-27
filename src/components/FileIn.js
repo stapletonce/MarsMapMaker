@@ -583,14 +583,15 @@ class FileIn extends React.Component {
     // we want to make sure that we have handled all CSV's and JS files before we use the callback function
     this.setState({ num: this.state.num + 1 });
     if (this.state.num === this.state.files.length - 1) {
-      //force card edit replace 5 with  this.numOfEmptyCards
+      //change totalAddedCards to change how many entries of METADATA_ADD/missing field are in the store
+      let totalAddedCards = 3 
 
       this.props.callbackFromParent(
         arr,
         this.state.totalFileSize,
         this.state.toggleValues,
         this.state.jsFile,
-        1,
+        totalAddedCards,
         this.state.forceEditTitles,
         this.state.forceEditValues
       );

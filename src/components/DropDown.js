@@ -577,12 +577,6 @@ export class DropDown extends React.Component {
       // console.log("TITLE: " + f.title)
       //if an added card
       if (this.props.fieldType === "added_card") {
-        if (f.title === "sample_type")
-          return (
-            <option key={f.title} value={f.title} selected>
-            {this.hasSesarValue()[1]}
-            </option>
-          );
 
         if (this.checkForSampleType() === false && f.title === "sample_type")
           return (

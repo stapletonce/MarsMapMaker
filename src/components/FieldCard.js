@@ -98,9 +98,19 @@ class FieldCard extends React.Component {
 
   // onClick of the checkmark, change the color of the bar between green and white
 
+  //this function is for the check of rendering a missing field card to the UI 
+  //change total added cards for changing how many
+  isMetaDataAddCard = (cardID) => {
+    let totalAddedCards = 3
+    console.log("Are you true? " + cardID + "  " + (cardID < totalAddedCards))
+    return cardID < totalAddedCards;
+  }
+
+
   fileCallback = (data, title) => {
     let currentComponent = this;
-    if (this.props.id === 0) {
+    
+    if (this.isMetaDataAddCard(this.props.id)) {
       let value;
       if (this.props.ent[this.props.id].value === "<METADATA_ADD>") {
         value = "_";
@@ -110,7 +120,7 @@ class FieldCard extends React.Component {
       currentComponent.setState({ updatedValue: value });
       return;
     }
-    console.log("This needs to be a multi value ONLY::::::  "+ title)
+    //console.log("This needs to be a multi value ONLY::::::  "+ title)
     if (
       title === "field_name" ||
       title === "description" ||
@@ -407,7 +417,7 @@ class FieldCard extends React.Component {
     let inputPlaceHolder = "Edit content...";
 
     if (
-      (this.props.id === 0 &&
+      (this.isMetaDataAddCard(this.props.id) &&
         (valueInStore !== "<METADATA_ADD>" &&
           valueInStore !== "ADDED_CARD : 1")) ||
       headerInStore === "<METADATA>"
@@ -737,7 +747,7 @@ class FieldCard extends React.Component {
         if (
           (this.props.hasInit &&
             this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) ||
-          this.props.id === 0
+          this.isMetaDataAddCard(this.props.id)
         ) {
           return (
             <div className="ui label">
