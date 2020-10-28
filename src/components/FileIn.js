@@ -584,7 +584,7 @@ class FileIn extends React.Component {
     this.setState({ num: this.state.num + 1 });
     if (this.state.num === this.state.files.length - 1) {
       //change totalAddedCards to change how many entries of METADATA_ADD/missing field are in the store
-      let totalAddedCards = 3 
+      let totalAddedCards = 4 
 
       this.props.callbackFromParent(
         arr,
