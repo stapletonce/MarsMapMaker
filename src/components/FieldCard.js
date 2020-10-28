@@ -102,7 +102,7 @@ class FieldCard extends React.Component {
   //change total added cards for changing how many
   isMetaDataAddCard = (cardID) => {
     let totalAddedCards = 4
-    console.log("Are you true? " + cardID + "  " + (cardID < totalAddedCards))
+    //console.log("Are you true? " + cardID + "  " + (cardID < totalAddedCards))
     return cardID < totalAddedCards;
   }
 
