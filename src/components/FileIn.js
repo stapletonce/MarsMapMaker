@@ -583,14 +583,15 @@ class FileIn extends React.Component {
     // we want to make sure that we have handled all CSV's and JS files before we use the callback function
     this.setState({ num: this.state.num + 1 });
     if (this.state.num === this.state.files.length - 1) {
-      //force card edit replace 5 with  this.numOfEmptyCards
+      //change totalAddedCards to change how many entries of METADATA_ADD/missing field are in the store
+      let totalAddedCards = 4 
 
       this.props.callbackFromParent(
         arr,
         this.state.totalFileSize,
         this.state.toggleValues,
         this.state.jsFile,
-        1,
+        totalAddedCards,
         this.state.forceEditTitles,
         this.state.forceEditValues
       );
@@ -616,13 +617,30 @@ class FileIn extends React.Component {
 
     return (
       <div className={readerClass}>
-        <h2>Load File(s)!</h2>
+      <h2>Load File(s)!</h2>
+      
+      <label>Load JS Mapping File (optional)</label>
+      <div>
+        <input
+          className="csv__input"
+          type="file"
+          accept=".js"
+          ref={input => {
+            this.filesInput = input;
+          }}
+          name="file"
+          placeholder={null}
+          onChange={this.handleChange}
+          multiple="multiple"
+        />
+      </div>  
+      <br></br>
         <div>
           <label>Choose CSV File(s)</label>
           <input
             className="csv__input"
             type="file"
-            accept=".csv, .js"
+            accept=".csv"
             ref={input => {
               this.filesInput = input;
             }}
@@ -632,22 +650,8 @@ class FileIn extends React.Component {
             multiple="multiple"
           />
         </div>
-        <br></br>
-        <label>Load Mapping File</label>
-        <div>
-          <input
-            className="csv__input"
-            type="file"
-            accept=".csv, .js"
-            ref={input => {
-              this.filesInput = input;
-            }}
-            name="file"
-            placeholder={null}
-            onChange={this.handleChange}
-            multiple="multiple"
-          />
-        </div>
+      <br></br>
+
 
         {/*force card edit */}
         {/* <div style={{ padding: "0px", margin: "0px", paddingTop: "10px" }}>

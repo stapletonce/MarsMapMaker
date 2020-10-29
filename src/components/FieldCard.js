@@ -44,7 +44,7 @@ class FieldCard extends React.Component {
 
   // helper function to limit length of 'fieldValue' displayed in the UI
   lengthCheckedValue = fieldVal => {
-    //console.log(fieldVal)
+    
     let value = fieldVal;
     if (value === "<METADATA_ADD>") {
       value = "";
@@ -90,7 +90,7 @@ class FieldCard extends React.Component {
             multiList={this.getMulti()}
             one2one={this.getOne2One()}
             list={this.state.sesarOptions}
-          />{" "}
+          />
         </div>
       );
     else return <div className="dropDownNoData">{"   "}</div>;
@@ -98,9 +98,19 @@ class FieldCard extends React.Component {
 
   // onClick of the checkmark, change the color of the bar between green and white
 
+  //this function is for the check of rendering a missing field card to the UI 
+  //change total added cards for changing how many
+  isMetaDataAddCard = (cardID) => {
+    let totalAddedCards = 4
+    console.log("Are you true? " + cardID + "  " + (cardID < totalAddedCards))
+    return cardID < totalAddedCards;
+  }
+
+
   fileCallback = (data, title) => {
     let currentComponent = this;
-    if (this.props.id === 0) {
+    
+    if (this.isMetaDataAddCard(this.props.id)) {
       let value;
       if (this.props.ent[this.props.id].value === "<METADATA_ADD>") {
         value = "_";
@@ -110,7 +120,7 @@ class FieldCard extends React.Component {
       currentComponent.setState({ updatedValue: value });
       return;
     }
-
+    //console.log("This needs to be a multi value ONLY::::::  "+ title)
     if (
       title === "field_name" ||
       title === "description" ||
@@ -118,6 +128,9 @@ class FieldCard extends React.Component {
       title === "geological_age" ||
       title === "size"
     ) {
+      //first two cases: if fieldcard sesarSelected is set to a multivalue
+      // if non empty value for multivalue
+      // else empty value
       if (data !== "") {
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":" + data,
@@ -127,7 +140,8 @@ class FieldCard extends React.Component {
       } else
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":Not Provided",
-          dropDownChosen: true
+          dropDownChosen: true,
+          formattedString: this.multiStringOutputFunction(this.props.id, title)
         });
     } else if (this.props.fieldValue === "") {
       if (this.props.ent[this.props.id].value === "")
@@ -178,7 +192,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
-    //console.log("HELPER: " + valid)
+   
     return valid;
   };
 
@@ -194,7 +208,7 @@ class FieldCard extends React.Component {
       }
     }
 
-    //console.log("HERE: " + valid)
+   
     return valid;
   };
 
@@ -215,28 +229,9 @@ class FieldCard extends React.Component {
     };
     this.props.removeContent(obj);
     this.setState({ isGreen: !this.state.isGreen });
-    //REMOVED TO AVOID FLICKERING UPON CLICKING USE CHECKBOX
-    //if (!this.state.isGreen) {
-    //this.refreshFieldCard()
-    //}
     this.render();
   };
 
-  fieldMetricFunction = (firstInPair, secondInPair) => {
-    let finalProduct = parseInt(firstInPair);
-
-    if (secondInPair !== "0") {
-      let second = parseInt(secondInPair);
-      finalProduct = finalProduct + second / 10;
-    } else {
-      finalProduct = String(finalProduct) + ".0 cm";
-      return finalProduct;
-    }
-
-    finalProduct = String(finalProduct) + " cm";
-
-    return finalProduct;
-  };
 
   refreshFieldCard = () => {
     setTimeout(() => {
@@ -250,7 +245,6 @@ class FieldCard extends React.Component {
       this.setState({ isGreen: !this.state.isGreen });
       this.setState({ sesarChosen: "", updatedValue: this.props.fieldValue });
       this.props.removeContent(obj);
-      //this.props.clearSingleMeasureArray(obj)
     }, 0); // ------------------------------> timeout 0
 
     setTimeout(() => {
@@ -285,7 +279,7 @@ class FieldCard extends React.Component {
       ftitle: title,
       findex: index
     };
-    //   console.log(obj)
+   
     this.props.totalMultiValueCount(obj);
 
     return String(count);
@@ -319,6 +313,7 @@ class FieldCard extends React.Component {
         valid = true;
       }
     }
+    
     if (valid === false) {
       this.setState({ index: -1 });
       this.forceUpdate();
@@ -354,7 +349,7 @@ class FieldCard extends React.Component {
   forceEdit = event => {
     let obj = {};
     let persistentMetaData = {};
-    console.log(event.key + "this is the event key");
+    
 
     if (event.key === "Enter" || typeof event.key === "undefined") {
       persistentMetaData = {
@@ -422,7 +417,7 @@ class FieldCard extends React.Component {
     let inputPlaceHolder = "Edit content...";
 
     if (
-      (this.props.id === 0 &&
+      (this.isMetaDataAddCard(this.props.id) &&
         (valueInStore !== "<METADATA_ADD>" &&
           valueInStore !== "ADDED_CARD : 1")) ||
       headerInStore === "<METADATA>"
@@ -442,7 +437,7 @@ class FieldCard extends React.Component {
       if (
         this.jsFileValueToggle() === true &&
         this.state.dropDownChosen === false
-      ) {
+      ) { 
         if (
           this.props.hasInit &&
           this.props.ent[this.props.id].header === "<METADATA>"
@@ -499,10 +494,6 @@ class FieldCard extends React.Component {
                     </div>
                   )}
                   {this.filterDrop()}
-                  {this.state.index !== -1
-                    ? this.state.formattedString +
-                      this.props.multiCount[this.state.index].count
-                    : ""}
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
@@ -599,10 +590,7 @@ class FieldCard extends React.Component {
                     </div>
                   )}
                   {this.filterDrop()}
-                  {this.state.index !== -1
-                    ? this.state.formattedString +
-                      this.props.multiCount[this.state.index].count
-                    : ""}
+
 
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
@@ -631,15 +619,13 @@ class FieldCard extends React.Component {
                         paddingLeft: "10px",
                         float: "right",
                         display: "inline",
-                        visibility: "hidden"
+                        
                       }}
-                    >
-                      <button
-                        style={{ float: "right", width: "35px" }}
-                        class="ui icon button"
-                      >
-                        <i class="edit outline icon"></i>
-                      </button>
+                    > {this.state.index !== -1
+                      ? this.state.formattedString +
+                        this.props.multiCount[this.state.index].count
+                      : "dorp"}
+                      
                     </div>
                   )}
                 </object>
@@ -752,12 +738,6 @@ class FieldCard extends React.Component {
                       : ""}
                   </div>
                 </div>
-                {/* {this.props.hasInit ?
-                                        <div>
-                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
-                                        </div> :
-                                        <div></div>
-                                    } */}
               </object>
             </div>
           </div>
@@ -767,7 +747,7 @@ class FieldCard extends React.Component {
         if (
           (this.props.hasInit &&
             this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) ||
-          this.props.id === 0
+          this.isMetaDataAddCard(this.props.id)
         ) {
           return (
             <div className="ui label">
@@ -869,12 +849,6 @@ class FieldCard extends React.Component {
                         : ""}
                     </div>
                   </div>
-                  {/* {this.props.hasInit ?
-                                        <div>
-                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
-                                        </div> :
-                                        <div></div>
-                                    } */}
                 </object>
               </div>
             </div>
@@ -987,12 +961,7 @@ class FieldCard extends React.Component {
                     </div>
                   </div>
 
-                  {/* {this.props.hasInit ?
-                                        <div>
-                                            {this.findMultiValueSpot(this.props.id, this.props.ent[this.props.id].sesarTitle) + " of " + this.props.totalMulti[this.findObject(this.props.ent[this.props.id].sesarTitle)].count}
-                                        </div> :
-                                        <div></div>
-                                    } */}
+                
                 </object>
               </div>
             </div>

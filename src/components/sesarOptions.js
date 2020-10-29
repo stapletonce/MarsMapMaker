@@ -130,15 +130,6 @@ let options = [
     },
     {
         selected: false,
-        id: 15,
-        title: "size",
-        message: "Size of the registered object",
-        type: "numbers",
-        format: "multivalue"
-    },
-
-    {
-        selected: false,
         id: 17,
         title: "collector",
         key: "field",
@@ -166,6 +157,60 @@ let options = [
     },
     {
         selected: false,
+        id: 26,
+        title: "classification",
+        key: "field",
+        type: "text",
+        message: "Classification",
+        format: "one2one"
+    },
+    {
+        selected: false,
+        id: 27,
+        title: "user_code",
+        key: "field",
+        type: "text",
+        message: "check SESAR database",
+        format: "one2one"
+    },
+    {
+        selected: false,
+        id: 27,
+        title: "material",
+        key: "field",
+        type: "text",
+        message: "check SESAR database",
+        format: "one2one"
+    },
+    {
+        selected: false,
+        id: 27,
+        title: "elevation_unit",
+        key: "field",
+        type: "text",
+        message: "check SESAR database",
+        format: "one2one"
+    },
+    
+    {
+        selected: false,
+        id: 27,
+        title: "sample_type",
+        key: "field",
+        type: "text",
+        message: "The type of sample which comes from a SESAR controlled list",
+        format: "one2one"
+    },
+    {
+        selected: false,
+        id: 15,
+        title: "size",
+        message: "Size of the registered object",
+        type: "numbers",
+        format: "multivalue"
+    },
+    {
+        selected: false,
         id: 20,
         title: "sample_comment",
         key: "field",
@@ -190,24 +235,7 @@ let options = [
         message: "Age of a sample as described by the stratigraphic era",
         format: "multivalue"
     },
-    {
-        selected: false,
-        id: 26,
-        title: "classification",
-        key: "field",
-        type: "text",
-        message: "Classification",
-        format: "one2one"
-    },
-    {
-        selected: false,
-        id: 27,
-        title: "sample_type",
-        key: "field",
-        type: "text",
-        message: "The type of sample which comes from a SESAR controlled list",
-        format: "one2one"
-    },
+    
     {
         selected: false,
         id: 32,
@@ -216,7 +244,8 @@ let options = [
         type: "text",
         message: "Keyed List / Order Pair of Values (Ex: [FACILITY CODE: MARS])",
         format: "multivalue"
-    }
+    }, 
+    
 
 ]
 

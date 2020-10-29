@@ -336,22 +336,11 @@ export class DropDown extends React.Component {
   // Handled differently based on if it is a one2one, multivalue, or a date selection
   updateValueHelper = (newValue, isAutomatic) => {
     let breakOrFormat;
-    let entriesHeader = this.props.ent[this.props.id].header;
-    let entriesOld = this.props.ent[this.props.id].oldValue;
 
     if (this.props.dateFormat != null)
       breakOrFormat = this.props.dateFormat.split(" ");
 
-    // this.props.sizeCallback(newValue)
 
-    // if (entriesHeader === "<METADATA>" && isAutomatic === false) {
-    //     console.log("GETTING IN HERE!!!!")
-    //     const obj = {
-    //         index: this.props.id,
-    //         old: entriesOld
-    //     }
-    //     this.props.setForcedOldToNew(obj)
-    // }
 
     if (
       (newValue === "collection_end_date" ||
@@ -537,10 +526,15 @@ export class DropDown extends React.Component {
     return arr;
   };
 
-  checkForSampleType = () => {
+  //checks to see if a metaDataAdd sesar title has already been chosen in another dropdown
+  checkForMetaDataAdd = (title) => {
     let valid = false;
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (this.props.ent[i].sesarTitle === "sample_type") valid = true;
+    let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
+    let indexFound = metaAddSesarTitles.indexOf(title)
+    if (indexFound > -1){
+      for (let i = 0; i < this.props.ent.length; i++) {
+        if (metaAddSesarTitles[indexFound] === this.props.ent[i].sesarTitle) valid = true;
+      }
     }
     return valid;
   };
@@ -586,16 +580,11 @@ export class DropDown extends React.Component {
       // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
 
       // console.log("TITLE: " + f.title)
+      //if an added card only show the exclusive added sesartitle fields
 
       if (this.props.fieldType === "added_card") {
-        if (f.title === "sample_type")
-          return (
-            <option key={f.title} value={f.title} selected>
-              sample_type
-            </option>
-          );
-
-        if (this.checkForSampleType() !== true && f.title === "sample_type")
+        let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
+        if (this.checkForMetaDataAdd(f.title) === false && metaAddSesarTitles.includes(f.title))
           return (
             <option key={f.title} value={f.title}>
               {f.title}
@@ -603,7 +592,8 @@ export class DropDown extends React.Component {
           );
         else if (
           this.hasSesarValue()[0] === true &&
-          this.hasSesarValue()[1] === f.title
+          this.hasSesarValue()[1] === f.title &&
+          metaAddSesarTitles.includes(f.title)
         ) {
           return (
             <option key={f.title} value={this.hasSesarValue()[1]} selected>
@@ -611,21 +601,13 @@ export class DropDown extends React.Component {
             </option>
           );
         } else return;
+      
       }
-      if (!this.checkForSampleType() === true && f.title === "sample_type") {
+
+      if (!this.checkForMetaDataAdd(f.title) === true) {
         //  console.log(f.title + ": Flag 2")
         return (
           <option key={f.title} value={f.title}>
-            {f.title}
-          </option>
-        );
-      }
-
-      if (this.props.hasInit && this.state.sesarMulti.includes(f.title)) {
-        let ital = f.title.italics();
-        //console.log(ital)
-        return (
-          <option style={{ fontStyle: "italic" }} key={f.title} value={f.title}>
             {f.title}
           </option>
         );
@@ -640,6 +622,16 @@ export class DropDown extends React.Component {
         return (
           <option key={f.title} value={this.hasSesarValue()[1]} selected>
             {this.hasSesarValue()[1]}
+          </option>
+        );
+      }
+
+      if (this.props.hasInit && this.state.sesarMulti.includes(f.title)) {
+        let ital = f.title.italics();
+        //console.log(ital)
+        return (
+          <option style={{ fontStyle: "italic" }} key={f.title} value={f.title}>
+            {f.title}
           </option>
         );
       }
