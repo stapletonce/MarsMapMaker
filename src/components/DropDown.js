@@ -475,6 +475,7 @@ export class DropDown extends React.Component {
   entWithContent = (entries) => {
     let index = -1;
     for (let i = 0; i < entries.length; i++) {
+      if (typeof entries === "string") break;
       if (entries[i].value !== "") index = i;
     }
     return index;
