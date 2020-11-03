@@ -20,6 +20,7 @@ const { options } = require("./sesarOptions");
 
 class FieldCard extends React.Component {
   state = {
+
     sesarChosen: "",
     dropDownChosen: false,
     resetDropDown: false,
@@ -49,6 +50,7 @@ class FieldCard extends React.Component {
     if (value === "<METADATA_ADD>") {
       value = "";
     } else if (value.length > 25) {
+      
       value = value.slice(0, 20);
       value = value + "...";
     }
@@ -98,9 +100,19 @@ class FieldCard extends React.Component {
 
   // onClick of the checkmark, change the color of the bar between green and white
 
+  //this function is for the check of rendering a missing field card to the UI 
+  //change total added cards for changing how many
+  isMetaDataAddCard = (cardID) => {
+    let totalAddedCards = 4
+    //console.log("Are you true? " + cardID + "  " + (cardID < totalAddedCards))
+    return cardID < totalAddedCards;
+  }
+
+
   fileCallback = (data, title) => {
     let currentComponent = this;
-    if (this.props.id === 0) {
+    
+    if (this.isMetaDataAddCard(this.props.id)) {
       let value;
       if (this.props.ent[this.props.id].value === "<METADATA_ADD>") {
         value = "_";
@@ -110,7 +122,7 @@ class FieldCard extends React.Component {
       currentComponent.setState({ updatedValue: value });
       return;
     }
-    console.log("This needs to be a multi value ONLY::::::  "+ title)
+    //console.log("This needs to be a multi value ONLY::::::  "+ title)
     if (
       title === "field_name" ||
       title === "description" ||
@@ -407,7 +419,7 @@ class FieldCard extends React.Component {
     let inputPlaceHolder = "Edit content...";
 
     if (
-      (this.props.id === 0 &&
+      (this.isMetaDataAddCard(this.props.id) &&
         (valueInStore !== "<METADATA_ADD>" &&
           valueInStore !== "ADDED_CARD : 1")) ||
       headerInStore === "<METADATA>"
@@ -446,8 +458,6 @@ class FieldCard extends React.Component {
                     {this.props.fieldTitle}
                   </div>
                   <div className="description__value">
-                    {":        " +
-                      this.lengthCheckedValue(this.props.fieldValue)}
                   </div>
                 </object>
                 <object className="arrow">
@@ -461,7 +471,10 @@ class FieldCard extends React.Component {
                     <div className="description__mapped__content">
                       {this.lengthCheckedValue(
                         this.props.fieldTitle + ": " + this.props.fieldValue
-                      )}
+                      )}  
+                        {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
+                          {this.props.fieldValue}
+                        </span>): null}
                     </div>
                   ) : (
                     <div
@@ -541,9 +554,9 @@ class FieldCard extends React.Component {
                   <div dir="rtl" className="description__title">
                     {this.props.fieldTitle}
                   </div>
-                  <div className="description__value">
-                    {":        " +
-                      this.lengthCheckedValue(this.props.fieldValue)}
+                  <div className="description__value"> {":        " +
+                  this.lengthCheckedValue(this.props.fieldValue)}
+                   
                   </div>
                 </object>
                 <object className="arrow">
@@ -557,7 +570,9 @@ class FieldCard extends React.Component {
                     <div className="description__mapped__content">
                       {this.lengthCheckedValue(
                         this.props.fieldTitle + ": " + this.props.fieldValue
-                      )}
+                      )}  {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
+                      {this.props.fieldValue}
+                    </span>): null}
                     </div>
                   ) : (
                     <div
@@ -640,9 +655,10 @@ class FieldCard extends React.Component {
                 <div dir="rtl" className="description__title">
                   {this.props.fieldTitle}
                 </div>
-                <div className="description__value">
-                  {":        " + this.lengthCheckedValue(this.props.fieldValue)}
-                </div>
+                <div className="description__value"> {":        " +
+                  this.lengthCheckedValue(this.props.fieldValue)}
+                   
+                  </div>
               </object>
               <object className="arrow">
                 <i
@@ -655,6 +671,9 @@ class FieldCard extends React.Component {
                 this.state.areEditing === true ? (
                   <div className="description__mapped__content">
                     {this.lengthCheckedValue(this.state.updatedValue)}
+                    <span className="hiddentext">
+                    {this.props.fieldValue}
+                  </span>
                   </div>
                 ) : (
                   <div
@@ -737,7 +756,7 @@ class FieldCard extends React.Component {
         if (
           (this.props.hasInit &&
             this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) ||
-          this.props.id === 0
+          this.isMetaDataAddCard(this.props.id)
         ) {
           return (
             <div className="ui label">
@@ -752,7 +771,9 @@ class FieldCard extends React.Component {
                   <div dir="rtl" className="description__title">
                     {"Missing field"}
                   </div>
-                  <div className="description__value"> </div>
+                  <div className="description__value">
+                   
+                  </div>
                 </object>
                 <object className="arrow">
                   <i
@@ -764,6 +785,9 @@ class FieldCard extends React.Component {
                   {this.state.areEditing === true ? (
                     <div className="description__mapped__content">
                       {this.lengthCheckedValue(this.state.updatedValue)}
+                      {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
+                      {this.props.fieldValue}
+                    </span>): null}
                     </div>
                   ) : (
                     <div
@@ -858,9 +882,9 @@ class FieldCard extends React.Component {
                   <div dir="rtl" className="description__title">
                     {this.props.fieldTitle}
                   </div>
-                  <div className="description__value">
-                    {":        " +
-                      this.lengthCheckedValue(this.props.fieldValue)}
+                  <div className="description__value"> {":        " +
+                  this.lengthCheckedValue(this.props.fieldValue)}
+                   
                   </div>
                 </object>
                 <object className="arrow">
@@ -873,6 +897,9 @@ class FieldCard extends React.Component {
                   {this.state.areEditing === true ? (
                     <div className="description__mapped__content">
                       {this.lengthCheckedValue(this.state.updatedValue)}
+                      {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
+                          {this.props.fieldValue}
+                        </span>): null}
                     </div>
                   ) : (
                     <div
@@ -975,9 +1002,10 @@ class FieldCard extends React.Component {
               <div dir="rtl" className="description__title">
                 {this.props.fieldTitle}
               </div>
-              <div className="description__value">
-                {":        " + this.lengthCheckedValue(this.props.fieldValue)}
-              </div>
+              <div className="description__value"> {":        " +
+                  this.lengthCheckedValue(this.props.fieldValue)}
+                   
+                  </div>
             </object>
             <object className="descriptionMapped" align="right">
               <div className="description__mapped__content"> </div>

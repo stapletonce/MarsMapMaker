@@ -13,16 +13,19 @@ import DateDropdown from './DateDropdown';
 import CenturyDropDown from './CenturyDropDown';
 import FieldCard from './FieldCard';
 
+
+
 // CSS & Style
 import './App.scss';
 
 // REDUX
 import { firstState, toggleInUse } from '../actions/';
-
+import * as helpers from '../util/helper'
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
 // there is a particular relationship between checked value and available option in dropdown
+
 
 const CardList = (props) => {
 
@@ -51,23 +54,7 @@ const CardList = (props) => {
 
     // helper function to dicide the the contents of dropdowns for specific fieldcards
     // if fieldValue contains "0-9 or symbols" it's 'type' will be numbers, else, the type is text
-    let typeField = (f) => {
-
-        let type;
-
-        let numbers = /^[0-9,/.-]*$/;
-
-        if (f === "")
-            type = "both";
-        else if (f === "<METADATA_ADD>") {
-            type = "added_card"
-        }
-        else if (numbers.test(f) === true)
-            type = "numbers";
-        else
-            type = "text"
-        return type
-    }
+    
 
     // maps through fields and creates unique field card entry for each
     // hiding: value to hide entry or not
@@ -252,7 +239,7 @@ const CardList = (props) => {
                 fieldTitle={field}
                 oneOfTwoID={findOneToTwo()}
                 id={newKey}
-                fieldType={typeField(props.fieldVal[newKey])}
+                fieldType={helpers.typeField(props.fieldVal[newKey])}
                 fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
                 //fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(field)
@@ -271,7 +258,7 @@ const CardList = (props) => {
 
                     oneOfTwoID={findOneToTwo()}
                     id={newKey}
-                    fieldType={typeField(props.fieldVal[newKey])}
+                    fieldType={helpers.typeField(props.fieldVal[newKey])}
                     fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
                     hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(Object.keys(props.toggleArr[toggleIndex])[newKey])}
                 />

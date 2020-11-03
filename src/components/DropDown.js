@@ -475,6 +475,7 @@ export class DropDown extends React.Component {
   entWithContent = (entries) => {
     let index = -1;
     for (let i = 0; i < entries.length; i++) {
+      if (typeof entries === "string") break;
       if (entries[i].value !== "") index = i;
     }
     return index;
@@ -526,10 +527,15 @@ export class DropDown extends React.Component {
     return arr;
   };
 
-  checkForSampleType = () => {
+  //checks to see if a metaDataAdd sesar title has already been chosen in another dropdown
+  checkForMetaDataAdd = (title) => {
     let valid = false;
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (this.props.ent[i].sesarTitle === "sample_type") valid = true;
+    let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
+    let indexFound = metaAddSesarTitles.indexOf(title)
+    if (indexFound > -1){
+      for (let i = 0; i < this.props.ent.length; i++) {
+        if (metaAddSesarTitles[indexFound] === this.props.ent[i].sesarTitle) valid = true;
+      }
     }
     return valid;
   };
@@ -575,16 +581,11 @@ export class DropDown extends React.Component {
       // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
 
       // console.log("TITLE: " + f.title)
-      //if an added card
-      if (this.props.fieldType === "added_card") {
-        if (f.title === "sample_type")
-          return (
-            <option key={f.title} value={f.title} selected>
-            {this.hasSesarValue()[1]}
-            </option>
-          );
+      //if an added card only show the exclusive added sesartitle fields
 
-        if (this.checkForSampleType() === false && f.title === "sample_type")
+      if (this.props.fieldType === "added_card") {
+        let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
+        if (this.checkForMetaDataAdd(f.title) === false && metaAddSesarTitles.includes(f.title))
           return (
             <option key={f.title} value={f.title}>
               {f.title}
@@ -592,7 +593,8 @@ export class DropDown extends React.Component {
           );
         else if (
           this.hasSesarValue()[0] === true &&
-          this.hasSesarValue()[1] === f.title
+          this.hasSesarValue()[1] === f.title &&
+          metaAddSesarTitles.includes(f.title)
         ) {
           return (
             <option key={f.title} value={this.hasSesarValue()[1]} selected>
@@ -603,7 +605,7 @@ export class DropDown extends React.Component {
       
       }
 
-      if (!this.checkForSampleType() === true && f.title === "sample_type") {
+      if (!this.checkForMetaDataAdd(f.title) === true) {
         //  console.log(f.title + ": Flag 2")
         return (
           <option key={f.title} value={f.title}>

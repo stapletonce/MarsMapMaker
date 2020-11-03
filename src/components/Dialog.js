@@ -54,9 +54,9 @@ class Dialog extends Component {
         if (this.props.isOpen === true) {
 
             return (
-                < div >
+                <div>
                     {dialog}
-                </div >
+                </div>
             );
         }
 
