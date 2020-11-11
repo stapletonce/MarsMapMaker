@@ -76,6 +76,7 @@ $mars--border: rgb(46, 14, 8);
 
 .description__mapped__content:hover .hiddentext {
   visibility: visible;
+  word-wrap: break-word;
 }
 
 .marsOutput {
@@ -315,14 +316,14 @@ $mars--border: rgb(46, 14, 8);
   border-radius: 4px;
 }
 
-.fieldContainer2 {
+.fieldContainerDisabled {
   border-style: solid;
   border-width: 0.5px;
   line-height: 27px;
   border-radius: 4px;
 }
 
-.fieldContainer3 {
+.fieldContainerMetadataAdd {
   border-style: solid;
   border-width: 0.5px;
   background-color: #fcb471;
@@ -330,7 +331,7 @@ $mars--border: rgb(46, 14, 8);
   border-radius: 4px;
 }
 
-.fieldContainer4 {
+.fieldContainerMetadata {
   border-style: solid;
   border-width: 0.5px;
   background-color: #fcfa71d2;
