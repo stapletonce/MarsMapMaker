@@ -20,7 +20,7 @@ import './App.scss';
 
 // REDUX
 import { firstState, toggleInUse } from '../actions/';
-import * as helpers from '../util/helper'
+import * as helpers from '../util/helper';
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
 
@@ -166,7 +166,8 @@ const CardList = (props) => {
             fieldContentValue = fieldValState[newKey]
         }
         else {
-            if (newKey !== 0) {
+
+            if (newKey > 3) {
                 storedValue = {
                     id: newKey,
                     sesarTitle: sesarFind,

@@ -23,6 +23,7 @@ import {
   setForcedOldToNew
 } from "../actions/";
 
+import { dropdownSet } from '../util/helper.js'
 //////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
@@ -418,17 +419,24 @@ export class DropDown extends React.Component {
       }
     }
 
+    let headerOverride = this.props.title;
+    let valueOverride = this.props.value;
+    if (this.props.ent[this.props.id].header === "<METADATA>") {
+        headerOverride = this.props.ent[this.props.id].header;
+        valueOverride = this.props.ent[this.props.id].value;
+    }
+
     const obj = {
       id: this.props.id,
       sesarSelected: newValue,
-      value: this.props.value,
-      header: this.props.title,
+      value: valueOverride,
+      header: headerOverride,
       bool: true,
       dropOption: this.props.dropDownChosen
     };
 
     if (
-      (this.props.ent[this.props.id].header !== "<METADATA>" &&
+      (
         this.props.ent[this.props.id].header !== "<METADATA_ADD>" &&
         this.props.ent[this.props.id].header !== "0<METADATA_ADD>" &&
         this.props.ent[this.props.id].header !== "1<METADATA_ADD>" &&
@@ -478,7 +486,7 @@ export class DropDown extends React.Component {
       if (typeof entries === "string") break;
       if (entries[i].value !== "") index = i;
     }
-    return index;
+    return entries.length - 1;
   };
 
   // counts the number of times size is selected
@@ -505,12 +513,14 @@ export class DropDown extends React.Component {
     let obj = {
       bool: false
     };
-    if (
+
+    if (this.props.hasInit &&
       this.props.usingToggle === true &&
       this.props.id !== this.entWithContent(this.props.ent)
     ) {
       this.updateValueToggle();
     } else if (
+      this.props.hasInit &&
       this.props.usingToggle === true &&
       this.props.id === this.entWithContent(this.props.ent)
     ) {
@@ -555,35 +565,38 @@ export class DropDown extends React.Component {
   };
 
   render() {
+    //the list of one to one values
     const sesarOne2One = this.state.sesarOneToOne;
+    //for tracking the very first instance of filter being called
     let num = -1;
-    let sesarId = 0;
-    let arr = [];
+  
+    let firstLoad = dropdownSet(this.props.hasInit, this.props.ent, this.props.id)
+  
     
+    //style for hiding dropdown for disabled cards
+    let display = 1;
+    if(this.props.hasInit && !this.props.shouldAppear) {
+      display = -1
+    } else( display = "auto")
     
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     this.toggleNotInUse();
 
+
     // helper function to list "options" based on the 'type' of field (numbers or letters...)
     let filter = f => {
       num += 1;
-      if (num === 0)
+      //if the very first call of filter return firstLoad, which is either "Sesar Selection" or SesarTitle from the store (from JS file)
+      if (num === 0) {
         return (
-          <option key={f.title} value="Sesar Selection" disabled hidden>
-            Sesar Selection
+          <option key={f.title} value={firstLoad} disabled hidden>
+            {firstLoad}
           </option>
         );
-
-      if (this.hasSesarValue()[0] === true) {
-        sesarId = sesarId + 1;
       }
 
-      // if the fieldcard's "value" is and empty string, the dropdown menu should contain all available options..
-
-      // console.log("TITLE: " + f.title)
       //if an added card only show the exclusive added sesartitle fields
-
-      if (this.props.fieldType === "added_card") {
+      if (this.props.hasInit && this.props.fieldType === "added_card") {
         let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
         if (this.checkForMetaDataAdd(f.title) === false && metaAddSesarTitles.includes(f.title))
           return (
@@ -605,28 +618,22 @@ export class DropDown extends React.Component {
       
       }
 
-      if (!this.checkForMetaDataAdd(f.title) === true) {
-        //  console.log(f.title + ": Flag 2")
-        return (
-          <option key={f.title} value={f.title}>
-            {f.title}
-          </option>
-        );
-      }
+      
 
-      if (
+      if ( num > 0 &&
         this.props.hasInit &&
         this.hasSesarValue()[0] === true &&
         this.hasSesarValue()[1] === f.title
       ) {
-        // console.log(f.title + ": Flag 4")
+        
         return (
-          <option key={f.title} value={this.hasSesarValue()[1]} selected>
+          <option key={f.title} value={this.hasSesarValue()[1]} disabled hidden>
             {this.hasSesarValue()[1]}
           </option>
         );
       }
 
+      //always gives multiValue 
       if (this.props.hasInit && this.state.sesarMulti.includes(f.title)) {
         let ital = f.title.italics();
         //console.log(ital)
@@ -636,6 +643,7 @@ export class DropDown extends React.Component {
           </option>
         );
       }
+      //gives unused One to One values
       if (!this.props.useOnce.includes(f.title)) {
         // console.log(f.title + ": Flag 5" + this.hasSesarValue()[1])
 
@@ -644,17 +652,21 @@ export class DropDown extends React.Component {
             {f.title}
           </option>
         );
-      } else if (
+      }
+      //this case should be impossible, need time to test 
+      else if (
         this.props.useOnce.includes(f.title) &&
         !sesarOne2One.includes(f.title)
       ) {
-        // console.log(f.title + ": Flag 3")
+        console.log(f.title + ": Flag 3")
         return (
           <option key={f.title} value={f.title}>
             {f.title}
           </option>
         );
-      } else if (this.props.useOnce.indexOf(f.title) === this.props.id) {
+      } 
+      //this case should be unreachable, need time to test
+      else if (this.props.useOnce.indexOf(f.title) === this.props.id) {
         return (
           <option key={f.title} value={f.title}>
             {f.title}
@@ -664,17 +676,20 @@ export class DropDown extends React.Component {
     };
 
     // creates the dropdown, uses filter() to specify which items are included in dropdown
+    
 
     return (
+      <div className="dropDown">
       <select
-        style={{ maxHeight: "30px", display: "inline-block", width: "170px" }}
-        defaultValue={"Sesar Selection"}
+        style={{ maxHeight: "30px", display: "inline-block", width: "170px", zIndex: display }}
+        defaultValue={firstLoad}
         className="ui dropdown"
         prompt="Please select option"
         onChange={this.updateValue}
       >
         {this.props.list.map(field => filter(field))}
       </select>
+      </div>
     );
   }
 }

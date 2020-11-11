@@ -78,10 +78,10 @@ class FieldCard extends React.Component {
   // helper function to display a dropdown IFF it is also green / checked!
   // sizeCallback={this.getSizeCallback}
   filterDrop = () => {
-    if (this.state.isGreen === true)
+    //if (this.state.isGreen === true)
       return (
-        <div className="dropDown">
           <DropDown
+            shouldAppear={this.state.isGreen}
             addedNew={this.props.addedNewField}
             refresh={this.refreshFieldCard}
             callback={this.fileCallback}
@@ -93,9 +93,8 @@ class FieldCard extends React.Component {
             one2one={this.getOne2One()}
             list={this.state.sesarOptions}
           />
-        </div>
       );
-    else return <div className="dropDownNoData">{"   "}</div>;
+   // else return <div className="dropDownNoData">{"   "}</div>;
   };
 
   // onClick of the checkmark, change the color of the bar between green and white
@@ -133,6 +132,7 @@ class FieldCard extends React.Component {
       //first two cases: if fieldcard sesarSelected is set to a multivalue
       // if non empty value for multivalue
       // else empty value
+
       if (data !== "") {
         currentComponent.setState({
           updatedValue: this.props.fieldTitle + ":" + data,
@@ -360,8 +360,8 @@ class FieldCard extends React.Component {
         header: this.props.ent[this.props.id].header,
         forceID: this.props.persist.length,
         sesar: this.props.ent[this.props.id].sesarTitle,
-        isMetaData: this.props.ent[this.props.id].header.includes("<METADATA>"),
-        isMetaDataAdd: this.props.ent[this.props.id].header.includes(
+        isMetaData: this.props.hasInit && this.props.ent[this.props.id].header.includes("<METADATA>"),
+        isMetaDataAdd: this.props.hasInit && this.props.ent[this.props.id].header.includes(
           "<METADATA_ADD>"
         )
       };
@@ -431,22 +431,26 @@ class FieldCard extends React.Component {
 
   render() {
     //these renders return different fieldcards based on the hiding toggle value
-
+    
     //removes the unchecked field card
     if (this.props.hiding && this.state.isGreen === false) return null;
     //returns the green styled field card
     else if (this.state.isGreen) {
+      //if a JS file was loaded and this card does not have a dropdown selected
       if (
         this.jsFileValueToggle() === true &&
         this.state.dropDownChosen === false
       ) { 
+        //and its header loaded in was METADATA **refactor to use isMetadata**
         if (
           this.props.hasInit &&
           this.props.ent[this.props.id].header === "<METADATA>"
-        ) {
+        ) 
+        //uh why is this
+        {
           return (
             <div className="ui label">
-              <div className="fieldContainer3">
+              <div className="fieldContainerMetadataAdd">
                 <object>
                   <div className="check__box">
                     <CheckboxExample
@@ -540,12 +544,15 @@ class FieldCard extends React.Component {
               </div>
             </div>
           );
-        } else {
+        } 
+        else {
+          {/*header was not metadata, create normal fieldcard **dropdown was not preselected from JS file***/}
           return (
             <div className="ui label">
               <div className="fieldContainer1">
                 <object>
                   <div className="check__box">
+                    
                     <CheckboxExample
                       greenCallback={this.greenToggle}
                       isChecked={this.state.isGreen}
@@ -566,10 +573,11 @@ class FieldCard extends React.Component {
                   ></i>
                 </object>
                 <object className="descriptionMapped" align="right">
-                  {this.state.areEditing === true ? (
+                {/*left side of fieldcard*/}  
+                {this.state.areEditing === true ? (
                     <div className="description__mapped__content">
                       {this.lengthCheckedValue(
-                        this.props.fieldTitle + ": " + this.props.fieldValue
+                        this.props.fieldValue
                       )}  {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
                       {this.props.fieldValue}
                     </span>): null}
@@ -596,7 +604,7 @@ class FieldCard extends React.Component {
                   )}
                   {this.filterDrop()}
 
-
+                  {/*If dropdown value is chosen, and value is not a multivalue display edit button */}
                   {this.props.hasInit === true &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
                   this.isMultiValue(
@@ -626,10 +634,10 @@ class FieldCard extends React.Component {
                         display: "inline",
                         
                       }}
-                    > {this.state.index !== -1
-                      ? this.state.formattedString +
+                    > {this.props.hasInit && this.state.index !== -1
+                      ? "Total: " +
                         this.props.multiCount[this.state.index].count
-                      : "dorp"}
+                      : null}
                       
                     </div>
                   )}
@@ -644,7 +652,7 @@ class FieldCard extends React.Component {
       ) {
         return (
           <div className="ui label">
-            <div className="fieldContainer4">
+            <div className="fieldContainerMetadata">
               <object>
                 <div className="check__box">
                   <CheckboxExample
@@ -672,8 +680,8 @@ class FieldCard extends React.Component {
                   <div className="description__mapped__content">
                     {this.lengthCheckedValue(this.state.updatedValue)}
                     <span className="hiddentext">
-                    {this.props.fieldValue}
-                  </span>
+                      {this.props.ent[this.props.id].value}
+                    </span>
                   </div>
                 ) : (
                   <div
@@ -742,7 +750,7 @@ class FieldCard extends React.Component {
                   }}
                 >
                   <div style={{ float: "right", width: "35px" }}>
-                    {this.state.index !== -1
+                    {this.props.hasInit && this.state.index !== -1
                       ? "Total:" + this.props.multiCount[this.state.index].count
                       : ""}
                   </div>
@@ -752,16 +760,14 @@ class FieldCard extends React.Component {
           </div>
         );
       } else {
-        // this is the added card, two csv issue
+        
         if (
-          (this.props.hasInit &&
-            this.props.ent[this.props.id].header.includes("<METADATA_ADD>")) ||
           this.isMetaDataAddCard(this.props.id)
         ) {
           return (
             <div className="ui label">
-              <div className="fieldContainer3">
-                <object>
+              <div className="fieldContainerMetadataAdd">
+              <object>
                   <div className="check__box">
                     <CheckboxExample
                       greenCallback={this.greenToggle}
@@ -857,7 +863,7 @@ class FieldCard extends React.Component {
                     }}
                   >
                     <div style={{ float: "right", width: "35px" }}>
-                      {this.state.index !== -1
+                      {this.props.hasInit && this.state.index !== -1
                         ? "Total:" +
                           this.props.multiCount[this.state.index].count
                         : ""}
@@ -897,8 +903,8 @@ class FieldCard extends React.Component {
                   {this.state.areEditing === true ? (
                     <div className="description__mapped__content">
                       {this.lengthCheckedValue(this.state.updatedValue)}
-                      {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
-                          {this.props.fieldValue}
+                      {this.state.updatedValue.length > 25 ? (<span className="hiddentext">
+                          {this.state.updatedValue}
                         </span>): null}
                     </div>
                   ) : (
@@ -971,7 +977,7 @@ class FieldCard extends React.Component {
                     }}
                   >
                     <div style={{ float: "right", width: "35px" }}>
-                      {this.state.index !== -1
+                      {this.props.hasInit && this.state.index !== -1
                         ? "Total:" +
                           this.props.multiCount[this.state.index].count
                         : ""}
@@ -991,7 +997,7 @@ class FieldCard extends React.Component {
     else {
       return (
         <div className="ui label">
-          <div className="fieldContainer2">
+          <div className="fieldContainerDisabled">
             <object>
               <div className="check__box">
                 <CheckboxExample

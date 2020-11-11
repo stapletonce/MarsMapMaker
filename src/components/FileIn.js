@@ -137,7 +137,7 @@ class FileIn extends React.Component {
         fileName.push(this.state.files[i].name);
 
         if (this.state.files[i].type.includes("javascript")) jscount += 1;
-        else if (this.state.files[i].type === "text/csv") csvcount += 1;
+        else if (this.state.files[i].type.includes("text/csv") || this.state.files[i].type.includes("excel")) csvcount += 1;
       }
 
       const obj = {
@@ -156,6 +156,14 @@ class FileIn extends React.Component {
       alert("You have selected more that 3 files, try again!");
       return;
     }
+
+    if (csvcount === 0) {
+      console.log("csv count stuff correct");
+      this.refreshFileIn();
+      alert("Please select a CSV file");
+      return;
+    }
+
     if (csvcount > 2 || jscount > 1) {
       this.refreshFileIn();
       alert("You have either selected too many CSV or too many mapping files!");
@@ -216,8 +224,8 @@ class FileIn extends React.Component {
           let persistObj = {
             sesar: sesarCleaned.replace(/^\s|\"/g, ""),
             value: "value",
-            isMetaData: false,
-            isMetaDataAdd: false,
+            isMetaData: cleaned[1].includes("<METADATA>"),
+            isMetaDataAdd: cleaned[1].includes("<METADATA_ADD>"),
             header: cleaned[1].replace(/^\s|\"/g, ""),
             forceID: this.props.persist.length,
             index: i - iStart
