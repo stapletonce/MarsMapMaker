@@ -262,6 +262,7 @@ class MapOutput extends React.Component {
     for (let j = 0; j < this.props.ent.length; j++) {
       //these conditionals track the last occurance of each type of sesarTitle
       if (
+        this.props.ent[j].sesarTitle !== "none" &&
         this.props.ent[j].sesarTitle !== "" &&
         this.props.ent[j].value !== "<METADATA_ADD>" &&
         this.props.ent[j].sesarTitle !== "field_name" &&
@@ -295,6 +296,7 @@ class MapOutput extends React.Component {
     let singlesAppendingString = "";
     for (let i = 0; i < this.props.ent.length; i++) {
       if (
+        this.props.ent[i].sesarTitle !== "none" &&
         this.props.ent[i].sesarTitle !== "" &&
         this.props.ent[i].value !== "<METADATA_ADD>" &&
         this.props.ent[i].sesarTitle !== "geological_age" &&

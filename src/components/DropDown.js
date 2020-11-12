@@ -593,6 +593,14 @@ export class DropDown extends React.Component {
         );
       }
 
+      if (num === 1) {
+        return (
+          <option key={f.title} value={"none"}>
+            {"none"}
+          </option>
+        );
+      }
+
       //if an added card only show the exclusive added sesartitle fields
       if (this.props.hasInit && this.props.fieldType === "added_card") {
         let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]

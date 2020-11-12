@@ -59,6 +59,26 @@ $mars--border: rgb(46, 14, 8);
   white-space: nowrap;
 }
 
+.description__value .hiddentext {
+  visibility: hidden;
+  max-width: 300px;
+  background-color: rgb(27, 14, 99);
+  color: #fff;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px 0;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
+  position: absolute;
+  z-index: 1;
+}
+
+.description__value:hover .hiddentext {
+  visibility: visible;
+  white-space: pre-wrap;
+}
+
 .description__mapped__content .hiddentext {
   visibility: hidden;
   max-width: 300px;
@@ -76,7 +96,7 @@ $mars--border: rgb(46, 14, 8);
 
 .description__mapped__content:hover .hiddentext {
   visibility: visible;
-  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .marsOutput {

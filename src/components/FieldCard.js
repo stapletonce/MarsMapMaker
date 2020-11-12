@@ -563,7 +563,9 @@ class FieldCard extends React.Component {
                   </div>
                   <div className="description__value"> {":        " +
                   this.lengthCheckedValue(this.props.fieldValue)}
-                   
+                  {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
+                      {this.props.fieldValue}
+                    </span>): null}
                   </div>
                 </object>
                 <object className="arrow">
@@ -605,7 +607,9 @@ class FieldCard extends React.Component {
                   {this.filterDrop()}
 
                   {/*If dropdown value is chosen, and value is not a multivalue display edit button */}
-                  {this.props.hasInit === true &&
+                  {
+                  this.props.hasInit === true &&
+                  this.props.ent[this.props.id].sesarTitle !== "none" &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
                   this.isMultiValue(
                     this.props.ent[this.props.id].sesarTitle
@@ -648,6 +652,7 @@ class FieldCard extends React.Component {
         }
       } else if (
         this.props.hasInit &&
+        this.props.ent[this.props.id].sesarTitle !== "none" &&
         this.props.ent[this.props.id].header === "<METADATA>"
       ) {
         return (
@@ -790,7 +795,8 @@ class FieldCard extends React.Component {
                 <object className="descriptionMapped" align="right">
                   {this.state.areEditing === true ? (
                     <div className="description__mapped__content">
-                      {this.lengthCheckedValue(this.state.updatedValue)}
+                      {this.props.hasInit && this.props.ent[this.props.id].sesarTitle !== "" && this.props.ent[this.props.id].sesarTitle !== "none" ? 
+                      this.lengthCheckedValue(this.state.updatedValue): null}
                       {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
                       {this.props.fieldValue}
                     </span>): null}
@@ -890,7 +896,10 @@ class FieldCard extends React.Component {
                   </div>
                   <div className="description__value"> {":        " +
                   this.lengthCheckedValue(this.props.fieldValue)}
-                   
+                  {this.props.fieldValue.length > 25 ? (<span className="hiddentext">
+                  {this.props.fieldValue}
+                </span>): null}
+      
                   </div>
                 </object>
                 <object className="arrow">
@@ -902,7 +911,8 @@ class FieldCard extends React.Component {
                 <object className="descriptionMapped" align="right">
                   {this.state.areEditing === true ? (
                     <div className="description__mapped__content">
-                      {this.lengthCheckedValue(this.state.updatedValue)}
+                    {this.props.hasInit && this.props.ent[this.props.id].sesarTitle !== "" && this.props.ent[this.props.id].sesarTitle !== "none" ? 
+                    this.lengthCheckedValue(this.state.updatedValue): null}
                       {this.state.updatedValue.length > 25 ? (<span className="hiddentext">
                           {this.state.updatedValue}
                         </span>): null}
@@ -929,7 +939,9 @@ class FieldCard extends React.Component {
                   )}
 
                   {this.filterDrop()}
-                  {this.props.hasInit === true &&
+                  {
+                  this.props.hasInit === true &&
+                  this.props.ent[this.props.id].sesarTitle !== "none"  &&
                   this.props.ent[this.props.id].sesarTitle !== "" &&
                   this.isMultiValue(
                     this.props.ent[this.props.id].sesarTitle
