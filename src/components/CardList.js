@@ -149,8 +149,19 @@ const CardList = (props) => {
         let storedValue = {}
         let sesarFind = findSesarPassIn(field)
         let fieldContentValue;
+        let forcedIndex = -1;    
+        
+        //hardcoded <METADATA_ADD> number 4
+        //if metadata add else find where metadata index is
+        if(newKey < 4 && props.jsFileValues !== undefined){
+            sesarFind = props.forceValues[newKey]
+            forcedIndex = newKey
 
-        let forcedIndex = props.forceTitles.indexOf(field)
+        } else {
+            forcedIndex = props.forceTitles.indexOf(field)
+        }
+
+        //if not metadata or metadata add
         if (forcedIndex === -1) {
             storedValue = {
                 id: newKey,
@@ -166,7 +177,7 @@ const CardList = (props) => {
             fieldContentValue = fieldValState[newKey]
         }
         else {
-
+            //if metadata
             if (newKey > 3) {
                 storedValue = {
                     id: newKey,
@@ -182,9 +193,10 @@ const CardList = (props) => {
                 fieldContentValue = props.forceValues[forcedIndex]
             }
             else {
+                //if metadata add
                 storedValue = {
                     id: newKey,
-                    sesarTitle: sesarFind,
+                    sesarTitle: props.persist[newKey].sesar,
                     oldValue: fieldValState[newKey],
                     value: props.forceValues[forcedIndex],
                     // this used to be id 

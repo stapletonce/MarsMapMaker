@@ -198,7 +198,7 @@ class FileIn extends React.Component {
     return newArr;
   };
   //iStart is beginning of map array
-  startPushingHelper = (result, i, jsArr, iStart) => {
+  startPushingHelper = (result, i, jsArr, iStart, metaDataAddValue) => {
     //let findout = (JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
     //console.log("this is i right after being called: " + i + " and findout is this: " + findout)
 
@@ -219,11 +219,11 @@ class FileIn extends React.Component {
         //console.log( "\n" +"This is i:  "+ i + "      " + sesarCleaned + "  SHOULD be SESARCLEANED AND SHOULD BE TRUE for sampletype and current archive" + addToStore + "\n")
 
         if (addToStore) {
-          console.log(cleaned);
+          //console.log(cleaned);
           //console.log("iStart should not be -1 :" + iStart)
           let persistObj = {
             sesar: sesarCleaned.replace(/^\s|\"/g, ""),
-            value: "value",
+            value: metaDataAddValue[i - iStart],
             isMetaData: cleaned[1].includes("<METADATA>"),
             isMetaDataAdd: cleaned[1].includes("<METADATA_ADD>"),
             header: cleaned[1].replace(/^\s|\"/g, ""),
@@ -286,7 +286,7 @@ class FileIn extends React.Component {
     }
   };
 
-  foundSection = () => {};
+
 
   // uses function from App.js (callbackFromParent) to retrieve the result/data from FileIn.js
   updateData(result) {
@@ -398,10 +398,10 @@ class FileIn extends React.Component {
         }
 
         let arr;
-
+        
         if (startPushing === true) {
           //console.log("This is indexSet before startpush: " + "  " + mapIndex + "   " + JSON.stringify(Object.values(result.data[i])[0]).replace(/(\r\n|\n|\r)/gm, ""))
-          this.startPushingHelper(result, i, jsArr, mapIndex);
+          this.startPushingHelper(result, i, jsArr, mapIndex, forceEditValueContentArr);
         } else if (dateIdentified === true) {
           if (Object.values(result.data[i])[0].includes("y")) {
             arr = Object.values(result.data[i])[0].split(" ");

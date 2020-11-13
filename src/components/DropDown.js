@@ -569,10 +569,9 @@ export class DropDown extends React.Component {
     const sesarOne2One = this.state.sesarOneToOne;
     //for tracking the very first instance of filter being called
     let num = -1;
-  
+
     let firstLoad = dropdownSet(this.props.hasInit, this.props.ent, this.props.id)
   
-    
     //style for hiding dropdown for disabled cards
     let display = 1;
     if(this.props.hasInit && !this.props.shouldAppear) {
@@ -581,7 +580,6 @@ export class DropDown extends React.Component {
     
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     this.toggleNotInUse();
-
 
     // helper function to list "options" based on the 'type' of field (numbers or letters...)
     let filter = f => {
@@ -658,7 +656,7 @@ export class DropDown extends React.Component {
         this.props.useOnce.includes(f.title) &&
         !sesarOne2One.includes(f.title)
       ) {
-        console.log(f.title + ": Flag 3")
+
         return (
           <option key={f.title} value={f.title}>
             {f.title}
