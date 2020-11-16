@@ -485,7 +485,7 @@ export class DropDown extends React.Component {
       if (typeof entries === "string") break;
       if (entries[i].value !== "") index = i;
     }
-    return i;
+    return index;
   };
 
 
