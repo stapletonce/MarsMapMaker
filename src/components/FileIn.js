@@ -16,6 +16,7 @@ import {
   setFileMetadata,
   persistingDataConcat
 } from "../actions/";
+import { CardContent } from "semantic-ui-react";
 
 ///////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////
@@ -214,21 +215,48 @@ class FileIn extends React.Component {
         .replace(" ", "")
         .split(":");
       if (!(cleaned[0].includes("return") || cleaned[0].includes("}"))) {
-        let sesarCleaned = cleaned[0];
-        let addToStore = cleaned[1].includes("<METADATA");
-        //console.log( "\n" +"This is i:  "+ i + "      " + sesarCleaned + "  SHOULD be SESARCLEANED AND SHOULD BE TRUE for sampletype and current archive" + addToStore + "\n")
+        let indexCleaned = cleaned[0].split(" ")[2];
+        let addToStore = false;
+        //console.log(indexCleaned) 
+        addToStore = cleaned[0].includes("mapMakerIndex");
 
         if (addToStore) {
-          //console.log(cleaned);
-          //console.log("iStart should not be -1 :" + iStart)
+          
+          //scrubs mapMakerHeader line for header value
+          let headerCleaned = Object.values(result.data[i - 1])[0]
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .replace(" ", "")
+          .split(" ")[2].replace(/\"/g, "");
+
+          //scrubs return of forceEditFunctions for return value to replace value
+          let ses = Object.values(result.data[i+1])[0]
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .replace(/\\|"|;/g, "")
+          .split(" ")[3];
+
+          let findSesar = Object.values(result.data[i-2])[0]
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .replace(/\\|"|;/g, "")
+          .split(" ")[1];
+          console.log(findSesar)          
+
+          let sesarFound = ""
+          for(let i = 0; i < result.data.length; i++) {
+            if(Object.values(result.data[i])[0].includes(": " + findSesar)){
+              sesarFound = Object.values(result.data[i])[0].split(":")[0].trim();
+              break;
+            }
+          }
+          console.log(sesarFound)
+
           let persistObj = {
-            sesar: sesarCleaned.replace(/^\s|\"/g, ""),
-            value: metaDataAddValue[i - iStart],
-            isMetaData: cleaned[1].includes("<METADATA>"),
-            isMetaDataAdd: cleaned[1].includes("<METADATA_ADD>"),
-            header: cleaned[1].replace(/^\s|\"/g, ""),
+            sesar: sesarFound,
+            value: ses,
+            isMetaData: !headerCleaned.includes("<METADATA_ADD>"),
+            isMetaDataAdd: headerCleaned.includes("<METADATA_ADD>"),
+            header: headerCleaned,
             forceID: this.props.persist.length,
-            index: i - iStart
+            index: parseInt(indexCleaned)
           };
           console.log("this is obj we add to persist "+ persistObj.sesar + " " + persistObj.header)
           this.props.persistingDataConcat(persistObj);

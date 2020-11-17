@@ -1,19 +1,13 @@
 
-export const typeField = (f) => {
+export const typeField = (keyNum, totalMetaDataAdd) => {
 
     let type;
 
-    let numbers = /^[0-9,/.-]*$/;
-
-    if (f === "")
+    if (keyNum > totalMetaDataAdd)
         type = "both";
-    else if (f === "<METADATA_ADD>") {
+    else {
         type = "added_card"
     }
-    else if (numbers.test(f) === true)
-        type = "numbers";
-    else
-        type = "text"
     return type
 }
 

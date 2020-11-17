@@ -113,11 +113,8 @@ export class FieldCard extends React.Component {
     
     if (this.isMetaDataAddCard(this.props.id)) {
       let value;
-      if (this.props.ent[this.props.id].value === "<METADATA_ADD>") {
-        value = "_";
-      } else {
         value = this.props.ent[this.props.id].value;
-      }
+      
       currentComponent.setState({ updatedValue: value });
       return;
     }
@@ -352,21 +349,25 @@ export class FieldCard extends React.Component {
     let obj = {};
     let persistentMetaData = {};
     
-
-    if (event.key === "Enter" || typeof event.key === "undefined") {
+    console.log(event.key + " and type: " + typeof event.key)
+    if (event.key === "Enter" || typeof event.key === undefined) {
+      console.log(this.props.ent[this.props.id].value)
       persistentMetaData = {
         index: this.props.id,
-        value: this.props.ent[this.props.id].value,
+        value: event.target.value,
         header: this.props.ent[this.props.id].header,
         forceID: this.props.persist.length,
         sesar: this.props.ent[this.props.id].sesarTitle,
-        isMetaData: this.props.hasInit && this.props.ent[this.props.id].header.includes("<METADATA>"),
+        isMetaData: !(this.props.hasInit && this.props.ent[this.props.id].header.includes(
+          "<METADATA_ADD>"
+        )),
         isMetaDataAdd: this.props.hasInit && this.props.ent[this.props.id].header.includes(
           "<METADATA_ADD>"
         )
       };
 
       if (event.key === "Enter") {
+        persistentMetaData.value = event.target.value;
         this.setState({
           areEditing: !this.state.areEditing,
           updatedValue: event.target.value
@@ -410,7 +411,7 @@ export class FieldCard extends React.Component {
       }
 
       this.props.forceEdit(obj);
-    }
+    } else {this.setState({updatedValue : event.target.value})}
   };
 
   editPlaceholderText = () => {
@@ -812,8 +813,7 @@ export class FieldCard extends React.Component {
                       class="ui input"
                     >
                       <input
-                        value={this.state.updatedValue}
-                        onChange={this.forceEdit}
+                        
                         onKeyPress={this.forceEdit}
                         style={{ display: "inline-block", width: "150px" }}
                         type="text"

@@ -14,7 +14,8 @@ import mars from "../icons/planet.png";
 //need to handle single value measurements and size unit mapping Size unit should always be 'cm'
 //
 class MapOutput extends React.Component {
-  state = { functionIDs: [] };
+  state = { functionIDs: [],
+   orderedForcedFields: [] };
 
   filterSortedPersistent = sorted => {
     let unfiltered = sorted;
@@ -105,37 +106,34 @@ class MapOutput extends React.Component {
     console.log("this is sifted after sorted " + sortedPersistent.length)
     let sifted = this.filterSortedPersistent(sortedPersistent);
     console.log("this is sifted after filter" + sifted.length)
-
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (
-        (this.props.ent[i].header === "<METADATA>" ||
-          (this.props.ent[i].header === "<METADATA_ADD>" &&
-            this.props.ent[i].value !== "<METADATA_ADD>")) &&
-        this.props.ent[i].isGreen &&
-        id < sifted.length
-      ) {
+    this.setState({orderedForcedFields : sifted})
+    for (let i = 0; i < sifted.length; i++) {
+       
         functID =
           functID +
           "const forceEditID" +
-          id +
+          i +
           " = () => {" +
           "\n" +
           "let mapMakerHeader = " +
           '"' +
-          sifted[id].header +
+          sifted[i].header +
           '"' +
-          "\n  return " +
+          "\n" + 
+          "let mapMakerIndex = " +
+          sifted[i].index + "\n  " +
+          "return " +
           '"' +
-          this.props.ent[i].value +
+          sifted[i].value +
           '"' +
           ";\n}\n";
         
-        let appendValue = "forceEditID" + id;
+        let appendValue = "forceEditID" + i;
         let arr = this.state.functionIDs;
         arr.push(appendValue);
         this.setState(state => ({ functionIDs: arr }));
-        id++;
-      }
+        
+      
     }
     console.log(
       "This is functionIDS in forceEdit: " + this.state.functionIDs.length
@@ -425,28 +423,21 @@ class MapOutput extends React.Component {
   }
 
   logicFunctionAppend() {
-    let id = 0;
     let logicID = "";
 
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (
-        (this.props.ent[i].header === "<METADATA>" ||
-          this.props.ent[i].header === "<METADATA_ADD>") &&
-        this.props.ent[i].isGreen &&
-        this.props.ent[i].value !== "<METADATA_ADD>"
-      ) {
-        if (this.state.functionIDs[id] === undefined) {
+    for (let i = 0; i < this.state.orderedForcedFields.length; i++) {
+        if (this.state.functionIDs[i] === undefined) {
         } else {
           logicID =
             logicID +
             "  " +
-            this.props.ent[i].sesarTitle +
+            this.state.orderedForcedFields[i].sesar +
             ": forceEditID" +
-            id +
+            i +
             ",\n";
-          id++;
+          
         }
-      }
+      
     }
     console.log(
       "The length of functionIDs in logic function append:  " +
