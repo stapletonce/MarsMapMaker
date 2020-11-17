@@ -18,7 +18,7 @@ import {
 } from "../actions";
 const { options } = require("./sesarOptions");
 
-class FieldCard extends React.Component {
+export class FieldCard extends React.Component {
   state = {
 
     sesarChosen: "",

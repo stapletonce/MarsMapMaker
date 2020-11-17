@@ -479,8 +479,19 @@ export class DropDown extends React.Component {
     this.updateValueHelper(newValue, true);
   };
 
-  // function that searches the ent array in the store for any index with content
   entWithContent = (entries) => {
+    let index = -1;
+    for (let i = 0; i < entries.length; i++) {
+      if (typeof entries === "string") break;
+      if (entries[i].value !== "") index = i;
+    }
+    return index;
+  };
+
+
+
+  // function that searches the ent array in the store for any index with content
+  entEnd = (entries) => {
     let index = -1;
     for (let i = 0; i < entries.length; i++) {
       if (typeof entries === "string") break;
@@ -516,13 +527,13 @@ export class DropDown extends React.Component {
 
     if (this.props.hasInit &&
       this.props.usingToggle === true &&
-      this.props.id !== this.entWithContent(this.props.ent)
+      this.props.id !== this.entEnd(this.props.ent)
     ) {
       this.updateValueToggle();
     } else if (
       this.props.hasInit &&
       this.props.usingToggle === true &&
-      this.props.id === this.entWithContent(this.props.ent)
+      this.props.id === this.entEnd(this.props.ent)
     ) {
       this.props.toggleInUse(obj);
     }
