@@ -443,61 +443,78 @@ const CardList = (props) => {
 
         <div>
             <div className="label">
-                <div className="label" style={{ position: "fixed", background: "white", zIndex: "10", borderBottom: "4px solid black", borderTop: "8px solid black", borderTopRightRadius: "15px", borderTopLeftRadius: "15px" }}>
-                    <div style={{ paddingTop: "8em" }} className="toggle__content">
-                        <div style={{ display: "inline", float: "left", width: '259px' }}>
-                            <h4 className="ui header" style={{ fontSize: "17px", padding: "0px", margin: "0px" }}>
-                                <div className="content" style={{ fontFamily: "Lucida Grande" }}>
-                                    Change Displayed Sample
+                <div className="container-fluid">
+                    <div className="row" >
+                        <div className="text-center order-md-3 col-md-3" style={{ padding: "20px" }}>
+                                <MapOutput />
+                        </div>
+                        <div className="col-sm-4 col-md-3 order-md-1 align-self-center">
+                            <div className="card border-0 mx-auto text-center" style={{ maxWidth: "300px" }}>
+                                <div className="card-body">
+                                    <div className="card-title border-0 bg-white">
+                                            Change Displayed Sample
+                                    </div>
+                                    <div className ="card-text">Current Sample Row: {toggleIndex}</div>
+                                    <div className="btn-group-vertical text-center btn-margin">
+                                            <button className="btn btn-outline-dark" onClick={() => refreshButton()}>
+                                                Refresh
+                                            </button>
+                                        <div className="btn-group">
+                                            <button className="btn btn-outline-dark" onClick={() => leftArrowToggle()}><i class="fa fa-arrow-up"></i></button>
+                                            <button className="btn btn-outline-dark" onClick={() => rightArrowToggle()}><i class="fa fa-arrow-down"></i></button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </h4>
-                            <div disabled style={{ fontFamily: "Lucida Grande" }} className="ui grey ribbon label">Current Sample Row: {toggleIndex}</div>
-                            <button className="ui icon button" style={{ fontFamily: "Lucida Grande", display: "inline-block", width: "110px" }} onClick={() => refreshButton()}>
-                                Refresh
-                            </button>
+                            </div>
                         </div>
-                        <div style={{ display: "inline", float: 'left', width: '100px' }}>
-                            <button className="ui icon button" style={{ float: "left", width: "60px", marginBottom: '5px' }} onClick={() => leftArrowToggle()}>
-                                <i className="up arrow icon"></i>
-                            </button>
-                            <button className="ui icon button" style={{ float: "left", width: "60px" }} onClick={() => rightArrowToggle()}>
-                                <i className="down arrow icon"></i>
-                            </button>
+
+                        <div className="col-sm-4 col-md-3 order-md-3 align-self-center" >
+                            <div className="card border-0 mx-auto text-center" style={{ maxWidth: "200px" }}>
+                                <div className="card-body">
+                                    {(props.hasDateFormat === false || dateSelected() === false) ?
+                                        <div>
+                                            Select Date Format
+                                                    </div> : <div style={{ visibility: "hidden", width: "100%", maxWidth: "400px", textAlign: "center" }}>
+                                            Select Date Format
+                                                </div>}
+
+
+                                    {(props.hasDateFormat === false || dateSelected() === false) ?
+                                        <div className="toolbar__date__format" style={{ borderColor: "red" }} >
+                                            <DateDropdown list={dateFormatOption} />
+                                            <CenturyDropDown />
+                                        </div> : <div className="toolbar__date__format">
+                                            <DateDropdown list={dateFormatOption} />
+                                            <CenturyDropDown />
+                                        </div>}
+                                </div>
+                            </div>
                         </div>
+
+
+                        <div className="col-sm-4 col-md-3 order-md-4 align-self-center text-center" >
+                            <div className="card border-0 mx-auto text-center" style={{ maxWidth: "175px" }}>
+                                <div className="card-body">
+                                    <div class="btn-group-vertical">
+                                        <button className="btn btn-outline-dark" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
+                                        <button className="btn btn-outline-dark" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
+                                        <button className="btn btn-outline-dark" onClick={checkStore}> Help </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
 
-                    <MapOutput />
 
-                    <div style={{ paddingTop: "1.5em", width: "15%" }} className="toolbar__help" >
-                        <button style={{ fontFamily: "Lucida Grande" }} className="ui toggle button" onClick={() => setHide(!hide)}> {hideOrShow()} </button>
-                        <button style={{ fontFamily: "Lucida Grande" }} className="ui basic button" onClick={() => { props.callback(previewPopUp()) }}> Preview Map </button>
-                        <button style={{ fontFamily: "Lucida Grande" }} className="ui basic button" onClick={checkStore}> Help </button>
-                    </div>
-
-                    <div style={{ position: "absolute", bottom: "5em", right: "20em", display: "inline-block", float: "right", paddingRight: "0px" }}>
-                        {(props.hasDateFormat === false || dateSelected() === false) ?
-                            <div style={{ width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
-                                Select Date Format
-                        </div> : <div style={{ visibility: "hidden", width: "100px", margin: "10px", padding: "10px" }} className="ui right pointing red basic label">
-                                Select Date Format
-                        </div>}
-
-                        {(props.hasDateFormat === false || dateSelected() === false) ?
-                            <div className="toolbar__date__format" style={{ borderColor: "red" }} >
-                                <DateDropdown list={dateFormatOption} />
-                                <CenturyDropDown />
-                            </div> : <div className="toolbar__date__format">
-                                <DateDropdown list={dateFormatOption} />
-                                <CenturyDropDown />
-                            </div>}
-                    </div>
                     <div className="description">
                         <div>
                             <object className="fieldWidget">
                                 <div style={{ fontFamily: "Lucida Grande" }} className="description__checkbox">
                                     Use
-                            </div>
-                        <div style={{ fontFamily: "Lucida Grande" }} dir="rtl" className="description__title">{"Field"}</div>
+                                </div>
+                                <div style={{ fontFamily: "Lucida Grande" }} dir="rtl" className="description__title">{"Field"}</div>
                                 <div className="description__value" style={{ fontFamily: "Lucida Grande", width: "23.8%" }}> {": Content"}</div>
                             </object>
                             <object style={{ fontFamily: "Lucida Grande", display: "inline-block", paddingLeft: "4.2em" }}>
@@ -509,9 +526,12 @@ const CardList = (props) => {
                             </object>
                         </div>
                     </div>
+                
+
                 </div>
 
-                <div style={{ paddingTop: "22.6em" }}>{fields}</div>
+                <div class="container-fluid">{fields}</div>
+
 
             </div>
             <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a

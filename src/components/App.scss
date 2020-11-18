@@ -32,21 +32,24 @@ $mars--border: rgb(46, 14, 8);
   margin: 0px;
   display: inline-block;
 }
+
+.toolbar {
+  padding-top: 30px;
+}
+
 .toggle__content {
-  width: 400px;
-  display: inline-block;
-  padding-left: 40px;
-  padding-bottom: 40px;
+
 }
 .toolbar__help {
-  font-size: 15px;
-  display: inline-block;
-  width: 15%;
-  padding-top: 3em;
-  padding: 10px;
+
+}
+
+.toolbar__date {
+
+}
+
+.btn-margin {
   margin: 10px;
-  margin-top: 5.4em;
-  float: right;
 }
 
 .description__value {
@@ -82,18 +85,12 @@ $mars--border: rgb(46, 14, 8);
 .marsOutput {
   text-align: center;
   display: inline-block;
-  padding-bottom: 0px;
-  padding-top: 2%;
-  padding-left: 22em;
-  padding-right: 2em;
   margin: 0%;
 }
 
 .mars--icon {
-  height: 160px;
-  width: 160px;
-  padding: 0%;
-  margin: 0%;
+  max-width: 200px;
+  width: 100%;
 }
 
 .mars--icon:hover {
@@ -202,16 +199,11 @@ $mars--border: rgb(46, 14, 8);
 }
 
 .toolbar__date__format {
-  font-size: 15px;
-  display: inline-block;
-  width: 200px;
-  padding: 10px;
-  margin: 10px;
   border-style: solid;
   border-color: rgb(224, 225, 226);
   border-width: 1px;
   border-radius: 5px;
-  margin-top: 9.1em;
+  max-width: 260px;
 }
 
 .arrowIcon {
