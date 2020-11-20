@@ -10,11 +10,12 @@ import saveAs from "file-saver";
 import { formatDate } from "../actions/";
 
 import mars from "../icons/planet.png";
+import { isSesarTitlePresent } from "../util/helper.js";
 //import { sum } from 'd3';
 //need to handle single value measurements and size unit mapping Size unit should always be 'cm'
 //
 class MapOutput extends React.Component {
-  state = { functionIDs: [] };
+  state = { functionIDs: [], orderedForcedFields: [] };
 
   filterSortedPersistent = sorted => {
     let unfiltered = sorted;
@@ -44,7 +45,7 @@ class MapOutput extends React.Component {
         }
       }
     }
-  
+
     //  alert("filtered length: " + filtered.length)
     return filtered;
   };
@@ -100,42 +101,37 @@ class MapOutput extends React.Component {
 
     //prepopulate sortedpersist with entries
     let sortedPersistent = this.props.persist;
-    console.log("this is sifted before filter "+ sortedPersistent.length)
+    console.log("this is sifted before filter " + sortedPersistent.length);
     sortedPersistent.sort((a, b) => (a.index > b.index ? 1 : -1));
-    console.log("this is sifted after sorted " + sortedPersistent.length)
+    console.log("this is sifted after sorted " + sortedPersistent.length);
     let sifted = this.filterSortedPersistent(sortedPersistent);
-    console.log("this is sifted after filter" + sifted.length)
+    console.log("this is sifted after filter" + sifted.length);
+    this.setState({ orderedForcedFields: sifted });
+    for (let i = 0; i < sifted.length; i++) {
+      functID =
+        functID +
+        "const forceEditID" +
+        i +
+        " = () => {" +
+        "\n" +
+        "let mapMakerHeader = " +
+        '"' +
+        sifted[i].header +
+        '"' +
+        "\n" +
+        "let mapMakerIndex = " +
+        sifted[i].index +
+        "\n  " +
+        "return " +
+        '"' +
+        sifted[i].value +
+        '"' +
+        ";\n}\n";
 
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (
-        (this.props.ent[i].header === "<METADATA>" ||
-          (this.props.ent[i].header === "<METADATA_ADD>" &&
-            this.props.ent[i].value !== "<METADATA_ADD>")) &&
-        this.props.ent[i].isGreen &&
-        id < sifted.length
-      ) {
-        functID =
-          functID +
-          "const forceEditID" +
-          id +
-          " = () => {" +
-          "\n" +
-          "let mapMakerHeader = " +
-          '"' +
-          sifted[id].header +
-          '"' +
-          "\n  return " +
-          '"' +
-          this.props.ent[i].value +
-          '"' +
-          ";\n}\n";
-        
-        let appendValue = "forceEditID" + id;
-        let arr = this.state.functionIDs;
-        arr.push(appendValue);
-        this.setState(state => ({ functionIDs: arr }));
-        id++;
-      }
+      let appendValue = "forceEditID" + i;
+      let arr = this.state.functionIDs;
+      arr.push(appendValue);
+      this.setState(state => ({ functionIDs: arr }));
     }
     console.log(
       "This is functionIDS in forceEdit: " + this.state.functionIDs.length
@@ -262,6 +258,7 @@ class MapOutput extends React.Component {
     for (let j = 0; j < this.props.ent.length; j++) {
       //these conditionals track the last occurance of each type of sesarTitle
       if (
+        this.props.ent[j].sesarTitle !== "none" &&
         this.props.ent[j].sesarTitle !== "" &&
         this.props.ent[j].value !== "<METADATA_ADD>" &&
         this.props.ent[j].sesarTitle !== "field_name" &&
@@ -295,6 +292,7 @@ class MapOutput extends React.Component {
     let singlesAppendingString = "";
     for (let i = 0; i < this.props.ent.length; i++) {
       if (
+        this.props.ent[i].sesarTitle !== "none" &&
         this.props.ent[i].sesarTitle !== "" &&
         this.props.ent[i].value !== "<METADATA_ADD>" &&
         this.props.ent[i].sesarTitle !== "geological_age" &&
@@ -423,27 +421,18 @@ class MapOutput extends React.Component {
   }
 
   logicFunctionAppend() {
-    let id = 0;
     let logicID = "";
 
-    for (let i = 0; i < this.props.ent.length; i++) {
-      if (
-        (this.props.ent[i].header === "<METADATA>" ||
-          this.props.ent[i].header === "<METADATA_ADD>") &&
-        this.props.ent[i].isGreen &&
-        this.props.ent[i].value !== "<METADATA_ADD>"
-      ) {
-        if (this.state.functionIDs[id] === undefined) {
-        } else {
-          logicID =
-            logicID +
-            "  " +
-            this.props.ent[i].sesarTitle +
-            ": forceEditID" +
-            id +
-            ",\n";
-          id++;
-        }
+    for (let i = 0; i < this.state.orderedForcedFields.length; i++) {
+      if (this.state.functionIDs[i] === undefined) {
+      } else {
+        logicID =
+          logicID +
+          "  " +
+          this.state.orderedForcedFields[i].sesar +
+          ": forceEditID" +
+          i +
+          ",\n";
       }
     }
     console.log(
@@ -504,10 +493,14 @@ class MapOutput extends React.Component {
   };
 
   createMapFile = () => {
-    const fileOutput = new Blob([this.finalAppend()], {
-      type: "text/javascript;charset=utf-8"
-    });
-    saveAs(fileOutput, "test.js");
+    if (isSesarTitlePresent("user_code", this.props.ent)) {
+      const fileOutput = new Blob([this.finalAppend()], {
+        type: "text/javascript;charset=utf-8"
+      });
+      saveAs(fileOutput, "test.js");
+    } else {
+      alert("Sesar Selection 'user_code' must be set before file output");
+    }
   };
 
   render() {
@@ -519,11 +512,7 @@ class MapOutput extends React.Component {
           alt="marsIcon"
           onClick={() => this.createMapFile()}
         ></img>
-        <h4
-          style={{padding: "0%", margin: "0%" }}
-        >
-          Click to Map
-        </h4>
+        <h4 style={{ padding: "0%", margin: "0%" }}>Click to Map</h4>
       </div>
     );
   }

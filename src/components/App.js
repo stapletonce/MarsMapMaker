@@ -96,8 +96,9 @@ export class App extends React.Component {
     let tValues = toggleValues;
 
     for (let j = 0; j < numOfEmptyCards; j++) {
-      newCardObj[j + "<METADATA_ADD>"] = "ADDED_CARD : " + String(j + 1);
+      newCardObj[j + "<METADATA_ADD>"] = "";
     }
+    console.log(newCardObj)
     for (let i = 0; i < tValues.length; i++) {
       tValues[i] = { ...newCardObj, ...tValues[i] };
     }
@@ -175,8 +176,9 @@ export class App extends React.Component {
   createSquiggleArray = () => {
     let arr = [];
     for (let i = 0; i < this.state.emptyCards.length; i++) {
-      arr.push("~~~");
+      arr.push("_");
     }
+    return arr;
   };
 
   // React says we have to define render!! You have to display JSX!
@@ -186,7 +188,7 @@ export class App extends React.Component {
       "mars-photo_hide": this.state.continue === true
     });
 
-    this.createSquiggleArray();
+    
 
     return (
       <div style={{height: "100vh", position: "relative"}}>
@@ -214,7 +216,7 @@ export class App extends React.Component {
             callback={this.isOpenCallback}
             fields={[...this.state.emptyCards, ...this.state.fieldNames]}
             toggleVals={this.state.toggleValuesArr}
-            fieldVal={[...this.state.emptyCards, ...this.state.fieldValues]}
+            fieldVal={[...this.createSquiggleArray(), ...this.state.fieldValues]}
             forceTitles={this.state.forceTitles}
             forceValues={this.state.forceValues}
           />

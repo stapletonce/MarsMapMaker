@@ -38,6 +38,7 @@ const CardList = (props) => {
     // an array of date option objects to choose from in the date dropdown
     const { dateFormatOption } = require('./sesarOptions')
 
+    const [lastMetaDataAdd, incrementMetaDataAdd] = useState(3)
     const [fieldsState, addAFieldCardHead] = useState(props.fields)
 
     const [fieldValState, addAFieldCardVal] = useState(props.fieldVal)
@@ -178,7 +179,7 @@ const CardList = (props) => {
         }
         else {
             //if metadata
-            if (newKey > 3) {
+            if (newKey > lastMetaDataAdd) {
                 storedValue = {
                     id: newKey,
                     sesarTitle: sesarFind,
@@ -193,19 +194,32 @@ const CardList = (props) => {
                 fieldContentValue = props.forceValues[forcedIndex]
             }
             else {
-                //if metadata add
-                storedValue = {
-                    id: newKey,
-                    sesarTitle: props.persist[newKey].sesar,
-                    oldValue: fieldValState[newKey],
-                    value: props.forceValues[forcedIndex],
-                    // this used to be id 
-                    header: "<METADATA_ADD>",
-                    isDate: false,
-                    isMeasurement: false,
-                    isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
-                }
-                fieldContentValue = props.forceValues[forcedIndex]
+                if (newKey < props.persist.length && props.persist[newKey].isMetaDataAdd) {
+                    storedValue = {
+                        id: newKey,
+                        sesarTitle: props.persist[newKey].sesar,
+                        oldValue: fieldValState[newKey],
+                        value: props.forceValues[forcedIndex],
+                        // this used to be id 
+                        header: "<METADATA_ADD>",
+                        isDate: false,
+                        isMeasurement: false,
+                        isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
+                    }
+                   
+                } else { 
+                    storedValue = {
+                        id: newKey,
+                        sesarTitle: "",
+                        oldValue: fieldValState[newKey],
+                        value: props.forceValues[forcedIndex],
+                        // this used to be id 
+                        header: "<METADATA_ADD>",
+                        isDate: false,
+                        isMeasurement: false,
+                        isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
+                    }
+                }  fieldContentValue = props.forceValues[forcedIndex]
             }
 
         }
@@ -252,7 +266,7 @@ const CardList = (props) => {
                 fieldTitle={field}
                 oneOfTwoID={findOneToTwo()}
                 id={newKey}
-                fieldType={helpers.typeField(props.fieldVal[newKey])}
+                fieldType={helpers.typeField(newKey, lastMetaDataAdd)}
                 fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
                 //fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(field)
@@ -271,7 +285,7 @@ const CardList = (props) => {
 
                     oneOfTwoID={findOneToTwo()}
                     id={newKey}
-                    fieldType={helpers.typeField(props.fieldVal[newKey])}
+                    fieldType={helpers.typeField(newKey, lastMetaDataAdd)}
                     fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
                     hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(Object.keys(props.toggleArr[toggleIndex])[newKey])}
                 />
