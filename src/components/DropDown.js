@@ -23,7 +23,7 @@ import {
   setForcedOldToNew
 } from "../actions/";
 
-import { dropdownSet } from '../util/helper.js'
+import { dropdownSet } from "../util/helper.js";
 //////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 
@@ -341,8 +341,6 @@ export class DropDown extends React.Component {
     if (this.props.dateFormat != null)
       breakOrFormat = this.props.dateFormat.split(" ");
 
-
-
     if (
       (newValue === "collection_end_date" ||
         newValue === "collection_start_date") &&
@@ -422,8 +420,8 @@ export class DropDown extends React.Component {
     let headerOverride = this.props.title;
     let valueOverride = this.props.value;
     if (this.props.ent[this.props.id].header === "<METADATA>") {
-        headerOverride = this.props.ent[this.props.id].header;
-        valueOverride = this.props.ent[this.props.id].value;
+      headerOverride = this.props.ent[this.props.id].header;
+      valueOverride = this.props.ent[this.props.id].value;
     }
 
     const obj = {
@@ -436,8 +434,7 @@ export class DropDown extends React.Component {
     };
 
     if (
-      (
-        this.props.ent[this.props.id].header !== "<METADATA_ADD>" &&
+      (this.props.ent[this.props.id].header !== "<METADATA_ADD>" &&
         this.props.ent[this.props.id].header !== "0<METADATA_ADD>" &&
         this.props.ent[this.props.id].header !== "1<METADATA_ADD>" &&
         this.props.ent[this.props.id].header !== "2<METADATA_ADD>" &&
@@ -479,7 +476,7 @@ export class DropDown extends React.Component {
     this.updateValueHelper(newValue, true);
   };
 
-  entWithContent = (entries) => {
+  entWithContent = entries => {
     let index = -1;
     for (let i = 0; i < entries.length; i++) {
       if (typeof entries === "string") break;
@@ -488,10 +485,8 @@ export class DropDown extends React.Component {
     return index;
   };
 
-
-
   // function that searches the ent array in the store for any index with content
-  entEnd = (entries) => {
+  entEnd = entries => {
     let index = -1;
     for (let i = 0; i < entries.length; i++) {
       if (typeof entries === "string") break;
@@ -525,7 +520,8 @@ export class DropDown extends React.Component {
       bool: false
     };
 
-    if (this.props.hasInit &&
+    if (
+      this.props.hasInit &&
       this.props.usingToggle === true &&
       this.props.id !== this.entEnd(this.props.ent)
     ) {
@@ -549,16 +545,28 @@ export class DropDown extends React.Component {
   };
 
   //checks to see if a metaDataAdd sesar title has already been chosen in another dropdown
-  checkForMetaDataAdd = (title) => {
+  checkForMetaDataAdd = title => {
     let valid = false;
-    let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
-    let indexFound = metaAddSesarTitles.indexOf(title)
-    if (indexFound > -1){
+    let metaAddSesarTitles = ["sample_type", "elevation_unit", "material"];
+    let indexFound = metaAddSesarTitles.indexOf(title);
+    if (indexFound > -1) {
       for (let i = 0; i < this.props.ent.length; i++) {
-        if (metaAddSesarTitles[indexFound] === this.props.ent[i].sesarTitle) valid = true;
+        if (metaAddSesarTitles[indexFound] === this.props.ent[i].sesarTitle)
+          valid = true;
       }
     }
     return valid;
+  };
+
+  //forces the first fieldCard dropdown to only show user_code
+  createUserCodeOption = title => {
+    let allowUserCode = false;
+    const userCode = "user_code";
+
+    if (title === userCode && this.props.id === 0) {
+      allowUserCode = true;
+    }
+    return allowUserCode;
   };
 
   checkStoreForTitle = fTitle => {
@@ -581,14 +589,18 @@ export class DropDown extends React.Component {
     //for tracking the very first instance of filter being called
     let num = -1;
 
-    let firstLoad = dropdownSet(this.props.hasInit, this.props.ent, this.props.id)
-  
+    let firstLoad = dropdownSet(
+      this.props.hasInit,
+      this.props.ent,
+      this.props.id
+    );
+
     //style for hiding dropdown for disabled cards
     let display = 1;
-    if(this.props.hasInit && !this.props.shouldAppear) {
-      display = -1
-    } else( display = "auto")
-    
+    if (this.props.hasInit && !this.props.shouldAppear) {
+      display = -1;
+    } else display = "auto";
+
     // automatically updates the right side content if a js file is loaded in, no dropdown click necessary
     this.toggleNotInUse();
 
@@ -614,14 +626,24 @@ export class DropDown extends React.Component {
 
       //if an added card only show the exclusive added sesartitle fields
       if (this.props.hasInit && this.props.fieldType === "added_card") {
-        let metaAddSesarTitles = ["sample_type", "elevation_unit", "material", "user_code"]
-        if (this.checkForMetaDataAdd(f.title) === false && metaAddSesarTitles.includes(f.title))
+        let metaAddSesarTitles = ["sample_type", "elevation_unit", "material"];
+        if (
+          this.props.id !== 0 &&
+          this.checkForMetaDataAdd(f.title) === false &&
+          metaAddSesarTitles.includes(f.title)
+        ) {
           return (
             <option key={f.title} value={f.title}>
               {f.title}
             </option>
           );
-        else if (
+        } else if (this.createUserCodeOption(f.title)) {
+          return (
+            <option key={f.title} value={f.title}>
+              {f.title}
+            </option>
+          );
+        } else if (
           this.hasSesarValue()[0] === true &&
           this.hasSesarValue()[1] === f.title &&
           metaAddSesarTitles.includes(f.title)
@@ -632,17 +654,14 @@ export class DropDown extends React.Component {
             </option>
           );
         } else return;
-      
       }
 
-      
-
-      if ( num > 0 &&
+      if (
+        num > 0 &&
         this.props.hasInit &&
         this.hasSesarValue()[0] === true &&
         this.hasSesarValue()[1] === f.title
       ) {
-        
         return (
           <option key={f.title} value={this.hasSesarValue()[1]} disabled hidden>
             {this.hasSesarValue()[1]}
@@ -650,7 +669,7 @@ export class DropDown extends React.Component {
         );
       }
 
-      //always gives multiValue 
+      //always gives multiValue
       if (this.props.hasInit && this.state.sesarMulti.includes(f.title)) {
         let ital = f.title.italics();
         //console.log(ital)
@@ -670,18 +689,17 @@ export class DropDown extends React.Component {
           </option>
         );
       }
-      //this case should be impossible, need time to test 
+      //this case should be impossible, need time to test
       else if (
         this.props.useOnce.includes(f.title) &&
         !sesarOne2One.includes(f.title)
       ) {
-
         return (
           <option key={f.title} value={f.title}>
             {f.title}
           </option>
         );
-      } 
+      }
       //this case should be unreachable, need time to test
       else if (this.props.useOnce.indexOf(f.title) === this.props.id) {
         return (
@@ -693,19 +711,23 @@ export class DropDown extends React.Component {
     };
 
     // creates the dropdown, uses filter() to specify which items are included in dropdown
-    
 
     return (
       <div className="dropDown">
-      <select
-        style={{ maxHeight: "30px", display: "inline-block", width: "170px", zIndex: display }}
-        defaultValue={firstLoad}
-        className="ui dropdown"
-        prompt="Please select option"
-        onChange={this.updateValue}
-      >
-        {this.props.list.map(field => filter(field))}
-      </select>
+        <select
+          style={{
+            maxHeight: "30px",
+            display: "inline-block",
+            width: "170px",
+            zIndex: display
+          }}
+          defaultValue={firstLoad}
+          className="ui dropdown"
+          prompt="Please select option"
+          onChange={this.updateValue}
+        >
+          {this.props.list.map(field => filter(field))}
+        </select>
       </div>
     );
   }
@@ -730,7 +752,6 @@ const mapStateToProps = state => {
     totalMulti: state.totalMultiCount
   };
 };
-
 
 export default connect(
   mapStateToProps,
