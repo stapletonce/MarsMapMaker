@@ -38,7 +38,6 @@ const CardList = (props) => {
     // an array of date option objects to choose from in the date dropdown
     const { dateFormatOption } = require('./sesarOptions')
 
-    const [lastMetaDataAdd, incrementMetaDataAdd] = useState(3)
     const [fieldsState, addAFieldCardHead] = useState(props.fields)
 
     const [fieldValState, addAFieldCardVal] = useState(props.fieldVal)
@@ -179,7 +178,7 @@ const CardList = (props) => {
         }
         else {
             //if metadata
-            if (newKey > lastMetaDataAdd) {
+            if (newKey > 3) {
                 storedValue = {
                     id: newKey,
                     sesarTitle: sesarFind,
@@ -194,32 +193,19 @@ const CardList = (props) => {
                 fieldContentValue = props.forceValues[forcedIndex]
             }
             else {
-                if (newKey < props.persist.length && props.persist[newKey].isMetaDataAdd) {
-                    storedValue = {
-                        id: newKey,
-                        sesarTitle: props.persist[newKey].sesar,
-                        oldValue: fieldValState[newKey],
-                        value: props.forceValues[forcedIndex],
-                        // this used to be id 
-                        header: "<METADATA_ADD>",
-                        isDate: false,
-                        isMeasurement: false,
-                        isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
-                    }
-                   
-                } else { 
-                    storedValue = {
-                        id: newKey,
-                        sesarTitle: "",
-                        oldValue: fieldValState[newKey],
-                        value: props.forceValues[forcedIndex],
-                        // this used to be id 
-                        header: "<METADATA_ADD>",
-                        isDate: false,
-                        isMeasurement: false,
-                        isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
-                    }
-                }  fieldContentValue = props.forceValues[forcedIndex]
+                //if metadata add
+                storedValue = {
+                    id: newKey,
+                    sesarTitle: props.persist[newKey].sesar,
+                    oldValue: fieldValState[newKey],
+                    value: props.forceValues[forcedIndex],
+                    // this used to be id 
+                    header: "<METADATA_ADD>",
+                    isDate: false,
+                    isMeasurement: false,
+                    isGreen: fieldValState[newKey] !== "" || valueIsInJsMappingFile(field)
+                }
+                fieldContentValue = props.forceValues[forcedIndex]
             }
 
         }
@@ -266,7 +252,7 @@ const CardList = (props) => {
                 fieldTitle={field}
                 oneOfTwoID={findOneToTwo()}
                 id={newKey}
-                fieldType={helpers.typeField(newKey, lastMetaDataAdd)}
+                fieldType={helpers.typeField(props.fieldVal[newKey])}
                 fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
                 //fieldValue={props.fieldVal[newKey]}
                 hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(field)
@@ -285,7 +271,7 @@ const CardList = (props) => {
 
                     oneOfTwoID={findOneToTwo()}
                     id={newKey}
-                    fieldType={helpers.typeField(newKey, lastMetaDataAdd)}
+                    fieldType={helpers.typeField(props.fieldVal[newKey])}
                     fieldValue={Object.values(props.toggleArr[toggleIndex])[newKey]}
                     hasContent={props.fieldVal[newKey] !== "" || valueIsInJsMappingFile(Object.keys(props.toggleArr[toggleIndex])[newKey])}
                 />
@@ -522,7 +508,7 @@ const CardList = (props) => {
                     </div>
 
 
-                    <div className="description">
+                    {/* <div className="description">
                         <div>
                             <object className="fieldWidget">
                                 <div style={{ fontFamily: "Lucida Grande" }} className="description__checkbox">
@@ -539,10 +525,35 @@ const CardList = (props) => {
 
                             </object>
                         </div>
-                    </div>
+                    </div> */}
                 
 
                 </div>
+
+                <div className="container-fluid">
+                        <table class="table">
+                            <tr>
+                                <td>
+                                    <div>Use</div>
+                                </td>
+                                <td>
+                                    <div  style={{ textAlign: "right" }}>{"Field"}</div>
+                                </td>
+                                <td>
+                                    <div>{": Content"}</div>
+                                </td>
+                                <td>
+                                    <div>Maps To</div>
+                                </td>
+                                <td>
+                                    <div style={{ textAlign: "right" }}>{"Content"}</div>
+                                </td>
+                                <td>
+                                    <div>{": [Field]"}</div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
 
                 <div class="container-fluid">{fields}</div>
 
